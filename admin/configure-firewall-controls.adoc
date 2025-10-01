@@ -1,0 +1,150 @@
+---
+permalink: admin/configure-firewall-controls.html 
+sidebar: sidebar 
+keywords: firewall, privileged IP address, untrusted client network, configure firewall controls, monitor 
+summary: Você pode configurar o acesso à rede para portas internas específicas do StorageGRID . 
+---
+= Configurar firewall interno
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Você pode configurar o firewall StorageGRID para controlar o acesso da rede a portas específicas nos seus nós StorageGRID .
+
+.Antes de começar
+* Você está conectado ao Grid Manager usando umlink:../admin/web-browser-requirements.html["navegador da web compatível"] .
+* Você temlink:../admin/admin-group-permissions.html["permissões de acesso específicas"] .
+* Você revisou as informações emlink:../admin/manage-firewall-controls.html["Gerenciar controles de firewall"] elink:../network/index.html["Diretrizes de rede"] .
+* Se você quiser que um nó de administração ou nó de gateway aceite tráfego de entrada somente em pontos de extremidade explicitamente configurados, você terá definido os pontos de extremidade do balanceador de carga.
++
+
+NOTE: Ao alterar a configuração da Rede do Cliente, as conexões de cliente existentes podem falhar se os pontos de extremidade do balanceador de carga não tiverem sido configurados.
+
+
+
+.Sobre esta tarefa
+O StorageGRID inclui um firewall interno em cada nó que permite abrir ou fechar algumas portas nos nós da sua grade.  Você pode usar as guias de controle do Firewall para abrir ou fechar portas que são abertas por padrão na Rede Grid, Rede de Administração e Rede Cliente.  Você também pode criar uma lista de endereços IP privilegiados que podem acessar portas de grade que estão fechadas.  Se estiver usando uma Rede Cliente, você poderá especificar se um nó confia no tráfego de entrada da Rede Cliente e poderá configurar o acesso de portas específicas na Rede Cliente.
+
+Limitar o número de portas abertas para endereços IP fora da sua rede apenas para aquelas que são absolutamente necessárias aumenta a segurança da sua rede.  Use as configurações em cada uma das três guias de controle do Firewall para garantir que somente as portas necessárias estejam abertas.
+
+Para obter mais informações sobre o uso de controles de firewall, incluindo exemplos, consultelink:../admin/manage-firewall-controls.html["Gerenciar controles de firewall"] .
+
+Para obter mais informações sobre firewalls externos e segurança de rede, consultelink:../admin/controlling-access-through-firewalls.html["Controle de acesso em firewall externo"] .
+
+
+
+== Controles de firewall de acesso
+
+.Passos
+. Selecione *CONFIGURAÇÃO* > *Segurança* > *Controle de firewall*.
++
+As três guias nesta página são descritas emlink:../admin/manage-firewall-controls.html["Gerenciar controles de firewall"] .
+
+. Selecione qualquer aba para configurar os controles do firewall.
++
+Você pode usar essas guias em qualquer ordem.  As configurações definidas em uma guia não limitam o que você pode fazer nas outras guias; no entanto, as alterações de configuração feitas em uma guia podem alterar o comportamento das portas configuradas em outras guias.
+
+
+
+
+
+== Lista de endereços privilegiados
+
+Use a guia Lista de endereços privilegiados para conceder aos hosts acesso a portas que estão fechadas por padrão ou fechadas por configurações na guia Gerenciar acesso externo.
+
+Endereços IP e sub-redes privilegiados não têm acesso à rede interna por padrão.  Além disso, os pontos de extremidade do balanceador de carga e as portas adicionais abertas na guia Lista de endereços privilegiados podem ser acessados mesmo se bloqueados na guia Gerenciar acesso externo.
+
+
+NOTE: As configurações na guia Lista de endereços privilegiados não podem substituir as configurações na guia Rede de clientes não confiáveis.
+
+.Passos
+. Na guia Lista de endereços privilegiados, insira o endereço ou a sub-rede IP à qual você deseja conceder acesso às portas fechadas.
+. Opcionalmente, selecione *Adicionar outro endereço IP ou sub-rede na notação CIDR* para adicionar clientes privilegiados adicionais.
++
+
+TIP: Adicione o mínimo possível de endereços à lista privilegiada.
+
+. Opcionalmente, selecione *Permitir que endereços IP privilegiados acessem as portas internas do StorageGRID *. Ver link:../network/internal-grid-node-communications.html["Portas internas do StorageGRID"] .
++
+
+TIP: Esta opção remove algumas proteções para serviços internos.  Deixe-o desabilitado, se possível.
+
+. Selecione *Salvar*.
+
+
+
+
+== Gerenciar acesso externo
+
+Quando uma porta é fechada na guia Gerenciar acesso externo, a porta não pode ser acessada por nenhum endereço IP que não seja da rede, a menos que você adicione o endereço IP à lista de endereços privilegiados.  Você só pode fechar portas que estejam abertas por padrão e só pode abrir portas que você tenha fechado.
+
+
+NOTE: As configurações na guia Gerenciar acesso externo não podem substituir as configurações na guia Rede de cliente não confiável.  Por exemplo, se um nó não for confiável, a porta SSH/22 será bloqueada na Rede do Cliente, mesmo que esteja aberta na guia Gerenciar acesso externo.  As configurações na guia Rede de cliente não confiável substituem portas fechadas (como 443, 8443, 9443) na Rede de cliente.
+
+.Passos
+. Selecione *Gerenciar acesso externo*.  A guia exibe uma tabela com todas as portas externas (portas que são acessíveis por nós não pertencentes à grade por padrão) para os nós na sua grade.
+. Configure as portas que você deseja abrir e fechar usando as seguintes opções:
++
+** Use o botão de alternância ao lado de cada porta para abrir ou fechar a porta selecionada.
+** Selecione *Abrir todas as portas exibidas* para abrir todas as portas listadas na tabela.
+** Selecione *Fechar todas as portas exibidas* para fechar todas as portas listadas na tabela.
++
+
+CAUTION: Se você fechar as portas 443 ou 8443 do Grid Manager, todos os usuários conectados em uma porta bloqueada, incluindo você, perderão o acesso ao Grid Manager, a menos que seus endereços IP tenham sido adicionados à lista de endereços privilegiados.
+
++
+
+NOTE: Use a barra de rolagem no lado direito da tabela para ter certeza de que visualizou todas as portas disponíveis.  Use o campo de pesquisa para encontrar as configurações de qualquer porta externa inserindo um número de porta.  Você pode inserir um número de porta parcial.  Por exemplo, se você digitar *2*, todas as portas que têm a sequência "2" como parte do nome serão exibidas.
+
+
+
+. Selecione *Salvar*
+
+
+
+
+== Rede de clientes não confiáveis
+
+Se a rede do cliente de um nó não for confiável, o nó aceitará somente tráfego de entrada em portas configuradas como pontos de extremidade do balanceador de carga e, opcionalmente, portas adicionais selecionadas nesta guia.  Você também pode usar esta guia para especificar a configuração padrão para novos nós adicionados em uma expansão.
+
+
+CAUTION: As conexões de clientes existentes podem falhar se os pontos de extremidade do balanceador de carga não tiverem sido configurados.
+
+As alterações de configuração feitas na guia *Rede de cliente não confiável* substituem as configurações na guia *Gerenciar acesso externo*.
+
+.Passos
+. Selecione *Rede de cliente não confiável*.
+. Na seção Definir novo nó padrão, especifique qual deve ser a configuração padrão quando novos nós são adicionados à grade em um procedimento de expansão.
++
+** *Confiável* (padrão): quando um nó é adicionado em uma expansão, sua Rede de Cliente é confiável.
+** *Não confiável*: quando um nó é adicionado em uma expansão, sua Rede de Cliente não é confiável.
++
+Conforme necessário, você pode retornar a esta guia para alterar a configuração de um novo nó específico.
+
++
+
+NOTE: Esta configuração não afeta os nós existentes no seu sistema StorageGRID .
+
+
+
+. Use as seguintes opções para selecionar os nós que devem permitir conexões de cliente somente em pontos de extremidade do balanceador de carga explicitamente configurados ou em portas adicionais selecionadas:
++
+** Selecione *Desconfiar dos nós exibidos* para adicionar todos os nós exibidos na tabela à lista Rede de clientes não confiáveis.
+** Selecione *Confiar nos nós exibidos* para remover todos os nós exibidos na tabela da lista Rede de clientes não confiáveis.
+** Use a alternância ao lado de cada nó para definir a Rede do Cliente como Confiável ou Não Confiável para o nó selecionado.
++
+Por exemplo, você pode selecionar *Desconfiar nos nós exibidos* para adicionar todos os nós à lista Rede de clientes não confiáveis e, em seguida, usar a alternância ao lado de um nó individual para adicionar esse único nó à lista Rede de clientes confiáveis.
+
++
+
+NOTE: Use a barra de rolagem no lado direito da tabela para ter certeza de que visualizou todos os nós disponíveis.  Use o campo de pesquisa para encontrar as configurações de qualquer nó inserindo o nome do nó.  Você pode inserir um nome parcial.  Por exemplo, se você digitar *GW*, todos os nós que têm a string "GW" como parte do nome serão exibidos.
+
+
+
+. Selecione *Salvar*.
++
+As novas configurações de firewall são aplicadas e executadas imediatamente.  As conexões de clientes existentes podem falhar se os pontos de extremidade do balanceador de carga não tiverem sido configurados.
+
+

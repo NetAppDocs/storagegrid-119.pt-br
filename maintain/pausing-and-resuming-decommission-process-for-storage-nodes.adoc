@@ -1,0 +1,46 @@
+---
+permalink: maintain/pausing-and-resuming-decommission-process-for-storage-nodes.html 
+sidebar: sidebar 
+keywords: how to pause decommission 
+summary: Se precisar executar um segundo procedimento de manutenção, você poderá pausar o procedimento de desativação de um nó de armazenamento durante determinados estágios.  Após a conclusão do outro procedimento, você pode retomar o descomissionamento. 
+---
+= Pausar e retomar o processo de descomissionamento de nós de armazenamento
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Se precisar executar um segundo procedimento de manutenção, você poderá pausar o procedimento de desativação de um nó de armazenamento durante determinados estágios.  Após a conclusão do outro procedimento, você pode retomar o descomissionamento.
+
+
+NOTE: O botão *Pausar* é habilitado somente quando os estágios de avaliação do ILM ou de descomissionamento de dados codificados por eliminação são atingidos; no entanto, a avaliação do ILM (migração de dados) continuará sendo executada em segundo plano.
+
+.Antes de começar
+* Você está conectado ao Grid Manager usando umlink:../admin/web-browser-requirements.html["navegador da web compatível"] .
+* Você tem olink:../admin/admin-group-permissions.html["Permissão de acesso de manutenção ou root"] .
+
+
+.Passos
+. Selecione *MANUTENÇÃO* > *Tarefas* > *Desativação*.
++
+A página Desativação é exibida.
+
+. Selecione *Desativar nós*.
++
+A página Descomissionar nós é exibida.  Quando o procedimento de desativação atinge qualquer um dos seguintes estágios, o botão *Pausar* é habilitado.
+
++
+** Avaliando o ILM
+** Desativação de dados codificados por apagamento
+
+
+. Selecione *Pausar* para suspender o procedimento.
++
+O estágio atual é pausado e o botão *Continuar* é habilitado.
+
++
+image::../media/decommission_nodes_procedure_paused.png[Procedimento de descomissionamento de nós pausado]
+
+. Após a conclusão do outro procedimento de manutenção, selecione *Retomar* para prosseguir com a desativação.
+

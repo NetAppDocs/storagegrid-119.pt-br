@@ -1,0 +1,41 @@
+---
+permalink: monitor/viewing-grid-topology-tree.html 
+sidebar: sidebar 
+keywords: how to view the Grid Topology tree 
+summary: A árvore de topologia de grade fornece acesso a informações detalhadas sobre os elementos do sistema StorageGRID , incluindo sites, nós de grade, serviços e componentes.  Na maioria dos casos, você só precisa acessar a árvore de topologia de grade quando instruído na documentação ou ao trabalhar com o suporte técnico. 
+---
+= Visualizar a árvore de topologia da grade
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+A árvore de topologia de grade fornece acesso a informações detalhadas sobre os elementos do sistema StorageGRID , incluindo sites, nós de grade, serviços e componentes.  Na maioria dos casos, você só precisa acessar a árvore de topologia de grade quando instruído na documentação ou ao trabalhar com o suporte técnico.
+
+Para acessar a árvore Topologia de grade, selecione *SUPORTE* > *Ferramentas* > *Topologia de grade*.
+
+image::../media/grid_topology_tree.gif[Partes da árvore de topologia de grade]
+
+Para expandir ou recolher a árvore de topologia de grade, clique emimage:../media/nms_tree_expand.gif["ícone de sinal de mais"] ouimage:../media/nms_tree_collapse.gif["ícone de sinal de menos"] no nível do site, nó ou serviço.  Para expandir ou recolher todos os itens em todo o site ou em cada nó, mantenha pressionada a tecla *<Ctrl>* e clique.
+
+
+
+== Atributos StorageGRID
+
+Os atributos relatam valores e status para muitas das funções do sistema StorageGRID .  Os valores de atributo estão disponíveis para cada nó da grade, cada site e toda a grade.
+
+Os atributos StorageGRID são usados ​​em vários lugares no Grid Manager:
+
+* *Página Nós*: Muitos dos valores mostrados na página Nós são atributos do StorageGRID .  (As métricas do Prometheus também são mostradas nas páginas de nós.)
+* *Árvore de topologia de grade*: os valores dos atributos são mostrados na árvore de topologia de grade (*SUPORTE* > *Ferramentas* > *Topologia de grade*).
+* *Eventos*: Eventos do sistema ocorrem quando determinados atributos registram um erro ou condição de falha para um nó, incluindo erros como erros de rede.
+
+
+
+
+=== Valores de atributos
+
+Os atributos são relatados com base no melhor esforço e estão aproximadamente corretos.  As atualizações de atributos podem ser perdidas em algumas circunstâncias, como a falha de um serviço ou a falha e reconstrução de um nó de grade.
+
+Além disso, atrasos de propagação podem retardar o relato de atributos.  Os valores atualizados para a maioria dos atributos são enviados ao sistema StorageGRID em intervalos fixos.  Pode levar vários minutos até que uma atualização fique visível no sistema, e dois atributos que mudam mais ou menos simultaneamente podem ser relatados em momentos ligeiramente diferentes.

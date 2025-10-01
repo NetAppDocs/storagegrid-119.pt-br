@@ -1,0 +1,78 @@
+---
+permalink: maintain/all-node-types-replacing-vmware-node.html 
+sidebar: sidebar 
+keywords: replace VMware node 
+summary: Ao recuperar um nó StorageGRID com falha que estava hospedado no VMware, você remove o nó com falha e implanta um nó de recuperação. 
+---
+= Substituir nó VMware
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Ao recuperar um nó StorageGRID com falha que estava hospedado no VMware, você remove o nó com falha e implanta um nó de recuperação.
+
+.Antes de começar
+Você determinou que a máquina virtual não pode ser restaurada e deve ser substituída.
+
+.Sobre esta tarefa
+Use o VMware vSphere Web Client para primeiro remover a máquina virtual associada ao nó de grade com falha.  Depois, você pode implantar uma nova máquina virtual.
+
+Este procedimento é apenas uma etapa no processo de recuperação do nó da rede.  O procedimento de remoção e implantação de nós é o mesmo para todos os nós VMware, incluindo nós de administração, nós de armazenamento e nós de gateway.
+
+.Passos
+. Efetue login no VMware vSphere Web Client.
+. Navegue até a máquina virtual do nó de grade com falha.
+. Anote todas as informações necessárias para implantar o nó de recuperação.
++
+.. Clique com o botão direito do mouse na máquina virtual, selecione a aba *Editar configurações* e anote as configurações em uso.
+.. Selecione a aba *Opções do vApp* para visualizar e registrar as configurações de rede do nó da grade.
+
+
+. Se o nó de grade com falha for um nó de armazenamento, determine se algum dos discos rígidos virtuais usados para armazenamento de dados está intacto e preserve-os para reconexão ao nó de grade recuperado.
+. Desligue a máquina virtual.
+. Selecione *Ações* > *Todas as ações do vCenter* > *Excluir do disco* para excluir a máquina virtual.
+. Implante uma nova máquina virtual para ser o nó de substituição e conecte-a a uma ou mais redes StorageGRID . Para obter instruções, consultelink:../vmware/deploying-storagegrid-node-as-virtual-machine.html["Implantando um nó StorageGRID como uma máquina virtual"] .
++
+Ao implantar o nó, você pode, opcionalmente, remapear as portas do nó ou aumentar as configurações de CPU ou memória.
+
++
+
+NOTE: Após implantar o novo nó, você pode adicionar novos discos virtuais de acordo com seus requisitos de armazenamento, reconectar quaisquer discos rígidos virtuais preservados do nó de grade com falha removido anteriormente, ou ambos.
+
+. Conclua o procedimento de recuperação do nó, com base no tipo de nó que você está recuperando.
++
+[cols="1a,2a"]
+|===
+| Tipo de nó | Vá para 
+
+
+ a| 
+Nó de administração primário
+ a| 
+link:configuring-replacement-primary-admin-node.html["Configurar nó de administração primário de substituição"]
+
+
+
+ a| 
+Nó de administração não primário
+ a| 
+link:selecting-start-recovery-to-configure-non-primary-admin-node.html["Selecione Iniciar recuperação para configurar o nó de administração não primário"]
+
+
+
+ a| 
+Nó de gateway
+ a| 
+link:selecting-start-recovery-to-configure-gateway-node.html["Selecione Iniciar recuperação para configurar o nó do gateway"]
+
+
+
+ a| 
+Nó de armazenamento
+ a| 
+link:selecting-start-recovery-to-configure-storage-node.html["Selecione Iniciar recuperação para configurar o nó de armazenamento"]
+
+|===
+

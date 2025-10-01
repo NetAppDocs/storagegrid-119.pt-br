@@ -1,0 +1,33 @@
+---
+permalink: ubuntu/specifying-domain-name-system-server-information.html 
+sidebar: sidebar 
+keywords: how to specify domain name system server information 
+summary: Você deve especificar informações de DNS para seu sistema StorageGRID para poder acessar servidores externos usando nomes de host em vez de endereços IP. 
+---
+= Especificar informações do servidor DNS
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Você deve especificar informações de DNS para seu sistema StorageGRID para poder acessar servidores externos usando nomes de host em vez de endereços IP.
+
+.Sobre esta tarefa
+Especificando https://docs.netapp.com/us-en/storagegrid-appliances/commonhardware/checking-dns-server-configuration.html["Informações do servidor DNS"^] permite que você use nomes de host de nomes de domínio totalmente qualificados (FQDN) em vez de endereços IP para notificações por e-mail e AutoSupport.
+
+Para garantir a operação correta, especifique dois ou três servidores DNS.  Se você especificar mais de três, é possível que apenas três sejam usados devido a limitações conhecidas do sistema operacional em algumas plataformas.  Se você tiver restrições de roteamento em seu ambiente, você podelink:../maintain/modifying-dns-configuration-for-single-grid-node.html["personalizar a lista de servidores DNS"] para nós individuais (normalmente todos os nós em um site) usar um conjunto diferente de até três servidores DNS.
+
+Se possível, use servidores DNS que cada site possa acessar localmente para garantir que um site isolado possa resolver os FQDNs para destinos externos.
+
+.Passos
+. Especifique o endereço IPv4 para pelo menos um servidor DNS na caixa de texto *Servidor 1*.
+. Se necessário, selecione o sinal de mais ao lado da última entrada para adicionar entradas de servidor adicionais.
++
+image::../media/9_gmi_installer_dns_page.gif[Esta imagem é explicada pelo texto ao redor.]
+
++
+A melhor prática é especificar pelo menos dois servidores DNS.  Você pode especificar até seis servidores DNS.
+
+. Selecione *Avançar*.
+

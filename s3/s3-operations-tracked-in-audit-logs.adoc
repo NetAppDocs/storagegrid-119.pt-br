@@ -1,0 +1,53 @@
+---
+permalink: s3/s3-operations-tracked-in-audit-logs.html 
+sidebar: sidebar 
+keywords: audit log, auditing bucket and object operations, S3 audit messages 
+summary: As mensagens de auditoria são geradas pelos serviços do StorageGRID e armazenadas em arquivos de log de texto.  Você pode revisar as mensagens de auditoria específicas do S3 no log de auditoria para obter detalhes sobre as operações de bucket e objeto. 
+---
+= Operações S3 rastreadas nos logs de auditoria
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+As mensagens de auditoria são geradas pelos serviços do StorageGRID e armazenadas em arquivos de log de texto.  Você pode revisar as mensagens de auditoria específicas do S3 no log de auditoria para obter detalhes sobre as operações de bucket e objeto.
+
+
+
+== Operações de bucket rastreadas nos logs de auditoria
+
+* CriarBucket
+* ExcluirBucket
+* ExcluirBucketTagging
+* ExcluirObjetos
+* Obter marcação de balde
+* Balde de cabeça
+* Objetos de Lista
+* Versões do objeto de lista
+* Conformidade do PUT Bucket
+* Colocar marcação de balde
+* Versão PutBucket
+
+
+
+
+== Operações de objetos rastreadas nos logs de auditoria
+
+* Upload completo de várias partes
+* CopiarObjeto
+* ExcluirObjeto
+* ObterObjeto
+* CabeçaObjeto
+* ColocarObjeto
+* RestaurarObjeto
+* SelecionarObjeto
+* UploadPart (quando uma regra ILM usa ingestão balanceada ou restrita)
+* UploadPartCopy (quando uma regra ILM usa ingestão balanceada ou estrita)
+
+
+.Informações relacionadas
+* link:../audit/accessing-audit-log-file.html["Arquivo de log de auditoria de acesso"]
+* link:../audit/client-write-audit-messages.html["O cliente escreve mensagens de auditoria"]
+* link:../audit/client-read-audit-messages.html["O cliente leu mensagens de auditoria"]
+

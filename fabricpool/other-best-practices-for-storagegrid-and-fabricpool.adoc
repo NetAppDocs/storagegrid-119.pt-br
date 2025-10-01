@@ -1,0 +1,51 @@
+---
+permalink: fabricpool/other-best-practices-for-storagegrid-and-fabricpool.html 
+sidebar: sidebar 
+keywords: fabricPool, best practices, audit log, encryption, compressions, tiering, ontap, consistency 
+summary: Ao configurar um sistema StorageGRID para uso com FabricPool, talvez seja necessário alterar outras opções do StorageGRID .  Antes de alterar uma configuração global, considere como a alteração afetará outros aplicativos S3. 
+---
+= Outras práticas recomendadas para StorageGRID e FabricPool
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Ao configurar um sistema StorageGRID para uso com FabricPool, talvez seja necessário alterar outras opções do StorageGRID .  Antes de alterar uma configuração global, considere como a alteração afetará outros aplicativos S3.
+
+
+
+== Destinos de mensagens e logs de auditoria
+
+As cargas de trabalho do FabricPool geralmente têm uma alta taxa de operações de leitura, o que pode gerar um alto volume de mensagens de auditoria.
+
+* Se você não precisar de um registro de operações de leitura do cliente para o FabricPool ou qualquer outro aplicativo S3, opcionalmente vá para *CONFIGURAÇÃO* > *Monitoramento* > *Auditoria e servidor syslog*. Altere a configuração *Leituras do cliente* para *Erro* para diminuir o número de mensagens de auditoria registradas no log de auditoria. Verlink:../monitor/configure-audit-messages.html["Configurar mensagens de auditoria e destinos de log"] para mais detalhes.
+* Se você tiver uma grade grande, usar vários tipos de aplicativos S3 ou quiser manter todos os dados de auditoria, configure um servidor syslog externo e salve as informações de auditoria remotamente.  Usar um servidor externo minimiza o impacto no desempenho do registro de mensagens de auditoria sem reduzir a integridade dos dados de auditoria. Verlink:../monitor/considerations-for-external-syslog-server.html["Considerações para servidor syslog externo"] para mais detalhes.
+
+
+
+
+== Criptografia de objetos
+
+Ao configurar o StorageGRID, você pode opcionalmente habilitar olink:../admin/changing-network-options-object-encryption.html["opção global para criptografia de objetos armazenados"] se a criptografia de dados for necessária para outros clientes StorageGRID .  Os dados que são hierarquizados do FabricPool para o StorageGRID já estão criptografados, portanto, não é necessário habilitar a configuração StorageGRID .  As chaves de criptografia do lado do cliente são de propriedade do ONTAP.
+
+
+
+== Compressão de objetos
+
+Ao configurar o StorageGRID, não habilite olink:../admin/configuring-stored-object-compression.html["opção global para compactar objetos armazenados"] .  Os dados que são hierarquizados do FabricPool para o StorageGRID já estão compactados.  Usar a opção StorageGRID não reduzirá ainda mais o tamanho de um objeto.
+
+
+
+== Consistência do balde
+
+Para buckets do FabricPool , a consistência de bucket recomendada é *Leitura-após-nova-gravação*, que é a consistência padrão para um novo bucket.  Não edite os buckets do FabricPool para usar *Available* ou *Strong-site*.
+
+
+
+== Hierarquização do FabricPool
+
+Se um nó StorageGRID usar armazenamento atribuído de um sistema NetApp ONTAP , confirme se o volume não tem uma política de camadas FabricPool habilitada.  Por exemplo, se um nó StorageGRID estiver em execução em um host VMware, certifique-se de que o volume que faz o backup do armazenamento de dados para o nó StorageGRID não tenha uma política de camadas FabricPool habilitada.  Desabilitar a hierarquização do FabricPool para volumes usados ​​com nós StorageGRID simplifica a solução de problemas e as operações de armazenamento.
+
+
+CAUTION: Nunca use o FabricPool para hierarquizar quaisquer dados relacionados ao StorageGRID de volta ao próprio StorageGRID .  A hierarquização dos dados do StorageGRID de volta ao StorageGRID aumenta a complexidade operacional e de solução de problemas.

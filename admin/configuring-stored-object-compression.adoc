@@ -1,0 +1,46 @@
+---
+permalink: admin/configuring-stored-object-compression.html 
+sidebar: sidebar 
+keywords: object compression, compress stored objects 
+summary: Você pode habilitar a compactação de objetos para reduzir o tamanho dos objetos armazenados no StorageGRID, para que os objetos consumam menos armazenamento. 
+---
+= Compactar objetos armazenados
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Você pode habilitar a compactação de objetos para reduzir o tamanho dos objetos armazenados no StorageGRID, para que os objetos consumam menos armazenamento.
+
+.Antes de começar
+* Você está conectado ao Grid Manager usando umlink:../admin/web-browser-requirements.html["navegador da web compatível"] .
+* Você temlink:admin-group-permissions.html["permissões de acesso específicas"] .
+
+
+.Sobre esta tarefa
+Por padrão, a compactação de objetos está desabilitada.  Se você habilitar a compactação, o StorageGRID tentará compactar cada objeto ao salvá-lo, usando compactação sem perdas.
+
+
+NOTE: Se você alterar essa configuração, levará cerca de um minuto para que a nova configuração seja aplicada.  O valor configurado é armazenado em cache para desempenho e dimensionamento.
+
+Antes de habilitar a compactação de objetos, esteja ciente do seguinte:
+
+* Você não deve selecionar *Compactar objetos armazenados* a menos que saiba que os dados armazenados são compactáveis.
+* Aplicativos que salvam objetos no StorageGRID podem compactar objetos antes de salvá-los.  Se um aplicativo cliente já tiver compactado um objeto antes de salvá-lo no StorageGRID, selecionar esta opção não reduzirá ainda mais o tamanho do objeto.
+* Não selecione *Compactar objetos armazenados* se estiver usando o NetApp FabricPool com StorageGRID.
+* Se *Compactar objetos armazenados* for selecionado, os aplicativos cliente S3 deverão evitar executar operações GetObject que especifiquem um intervalo de bytes a serem retornados.  Essas operações de "leitura de intervalo" são ineficientes porque o StorageGRID precisa descompactar efetivamente os objetos para acessar os bytes solicitados.  Operações GetObject que solicitam um pequeno intervalo de bytes de um objeto muito grande são especialmente ineficientes; por exemplo, é ineficiente ler um intervalo de 10 MB de um objeto compactado de 50 GB.
++
+Se os intervalos forem lidos de objetos compactados, as solicitações do cliente poderão expirar.
+
++
+
+NOTE: Se você precisar compactar objetos e seu aplicativo cliente precisar usar leituras de intervalo, aumente o tempo limite de leitura do aplicativo.
+
+
+
+.Passos
+. Selecione *CONFIGURAÇÃO* > *Sistema* > *Configurações de armazenamento* > *Compactação de objetos*.
+. Marque a caixa de seleção *Compactar objetos armazenados*.
+. Selecione *Salvar*.
+

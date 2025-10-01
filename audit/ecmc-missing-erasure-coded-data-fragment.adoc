@@ -1,0 +1,46 @@
+---
+permalink: audit/ecmc-missing-erasure-coded-data-fragment.html 
+sidebar: sidebar 
+keywords: storagegrid, audit, message, ECMC, Missing Erasure-Coded Data Fragment 
+summary: Esta mensagem de auditoria indica que o sistema detectou um fragmento de dados codificado para eliminação ausente. 
+---
+= ECMC: Fragmento de dados codificado por apagamento ausente
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Esta mensagem de auditoria indica que o sistema detectou um fragmento de dados codificado para eliminação ausente.
+
+[cols="1a,1a,4a"]
+|===
+| Código | Campo | Descrição 
+
+
+ a| 
+VCMC
+ a| 
+ID do VCS
+ a| 
+O nome do VCS que contém o pedaço faltante.
+
+
+
+ a| 
+MCID
+ a| 
+ID do pedaço
+ a| 
+O identificador do fragmento codificado por apagamento ausente.
+
+
+
+ a| 
+RSLT
+ a| 
+Resultado
+ a| 
+Este campo tem o valor 'NENHUM'.  RSLT é um campo de mensagem obrigatório, mas não é relevante para esta mensagem específica.  'NONE' é usado em vez de 'SUCS' para que esta mensagem não seja filtrada.
+
+|===

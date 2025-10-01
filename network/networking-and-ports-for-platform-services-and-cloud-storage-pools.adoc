@@ -1,0 +1,52 @@
+---
+permalink: network/networking-and-ports-for-platform-services-and-cloud-storage-pools.html 
+sidebar: sidebar 
+keywords: networking for platform services, networking for cloud storage pools 
+summary: Se você planeja usar os serviços da plataforma StorageGRID ou os Cloud Storage Pools, deverá configurar a rede de grade e os firewalls para garantir que os pontos de extremidade de destino possam ser alcançados. 
+---
+= Rede e portas para serviços de plataforma e pools de armazenamento em nuvem
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Se você planeja usar os serviços da plataforma StorageGRID ou os Cloud Storage Pools, deverá configurar a rede de grade e os firewalls para garantir que os pontos de extremidade de destino possam ser alcançados.
+
+
+
+== Rede para serviços de plataforma
+
+Conforme descrito emlink:../admin/manage-platform-services-for-tenants.html["Gerenciar serviços de plataforma para inquilinos"] elink:../tenant/considerations-for-platform-services.html["Gerenciar serviços de plataforma"] Os serviços de plataforma incluem serviços externos que fornecem integração de pesquisa, notificação de eventos e replicação do CloudMirror.
+
+Os serviços de plataforma exigem acesso dos nós de armazenamento que hospedam o serviço StorageGRID ADC aos pontos de extremidade de serviço externos.  Exemplos de fornecimento de acesso incluem:
+
+* Nos nós de armazenamento com serviços ADC, configure redes de administração exclusivas com entradas AESL que roteiam para os pontos de extremidade de destino.
+* Confie na rota padrão fornecida por uma Rede de Cliente.  Se você usar a rota padrão, você pode usar olink:../admin/manage-firewall-controls.html["recurso de rede de cliente não confiável"] para restringir conexões de entrada.
+
+
+
+
+== Rede para pools de armazenamento em nuvem
+
+Os pools de armazenamento em nuvem também exigem acesso dos nós de armazenamento aos endpoints fornecidos pelo serviço externo usado, como o Amazon S3 Glacier ou o armazenamento de Blobs do Microsoft Azure. Para obter informações, consultelink:../ilm/what-cloud-storage-pool-is.html["O que é um pool de armazenamento em nuvem"] .
+
+
+
+== Portas para serviços de plataforma e pools de armazenamento em nuvem
+
+Por padrão, os serviços de plataforma e as comunicações do Cloud Storage Pool usam as seguintes portas:
+
+* *80*: Para URIs de endpoint que começam com `http`
+* *443*: Para URIs de endpoint que começam com `https`
+
+
+Uma porta diferente pode ser especificada quando o ponto de extremidade é criado ou editado. Ver link:internal-grid-node-communications.html["Referência de porta de rede"] .
+
+Se você usar um servidor proxy não transparente, você também develink:../admin/configuring-storage-proxy-settings.html["configurar configurações de proxy de armazenamento"] para permitir que mensagens sejam enviadas para terminais externos, como um terminal na Internet.
+
+
+
+== VLANs e serviços de plataforma e pools de armazenamento em nuvem
+
+Você não pode usar redes VLAN para serviços de plataforma ou pools de armazenamento em nuvem.  Os pontos de extremidade de destino devem ser acessíveis pela rede Grid, Admin ou Client Network.

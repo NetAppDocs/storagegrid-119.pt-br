@@ -1,0 +1,306 @@
+---
+permalink: tenant/configuring-search-integration-service.html 
+sidebar: sidebar 
+keywords: how to configure search integration service 
+summary: Você habilita a integração de pesquisa para um bucket criando um XML de configuração de integração de pesquisa e usando o Tenant Manager para aplicar o XML a um bucket. 
+---
+= Configurar o serviço de integração de pesquisa
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Você habilita a integração de pesquisa para um bucket criando um XML de integração de pesquisa e usando o Tenant Manager para aplicar o XML ao bucket.
+
+.Antes de começar
+* Os serviços da plataforma foram habilitados para sua conta de locatário por um administrador do StorageGRID .
+* Você já criou um bucket S3 cujo conteúdo deseja indexar.
+* O ponto de extremidade que você pretende usar como destino para o serviço de integração de pesquisa já existe e você tem seu URN.
+* Você pertence a um grupo de usuários que tem olink:tenant-management-permissions.html["Gerenciar todos os buckets ou permissão de acesso root"] .  Essas permissões substituem as configurações de permissão em políticas de grupo ou bucket ao configurar o bucket usando o Gerenciador de Tenants.
+
+
+.Sobre esta tarefa
+Depois de configurar o serviço de integração de pesquisa para um bucket de origem, a criação de um objeto ou a atualização dos metadados ou tags de um objeto aciona o envio de metadados do objeto para o ponto de extremidade de destino.
+
+Se você habilitar o serviço de integração de pesquisa para um bucket que já contém objetos, as notificações de metadados não serão enviadas automaticamente para objetos existentes.  Atualize esses objetos existentes para garantir que seus metadados sejam adicionados ao índice de pesquisa de destino.
+
+.Passos
+. Habilitar integração de pesquisa para um bucket:
++
+** Use um editor de texto para criar o XML de notificação de metadados necessário para habilitar a integração de pesquisa.
+** Ao configurar o XML, use o URN de um ponto de extremidade de integração de pesquisa como destino.
++
+Os objetos podem ser filtrados pelo prefixo do nome do objeto.  Por exemplo, você pode enviar metadados para objetos com o prefixo `images` para um destino e metadados para objetos com o prefixo `videos` para outro.  Configurações que têm prefixos sobrepostos não são válidas e são rejeitadas quando enviadas.  Por exemplo, uma configuração que inclui uma regra para objetos com o prefixo `test` e uma segunda regra para objetos com o prefixo `test2` não é permitido.
+
++
+Conforme necessário, consulte o<<example-notification-config,exemplos para a configuração de metadados XML>> .
+
++
+[listing]
+----
+<MetadataNotificationConfiguration>
+ <Rule>
+    <Status>Enabled</Status>
+    <Prefix></Prefix>
+    <Destination>
+       <Urn>/Urn>
+       </Destination>
+ </Rule>
+</MetadataNotificationConfiguration>
+----
++
+Elementos no XML de configuração de notificação de metadados:
+
++
+[cols="1a,3a,1a"]
+|===
+| Nome | Descrição | Obrigatório 
+
+
+ a| 
+Configuração de Notificação de Metadados
+ a| 
+Tag de contêiner para regras usadas para especificar os objetos e o destino para notificações de metadados.
+
+Contém um ou mais elementos Rule.
+ a| 
+Sim
+
+
+
+ a| 
+Regra
+ a| 
+Tag de contêiner para uma regra que identifica os objetos cujos metadados devem ser adicionados a um índice especificado.
+
+Regras com prefixos sobrepostos são rejeitadas.
+
+Incluído no elemento MetadataNotificationConfiguration.
+ a| 
+Sim
+
+
+
+ a| 
+EU IA
+ a| 
+Identificador exclusivo para a regra.
+
+Incluído no elemento Rule.
+ a| 
+Não
+
+
+
+ a| 
+Status
+ a| 
+O status pode ser "Habilitado" ou "Desabilitado".  Nenhuma ação é tomada para regras que estão desabilitadas.
+
+Incluído no elemento Rule.
+ a| 
+Sim
+
+
+
+ a| 
+Prefixo
+ a| 
+Objetos que correspondem ao prefixo são afetados pela regra, e seus metadados são enviados ao destino especificado.
+
+Para corresponder a todos os objetos, especifique um prefixo vazio.
+
+Incluído no elemento Rule.
+ a| 
+Sim
+
+
+
+ a| 
+Destino
+ a| 
+Tag de contêiner para o destino de uma regra.
+
+Incluído no elemento Rule.
+ a| 
+Sim
+
+
+
+ a| 
+Urna
+ a| 
+URN do destino para onde os metadados do objeto são enviados.  Deve ser a URN de um ponto de extremidade StorageGRID com as seguintes propriedades:
+
+*** `es`deve ser o terceiro elemento.
+*** A URN deve terminar com o índice e o tipo onde os metadados são armazenados, no formato `domain-name/myindex/mytype` .
+
+
+Os endpoints são configurados usando o Tenant Manager ou a Tenant Management API.  Eles assumem a seguinte forma:
+
+*** `arn:aws:es:region:account-ID:domain/mydomain/myindex/mytype`
+*** `urn:mysite:es:::mydomain/myindex/mytype`
+
+
+O ponto de extremidade deve ser configurado antes que o XML de configuração seja enviado, ou a configuração falhará com um erro 404.
+
+URN está incluído no elemento Destino.
+ a| 
+Sim
+
+|===
+
+
+. No Gerenciador de inquilinos, selecione *ARMAZENAMENTO (S3)* > *Buckets*.
+. Selecione o nome do bucket de origem.
++
+A página de detalhes do bucket é exibida.
+
+. Selecione *Serviços de plataforma* > *Integração de pesquisa*
+. Marque a caixa de seleção *Ativar integração de pesquisa*.
+. Cole a configuração de notificação de metadados na caixa de texto e selecione *Salvar alterações*.
++
+
+NOTE: Os serviços da plataforma devem ser habilitados para cada conta de locatário por um administrador do StorageGRID usando o Grid Manager ou a API de gerenciamento.  Entre em contato com o administrador do StorageGRID se ocorrer um erro ao salvar o XML de configuração.
+
+. Verifique se o serviço de integração de pesquisa está configurado corretamente:
++
+.. Adicione um objeto ao bucket de origem que atenda aos requisitos para acionar uma notificação de metadados, conforme especificado no XML de configuração.
++
+No exemplo mostrado anteriormente, todos os objetos adicionados ao bucket acionam uma notificação de metadados.
+
+.. Confirme se um documento JSON que contém os metadados e as tags do objeto foi adicionado ao índice de pesquisa especificado no ponto de extremidade.
+
+
+
+
+.Depois que você terminar
+Conforme necessário, você pode desabilitar a integração de pesquisa para um bucket usando um dos seguintes métodos:
+
+* Selecione *ARMAZENAMENTO (S3)* > *Buckets* e desmarque a caixa de seleção *Ativar integração de pesquisa*.
+* Se você estiver usando a API do S3 diretamente, use uma solicitação de notificação de metadados DELETE Bucket.  Veja as instruções para implementar aplicativos cliente S3.
+
+
+
+
+== [[example-notification-config]]Exemplo: configuração de notificação de metadados que se aplica a todos os objetos
+
+Neste exemplo, os metadados de todos os objetos são enviados para o mesmo destino.
+
+[listing]
+----
+<MetadataNotificationConfiguration>
+    <Rule>
+        <ID>Rule-1</ID>
+        <Status>Enabled</Status>
+        <Prefix></Prefix>
+        <Destination>
+           <Urn>urn:myes:es:::sgws-notifications/test1/all</Urn>
+        </Destination>
+    </Rule>
+</MetadataNotificationConfiguration>
+----
+
+
+== Exemplo: configuração de notificação de metadados com duas regras
+
+Neste exemplo, metadados de objetos para objetos que correspondem ao prefixo `/images` é enviado para um destino, enquanto metadados de objeto para objetos que correspondem ao prefixo `/videos` é enviado para um segundo destino.
+
+[listing]
+----
+
+<MetadataNotificationConfiguration>
+    <Rule>
+        <ID>Images-rule</ID>
+        <Status>Enabled</Status>
+        <Prefix>/images</Prefix>
+        <Destination>
+           <Urn>arn:aws:es:us-east-1:3333333:domain/es-domain/graphics/imagetype</Urn>
+        </Destination>
+    </Rule>
+    <Rule>
+        <ID>Videos-rule</ID>
+        <Status>Enabled</Status>
+        <Prefix>/videos</Prefix>
+        <Destination>
+           <Urn>arn:aws:es:us-west-1:22222222:domain/es-domain/graphics/videotype</Urn>
+        </Destination>
+    </Rule>
+</MetadataNotificationConfiguration>
+----
+
+
+== Formato de notificação de metadados
+
+Quando você habilita o serviço de integração de pesquisa para um bucket, um documento JSON é gerado e enviado ao ponto de extremidade de destino sempre que metadados ou tags de objeto são adicionados, atualizados ou excluídos.
+
+Este exemplo mostra um exemplo do JSON que pode ser gerado quando um objeto com a chave `SGWS/Tagging.txt` é criado em um bucket chamado `test` .  O `test` o bucket não é versionado, então o `versionId` a tag está vazia.
+
+[listing]
+----
+{
+  "bucket": "test",
+  "key": "SGWS/Tagging.txt",
+  "versionId": "",
+  "accountId": "86928401983529626822",
+  "size": 38,
+  "md5": "3d6c7634a85436eee06d43415012855",
+  "region":"us-east-1",
+  "metadata": {
+    "age": "25"
+  },
+  "tags": {
+    "color": "yellow"
+  }
+}
+----
+
+
+=== Campos incluídos no documento JSON
+
+O nome do documento inclui o nome do bucket, o nome do objeto e o ID da versão, se presente.
+
+Informações sobre bucket e objeto::
++
+--
+`bucket`: Nome do balde
+
+`key`: Nome da chave do objeto
+
+`versionID`: Versão do objeto, para objetos em buckets versionados
+
+`region`: Região de balde, por exemplo `us-east-1`
+
+--
+Metadados do sistema::
++
+--
+`size`: Tamanho do objeto (em bytes) conforme visível para um cliente HTTP
+
+`md5`: Hash do objeto
+
+--
+Metadados do usuário::
++
+--
+`metadata`: Todos os metadados do usuário para o objeto, como pares chave-valor
+
+`key:value`
+
+--
+Etiquetas::
++
+--
+`tags`: Todas as tags de objeto definidas para o objeto, como pares chave-valor
+
+`key:value`
+
+--
+
+
+
+
+=== Como visualizar resultados no Elasticsearch
+
+Para tags e metadados do usuário, o StorageGRID passa datas e números para o Elasticsearch como strings ou como notificações de eventos do S3.  Para configurar o Elasticsearch para interpretar essas strings como datas ou números, siga as instruções do Elasticsearch para mapeamento de campos dinâmicos e para mapeamento de formatos de data.  Habilite os mapeamentos de campos dinâmicos no índice antes de configurar o serviço de integração de pesquisa.  Depois que um documento é indexado, você não pode editar os tipos de campo do documento no índice.

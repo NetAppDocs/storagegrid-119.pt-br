@@ -1,0 +1,93 @@
+---
+permalink: admin/managing-high-availability-groups.html 
+sidebar: sidebar 
+keywords: manage high availability group, ha groups, admin node, gateway node, active interface, backup interface, priority order 
+summary: 'Os grupos de alta disponibilidade (HA) fornecem conexões de dados de alta disponibilidade para clientes S3 e conexões de alta disponibilidade para o Grid Manager e o Tenant Manager.' 
+---
+= O que são grupos de alta disponibilidade (HA)?
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Grupos de alta disponibilidade (HA) fornecem conexões de dados de alta disponibilidade para clientes S3 e conexões de alta disponibilidade para o Grid Manager e o Tenant Manager.
+
+Você pode agrupar as interfaces de rede de vários nós de administração e gateway em um grupo de alta disponibilidade (HA).  Se a interface ativa no grupo HA falhar, uma interface de backup poderá gerenciar a carga de trabalho.
+
+Cada grupo HA fornece acesso aos serviços compartilhados nos nós selecionados.
+
+* Grupos de HA que incluem nós de gateway, nós de administração ou ambos fornecem conexões de dados de alta disponibilidade para clientes S3.
+* Grupos de HA que incluem apenas nós de administração fornecem conexões de alta disponibilidade ao Grid Manager e ao Tenant Manager.
+* Um grupo HA que inclui apenas dispositivos de serviços e nós de software baseados em VMware pode fornecer conexões de alta disponibilidade paralink:../admin/manage-s3-select-for-tenant-accounts.html["Locatários do S3 que usam o S3 Select"] .  Grupos HA são recomendados ao usar o S3 Select, mas não são obrigatórios.
+
+
+
+
+== Como criar um grupo HA?
+
+. Selecione uma interface de rede para um ou mais nós de administração ou nós de gateway.  Você pode usar uma interface de rede de grade (eth0), uma interface de rede de cliente (eth2), uma interface de VLAN ou uma interface de acesso que você adicionou ao nó.
++
+
+NOTE: Não é possível adicionar uma interface a um grupo HA se ela tiver um endereço IP atribuído por DHCP.
+
+. Você especifica uma interface para ser a interface primária.  A interface primária é a interface ativa, a menos que ocorra uma falha.
+. Você determina a ordem de prioridade para qualquer interface de backup.
+. Você atribui de um a 10 endereços IP virtuais (VIP) ao grupo.  Os aplicativos clientes podem usar qualquer um desses endereços VIP para se conectar ao StorageGRID.
+
+
+Para obter instruções, consultelink:configure-high-availability-group.html["Configurar grupos de alta disponibilidade"] .
+
+
+
+== O que é a interface ativa?
+
+Durante a operação normal, todos os endereços VIP do grupo HA são adicionados à interface primária, que é a primeira interface na ordem de prioridade.  Enquanto a interface primária permanecer disponível, ela será usada quando os clientes se conectarem a qualquer endereço VIP do grupo.  Ou seja, durante a operação normal, a interface primária é a interface "ativa" para o grupo.
+
+Da mesma forma, durante a operação normal, quaisquer interfaces de prioridade mais baixa para o grupo HA atuam como interfaces de "backup".  Essas interfaces de backup não são usadas, a menos que a interface primária (atualmente ativa) fique indisponível.
+
+
+
+== Exibir o status atual do grupo HA de um nó
+
+Para ver se um nó está atribuído a um grupo HA e determinar seu status atual, selecione *NODES* > *_node_*.
+
+Se a guia *Visão geral* incluir uma entrada para *grupos de HA*, o nó será atribuído aos grupos de HA listados.  O valor após o nome do grupo é o status atual do nó no grupo HA:
+
+* *Ativo*: O grupo HA está atualmente hospedado neste nó.
+* *Backup*: O grupo HA não está usando este nó no momento; esta é uma interface de backup.
+* *Interrompido*: O grupo HA não pode ser hospedado neste nó porque o serviço de Alta Disponibilidade (keepalived) foi interrompido manualmente.
+* *Falha*: O grupo HA não pode ser hospedado neste nó devido a um ou mais dos seguintes motivos:
++
+** O serviço Load Balancer (nginx-gw) não está em execução no nó.
+** A interface eth0 ou VIP do nó está inativa.
+** O nó está inativo.
+
+
+
+
+Neste exemplo, o nó de administração principal foi adicionado a dois grupos de HA.  Este nó é atualmente a interface ativa para o grupo de clientes Admin e uma interface de backup para o grupo de clientes FabricPool .
+
+image::../media/ha_group_primary_interface.png[Interface primária do grupo HA]
+
+
+
+== O que acontece quando a interface ativa falha?
+
+A interface que atualmente hospeda os endereços VIP é a interface ativa.  Se o grupo HA incluir mais de uma interface e a interface ativa falhar, os endereços VIP serão movidos para a primeira interface de backup disponível na ordem de prioridade.  Se essa interface falhar, os endereços VIP serão movidos para a próxima interface de backup disponível e assim por diante.
+
+O failover pode ser acionado por qualquer um destes motivos:
+
+* O nó no qual a interface está configurada fica inativo.
+* O nó no qual a interface está configurada perde a conectividade com todos os outros nós por pelo menos 2 minutos.
+* A interface ativa fica inativa.
+* O serviço Load Balancer é interrompido.
+* O serviço de Alta Disponibilidade é interrompido.
+
+
+
+NOTE: O failover pode não ser acionado por falhas de rede externas ao nó que hospeda a interface ativa.  Da mesma forma, o failover não é acionado pelos serviços do Grid Manager ou do Tenant Manager.
+
+O processo de failover geralmente leva apenas alguns segundos e é rápido o suficiente para que os aplicativos clientes sofram pouco impacto e possam contar com comportamentos normais de repetição para continuar a operação.
+
+Quando a falha é resolvida e uma interface de prioridade mais alta fica disponível novamente, os endereços VIP são movidos automaticamente para a interface de prioridade mais alta disponível.

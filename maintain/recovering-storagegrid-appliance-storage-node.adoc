@@ -1,0 +1,29 @@
+---
+permalink: maintain/recovering-storagegrid-appliance-storage-node.html 
+sidebar: sidebar 
+keywords: recover, appliance storage node failure, workflow 
+summary: O procedimento para recuperar um nó de armazenamento do dispositivo StorageGRID com falha é o mesmo, independentemente de você estar se recuperando da perda da unidade do sistema ou da perda apenas de volumes de armazenamento. 
+---
+= Avisos para recuperação de nós de armazenamento do dispositivo
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+O procedimento para recuperar um nó de armazenamento do dispositivo StorageGRID com falha é o mesmo, independentemente de você estar se recuperando da perda da unidade do sistema ou da perda apenas de volumes de armazenamento.
+
+
+CAUTION: Se mais de um nó de armazenamento falhar (ou estiver offline), entre em contato com o suporte técnico. Não execute o seguinte procedimento de recuperação. Pode ocorrer perda de dados.
+
+
+CAUTION: Se esta for a segunda falha do nó de armazenamento em menos de 15 dias após uma falha ou recuperação do nó de armazenamento, entre em contato com o suporte técnico.  Reconstruir o Cassandra em dois ou mais nós de armazenamento em 15 dias pode resultar em perda de dados.
+
+
+NOTE: Se mais de um nó de armazenamento em um site falhar, um procedimento de recuperação do site poderá ser necessário. Ver link:how-site-recovery-is-performed-by-technical-support.html["Como o suporte técnico recupera um site"] .
+
+
+CAUTION: Se as regras do ILM estiverem configuradas para armazenar apenas uma cópia replicada e a cópia existir em um volume de armazenamento que falhou, você não poderá recuperar o objeto.
+
+
+NOTE: Para procedimentos de manutenção de hardware, como instruções para substituir um controlador ou reinstalar o SANtricity OS, consulte o https://docs.netapp.com/us-en/storagegrid-appliances/commonhardware/index.html["instruções de manutenção para seu aparelho de armazenamento"^] .

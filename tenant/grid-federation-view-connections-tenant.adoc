@@ -1,0 +1,91 @@
+---
+permalink: tenant/grid-federation-view-connections-tenant.html 
+sidebar: sidebar 
+keywords: grid federation connection, view, clear error, last error 
+summary: Se sua conta de locatário tiver a permissão Usar conexão de federação de grade, você poderá visualizar as conexões permitidas. 
+---
+= Ver conexões de federação de grade
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Se sua conta de locatário tiver a permissão *Usar conexão de federação de grade*, você poderá visualizar as conexões permitidas.
+
+.Antes de começar
+* A conta do locatário tem a permissão *Usar conexão de federação de grade*.
+* Você está conectado ao Gerenciador de Inquilinos usando umlink:../admin/web-browser-requirements.html["navegador da web compatível"] .
+* Você pertence a um grupo de usuários que tem olink:tenant-management-permissions.html["Permissão de acesso root"] .
+
+
+.Passos
+. Selecione *ARMAZENAMENTO (S3)* > *Conexões de federação de rede*.
++
+A página de conexão da federação Grid é exibida e inclui uma tabela que resume as seguintes informações:
+
++
+[cols="1a,2a"]
+|===
+| Coluna | Descrição 
+
+
+ a| 
+Nome da conexão
+ a| 
+As conexões da federação de grade que este locatário tem permissão para usar.
+
+
+
+ a| 
+Buckets com replicação entre grades
+ a| 
+Para cada conexão de federação de grade, os buckets de locatários que têm replicação entre grades habilitada.  Os objetos adicionados a esses buckets serão replicados para a outra grade na conexão.
+
+
+
+ a| 
+Último erro
+ a| 
+Para cada conexão de federação de grade, o erro mais recente ocorrido, se houver, quando os dados estavam sendo replicados para a outra grade. Ver <<clear-last-error,Limpe o último erro>> .
+
+|===
+. Opcionalmente, selecione um nome de bucket paralink:viewing-s3-bucket-details.html["ver detalhes do bucket"] .
+
+
+
+
+== [[clear-last-error]]Limpar o último erro
+
+Um erro pode aparecer na coluna *Último erro* por um destes motivos:
+
+* A versão do objeto de origem não foi encontrada.
+* O bucket de origem não foi encontrado.
+* O bucket de destino foi excluído.
+* O bucket de destino foi recriado por uma conta diferente.
+* O bucket de destino tem o controle de versão suspenso.
+* O bucket de destino foi recriado pela mesma conta, mas agora não tem versão.
+
+
+
+NOTE: Esta coluna mostra apenas o último erro de replicação entre grades que ocorreu; erros anteriores que possam ter ocorrido não serão mostrados.
+
+.Passos
+. Se uma mensagem aparecer na coluna *Último erro*, visualize o texto da mensagem.
++
+Por exemplo, esse erro indica que o bucket de destino para replicação entre grades estava em um estado inválido, possivelmente porque o controle de versão foi suspenso ou o bloqueio de objeto do S3 estava habilitado.
+
++
+image::../media/grid-federation-cgr-object-example-last-error.png[exemplo de objeto cgr da federação de grade-último-erro]
+
+. Execute todas as ações recomendadas.  Por exemplo, se o controle de versão foi suspenso no bucket de destino para replicação entre grades, reative o controle de versão para esse bucket.
+. Selecione a conexão na tabela.
+. Selecione *Limpar erro*.
+. Selecione *Sim* para limpar a mensagem e atualizar o status do sistema.
+. Espere de 5 a 6 minutos e então ingira um novo objeto no balde.  Confirme se a mensagem de erro não reaparece.
++
+
+NOTE: Para garantir que a mensagem de erro seja apagada, aguarde pelo menos 5 minutos após o registro de data e hora na mensagem antes de ingerir um novo objeto.
+
+. Para determinar se algum objeto não foi replicado devido ao erro do bucket, consultelink:../admin/grid-federation-retry-failed-replication.html["Identificar e tentar novamente operações de replicação com falha"] .
+

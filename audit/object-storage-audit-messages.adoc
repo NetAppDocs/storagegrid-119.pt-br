@@ -1,0 +1,94 @@
+---
+permalink: audit/object-storage-audit-messages.html 
+sidebar: sidebar 
+keywords: audit, object storage, object management, object retrieval, node transfer, verification, BROR, CBSE, CBRE, CGRR, EBDL, EBKR, SCMT, SREM 
+summary: Você deve estar familiarizado com mensagens de auditoria pertencentes à categoria de auditoria de armazenamento de objetos.  Esses são eventos relacionados ao armazenamento e gerenciamento de objetos dentro do sistema StorageGRID .  Isso inclui armazenamento e recuperação de objetos, transferências de nó de grade para nó de grade e verificações. 
+---
+= Mensagens de auditoria de armazenamento de objetos
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+As mensagens de auditoria pertencentes à categoria de auditoria de armazenamento de objetos são usadas para eventos relacionados ao armazenamento e gerenciamento de objetos dentro do sistema StorageGRID .  Isso inclui armazenamento e recuperação de objetos, transferências de nó de grade para nó de grade e verificações.
+
+
+NOTE: Os códigos de auditoria são removidos do produto e da documentação, pois os recursos são descontinuados. Se você encontrar um código de auditoria que não esteja listado aqui, verifique as versões anteriores deste tópico para versões mais antigas do SG. Por exemplo,  https://docs.netapp.com/us-en/storagegrid-118/audit/object-storage-audit-messages.html["Mensagens de auditoria de armazenamento de objetos do StorageGRID 11.8"^] .
+
+[cols="1a,2a,1a"]
+|===
+| Código | Descrição | Ver 
+
+
+ a| 
+IRMÃO
+ a| 
+Solicitação de somente leitura de bucket: um bucket entrou ou saiu do modo somente leitura.
+ a| 
+link:bror-bucket-read-only-request.html["BROR: Solicitação de somente leitura do bucket"]
+
+
+
+ a| 
+CBSE
+ a| 
+Fim do envio do objeto: a entidade de origem concluiu uma operação de transferência de dados de um nó da grade para outro.
+ a| 
+link:cbse-object-send-end.html["CBSE: Fim do envio de objeto"]
+
+
+
+ a| 
+CBRE
+ a| 
+Fim do recebimento do objeto: a entidade de destino concluiu uma operação de transferência de dados de um nó da grade para outro.
+ a| 
+link:cbre-object-receive-end.html["CBRE: Objeto Recebimento Final"]
+
+
+
+ a| 
+CGRR
+ a| 
+Solicitação de replicação entre grades: o StorageGRID tentou uma operação de replicação entre grades para replicar objetos entre buckets em uma conexão de federação de grade.
+ a| 
+link:cgrr-cross-grid-replication-request.html["CGRR: Solicitação de replicação entre redes"]
+
+
+
+ a| 
+EBDL
+ a| 
+Exclusão de bucket vazio: o scanner ILM excluiu um objeto em um bucket que está excluindo todos os objetos (executando uma operação de bucket vazio).
+ a| 
+link:ebdl-empty-bucket-delete.html["EBDL: Exclusão de Bucket Vazio"]
+
+
+
+ a| 
+EBKR
+ a| 
+Solicitação de bucket vazio: um usuário enviou uma solicitação para ativar ou desativar o bucket vazio (ou seja, para excluir objetos do bucket ou para parar de excluir objetos).
+ a| 
+link:ebkr-empty-bucket-request.html["EBKR: Solicitação de balde vazio"]
+
+
+
+ a| 
+SCMT
+ a| 
+Confirmação do armazenamento de objetos: um bloco de conteúdo foi completamente armazenado e verificado e agora pode ser solicitado.
+ a| 
+link:scmt-object-store-commit.html["SCMT: Solicitação de confirmação de armazenamento de objeto"]
+
+
+
+ a| 
+SREM
+ a| 
+Remoção do Object Store: Um bloco de conteúdo foi excluído de um nó de grade e não pode mais ser solicitado diretamente.
+ a| 
+link:srem-object-store-remove.html["SREM: Remoção de armazenamento de objetos"]
+
+|===

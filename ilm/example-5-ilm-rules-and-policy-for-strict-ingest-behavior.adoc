@@ -1,0 +1,166 @@
+---
+permalink: ilm/example-5-ilm-rules-and-policy-for-strict-ingest-behavior.html 
+sidebar: sidebar 
+keywords: strict ingest example, example ILM rule, information lifecycle rule examples 
+summary: Você pode usar um filtro de localização e o comportamento de ingestão Estrito em uma regra para impedir que objetos sejam salvos em um local específico do data center. 
+---
+= Exemplo 5: regras e política do ILM para comportamento de ingestão estrita
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Você pode usar um filtro de localização e o comportamento de ingestão Estrito em uma regra para impedir que objetos sejam salvos em um local específico do data center.
+
+Neste exemplo, um inquilino baseado em Paris não quer armazenar alguns objetos fora da UE devido a preocupações regulatórias.  Outros objetos, incluindo todos os objetos de outras contas de locatários, podem ser armazenados no data center de Paris ou no data center dos EUA.
+
+
+CAUTION: As seguintes regras e políticas do ILM são apenas exemplos.  Há muitas maneiras de configurar regras de ILM.  Antes de ativar uma nova política, simule-a para confirmar se ela funcionará conforme o esperado para proteger o conteúdo contra perdas.
+
+.Informações relacionadas
+* link:data-protection-options-for-ingest.html["Opções de ingestão"]
+* link:create-ilm-rule-select-ingest-behavior.html["Criar regra ILM: selecionar comportamento de ingestão"]
+
+
+
+
+== Regra 1 do ILM, por exemplo 5: ingestão rigorosa para garantir o data center de Paris
+
+Este exemplo de regra do ILM usa o comportamento de ingestão Strict para garantir que objetos salvos por um locatário baseado em Paris em buckets do S3 com a região definida como eu-west-3 (Paris) nunca sejam armazenados no data center dos EUA.
+
+Esta regra se aplica a objetos que pertencem ao locatário de Paris e que têm a região do bucket S3 definida como eu-west-3 (Paris).
+
+[cols="1a,2a"]
+|===
+| Definição de regra | Valor de exemplo 
+
+
+ a| 
+Conta de inquilino
+ a| 
+inquilino de Paris
+
+
+
+ a| 
+Filtro avançado
+ a| 
+A restrição de localização é igual a eu-west-3
+
+
+
+ a| 
+Pools de armazenamento
+ a| 
+Sítio 1 (Paris)
+
+
+
+ a| 
+Nome da regra
+ a| 
+Ingestão rigorosa para garantir o centro de dados de Paris
+
+
+
+ a| 
+Tempo de referência
+ a| 
+Tempo de ingestão
+
+
+
+ a| 
+Posicionamentos
+ a| 
+No Dia 0, mantenha duas cópias replicadas para sempre no Site 1 (Paris)
+
+
+
+ a| 
+Comportamento de ingestão
+ a| 
+Estrito.  Sempre use os posicionamentos desta regra na ingestão.  A ingestão falha se não for possível armazenar duas cópias do objeto no data center de Paris.
+
+|===
+image::../media/ilm_rule_1_example_5_strict_ingest.png[Exemplo 5 da Regra 1 do ILM - Ingestão Estrita]
+
+
+
+== Regra 2 do ILM, exemplo 5: ingestão balanceada para outros objetos
+
+Este exemplo de regra de ILM usa o comportamento de ingestão balanceada para fornecer eficiência ideal de ILM para quaisquer objetos não correspondidos pela primeira regra.  Duas cópias de todos os objetos correspondentes a esta regra serão armazenadas: uma no centro de dados dos EUA e outra no centro de dados de Paris.  Se a regra não puder ser cumprida imediatamente, cópias provisórias serão armazenadas em qualquer local disponível.
+
+Esta regra se aplica a objetos que pertencem a qualquer locatário e qualquer região.
+
+[cols="1a,2a"]
+|===
+| Definição de regra | Valor de exemplo 
+
+
+ a| 
+Conta de inquilino
+ a| 
+Ignorar
+
+
+
+ a| 
+Filtro avançado
+ a| 
+_Não especificado_
+
+
+
+ a| 
+Pools de armazenamento
+ a| 
+Site 1 (Paris) e Site 2 (EUA)
+
+
+
+ a| 
+Nome da regra
+ a| 
+2 Cópias 2 Data Centers
+
+
+
+ a| 
+Tempo de referência
+ a| 
+Tempo de ingestão
+
+
+
+ a| 
+Posicionamentos
+ a| 
+No Dia 0, mantenha duas cópias replicadas para sempre em dois data centers
+
+
+
+ a| 
+Comportamento de ingestão
+ a| 
+Equilibrado.  Objetos que correspondem a essa regra são colocados de acordo com as instruções de posicionamento da regra, se possível.  Caso contrário, cópias provisórias serão feitas em qualquer local disponível.
+
+|===
+
+
+== Política de ILM para o exemplo 5: Combinando comportamentos de ingestão
+
+O exemplo de política de ILM inclui duas regras que têm comportamentos de ingestão diferentes.
+
+Uma política de ILM que usa dois comportamentos de ingestão diferentes pode incluir regras de ILM como as seguintes:
+
+* Armazene objetos que pertencem ao locatário de Paris e que tenham a região do bucket S3 definida como eu-west-3 (Paris) somente no data center de Paris.  Falha na ingestão se o data center de Paris não estiver disponível.
+* Armazene todos os outros objetos (incluindo aqueles que pertencem ao locatário de Paris, mas que têm uma região de bucket diferente) no data center dos EUA e no data center de Paris.  Faça cópias provisórias em qualquer local disponível se a instrução de posicionamento não puder ser atendida.
+
+
+Ao simular a política de exemplo, você espera que os objetos de teste sejam avaliados da seguinte maneira:
+
+* Todos os objetos que pertencem ao locatário de Paris e que têm a região do bucket S3 definida como eu-west-3 são correspondidos pela primeira regra e armazenados no data center de Paris.  Como a primeira regra usa ingestão estrita, esses objetos nunca são armazenados no data center dos EUA.  Se os nós de armazenamento no data center de Paris não estiverem disponíveis, a ingestão falhará.
+* Todos os outros objetos são correspondidos pela segunda regra, incluindo objetos que pertencem ao locatário de Paris e que não têm a região do bucket S3 definida como eu-west-3.  Uma cópia de cada objeto é salva em cada centro de dados.  No entanto, como a segunda regra usa ingestão balanceada, se um data center não estiver disponível, duas cópias provisórias serão salvas em qualquer local disponível.
+

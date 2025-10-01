@@ -1,0 +1,35 @@
+---
+permalink: admin/disabling-single-sign-on.html 
+sidebar: sidebar 
+keywords: disable sso, disable single sign on 
+summary: 'Você pode desabilitar o logon único (SSO) se não quiser mais usar essa funcionalidade.  Você deve desabilitar o logon único antes de poder desabilitar a federação de identidades.' 
+---
+= Desativar logon único
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Você pode desabilitar o logon único (SSO) se não quiser mais usar essa funcionalidade.  Você deve desabilitar o logon único antes de poder desabilitar a federação de identidades.
+
+.Antes de começar
+* Você está conectado ao Grid Manager usando umlink:../admin/web-browser-requirements.html["navegador da web compatível"] .
+* Você temlink:admin-group-permissions.html["permissões de acesso específicas"] .
+
+
+.Passos
+. Selecione *CONFIGURAÇÃO* > *Controle de acesso* > *Logon único*.
++
+A página de logon único é exibida.
+
+. Selecione a opção *Desativado*.
+. Selecione *Salvar*.
++
+Uma mensagem de aviso aparece indicando que usuários locais agora poderão fazer login.
+
+. Selecione *OK*.
++
+Na próxima vez que você fizer login no StorageGRID , a página de Sign in do StorageGRID será exibida e você deverá inserir o nome de usuário e a senha de um usuário local ou federado do StorageGRID .
+
+

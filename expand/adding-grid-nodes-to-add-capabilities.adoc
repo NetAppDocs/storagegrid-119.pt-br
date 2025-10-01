@@ -1,0 +1,31 @@
+---
+permalink: expand/adding-grid-nodes-to-add-capabilities.html 
+sidebar: sidebar 
+keywords: grid nodes, expand, expansion, site, add 
+summary: Você pode adicionar redundância ou recursos adicionais a um sistema StorageGRID adicionando novos nós de grade a sites existentes. 
+---
+= Adicione nós de grade para adicionar recursos ao seu sistema
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Você pode adicionar redundância ou recursos adicionais a um sistema StorageGRID adicionando novos nós de grade a sites existentes.
+
+Por exemplo, você pode optar por adicionar nós de gateway para usar em um grupo de alta disponibilidade (HA) ou pode adicionar um nó de administração em um site remoto para permitir o monitoramento usando um nó local.
+
+Você pode adicionar um ou mais dos seguintes tipos de nós a um ou mais sites existentes em uma única operação de expansão:
+
+* Nós administrativos não primários
+* Nós de armazenamento
+* Nós de gateway
+
+
+Ao se preparar para adicionar nós de grade, esteja ciente das seguintes limitações:
+
+* O nó de administração principal é implantado durante a instalação inicial.  Não é possível adicionar um nó de administração primário durante uma expansão.
+* Você pode adicionar nós de armazenamento e outros tipos de nós na mesma expansão.
+* Ao adicionar nós de armazenamento, você deve planejar cuidadosamente o número e a localização dos novos nós. Ver link:../expand/guidelines-for-adding-object-capacity.html["Diretrizes para adicionar capacidade de objeto"] .
+* Se a opção *Definir novo nó padrão* for *Não confiável* na guia Redes de clientes não confiáveis na página Controle de firewall, os aplicativos clientes que se conectam aos nós de expansão usando a Rede do cliente devem se conectar usando uma porta de ponto de extremidade do balanceador de carga (*CONFIGURAÇÃO* > *Segurança* > *Controle de firewall*). Veja as instruções paralink:../admin/configure-firewall-controls.html["alterar a configuração de segurança para o novo nó"] e paralink:../admin/configuring-load-balancer-endpoints.html["configurar pontos de extremidade do balanceador de carga"] .
+

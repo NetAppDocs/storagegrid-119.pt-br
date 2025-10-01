@@ -1,0 +1,59 @@
+---
+permalink: ubuntu/index.html 
+sidebar: sidebar 
+keywords: about ubuntu, ubuntu overview 
+summary: Siga estas etapas de alto nível para instalar um nó StorageGRID do Ubuntu ou Debian. 
+---
+= Início rápido para instalar o StorageGRID no Ubuntu ou Debian
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Siga estas etapas de alto nível para instalar um nó StorageGRID do Ubuntu ou Debian.
+
+.image:https://raw.githubusercontent.com/NetAppDocs/common/main/media/number-1.png["Um"]Preparação
+[role="quick-margin-list"]
+* Aprenda sobrelink:../primer/storagegrid-architecture-and-network-topology.html["Arquitetura e topologia de rede do StorageGRID"] .
+* Aprenda sobre as especificidades delink:../network/index.html["Rede StorageGRID"] .
+* Reúna e prepare olink:required-materials.html["Informações e materiais necessários"] .
+* Prepare o necessáriolink:cpu-and-ram-requirements.html["CPU e RAM"] .
+* Prover paralink:storage-and-performance-requirements.html["requisitos de armazenamento e desempenho"] .
+* link:how-host-wide-settings-change.html["Preparar os servidores Linux"]que hospedará seus nós StorageGRID .
+
+
+.image:https://raw.githubusercontent.com/NetAppDocs/common/main/media/number-2.png["Dois"]Implantação
+[role="quick-margin-para"]
+Implantar nós de grade.  Quando você implanta nós de grade, eles são criados como parte do sistema StorageGRID e conectados a uma ou mais redes.
+
+[role="quick-margin-list"]
+* Para implantar nós de grade baseados em software nos hosts que você preparou na etapa 1, use a linha de comando do Linux elink:creating-node-configuration-files.html["arquivos de configuração do nó"] .
+* Para implantar nós do dispositivo StorageGRID , siga as instruções https://docs.netapp.com/us-en/storagegrid-appliances/installconfig/index.html["Início rápido para instalação de hardware"^] .
+
+
+.image:https://raw.githubusercontent.com/NetAppDocs/common/main/media/number-3.png["Três"]Configuração
+[role="quick-margin-para"]
+Quando todos os nós tiverem sido implantados, use o Grid Manager paralink:navigating-to-grid-manager.html["configurar a grade e concluir a instalação"] .
+
+
+
+== Automatize a instalação
+
+Para economizar tempo e fornecer consistência, você pode automatizar a instalação do serviço de host StorageGRID e a configuração dos nós de grade.
+
+* Use uma estrutura de orquestração padrão, como Ansible, Puppet ou Chef para automatizar:
++
+** Instalação do Ubuntu ou Debian
+** Configuração de rede e armazenamento
+** Instalação do mecanismo de contêiner e do serviço de host StorageGRID
+** Implantação de nós de grade virtual
+
+
++
+Ver link:automating-installation.html#automate-the-installation-and-configuration-of-the-storagegrid-host-service["Automatize a instalação e a configuração do serviço de host StorageGRID"] .
+
+* Depois de implantar os nós da grade,link:automating-installation.html#automate-the-configuration-of-storagegrid["automatizar a configuração do sistema StorageGRID"] usando o script de configuração Python fornecido no arquivo de instalação.
+* https://docs.netapp.com/us-en/storagegrid-appliances/installconfig/automating-appliance-installation-and-configuration.html["Automatize a instalação e a configuração de nós de grade de dispositivos"^]
+* Se você for um desenvolvedor avançado de implantações do StorageGRID , automatize a instalação de nós de grade usando olink:overview-of-installation-rest-api.html["instalação REST API"] .
+

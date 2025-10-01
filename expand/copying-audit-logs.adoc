@@ -1,0 +1,98 @@
+---
+permalink: expand/copying-audit-logs.html 
+sidebar: sidebar 
+keywords: copy audit log, Admin Node expansion, 
+summary: Quando você adiciona um novo nó de administração por meio de um procedimento de expansão, seu serviço AMS registra apenas eventos e ações que ocorrem depois que ele ingressa no sistema. Conforme necessário, você pode copiar logs de auditoria de um nó de administração instalado anteriormente para o novo nó de administração de expansão para que ele fique sincronizado com o restante do sistema StorageGRID . 
+---
+= Copiar logs de auditoria
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Quando você adiciona um novo nó de administração por meio de um procedimento de expansão, seu serviço AMS registra apenas eventos e ações que ocorrem depois que ele ingressa no sistema. Conforme necessário, você pode copiar logs de auditoria de um nó de administração instalado anteriormente para o novo nó de administração de expansão para que ele fique sincronizado com o restante do sistema StorageGRID .
+
+.Antes de começar
+* Você concluiu as etapas de expansão necessárias para adicionar um nó de administração.
+* Você tem o `Passwords.txt` arquivo.
+
+
+.Sobre esta tarefa
+Para disponibilizar mensagens de auditoria históricas em um novo nó de administração, você deve copiar os arquivos de log de auditoria manualmente de um nó de administração existente para o nó de administração de expansão.
+
+[NOTE]
+====
+Por padrão, as informações de auditoria são enviadas para o log de auditoria nos nós de administração.  Você pode pular estas etapas se alguma das seguintes situações se aplicar:
+
+* Você configurou um servidor syslog externo e os logs de auditoria agora estão sendo enviados para o servidor syslog em vez de para os nós de administração.
+* Você especificou explicitamente que as mensagens de auditoria devem ser salvas somente nos nós locais que as geraram.
+
+
+Verlink:../monitor/configure-audit-messages.html["Configurar mensagens de auditoria e destinos de log"] para mais detalhes.
+
+====
+.Passos
+. Efetue login no nó de administração principal:
++
+.. Digite o seguinte comando: `ssh _admin@_primary_Admin_Node_IP_`
+.. Digite a senha listada no `Passwords.txt` arquivo.
+.. Digite o seguinte comando para alternar para root: `su -`
+.. Digite a senha listada no `Passwords.txt` arquivo.
++
+Quando você está logado como root, o prompt muda de `$` para `#` .
+
+
+
+. Pare o serviço AMS para impedir que ele crie um novo arquivo: `service ams stop`
+. Navegue até o diretório de exportação de auditoria:
++
+`cd /var/local/log`
+
+. Renomear a fonte `audit.log` arquivo para garantir que ele não substitua o arquivo no nó de administração de expansão para o qual você está copiando:
++
+[listing]
+----
+ls -l
+mv audit.log _new_name_.txt
+----
+. Copie todos os arquivos de log de auditoria para o local de destino no nó de administração de expansão:
++
+`scp -p * _IP_address_:/var/local/log`
+
+. Se for solicitada a senha para `/root/.ssh/id_rsa` , insira a senha de acesso SSH para o nó de administração primário listado em `Passwords.txt` arquivo.
+. Restaurar o original `audit.log` arquivo:
++
+`mv _new_name_.txt audit.log`
+
+. Inicie o serviço AMS:
++
+`service ams start`
+
+. Sair do servidor:
++
+`exit`
+
+. Efetue login no nó de administração de expansão:
++
+.. Digite o seguinte comando: `ssh admin@_expansion_Admin_Node_IP_`
+.. Digite a senha listada no `Passwords.txt` arquivo.
+.. Digite o seguinte comando para alternar para root: `su -`
+.. Digite a senha listada no `Passwords.txt` arquivo.
++
+Quando você está logado como root, o prompt muda de `$` para `#` .
+
+
+
+. Atualize as configurações de usuário e grupo para os arquivos de log de auditoria:
++
+`cd /var/local/log`
+
++
+`chown ams-user:bycast *`
+
+. Sair do servidor:
++
+`exit`
+
+

@@ -1,0 +1,19 @@
+= 
+:allow-uri-read: 
+
+
+Você pode desabilitar temporária ou permanentemente a federação de identidade para grupos e usuários. Quando a federação de identidade está desabilitada, não há comunicação entre o StorageGRID e a origem da identidade. No entanto, todas as configurações que você definiu serão mantidas, permitindo que você reative facilmente a federação de identidades no futuro.
+
+.Sobre esta tarefa
+Antes de desabilitar a federação de identidades, você deve estar ciente do seguinte:
+
+* Usuários federados não poderão fazer login.
+* Usuários federados que estão conectados no momento manterão acesso ao sistema StorageGRID até que sua sessão expire, mas não poderão fazer login depois que sua sessão expirar.
+* A sincronização entre o sistema StorageGRID e a fonte de identidade não ocorrerá, e alertas não serão gerados para contas que não foram sincronizadas.
+* A caixa de seleção *Habilitar federação de identidade* será desabilitada se o logon único (SSO) estiver definido como *Habilitado* ou *Modo Sandbox*. O status do SSO na página de logon único deve ser *Desativado* antes que você possa desabilitar a federação de identidades. Ver link:../admin/disabling-single-sign-on.html["Desativar logon único"] .
+
+
+.Passos
+. Acesse a página da Federação de Identidade.
+. Desmarque a caixa de seleção *Ativar federação de identidade*.
+

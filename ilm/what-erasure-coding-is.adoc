@@ -1,0 +1,38 @@
+---
+permalink: ilm/what-erasure-coding-is.html 
+sidebar: sidebar 
+keywords: what is erasure coding, what is ec 
+summary: A codificação de eliminação é um dos dois métodos que o StorageGRID usa para armazenar dados de objetos.  Quando objetos correspondem a uma regra ILM que usa codificação de eliminação, esses objetos são divididos em fragmentos de dados, fragmentos de paridade adicionais são computados e cada fragmento é armazenado em um nó de armazenamento diferente. 
+---
+= O que é codificação de eliminação?
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+A codificação de eliminação é um dos dois métodos que o StorageGRID usa para armazenar dados de objetos (a replicação é o outro método).  Quando objetos correspondem a uma regra ILM que usa codificação de eliminação, esses objetos são divididos em fragmentos de dados, fragmentos de paridade adicionais são computados e cada fragmento é armazenado em um nó de armazenamento diferente.
+
+Quando um objeto é acessado, ele é remontado usando os fragmentos armazenados.  Se um dado ou um fragmento de paridade for corrompido ou perdido, o algoritmo de codificação de eliminação pode recriar esse fragmento usando um subconjunto dos dados e fragmentos de paridade restantes.
+
+À medida que você cria regras de ILM, o StorageGRID cria perfis de codificação de eliminação que dão suporte a essas regras.  Você pode visualizar uma lista de perfis de codificação de eliminação,link:manage-erasure-coding-profiles.html#rename-an-erasure-coding-profile["renomear um perfil de codificação de eliminação"] , oulink:manage-erasure-coding-profiles.html#deactivate-an-erasure-coding-profile["desativar um perfil de codificação de eliminação se ele não estiver sendo usado atualmente em nenhuma regra do ILM"] .
+
+O exemplo a seguir ilustra o uso de um algoritmo de codificação de eliminação nos dados de um objeto.  Neste exemplo, a regra ILM usa um esquema de codificação de eliminação 4+2.  Cada objeto é dividido em quatro fragmentos de dados iguais, e dois fragmentos de paridade são computados a partir dos dados do objeto.  Cada um dos seis fragmentos é armazenado em um nó diferente em três locais do data center para fornecer proteção de dados em caso de falhas de nó ou perda de local.
+
+image::../media/ec_three_sites_4_plus_2.png[Codificação de Apagamento Três Sites 4 Mais 2]
+
+O esquema de codificação de apagamento 4+2 pode ser configurado de várias maneiras.  Por exemplo, você pode configurar um pool de armazenamento de site único que contenha seis nós de armazenamento.  Paralink:using-multiple-storage-pools-for-cross-site-replication.html["proteção contra perda de site"] , você pode usar um pool de armazenamento contendo três sites com três nós de armazenamento em cada site.  Um objeto pode ser recuperado desde que quatro dos seis fragmentos (dados ou paridade) permaneçam disponíveis.  Até dois fragmentos podem ser perdidos sem perda dos dados do objeto.  Se um local inteiro for perdido, o objeto ainda poderá ser recuperado ou reparado, desde que todos os outros fragmentos permaneçam acessíveis.
+
+image::../media/ec_recoverable_4_plus_2.png[Codificação de apagamento recuperável 4 Plus 2]
+
+Se mais de dois nós de armazenamento forem perdidos, o objeto não poderá ser recuperado.
+
+image::../media/ec_unrecoverable_4_plus_2.png[Codificação de Apagamento Irrecuperável 4 Mais 2]
+
+.Informações relacionadas
+* link:what-replication-is.html["O que é replicação"]
+* link:what-storage-pool-is.html["O que é um pool de armazenamento"]
+* link:what-erasure-coding-schemes-are.html["O que são esquemas de codificação de apagamento"]
+* link:manage-erasure-coding-profiles.html#rename-an-erasure-coding-profile["Renomear um perfil de codificação de eliminação"]
+* link:manage-erasure-coding-profiles.html#deactivate-an-erasure-coding-profile["Desativar um perfil de codificação de eliminação"]
+

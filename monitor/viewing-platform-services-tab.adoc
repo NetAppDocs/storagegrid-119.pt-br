@@ -1,0 +1,20 @@
+---
+permalink: monitor/viewing-platform-services-tab.html 
+sidebar: sidebar 
+keywords: platform services tab 
+summary: A guia Serviços da plataforma fornece informações sobre quaisquer operações de serviço da plataforma S3 em um site. 
+---
+= Ver a aba Serviços da plataforma
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+A guia Serviços da plataforma fornece informações sobre quaisquer operações de serviço da plataforma S3 em um site.
+
+A aba Serviços da plataforma é exibida para cada site.  Esta guia fornece informações sobre os serviços da plataforma S3, como a replicação do CloudMirror e o serviço de integração de pesquisa.  Os gráficos nesta guia exibem métricas como o número de solicitações pendentes, a taxa de conclusão da solicitação e a taxa de falha da solicitação.
+
+image::../media/nodes_page_site_level_platform_services.gif[Serviços de plataforma de nível de site de página de nós]
+
+Para obter mais informações sobre os serviços da plataforma S3, incluindo detalhes de solução de problemas, consulte olink:../admin/index.html["instruções para administrar o StorageGRID"] .

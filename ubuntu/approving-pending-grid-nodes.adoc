@@ -1,0 +1,131 @@
+---
+permalink: ubuntu/approving-pending-grid-nodes.html 
+sidebar: sidebar 
+keywords: how to approve a grid node 
+summary: Você deve aprovar cada nó de grade antes que ele possa ingressar no sistema StorageGRID . 
+---
+= Aprovar nós de grade pendentes
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Você deve aprovar cada nó de grade antes que ele possa ingressar no sistema StorageGRID .
+
+.Antes de começar
+Você implantou todos os nós de grade do dispositivo virtual e StorageGRID .
+
+
+NOTE: É mais eficiente executar uma única instalação de todos os nós, em vez de instalar alguns nós agora e outros depois.
+
+.Passos
+. Revise a lista de nós pendentes e confirme se ela mostra todos os nós de grade que você implantou.
++
+
+NOTE: Se um nó de grade estiver faltando, confirme se ele foi implantado com sucesso e se tem o IP de rede de grade correto do nó de administração primário definido para ADMIN_IP.
+
+. Selecione o botão de opção ao lado de um nó pendente que você deseja aprovar.
++
+image::../media/5_gmi_installer_grid_nodes_pending.gif[Esta imagem é explicada pelo texto ao redor.]
+
+. Clique em *Aprovar*.
+. Em Configurações gerais, modifique as configurações das seguintes propriedades, conforme necessário:
++
+** *Site*: O nome do sistema do site para este nó de grade.
+** *Nome*: O nome do sistema para o nó.  O nome padrão é o nome que você especificou quando configurou o nó.
++
+Os nomes do sistema são necessários para operações internas do StorageGRID e não podem ser alterados após a conclusão da instalação.  No entanto, durante esta etapa do processo de instalação, você pode alterar os nomes do sistema conforme necessário.
+
+** *Função NTP*: A função do Protocolo de Tempo de Rede (NTP) do nó da grade.  As opções são *Automático*, *Principal* e *Cliente*.  Selecionar *Automático* atribui a função Primária aos Nós de Administração, Nós de Armazenamento com serviços ADC, Nós de Gateway e quaisquer nós de grade que tenham endereços IP não estáticos.  Todos os outros nós da grade recebem a função Cliente.
++
+
+NOTE: Certifique-se de que pelo menos dois nós em cada site possam acessar pelo menos quatro fontes NTP externas.  Se apenas um nó em um site puder alcançar as fontes NTP, ocorrerão problemas de tempo se esse nó ficar inativo.  Além disso, designar dois nós por site como fontes primárias de NTP garante um tempo preciso se um site estiver isolado do restante da rede.
+
+** *Tipo de armazenamento* (somente nós de armazenamento): especifique que um novo nó de armazenamento seja usado exclusivamente para dados, metadados ou ambos.  As opções são *Dados e metadados* ("combinados"), *Somente dados* e *Somente metadados*.
++
+
+CAUTION: Verlink:../primer/what-storage-node-is.html#types-of-storage-nodes["Tipos de nós de armazenamento"] para obter informações sobre os requisitos para esses tipos de nós.
+
+** *Serviço ADC* (somente nós de armazenamento): selecione *Automático* para permitir que o sistema determine se o nó requer o serviço Controlador de Domínio Administrativo (ADC). O serviço ADC monitora a localização e a disponibilidade dos serviços de rede. Pelo menos três nós de armazenamento em cada site devem incluir o serviço ADC.  Não é possível adicionar o serviço ADC a um nó depois que ele for implantado.
+
+
+. Em Grid Network, modifique as configurações das seguintes propriedades conforme necessário:
++
+** *Endereço IPv4 (CIDR)*: O endereço de rede CIDR para a interface Grid Network (eth0 dentro do contêiner).  Por exemplo: 192.168.1.234/21
+** *Gateway*: O gateway da Grid Network.  Por exemplo: 192.168.0.1
++
+O gateway é necessário se houver várias sub-redes de grade.
+
+
+
++
+
+NOTE: Se você selecionou DHCP para a configuração da Grid Network e alterar o valor aqui, o novo valor será configurado como um endereço estático no nó.  Você deve certificar-se de que o endereço IP configurado não esteja em um pool de endereços DHCP.
+
+. Se você quiser configurar a Rede de Administração para o nó da grade, adicione ou atualize as configurações na seção Rede de Administração, conforme necessário.
++
+Insira as sub-redes de destino das rotas fora desta interface na caixa de texto *Sub-redes (CIDR)*.  Se houver várias sub-redes de administração, o gateway de administração será necessário.
+
++
+
+NOTE: Se você selecionou DHCP para a configuração da rede de administração e alterar o valor aqui, o novo valor será configurado como um endereço estático no nó.  Você deve certificar-se de que o endereço IP configurado não esteja em um pool de endereços DHCP.
+
++
+*Dispositivos:* Para um dispositivo StorageGRID , se a Rede de administração não foi configurada durante a instalação inicial usando o Instalador do dispositivo StorageGRID , ela não poderá ser configurada nesta caixa de diálogo Gerenciador de grade.  Em vez disso, você deve seguir estes passos:
+
++
+.. Reinicie o dispositivo: No Instalador do Dispositivo, selecione *Avançado* > *Reinicializar*.
++
+A reinicialização pode levar vários minutos.
+
+.. Selecione *Configurar rede* > *Configuração de link* e habilite as redes apropriadas.
+.. Selecione *Configurar rede* > *Configuração de IP* e configure as redes habilitadas.
+.. Retorne à página inicial e clique em *Iniciar instalação*.
+.. No Grid Manager: se o nó estiver listado na tabela Nós aprovados, remova-o.
+.. Remova o nó da tabela Nós Pendentes.
+.. Aguarde até que o nó reapareça na lista de Nós Pendentes.
+.. Confirme se você pode configurar as redes apropriadas.  Eles já devem estar preenchidos com as informações que você forneceu na página Configuração de IP do Instalador do Appliance.
++
+Para obter informações adicionais, consulte o https://docs.netapp.com/us-en/storagegrid-appliances/installconfig/index.html["Início rápido para instalação de hardware"^] para localizar instruções para seu aparelho.
+
+
+
+. Se você quiser configurar a Rede do Cliente para o nó da grade, adicione ou atualize as configurações na seção Rede do Cliente, conforme necessário.  Se a Rede do Cliente estiver configurada, o gateway será necessário e se tornará o gateway padrão para o nó após a instalação.
++
+
+NOTE: Se você selecionou DHCP para a configuração da rede do cliente e alterar o valor aqui, o novo valor será configurado como um endereço estático no nó.  Você deve certificar-se de que o endereço IP configurado não esteja em um pool de endereços DHCP.
+
++
+*Dispositivos:* Para um dispositivo StorageGRID , se a Rede do Cliente não foi configurada durante a instalação inicial usando o Instalador do Dispositivo StorageGRID , ela não poderá ser configurada nesta caixa de diálogo Gerenciador de Grade.  Em vez disso, você deve seguir estes passos:
+
++
+.. Reinicie o dispositivo: No Instalador do Dispositivo, selecione *Avançado* > *Reinicializar*.
++
+A reinicialização pode levar vários minutos.
+
+.. Selecione *Configurar rede* > *Configuração de link* e habilite as redes apropriadas.
+.. Selecione *Configurar rede* > *Configuração de IP* e configure as redes habilitadas.
+.. Retorne à página inicial e clique em *Iniciar instalação*.
+.. No Grid Manager: se o nó estiver listado na tabela Nós aprovados, remova-o.
+.. Remova o nó da tabela Nós Pendentes.
+.. Aguarde até que o nó reapareça na lista de Nós Pendentes.
+.. Confirme se você pode configurar as redes apropriadas.  Eles já devem estar preenchidos com as informações que você forneceu na página Configuração de IP do Instalador do Appliance.
++
+Para saber como instalar dispositivos StorageGRID , consulte o https://docs.netapp.com/us-en/storagegrid-appliances/installconfig/index.html["Início rápido para instalação de hardware"^] para localizar instruções para seu aparelho.
+
+
+
+. Clique em *Salvar*.
++
+A entrada do nó da grade é movida para a lista de nós aprovados.
+
++
+image::../media/7_gmi_installer_grid_nodes_approved.gif[Esta imagem é explicada pelo texto ao redor.]
+
+. Repita essas etapas para cada nó de grade pendente que você deseja aprovar.
++
+Você deve aprovar todos os nós que deseja na grade.  No entanto, você pode retornar a esta página a qualquer momento antes de clicar em *Instalar* na página Resumo.  Você pode modificar as propriedades de um nó de grade aprovado selecionando seu botão de opção e clicando em *Editar*.
+
+. Quando terminar de aprovar os nós da grade, clique em *Avançar*.
+

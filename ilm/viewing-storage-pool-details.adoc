@@ -1,0 +1,58 @@
+---
+permalink: ilm/viewing-storage-pool-details.html 
+sidebar: sidebar 
+keywords: storage pool, view details 
+summary: Você pode visualizar os detalhes de um pool de armazenamento para determinar onde ele é usado e ver quais nós e níveis de armazenamento estão incluídos. 
+---
+= Ver detalhes do pool de armazenamento
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Você pode visualizar os detalhes de um pool de armazenamento para determinar onde ele é usado e ver quais nós e níveis de armazenamento estão incluídos.
+
+.Antes de começar
+* Você está conectado ao Grid Manager usando umlink:../admin/web-browser-requirements.html["navegador da web compatível"] .
+* Você temlink:../admin/admin-group-permissions.html["permissões de acesso específicas"] .
+
+
+.Passos
+. Selecione *ILM* > *Pools de armazenamento*.
++
+A tabela Pools de armazenamento inclui as seguintes informações para cada pool de armazenamento que inclui nós de armazenamento:
+
++
+** *Nome*: O nome de exibição exclusivo do pool de armazenamento.
+** *Contagem de nós*: O número de nós no pool de armazenamento.
+** *Uso de armazenamento*: a porcentagem do espaço total utilizável que foi usada para dados de objeto neste nó.  Este valor não inclui metadados do objeto.
+** *Capacidade total*: O tamanho do pool de armazenamento, que é igual à quantidade total de espaço utilizável para dados de objeto para todos os nós no pool de armazenamento.
+** *Uso do ILM*: como o pool de armazenamento está sendo usado atualmente.  Um pool de armazenamento pode não estar sendo utilizado ou pode estar sendo usado em uma ou mais regras de ILM, perfis de codificação de eliminação ou ambos.
+
+
+. Para visualizar detalhes de um pool de armazenamento específico, selecione seu nome.
++
+A página de detalhes do pool de armazenamento é exibida.
+
+. Veja a aba *Nós* para saber mais sobre os Nós de Armazenamento incluídos no pool de armazenamento.
++
+A tabela inclui as seguintes informações para cada nó:
+
++
+** Nome do nó
+** Nome do site
+** Grau de armazenamento
+** Uso de armazenamento: a porcentagem do espaço total utilizável para dados de objeto que foi usada para o nó de armazenamento.
++
+
+NOTE: O mesmo valor de uso de armazenamento (%) também é mostrado no gráfico Armazenamento usado - Dados do objeto para cada nó de armazenamento (selecione *NÓS* > *_Nó de armazenamento_* > *Armazenamento*).
+
+
+
+. Veja a aba *Uso do ILM* para determinar se o pool de armazenamento está sendo usado atualmente em alguma regra do ILM ou perfil de codificação de eliminação.
+. Opcionalmente, acesse a *página de regras do ILM* para saber mais e gerenciar quaisquer regras que usem o pool de armazenamento.
++
+Veja olink:working-with-ilm-rules-and-ilm-policies.html["instruções para trabalhar com regras ILM"] .
+
+

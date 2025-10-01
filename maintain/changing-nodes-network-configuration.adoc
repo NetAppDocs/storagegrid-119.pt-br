@@ -1,0 +1,210 @@
+---
+permalink: maintain/changing-nodes-network-configuration.html 
+sidebar: sidebar 
+keywords: storagegrid, network configuration, node network configuration 
+summary: Você pode alterar a configuração de rede de um ou mais nós usando a ferramenta Alterar IP.  Você pode alterar a configuração da Rede Grid ou adicionar, alterar ou remover as Redes de Administrador ou Cliente. 
+---
+= Alterar configuração de rede do nó
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Você pode alterar a configuração de rede de um ou mais nós usando a ferramenta Alterar IP.  Você pode alterar a configuração da Rede Grid ou adicionar, alterar ou remover as Redes de Administrador ou Cliente.
+
+.Antes de começar
+Você tem o `Passwords.txt` arquivo.
+
+.Sobre esta tarefa
+*Linux:* Se você estiver adicionando um nó de grade à Rede de Administração ou à Rede de Cliente pela primeira vez e não tiver configurado ADMIN_NETWORK_TARGET ou CLIENT_NETWORK_TARGET anteriormente no arquivo de configuração do nó, deverá fazê-lo agora.
+
+Veja as instruções de instalação do StorageGRID para seu sistema operacional Linux:
+
+* link:../rhel/index.html["Instalar o StorageGRID no Red Hat Enterprise Linux"]
+* link:../ubuntu/index.html["Instalar o StorageGRID no Ubuntu ou Debian"]
+
+
+*Dispositivos:* Em dispositivos StorageGRID , se a rede do cliente ou do administrador não tiver sido configurada no instalador do dispositivo StorageGRID durante a instalação inicial, a rede não poderá ser adicionada usando apenas a ferramenta Alterar IP.  Primeiro, você deve https://docs.netapp.com/us-en/storagegrid-appliances/commonhardware/placing-appliance-into-maintenance-mode.html["coloque o aparelho em modo de manutenção"^] , configure os links, retorne o dispositivo ao modo de operação normal e, em seguida, use a ferramenta Alterar IP para modificar a configuração de rede.  Veja o https://docs.netapp.com/us-en/storagegrid-appliances/installconfig/configuring-network-links.html["procedimento para configuração de links de rede"^] .
+
+Você pode alterar o endereço IP, a máscara de sub-rede, o gateway ou o valor de MTU para um ou mais nós em qualquer rede.
+
+Você também pode adicionar ou remover um nó de uma Rede de Cliente ou de uma Rede de Administração:
+
+* Você pode adicionar um nó a uma rede de cliente ou a uma rede de administrador adicionando um endereço IP/máscara de sub-rede nessa rede ao nó.
+* Você pode remover um nó de uma rede de cliente ou de uma rede de administrador excluindo o endereço IP/máscara de sub-rede do nó nessa rede.
++
+Os nós não podem ser removidos da Rede Grid.
+
+
+
+
+NOTE: Trocas de endereços IP não são permitidas.  Se você precisar trocar endereços IP entre nós da grade, deverá usar um endereço IP intermediário temporário.
+
+
+NOTE: Se o logon único (SSO) estiver habilitado para seu sistema StorageGRID e você estiver alterando o endereço IP de um nó de administração, esteja ciente de que qualquer confiança de parte confiável que foi configurada usando o endereço IP do nó de administração (em vez de seu nome de domínio totalmente qualificado, conforme recomendado) se tornará inválida. Você não poderá mais fazer login no nó. Imediatamente após alterar o endereço IP, você deve atualizar ou reconfigurar a parte confiável do nó nos Serviços de Federação do Active Directory (AD FS) com o novo endereço IP. Veja as instruções paralink:../admin/configuring-sso.html["configurando SSO"] .
+
+
+NOTE: Quaisquer alterações feitas na rede usando a ferramenta Alterar IP são propagadas para o firmware do instalador dos dispositivos StorageGRID .  Dessa forma, se o software StorageGRID for reinstalado em um dispositivo ou se um dispositivo for colocado em modo de manutenção, a configuração de rede estará correta.
+
+.Passos
+. Efetue login no nó de administração principal:
++
+.. Digite o seguinte comando: `ssh admin@_primary_Admin_Node_IP_`
+.. Digite a senha listada no `Passwords.txt` arquivo.
+.. Digite o seguinte comando para alternar para root: `su -`
+.. Digite a senha listada no `Passwords.txt` arquivo.
+
+
++
+Quando você está logado como root, o prompt muda de `$` para `#` .
+
+. Inicie a ferramenta Alterar IP digitando o seguinte comando: `change-ip`
+. Digite a senha de provisionamento no prompt.
++
+O menu principal aparece.
+
++
+image::../media/change_ip_tool_main_menu.png[captura de tela mostrando a tela de boas-vindas da ferramenta de alteração de IP]
+
+. Opcionalmente, selecione *1* para escolher quais nós atualizar.  Em seguida, selecione uma das seguintes opções:
++
+** *1*: Nó único -- selecionar por nome
+** *2*: Nó único -- selecione por site e depois por nome
+** *3*: Nó único -- selecionar pelo IP atual
+** *4*: Todos os nós em um site
+** *5*: Todos os nós na grade
++
+*Observação:* Se você quiser atualizar todos os nós, deixe "todos" selecionado.
+
+
+
++
+Depois de fazer sua seleção, o menu principal aparece, com o campo *Nós selecionados* atualizado para refletir sua escolha.  Todas as ações subsequentes são executadas somente nos nós exibidos.
+
+. No menu principal, selecione a opção *2* para editar informações de IP/máscara, gateway e MTU para os nós selecionados.
++
+.. Selecione a rede onde você deseja fazer alterações:
++
+--
+*** *1*: Rede de grade
+*** *2*: Rede de administração
+*** *3*: Rede do cliente
+*** *4*: Todas as redes
+
+
+--
++
+--
+Depois de fazer sua seleção, o prompt mostra o nome do nó, o nome da rede (Grid, Admin ou Client), o tipo de dado (IP/máscara, Gateway ou MTU) e o valor atual.
+
+Editar o endereço IP, o comprimento do prefixo, o gateway ou a MTU de uma interface configurada por DHCP mudará a interface para estática.  Quando você seleciona alterar uma interface configurada por DHCP, um aviso é exibido para informá-lo de que a interface mudará para estática.
+
+Interfaces configuradas como `fixed` não pode ser editado.
+
+--
+.. Para definir um novo valor, insira-o no formato mostrado para o valor atual.
+.. Para deixar o valor atual inalterado, pressione *Enter*.
+.. Se o tipo de dados for `IP/mask` , você pode excluir a rede de administração ou cliente do nó digitando *d* ou *0.0.0.0/0*.
+.. Depois de editar todos os nós que você deseja alterar, digite *q* para retornar ao menu principal.
++
+Suas alterações serão mantidas até serem limpas ou aplicadas.
+
+
+
+. Revise suas alterações selecionando uma das seguintes opções:
++
+** *5*: Mostra edições na saída que são isoladas para mostrar apenas o item alterado.  As alterações são destacadas em verde (adições) ou vermelho (exclusões), conforme mostrado no exemplo de saída:
++
+image::../media/change_ip_tool_edit_ip_mask_sample_output.png[captura de tela descrita pelo texto ao redor]
+
+** *6*: Mostra edições na saída que exibem a configuração completa.  As alterações são destacadas em verde (adições) ou vermelho (exclusões).
++
+
+NOTE: Certas interfaces de linha de comando podem mostrar adições e exclusões usando formatação tachada.  A exibição correta depende do seu cliente de terminal suportar as sequências de escape VT100 necessárias.
+
+
+
+. Selecione a opção *7* para validar todas as alterações.
++
+Essa validação garante que as regras para as redes Grid, Admin e Client, como não usar sub-redes sobrepostas, não sejam violadas.
+
++
+Neste exemplo, a validação retornou erros.
+
++
+image::../media/change_ip_tool_validate_sample_error_messages.gif[captura de tela descrita pelo texto ao redor]
+
++
+Neste exemplo, a validação foi aprovada.
+
++
+image::../media/change_ip_tool_validate_sample_passed_messages.gif[captura de tela descrita pelo texto ao redor]
+
+. Após a validação, escolha uma das seguintes opções:
++
+** *8*: Salvar alterações não aplicadas.
++
+Esta opção permite que você saia da ferramenta Alterar IP e inicie-a novamente mais tarde, sem perder nenhuma alteração não aplicada.
+
+** *10*: Aplique a nova configuração de rede.
+
+
+. Se você selecionou a opção *10*, escolha uma das seguintes opções:
++
+** *aplicar*: aplica as alterações imediatamente e reinicia automaticamente cada nó, se necessário.
++
+Se a nova configuração de rede não exigir nenhuma alteração física na rede, você pode selecionar *aplicar* para aplicar as alterações imediatamente.  Os nós serão reiniciados automaticamente, se necessário.  Os nós que precisam ser reiniciados serão exibidos.
+
+** *estágio*: Aplique as alterações na próxima vez que os nós forem reiniciados manualmente.
++
+Se precisar fazer alterações na configuração de rede física ou virtual para que a nova configuração de rede funcione, você deve usar a opção *stage*, desligar os nós afetados, fazer as alterações de rede física necessárias e reiniciar os nós afetados.  Se você selecionar *aplicar* sem primeiro fazer essas alterações de rede, as alterações geralmente falharão.
+
++
+
+NOTE: Se você usar a opção *stage*, deverá reiniciar o nó o mais rápido possível após o preparo para minimizar interrupções.
+
+** *cancelar*: Não faça nenhuma alteração na rede neste momento.
++
+Se você não sabia que as alterações propostas exigem que os nós sejam reiniciados, você pode adiar as alterações para minimizar o impacto ao usuário.  Selecionar *cancelar* retorna ao menu principal e preserva suas alterações para que você possa aplicá-las mais tarde.
+
++
+Quando você seleciona *aplicar* ou *preparar*, um novo arquivo de configuração de rede é gerado, o provisionamento é executado e os nós são atualizados com novas informações de trabalho.
+
++
+Durante o provisionamento, a saída exibe o status conforme as atualizações são aplicadas.
+
++
+[listing]
+----
+Generating new grid networking description file...
+
+Running provisioning...
+
+Updating grid network configuration on Name
+----
+
+
++
+Depois de aplicar ou preparar as alterações, um novo Pacote de Recuperação é gerado como resultado da alteração na configuração da grade.
+
+. Se você selecionou *estágio*, siga estas etapas após a conclusão do provisionamento:
++
+.. Faça as alterações de rede física ou virtual que forem necessárias.
++
+*Alterações na rede física*: Faça as alterações necessárias na rede física, desligando o nó com segurança, se necessário.
+
++
+*Linux*: Se você estiver adicionando o nó a uma rede de administração ou rede de cliente pela primeira vez, certifique-se de ter adicionado a interface conforme descrito emlink:linux-adding-interfaces-to-existing-node.html["Linux: Adicionar interfaces ao nó existente"] .
+
+.. Reinicie os nós afetados.
+
+
+. Selecione *0* para sair da ferramenta Alterar IP após a conclusão das alterações.
+. Baixe um novo pacote de recuperação do Grid Manager.
++
+.. Selecione *MANUTENÇÃO* > *Sistema* > *Pacote de recuperação*.
+.. Digite a senha de provisionamento.
+
+
+

@@ -1,0 +1,96 @@
+---
+permalink: ilm/creating-default-ilm-rule.html 
+sidebar: sidebar 
+keywords: create default ilm rule 
+summary: Antes de criar uma política de ILM, você deve criar uma regra padrão para colocar quaisquer objetos que não correspondam a outra regra na política.  A regra padrão não pode usar nenhum filtro.  Ele deve ser aplicado a todos os locatários, todos os buckets e todas as versões de objetos. 
+---
+= Criar uma regra ILM padrão
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Antes de criar uma política de ILM, você deve criar uma regra padrão para colocar quaisquer objetos que não correspondam a outra regra na política.  A regra padrão não pode usar nenhum filtro.  Ele deve ser aplicado a todos os locatários, todos os buckets e todas as versões de objetos.
+
+.Antes de começar
+* Você está conectado ao Grid Manager usando umlink:../admin/web-browser-requirements.html["navegador da web compatível"] .
+* Você temlink:../admin/admin-group-permissions.html["permissões de acesso específicas"] .
+
+
+.Sobre esta tarefa
+A regra padrão é a última regra a ser avaliada em uma política de ILM, portanto, ela não pode usar nenhum filtro.  As instruções de posicionamento da regra padrão são aplicadas a todos os objetos que não correspondem a outra regra na política.
+
+Nesta política de exemplo, a primeira regra se aplica somente a objetos pertencentes ao test-tenant-1.  A regra padrão, que é a última, se aplica a objetos pertencentes a todas as outras contas de locatários.
+
+image::../media/ilm_policies_page_default_rule.png[Regra padrão da página de políticas do ILM]
+
+Ao criar a regra padrão, tenha em mente estes requisitos:
+
+* A regra padrão será automaticamente colocada como a última regra quando você adicioná-la a uma política.
+* A regra padrão não pode usar nenhum filtro básico ou avançado.
+* A regra padrão deve ser aplicada a todas as versões do objeto.
+* A regra padrão deve criar cópias replicadas.
++
+
+NOTE: Não use uma regra que crie cópias codificadas para eliminação como regra padrão para uma política.  As regras de codificação de eliminação devem usar um filtro avançado para evitar que objetos menores sejam codificados por eliminação.
+
+* Em geral, a regra padrão deve manter objetos para sempre.
+* Se você estiver usando (ou planeja habilitar) a configuração global de Bloqueio de Objeto do S3, a regra padrão deverá ser compatível.
+
+
+.Passos
+. Selecione *ILM* > *Regras*.
+. Selecione *Criar*.
++
+A etapa 1 (Inserir detalhes) do assistente Criar regra ILM é exibida.
+
+. Insira um nome exclusivo para a regra no campo *Nome da regra*.
+. Opcionalmente, insira uma breve descrição para a regra no campo *Descrição*.
+. Deixe o campo *Contas de inquilinos* em branco.
++
+A regra padrão deve ser aplicada a todas as contas de locatários.
+
+. Deixe a seleção suspensa Nome do bucket como *aplica-se a todos os buckets*.
++
+A regra padrão deve ser aplicada a todos os buckets do S3.
+
+. Mantenha a resposta padrão, *Não*, para a pergunta "Aplicar esta regra somente a versões mais antigas de objetos (em buckets do S3 com controle de versão habilitado)?"
+. Não adicione filtros avançados.
++
+A regra padrão não pode especificar nenhum filtro.
+
+. Selecione *Avançar*.
++
+A etapa 2 (Definir posicionamentos) é exibida.
+
+. Para Tempo de referência, selecione qualquer opção.
++
+Se você mantivesse a resposta padrão, *Não*, para a pergunta "Aplicar esta regra somente a versões mais antigas do objeto?"  O tempo não atual não será incluído na lista suspensa.  A regra padrão deve aplicar todas as versões do objeto.
+
+. Especifique as instruções de posicionamento para a regra padrão.
++
+** A regra padrão deve manter objetos para sempre.  Um aviso aparece quando você ativa uma nova política se a regra padrão não retém objetos para sempre.  Você deve confirmar se esse é o comportamento esperado.
+** A regra padrão deve criar cópias replicadas.
++
+
+NOTE: Não use uma regra que crie cópias codificadas para eliminação como regra padrão para uma política.  As regras de codificação de eliminação devem incluir o filtro avançado *Tamanho do objeto (MB) maior que 200 KB* para evitar que objetos menores sejam codificados para eliminação.
+
+** Se você estiver usando (ou planeja habilitar) a configuração global de bloqueio de objeto do S3, a regra padrão deve ser compatível:
++
+*** Ele deve criar pelo menos duas cópias de objetos replicados ou uma cópia codificada para eliminação.
+*** Essas cópias devem existir nos Nós de Armazenamento durante toda a duração de cada linha nas instruções de posicionamento.
+*** Cópias de objetos não podem ser salvas em um pool de armazenamento em nuvem.
+*** Pelo menos uma linha das instruções de posicionamento deve começar no dia 0, usando o tempo de ingestão como tempo de referência.
+*** Pelo menos uma linha das instruções de posicionamento deve ser "para sempre".
+
+
+
+
+. Observe o diagrama de retenção para confirmar suas instruções de posicionamento.
+. Selecione *Continuar*.
++
+A etapa 3 (Selecionar comportamento de ingestão) é exibida.
+
+. Selecione a opção de ingestão a ser usada e selecione *Criar*.
+

@@ -1,0 +1,57 @@
+---
+permalink: maintain/checking-data-repair-jobs.html 
+sidebar: sidebar 
+keywords: storagegrid, data repair 
+summary: Antes de desativar um nó de grade, você deve confirmar se não há trabalhos de reparo de dados ativos. Se algum reparo falhar, você deve reiniciá-lo e esperar que ele seja concluído antes de executar o procedimento de descomissionamento. 
+---
+= Verifique os trabalhos de reparo de dados
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Antes de desativar um nó de grade, você deve confirmar se não há trabalhos de reparo de dados ativos. Se algum reparo falhar, você deve reiniciá-lo e esperar que ele seja concluído antes de executar o procedimento de descomissionamento.
+
+.Sobre esta tarefa
+Se precisar desativar um nó de armazenamento desconectado, você também deverá concluir estas etapas após a conclusão do procedimento de desativação para garantir que o trabalho de reparo de dados tenha sido concluído com sucesso.  Você deve garantir que todos os fragmentos codificados para eliminação que estavam no nó removido tenham sido restaurados com sucesso.
+
+Essas etapas se aplicam somente a sistemas que possuem objetos codificados para eliminação.
+
+.Passos
+. Efetue login no nó de administração principal:
++
+.. Digite o seguinte comando: `ssh admin@_grid_node_IP_`
+.. Digite a senha listada no `Passwords.txt` arquivo.
+.. Digite o seguinte comando para alternar para root: `su -`
+.. Digite a senha listada no `Passwords.txt` arquivo.
++
+Quando você está logado como root, o prompt muda de `$` para `#` .
+
+
+
+. Verifique se há reparos em execução: `repair-data show-ec-repair-status`
++
+** Se você nunca executou um trabalho de reparo de dados, a saída é `No job found` .  Você não precisa reiniciar nenhum trabalho de reparo.
+** Se o trabalho de reparo de dados foi executado anteriormente ou está em execução no momento, a saída listará informações para o reparo.  Cada reparo tem um ID de reparo exclusivo.
++
+image::../media/repair-data-status.png[Status dos dados de reparo]
+
+
+
++
+
+TIP: Opcionalmente, você pode usar o Grid Manager para monitorar processos de restauração em andamento e exibir um histórico de restauração. Ver link:../maintain/restoring-volume.html["Restaurar dados de objetos usando o Grid Manager"] .
+
+. Se o Estado para todos os reparos for `Completed` , você não precisa reiniciar nenhum trabalho de reparo.
+. Se o Estado para qualquer reparação for `Stopped` , você deve reiniciar esse reparo.
++
+.. Obtenha o ID do reparo com falha na saída.
+.. Execute o  `repair-data start-ec-node-repair` comando.
++
+Use o `--repair-id` opção para especificar o ID do reparo.  Por exemplo, se você quiser tentar novamente um reparo com ID de reparo 949292, execute este comando: `repair-data start-ec-node-repair --repair-id 949292`
+
+.. Continue a acompanhar o status dos reparos de dados da CE até que o Estado para todos os reparos seja `Completed` .
+
+
+

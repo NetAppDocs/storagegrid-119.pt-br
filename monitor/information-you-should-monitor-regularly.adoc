@@ -1,0 +1,83 @@
+---
+permalink: monitor/information-you-should-monitor-regularly.html 
+sidebar: sidebar 
+keywords: when to monitor, what to monitor 
+summary: Mesmo que o sistema StorageGRID possa continuar a operar quando ocorrerem erros ou partes da rede estiverem indisponíveis, você deve monitorar e resolver possíveis problemas antes que eles afetem a eficiência ou a disponibilidade da rede. 
+---
+= O que e quando monitorar
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Mesmo que o sistema StorageGRID possa continuar a operar quando ocorrerem erros ou partes da rede estiverem indisponíveis, você deve monitorar e resolver possíveis problemas antes que eles afetem a eficiência ou a disponibilidade da rede.
+
+.Antes de começar
+* Você está conectado ao Grid Manager usando umlink:../admin/web-browser-requirements.html["navegador da web compatível"] .
+* Você temlink:../admin/admin-group-permissions.html["permissões de acesso específicas"] .
+
+
+.Sobre tarefas de monitoramento
+Um sistema ocupado gera grandes quantidades de informações.  A lista a seguir fornece orientação sobre as informações mais importantes a serem monitoradas continuamente.
+
+[cols="1a,1a"]
+|===
+| O que monitorar | Freqüência 
+
+
+ a| 
+link:monitoring-system-health.html["Status de saúde do sistema"]
+ a| 
+Diário
+
+
+
+ a| 
+Taxa na quallink:monitoring-storage-capacity.html["Capacidade de objetos e metadados do nó de armazenamento"] está sendo consumido
+ a| 
+Semanalmente
+
+
+
+ a| 
+link:monitoring-information-lifecycle-management.html["Operações de gerenciamento do ciclo de vida da informação"]
+ a| 
+Semanalmente
+
+
+
+ a| 
+link:monitoring-network-connections-and-performance.html["Recursos de rede e sistema"]
+ a| 
+Semanalmente
+
+
+
+ a| 
+link:monitoring-tenant-activity.html["Atividade do inquilino"]
+ a| 
+Semanalmente
+
+
+
+ a| 
+link:monitoring-object-ingest-and-retrieval-rates.html["Operações do cliente S3"]
+ a| 
+Semanalmente
+
+
+
+ a| 
+link:monitoring-load-balancing-operations.html["Operações de balanceamento de carga"]
+ a| 
+Após a configuração inicial e após quaisquer alterações de configuração
+
+
+
+ a| 
+link:grid-federation-monitor-connections.html["Conexões de federação de rede"]
+ a| 
+Semanalmente
+
+|===

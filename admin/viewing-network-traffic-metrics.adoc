@@ -1,0 +1,69 @@
+---
+permalink: admin/viewing-network-traffic-metrics.html 
+sidebar: sidebar 
+keywords: network traffic, traffic classification policy, monitor traffic 
+summary: Você pode monitorar o tráfego de rede visualizando os gráficos disponíveis na página Políticas de classificação de tráfego. 
+---
+= Exibir métricas de tráfego de rede
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Você pode monitorar o tráfego de rede visualizando os gráficos disponíveis na página Políticas de classificação de tráfego.
+
+.Antes de começar
+* Você está conectado ao Grid Manager usando umlink:../admin/web-browser-requirements.html["navegador da web compatível"] .
+* Você tem olink:admin-group-permissions.html["Permissão de acesso root ou contas de locatário"] .
+
+
+.Sobre esta tarefa
+Para qualquer política de classificação de tráfego existente, você pode visualizar métricas do serviço do balanceador de carga para determinar se a política está limitando o tráfego na rede com sucesso.  Os dados nos gráficos podem ajudar você a determinar se precisa ajustar a política.
+
+Mesmo que não haja limites definidos para uma política de classificação de tráfego, as métricas são coletadas e os gráficos fornecem informações úteis para entender as tendências de tráfego.
+
+.Passos
+. Selecione *CONFIGURAÇÃO* > *Rede* > *Classificação de tráfego*.
++
+A página Políticas de classificação de tráfego é exibida e as políticas existentes são listadas na tabela.
+
+. Selecione o nome da política de classificação de tráfego para a qual você deseja visualizar as métricas.
+. Selecione a aba *Métricas*.
++
+Os gráficos da política de classificação de tráfego são exibidos.  Os gráficos exibem métricas somente para o tráfego que corresponde à política selecionada.
+
++
+Os gráficos a seguir estão incluídos na página.
+
++
+** Taxa de solicitação: este gráfico fornece a quantidade de largura de banda correspondente a esta política manipulada por todos os balanceadores de carga.  Os dados recebidos incluem cabeçalhos de solicitação para todas as solicitações e tamanho dos dados do corpo para respostas que têm dados do corpo.  Enviado inclui cabeçalhos de resposta para todas as solicitações e tamanho dos dados do corpo da resposta para solicitações que incluem dados do corpo na resposta.
++
+
+NOTE: Quando as solicitações são concluídas, este gráfico mostra apenas o uso da largura de banda.  Para solicitações de objetos lentos ou grandes, a largura de banda instantânea real pode ser diferente dos valores relatados neste gráfico.
+
+** Taxa de resposta de erro: Este gráfico fornece uma taxa aproximada na qual solicitações que correspondem a esta política estão retornando erros (código de status HTTP >= 400) aos clientes.
+** Duração média da solicitação (sem erro): Este gráfico fornece uma duração média de solicitações bem-sucedidas que correspondem a esta política.
+** Uso de largura de banda da política: este gráfico fornece a quantidade de largura de banda correspondente a esta política manipulada por todos os balanceadores de carga.  Os dados recebidos incluem cabeçalhos de solicitação para todas as solicitações e tamanho dos dados do corpo para respostas que têm dados do corpo.  Enviado inclui cabeçalhos de resposta para todas as solicitações e tamanho dos dados do corpo da resposta para solicitações que incluem dados do corpo na resposta.
+
+
+. Posicione o cursor sobre um gráfico de linhas para ver um pop-up de valores em uma parte específica do gráfico.
+. Selecione *Painel do Grafana* logo abaixo do título Métricas para visualizar todos os gráficos de uma política.  Além dos quatro gráficos da aba *Métricas*, você pode visualizar mais dois gráficos:
++
+** Taxa de solicitação de gravação por tamanho do objeto: a taxa de solicitações PUT/POST/DELETE que correspondem a esta política.  O posicionamento em uma célula individual mostra taxas por segundo.  As taxas mostradas na visualização instantânea são truncadas para contagens inteiras e podem reportar 0 quando há solicitações diferentes de zero no bucket.
+** Taxa de solicitação de leitura por tamanho do objeto: a taxa de solicitações GET/HEAD que correspondem a esta política.  O posicionamento em uma célula individual mostra taxas por segundo.  As taxas mostradas na visualização instantânea são truncadas para contagens inteiras e podem reportar 0 quando há solicitações diferentes de zero no bucket.
+
+
+. Alternativamente, acesse os gráficos no menu *SUPORTE*.
++
+.. Selecione *SUPORTE* > *Ferramentas* > *Métricas*.
+.. Selecione *Política de Classificação de Tráfego* na seção *Grafana*.
+.. Selecione a política no menu no canto superior esquerdo da página.
+.. Posicione o cursor sobre um gráfico para ver um pop-up que mostra a data e a hora da amostra, os tamanhos dos objetos que são agregados na contagem e o número de solicitações por segundo durante esse período.
++
+As políticas de classificação de tráfego são identificadas por seu ID.  Os IDs de política são listados na página Políticas de classificação de tráfego.
+
+
+
+. Analise os gráficos para determinar com que frequência a política está limitando o tráfego e se você precisa ajustá-la.
+

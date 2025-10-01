@@ -1,0 +1,145 @@
+---
+permalink: maintain/accessing-decommission-nodes-page.html 
+sidebar: sidebar 
+keywords: storagegrid, decommission nodes, decommissioning nodes, maintenance task 
+summary: Ao acessar a página Desativar nós no Grid Manager, você pode ver rapidamente quais nós podem ser desativados. 
+---
+= Acesse a página de nós de descomissionamento
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Ao acessar a página Desativar nós no Grid Manager, você pode ver rapidamente quais nós podem ser desativados.
+
+.Antes de começar
+* Você está conectado ao Grid Manager usando umlink:../admin/web-browser-requirements.html["navegador da web compatível"] .
+* Você tem olink:../admin/admin-group-permissions.html["Permissão de acesso de manutenção ou root"] .
+
+
+
+CAUTION: Tenha cuidado ao desativar nós de armazenamento em uma grade contendo nós somente de metadados baseados em software.  Se você desativar todos os nós configurados para armazenar _tanto_ objetos quanto metadados, a capacidade de armazenar objetos será removida da grade.  Verlink:../primer/what-storage-node-is.html#types-of-storage-nodes["Tipos de nós de armazenamento"] para obter mais informações sobre nós de armazenamento somente de metadados.
+
+.Passos
+. Selecione *MANUTENÇÃO* > *Tarefas* > *Desativação*.
+. Selecione *Desativar nós*.
++
+A página Descomissionar nós é exibida.  Nesta página, você pode:
+
++
+** Determine quais nós da rede podem ser desativados atualmente.
+** Veja a saúde de todos os nós da grade
+** Classifique a lista em ordem crescente ou decrescente por *Nome*, *Site*, *Tipo* ou *Possui ADC*.
+** Insira termos de pesquisa para encontrar rapidamente nós específicos.
++
+Neste exemplo, a coluna Possível descomissionamento indica que você pode descomissionar o nó de gateway e um dos quatro nós de armazenamento.
+
++
+image::../media/decommission_nodes_page_all_connected.png[Página de nós de descomissionamento]
+
+
+
+. Revise a coluna *Desativação possível* para cada nó que você deseja desativar.
++
+Se um nó de grade puder ser desativado, esta coluna incluirá uma marca de seleção verde e a coluna da esquerda incluirá uma caixa de seleção.  Se um nó não puder ser desativado, esta coluna descreve o problema.  Se houver mais de um motivo pelo qual um nó não pode ser desativado, o motivo mais crítico será mostrado.
+
++
+[cols="1a,1a,1a"]
+|===
+| Descomissionamento Possível razão | Descrição | Etapas para resolver 
+
+
+ a| 
+Não, o descomissionamento do _tipo de nó_ não é suportado.
+ a| 
+Não é possível desativar o nó de administração principal.
+ a| 
+Nenhum.
+
+
+
+ a| 
+Não, pelo menos um nó da rede está desconectado.
+
+*Observação:* esta mensagem é exibida somente para nós de grade conectados.
+ a| 
+Não é possível desativar um nó de rede conectado se algum nó de rede estiver desconectado.
+
+A coluna *Saúde* inclui um destes ícones para nós de grade que estão desconectados:
+
+** image:../media/icon_alarm_gray_administratively_down.png["ícone de ponto de interrogação cinza"](cinza): Administrativamente inativo
+** image:../media/icon_alarm_blue_unknown.png["ícone de ponto de interrogação azul"](azul): Desconhecido
+
+ a| 
+Você deve colocar todos os nós desconectados novamente online oulink:decommissioning-disconnected-grid-nodes.html["descomissionar todos os nós desconectados"] antes de poder remover um nó conectado.
+
+*Observação*: se sua rede contiver vários nós desconectados, o software exigirá que você os desative todos ao mesmo tempo, o que aumenta o potencial de resultados inesperados.
+
+
+
+ a| 
+Não, um ou mais nós necessários estão desconectados no momento e precisam ser recuperados.
+
+*Observação:* Esta mensagem é exibida somente para nós de rede desconectados.
+ a| 
+Não é possível desativar um nó de rede desconectado se um ou mais nós necessários também estiverem desconectados (por exemplo, um nó de armazenamento necessário para o quorum do ADC).
+ a| 
+.. Revise as mensagens de Possível Desativação para todos os nós desconectados.
+.. Determine quais nós não podem ser desativados porque são necessários.
++
+*** Se a integridade de um nó necessário estiver administrativamente inativa, coloque o nó novamente online.
+*** Se a integridade de um nó necessário for desconhecida, execute um procedimento de recuperação de nó para recuperá-lo.
+
+
+
+
+
+
+ a| 
+Não, membro do(s) grupo(s) HA: _nome do grupo_. Antes de desativar este nó, você deve removê-lo de todos os grupos de HA.
+ a| 
+Não é possível desativar um nó de administração ou um nó de gateway se uma interface de nó pertencer a um grupo de alta disponibilidade (HA).
+ a| 
+Edite o grupo HA para remover a interface do nó ou remover todo o grupo HA. Ver link:../admin/configure-high-availability-group.html["Configurar grupos de alta disponibilidade"] .
+
+
+
+ a| 
+Não, o site _x_ requer um mínimo de _n_ nós de armazenamento com serviços ADC.
+ a| 
+*Somente nós de armazenamento.* Não é possível desativar um nó de armazenamento se não houver nós suficientes no local para dar suporte aos requisitos de quórum do ADC.
+ a| 
+Executar uma expansão.  Adicione um novo nó de armazenamento ao site e especifique que ele deve ter um serviço ADC.  Veja informações sobre olink:understanding-adc-service-quorum.html["Quórum do ADC"] .
+
+
+
+ a| 
+Não, um ou mais perfis de codificação de eliminação precisam de pelo menos _n_ nós de armazenamento.  Se o perfil não for usado em uma regra ILM, você poderá desativá-lo.
+ a| 
+*Somente nós de armazenamento.* Não é possível desativar um nó de armazenamento a menos que haja nós suficientes para os perfis de codificação de eliminação existentes.
+
+Por exemplo, se existir um perfil de codificação de eliminação para codificação de eliminação 4+2, pelo menos 6 nós de armazenamento devem permanecer.
+ a| 
+Para cada perfil de codificação de eliminação afetado, execute uma das seguintes etapas, com base em como o perfil está sendo usado:
+
+** *Usado em políticas ILM ativas*: Executar uma expansão.  Adicione novos nós de armazenamento suficientes para permitir que a codificação de eliminação continue. Veja as instruções paralink:../expand/index.html["expandindo sua grade"] .
+** *Usado em uma regra de ILM, mas não em políticas de ILM ativas*: edite ou exclua a regra e desative o perfil de codificação de eliminação.
+** *Não usado em nenhuma regra do ILM*: Desative o perfil de codificação de eliminação.
+
+
+*Observação:* Uma mensagem de erro será exibida se você tentar desativar um perfil de codificação de eliminação e os dados do objeto ainda estiverem associados ao perfil.  Pode ser necessário esperar várias semanas antes de tentar o processo de desativação novamente.
+
+Aprenda sobrelink:../ilm/manage-erasure-coding-profiles.html["desativando um perfil de codificação de eliminação"] .
+
+
+
+ a| 
+Não, você não pode desativar um nó de arquivo a menos que o nó esteja desconectado.
+ a| 
+Se um nó de arquivo ainda estiver conectado, você não poderá removê-lo.
+ a| 
+*Observação*: O suporte para nós de arquivo foi removido.  Se você precisar desativar um nó de arquivo, consulte https://docs.netapp.com/us-en/storagegrid-118/maintain/grid-node-decommissioning.html["Descomissionamento de nós de grade (site de documentação do StorageGRID 11.8)"^]
+
+|===
+

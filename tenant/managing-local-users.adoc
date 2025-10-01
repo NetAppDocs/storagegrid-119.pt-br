@@ -1,0 +1,225 @@
+---
+permalink: tenant/managing-local-users.html 
+sidebar: sidebar 
+keywords: how to create local tenant users, manage users 
+summary: 'Você pode criar usuários locais e atribuí-los a grupos locais para determinar quais recursos esses usuários podem acessar. O Tenant Manager inclui um usuário local predefinido, chamado "root".  Embora você possa adicionar e remover usuários locais, não é possível remover o usuário root.' 
+---
+= Gerenciar usuários locais
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Você pode criar usuários locais e atribuí-los a grupos locais para determinar quais recursos esses usuários podem acessar. O Tenant Manager inclui um usuário local predefinido, chamado "root". Embora você possa adicionar e remover usuários locais, não é possível remover o usuário root.
+
+
+NOTE: Se o logon único (SSO) estiver habilitado para seu sistema StorageGRID , os usuários locais não poderão fazer logon no Tenant Manager ou na Tenant Management API, embora possam usar aplicativos cliente para acessar os recursos do locatário, com base nas permissões do grupo.
+
+.Antes de começar
+* Você está conectado ao Gerenciador de Inquilinos usando umlink:../admin/web-browser-requirements.html["navegador da web compatível"] .
+* Você pertence a um grupo de usuários que tem olink:tenant-management-permissions.html["Permissão de acesso root"] .
+* Se sua conta de locatário tiver a permissão *Usar conexão de federação de grade*, você revisou o fluxo de trabalho e as considerações paralink:grid-federation-account-clone.html["clonagem de grupos de inquilinos e usuários"] , e você está conectado à grade de origem do locatário.
+
+
+
+
+== [[create-user]]Criar um usuário local
+
+Você pode criar um usuário local e atribuí-lo a um ou mais grupos locais para controlar suas permissões de acesso.
+
+Usuários do S3 que não pertencem a nenhum grupo não têm permissões de gerenciamento ou políticas de grupo do S3 aplicadas a eles.  Esses usuários podem ter acesso ao bucket do S3 concedido por meio de uma política de bucket.
+
+Usuários do Swift que não pertencem a nenhum grupo não têm permissões de gerenciamento ou acesso ao contêiner do Swift.
+
+
+
+=== Acesse o assistente Criar usuário
+
+.Passos
+. Selecione *GERENCIAMENTO DE ACESSO* > *Usuários*.
++
+Se sua conta de locatário tiver a permissão *Usar conexão de federação de grade*, um banner azul indicará que esta é a grade de origem do locatário.  Todos os usuários locais que você criar nesta grade serão clonados para a outra grade na conexão.
+
++
+image::../media/grid-federation-tenant-user-banner.png[imagem de banner azul na página do usuário se esta for a grade de origem do locatário]
+
+. Selecione *Criar usuário*.
+
+
+
+
+=== Insira as credenciais
+
+.Passos
+. Para a etapa *Inserir credenciais do usuário*, preencha os seguintes campos.
++
+[cols="1a,3a"]
+|===
+| Campo | Descrição 
+
+
+ a| 
+Nome completo
+ a| 
+O nome completo deste usuário, por exemplo, o nome e o sobrenome de uma pessoa ou o nome de um aplicativo.
+
+
+
+ a| 
+Nome de usuário
+ a| 
+O nome que este usuário usará para fazer login. Os nomes de usuário devem ser exclusivos e não podem ser alterados.
+
+*Observação*: se sua conta de locatário tiver a permissão *Usar conexão de federação de grade*, ocorrerá um erro de clonagem se o mesmo *Nome de usuário* já existir para o locatário na grade de destino.
+
+
+
+ a| 
+Senha e Confirmar senha
+ a| 
+A senha que o usuário usará inicialmente ao fazer login.
+
+
+
+ a| 
+Negar acesso
+ a| 
+Selecione *Sim* para impedir que este usuário faça login na conta do locatário, mesmo que ele ainda pertença a um ou mais grupos.
+
+Por exemplo, selecione *Sim* para suspender temporariamente a capacidade de um usuário fazer login.
+
+|===
+. Selecione *Continuar*.
+
+
+
+
+=== Atribuir a grupos
+
+.Passos
+. Atribua o usuário a um ou mais grupos locais para determinar quais tarefas ele pode executar.
++
+Atribuir um usuário a grupos é opcional.  Se preferir, você pode selecionar usuários ao criar ou editar grupos.
+
++
+Usuários que não pertencem a nenhum grupo não terão permissões de gerenciamento.  As permissões são cumulativas.  Os usuários terão todas as permissões para todos os grupos aos quais pertencem. Ver link:tenant-management-permissions.html["Permissões de gerenciamento de inquilinos"] .
+
+. Selecione *Criar usuário*.
++
+Se sua conta de locatário tiver a permissão *Usar conexão de federação de grade* e você estiver na grade de origem do locatário, o novo usuário local será clonado na grade de destino do locatário.  *Sucesso* aparece como *Status de clonagem* na seção Visão geral da página de detalhes do usuário.
+
+. Selecione *Concluir* para retornar à página Usuários.
+
+
+
+
+== Ver ou editar usuário local
+
+.Passos
+. Selecione *GERENCIAMENTO DE ACESSO* > *Usuários*.
+. Revise as informações fornecidas na página Usuários, que lista informações básicas para todos os usuários locais e federados desta conta de locatário.
++
+Se a conta do locatário tiver a permissão *Usar conexão de federação de grade* e você estiver visualizando o usuário na grade de origem do locatário:
+
++
+** Uma mensagem de banner indica que se você editar ou remover um usuário, suas alterações não serão sincronizadas com a outra grade.
+** Conforme necessário, uma mensagem de banner indica se os usuários não foram clonados para o locatário na grade de destino. Você pode <<clone-users,tente novamente um clone de usuário que falhou>> .
+
+
+. Se você quiser alterar o nome completo do usuário:
++
+.. Marque a caixa de seleção para o usuário.
+.. Selecione *Ações* > *Editar nome completo*.
+.. Digite o novo nome.
+.. Selecione *Salvar alterações.*
+
+
+. Se quiser ver mais detalhes ou fazer edições adicionais, faça um dos seguintes:
++
+** Selecione o nome de usuário.
+** Marque a caixa de seleção do usuário e selecione *Ações* > *Exibir detalhes do usuário*.
+
+
+. Revise a seção Visão geral, que mostra as seguintes informações para cada usuário:
++
+** Nome completo
+** Nome de usuário
+** Tipo de usuário
+** Acesso negado
+** Modo de acesso
+** Associação ao grupo
+** Campos adicionais se a conta do locatário tiver a permissão *Usar conexão de federação de grade* e você estiver visualizando o usuário na grade de origem do locatário:
++
+*** Status de clonagem, *Sucesso* ou *Falha*
+*** Um banner azul indicando que se você editar este usuário, suas alterações não serão sincronizadas com a outra grade.
+
+
+
+
+. Edite as configurações do usuário conforme necessário. Ver<<create-user,Criar usuário local>> para obter detalhes sobre o que inserir.
++
+.. Na seção Visão geral, altere o nome completo selecionando o nome ou o ícone de ediçãoimage:../media/icon_edit_tm.png["Ícone de edição"] .
++
+Você não pode alterar o nome de usuário.
+
+.. Na aba *Senha*, altere a senha do usuário e selecione *Salvar alterações*.
+.. Na aba *Acesso*, selecione *Não* para permitir que o usuário faça login ou selecione *Sim* para impedir que o usuário faça login. Em seguida, selecione *Salvar alterações*.
+.. Na aba *Chaves de acesso*, selecione *Criar chave* e siga as instruções paralink:creating-another-users-s3-access-keys.html["criando chaves de acesso S3 de outro usuário"] .
+.. Na guia *Grupos*, selecione *Editar grupos* para adicionar o usuário aos grupos ou removê-lo dos grupos.  Em seguida, selecione *Salvar alterações*.
+
+
+. Confirme se você selecionou *Salvar alterações* para cada seção alterada.
+
+
+
+
+== Usuário local duplicado
+
+Você pode duplicar um usuário local para criar um novo usuário mais rapidamente.
+
+
+NOTE: Se sua conta de locatário tiver a permissão *Usar conexão de federação de grade* e você duplicar um usuário da grade de origem do locatário, o usuário duplicado será clonado para a grade de destino do locatário.
+
+.Passos
+. Selecione *GERENCIAMENTO DE ACESSO* > *Usuários*.
+. Marque a caixa de seleção do usuário que você deseja duplicar.
+. Selecione *Ações* > *Duplicar usuário*.
+. Ver<<create-user,Criar usuário local>> para obter detalhes sobre o que inserir.
+. Selecione *Criar usuário*.
+
+
+
+
+== [[clone-users]]Repetir clonagem do usuário
+
+Para tentar novamente um clone que falhou:
+
+. Selecione cada usuário que indica _(Falha na clonagem)_ abaixo do nome do usuário.
+. Selecione *Ações* > *Clonar usuários*.
+. Veja o status da operação de clonagem na página de detalhes de cada usuário que você está clonando.
+
+
+Para obter informações adicionais, consultelink:grid-federation-account-clone.html["Clonar grupos de locatários e usuários"] .
+
+
+
+== Excluir um ou mais usuários locais
+
+Você pode excluir permanentemente um ou mais usuários locais que não precisam mais acessar a conta de locatário do StorageGRID .
+
+
+NOTE: Se sua conta de locatário tiver a permissão *Usar conexão de federação de grade* e você excluir um usuário local, o StorageGRID não excluirá o usuário correspondente na outra grade.  Se você precisar manter essas informações sincronizadas, deverá excluir o mesmo usuário de ambas as grades.
+
+
+NOTE: Você deve usar a fonte de identidade federada para excluir usuários federados.
+
+.Passos
+. Selecione *GERENCIAMENTO DE ACESSO* > *Usuários*.
+. Marque a caixa de seleção para cada usuário que você deseja excluir.
+. Selecione *Ações* > *Excluir usuário* ou *Ações* > *Excluir usuários*.
++
+Uma caixa de diálogo de confirmação é exibida.
+
+. Selecione *Excluir usuário* ou *Excluir usuários*.
+

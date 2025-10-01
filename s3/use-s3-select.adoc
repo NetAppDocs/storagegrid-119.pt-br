@@ -1,0 +1,152 @@
+---
+permalink: s3/use-s3-select.html 
+sidebar: sidebar 
+keywords: use S3 Select, S3 Select 
+summary: O StorageGRID oferece suporte às seguintes cláusulas Select do Amazon S3, tipos de dados, operadores e palavras-chave reservadas para o comando SelectObjectContent. 
+---
+= Use o S3 Select
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+O StorageGRID oferece suporte às seguintes cláusulas, tipos de dados e operadores do Amazon S3 Select para olink:select-object-content.html["Comando SelectObjectContent"] .
+
+
+NOTE: Itens não listados não são suportados.
+
+Para sintaxe, vejalink:select-object-content.html["SelecionarObjetoConteúdo"] .  Para obter mais informações sobre o S3 Select, consulte o https://docs.aws.amazon.com/AmazonS3/latest/userguide/selecting-content-from-objects.html["Documentação da AWS para S3 Select"^] .
+
+Somente contas de locatários que tenham o S3 Select habilitado podem emitir consultas SelectObjectContent. Veja olink:../admin/manage-s3-select-for-tenant-accounts.html["considerações e requisitos para usar o S3 Select"] .
+
+
+
+== Cláusulas
+
+* Lista SELECIONAR
+* cláusula FROM
+* Cláusula WHERE
+* Cláusula LIMIT
+
+
+
+
+== Tipos de dados
+
+* bool
+* inteiro
+* corda
+* flutuador
+* decimal, numérico
+* carimbo de data/hora
+
+
+
+
+== Operadores
+
+
+
+=== Operadores lógicos
+
+* E
+* NÃO
+* OU
+
+
+
+
+=== Operadores de comparação
+
+* <
+* >
+* <=
+* >=
+* =
+* =
+* <>
+* !=
+* ENTRE
+* EM
+
+
+
+
+=== Operadores de correspondência de padrões
+
+* COMO
+* _
+* %
+
+
+
+
+=== Operadores unitários
+
+* É NULO
+* NÃO É NULO
+
+
+
+
+=== Operadores matemáticos
+
+* +
+* -
+* *
+* /
+* %
+
+
+O StorageGRID segue a precedência do operador Amazon S3 Select.
+
+
+
+== Funções agregadas
+
+* MÉDIA()
+* CONTAR(*)
+* MÁXIMO()
+* MÍNIMO()
+* SOMA()
+
+
+
+
+== Funções condicionais
+
+* CASO
+* COALESCE
+* NULLIF
+
+
+
+
+== Funções de conversão
+
+* CAST (para tipo de dados suportado)
+
+
+
+
+== Funções de data
+
+* DATA_ADICIONADA
+* DATA_DIFF
+* EXTRAIR
+* PARA_STRING
+* PARA_CARIMBO_DE_HORA
+* UTCNOW
+
+
+
+
+== Funções de string
+
+* COMPRIMENTO_CARACTERE, COMPRIMENTO_CARACTERE
+* MAIS BAIXO
+* SUBSTRING
+* APARAR
+* SUPERIOR
+

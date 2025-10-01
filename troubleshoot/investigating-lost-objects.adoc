@@ -1,0 +1,139 @@
+---
+permalink: troubleshoot/investigating-lost-objects.html 
+sidebar: sidebar 
+keywords: lost objects, investigating, objects 
+summary: Quando o alerta *Objetos perdidos* for acionado, você deve investigar imediatamente. Colete informações sobre os objetos afetados e entre em contato com o suporte técnico. 
+---
+= Investigar objetos perdidos
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Quando o alerta *Objetos perdidos* for acionado, você deve investigar imediatamente. Colete informações sobre os objetos afetados e entre em contato com o suporte técnico.
+
+.Antes de começar
+* Você deve estar conectado ao Grid Manager usando umlink:../admin/web-browser-requirements.html["navegador da web compatível"] .
+* Você temlink:../admin/admin-group-permissions.html["permissões de acesso específicas"] .
+* Você deve ter o `Passwords.txt` arquivo.
+
+
+.Sobre esta tarefa
+O alerta *Objetos perdidos* indica que o StorageGRID acredita que não há cópias de um objeto na grade. Os dados podem ter sido perdidos permanentemente.
+
+Investigue imediatamente alertas de objetos perdidos.  Talvez seja necessário tomar medidas para evitar mais perdas de dados.  Em alguns casos, você pode restaurar um objeto perdido se agir rapidamente.
+
+.Passos
+. Selecione *NODES*.
+. Selecione *_Nó de Armazenamento_* > *Objetos*.
+. Revise o número de objetos perdidos mostrado na tabela Contagem de objetos.
++
+Este número indica o número total de objetos que este nó de grade detecta como ausentes em todo o sistema StorageGRID .  O valor é a soma dos contadores de objetos perdidos do componente de armazenamento de dados nos serviços LDR e DDS.
+
++
+image::../media/nodes_storage_nodes_objects_page_lost_object.png[Nós Nós de Armazenamento Página de Objetos Objeto Perdido]
+
+. De um nó de administração,link:../audit/accessing-audit-log-file.html["acessar o log de auditoria"] para determinar o identificador exclusivo (UUID) do objeto que acionou o alerta *Objetos perdidos*:
++
+.. Efetue login no nó da grade:
++
+... Digite o seguinte comando: `ssh admin@grid_node_IP`
+... Digite a senha listada no `Passwords.txt` arquivo.
+... Digite o seguinte comando para alternar para root: `su -`
+... Digite a senha listada no `Passwords.txt` arquivo.  Quando você está logado como root, o prompt muda de `$` para `#` .
+
+
+.. Mude para o diretório onde os logs de auditoria estão localizados.
++
+--
+O diretório do log de auditoria e os nós aplicáveis dependem das configurações de destino da auditoria.
+
+[cols="1a,2a"]
+|===
+| Opção | Destino 
+
+
+ a| 
+Nós locais (padrão)
+ a| 
+`/var/local/log/localaudit.log`
+
+
+
+ a| 
+Nós de administração/nós locais
+ a| 
+*** Nós de administração (primários e não primários): `/var/local/audit/export/audit.log`
+*** Todos os nós: O `/var/local/log/localaudit.log` o arquivo normalmente está vazio ou ausente neste modo.
+
+
+
+
+ a| 
+Servidor syslog externo
+ a| 
+`/var/local/log/localaudit.log`
+
+|===
+Dependendo das configurações de destino da auditoria, insira: `cd /var/local/log` ou `/var/local/audit/export/`
+
+Para saber mais, consultelink:../monitor/configure-audit-messages.html#select-audit-information-destinations["Selecione destinos de informações de auditoria"] .
+
+--
+.. Use grep para extrair as mensagens de auditoria de Objeto Perdido (OLST).  Digitar: `grep OLST audit_file_name`
+.. Observe o valor do UUID incluído na mensagem.
++
+[listing]
+----
+Admin: # grep OLST audit.log
+2020-02-12T19:18:54.780426 [AUDT:[CBID(UI64):0x38186FE53E3C49A5][UUID(CSTR):"926026C4-00A4-449B-AC72-BCCA72DD1311"]
+[PATH(CSTR):"source/cats"][NOID(UI32):12288733][VOLI(UI64):3222345986][RSLT(FC32):NONE][AVER(UI32):10]
+[ATIM(UI64):1581535134780426][ATYP(FC32):OLST][ANID(UI32):12448208][AMID(FC32):ILMX][ATID(UI64):7729403978647354233]]
+----
+
+
+. Procure os metadados do objeto perdido usando o UUID:
++
+.. Selecione *ILM* > *Consulta de metadados do objeto*.
+.. Digite o UUID e selecione *Procurar*.
+.. Revise os locais nos metadados e tome as medidas apropriadas:
++
+[cols="2a,4a"]
+|===
+| Metadados | Conclusão 
+
+
+ a| 
+Objeto <object_identifier> não encontrado
+ a| 
+Se o objeto não for encontrado, a mensagem "ERROR":"" será retornada.
+
+Se o objeto não for encontrado, você pode zerar a contagem de *Objetos perdidos* para limpar o alerta. A ausência de um objeto indica que o objeto foi excluído intencionalmente.
+
+
+
+ a| 
+Locais > 0
+ a| 
+Se houver locais listados na saída, o alerta *Objetos perdidos* pode ser um falso positivo.
+
+Confirme se os objetos existem.  Use o ID do nó e o caminho do arquivo listados na saída para confirmar se o arquivo de objeto está no local listado.
+
+(O procedimento paralink:searching-for-and-restoring-potentially-lost-objects.html["procurando por objetos potencialmente perdidos"] explica como usar o ID do nó para encontrar o nó de armazenamento correto.)
+
+Se os objetos existirem, você pode zerar a contagem de *Objetos perdidos* para limpar o alerta.
+
+
+
+ a| 
+Locais = 0
+ a| 
+Se não houver locais listados na saída, o objeto está potencialmente ausente. Você pode tentarlink:searching-for-and-restoring-potentially-lost-objects.html["procurar e restaurar o objeto"] você mesmo ou entre em contato com o suporte técnico.
+
+O suporte técnico pode solicitar que você determine se há um procedimento de recuperação de armazenamento em andamento.  Veja as informações sobrelink:../maintain/restoring-volume.html["restaurando dados de objetos usando o Grid Manager"] elink:../maintain/restoring-object-data-to-storage-volume.html["restaurando dados de objetos para um volume de armazenamento"] .
+
+|===
+
+
+

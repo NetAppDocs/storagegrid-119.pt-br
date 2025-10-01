@@ -1,0 +1,76 @@
+---
+permalink: monitor/monitoring-information-lifecycle-management.html 
+sidebar: sidebar 
+keywords: lifecycle management, lifecycle, monitoring, ILM, information lifecycle management 
+summary: 'O sistema de gerenciamento do ciclo de vida da informação (ILM) fornece gerenciamento de dados para todos os objetos armazenados na grade.  Você deve monitorar as operações do ILM para entender se a rede pode lidar com a carga atual ou se mais recursos são necessários.' 
+---
+= Monitorar o gerenciamento do ciclo de vida das informações
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+O sistema de gerenciamento do ciclo de vida da informação (ILM) fornece gerenciamento de dados para todos os objetos armazenados na grade.  Você deve monitorar as operações do ILM para entender se a rede pode lidar com a carga atual ou se mais recursos são necessários.
+
+.Sobre esta tarefa
+O sistema StorageGRID gerencia objetos aplicando as políticas de ILM ativas.  As políticas do ILM e as regras associadas do ILM determinam quantas cópias são feitas, o tipo de cópias que são criadas, onde as cópias são colocadas e por quanto tempo cada cópia é retida.
+
+A ingestão de objetos e outras atividades relacionadas a objetos podem exceder a taxa na qual o StorageGRID pode avaliar o ILM, fazendo com que o sistema enfileire objetos cujas instruções de posicionamento do ILM não podem ser atendidas quase em tempo real.  Você deve monitorar se o StorageGRID está acompanhando as ações do cliente.
+
+
+
+== Use a guia do painel do Grid Manager
+
+.Passos
+Use a guia ILM no painel do Grid Manager para monitorar as operações do ILM:
+
+. Sign in no Grid Manager.
+. No painel, selecione a guia ILM e anote os valores no cartão Fila ILM (Objetos) e no cartão Taxa de avaliação ILM.
++
+Picos temporários no cartão da fila ILM (Objetos) no painel são esperados.  Mas se a fila continuar a aumentar e nunca diminuir, a grade precisará de mais recursos para operar com eficiência: mais nós de armazenamento ou, se a política de ILM colocar objetos em locais remotos, mais largura de banda de rede.
+
+
+
+
+
+== Use a página NODES
+
+.Passos
+Além disso, investigue as filas do ILM usando a página *NODES*:
+
+
+NOTE: Os gráficos na página *NODES* serão substituídos pelos cartões do painel correspondentes em uma versão futura do StorageGRID .
+
+. Selecione *NODES*.
+. Selecione *_nome da grade_* > *ILM*.
+. Posicione o cursor sobre o gráfico de fila do ILM para ver o valor dos seguintes atributos em um determinado momento:
++
+** *Objetos na fila (de operações do cliente)*: O número total de objetos aguardando avaliação do ILM devido a operações do cliente (por exemplo, ingestão).
+** *Objetos na fila (de todas as operações)*: O número total de objetos aguardando avaliação do ILM.
+** *Taxa de varredura (objetos/seg)*: A taxa na qual os objetos na grade são varridos e colocados na fila para ILM.
+** *Taxa de avaliação (objetos/seg)*: A taxa atual na qual os objetos estão sendo avaliados em relação à política de ILM na grade.
+
+
+. Na seção Fila do ILM, observe os seguintes atributos.
++
+
+NOTE: A seção da fila ILM está incluída somente para a grade.  Essas informações não são mostradas na guia ILM de um site ou nó de armazenamento.
+
++
+** *Período de verificação - estimado*: Tempo estimado para concluir uma verificação ILM completa de todos os objetos.
++
+
+NOTE: Uma verificação completa não garante que o ILM foi aplicado a todos os objetos.
+
+** *Reparos tentados*: O número total de operações de reparo de objetos para dados replicados que foram tentadas. Essa contagem aumenta cada vez que um nó de armazenamento tenta reparar um objeto de alto risco. Reparos de ILM de alto risco são priorizados se a rede ficar ocupada.
++
+
+NOTE: O mesmo reparo de objeto pode ser incrementado novamente se a replicação falhar após o reparo.
+
+
+
++
+Esses atributos podem ser úteis ao monitorar o progresso da recuperação do volume do nó de armazenamento. Se o número de reparos tentados parou de aumentar e uma verificação completa foi concluída, o reparo provavelmente foi concluído.
+
+

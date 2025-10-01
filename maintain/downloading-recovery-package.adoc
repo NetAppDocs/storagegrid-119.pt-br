@@ -1,0 +1,36 @@
+---
+permalink: maintain/downloading-recovery-package.html 
+sidebar: sidebar 
+keywords: storagegrid, recovery package 
+summary: O arquivo Recovery Package permite restaurar o sistema StorageGRID caso ocorra uma falha. 
+---
+= Baixar pacote de recuperação
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+O arquivo Recovery Package permite restaurar o sistema StorageGRID caso ocorra uma falha.
+
+.Antes de começar
+* No nó de administração principal, você é conectado ao Grid Manager usando umlink:../admin/web-browser-requirements.html["navegador da web compatível"] .
+* Você tem a senha de provisionamento.
+* Você temlink:../admin/admin-group-permissions.html["permissões de acesso específicas"] .
+
+
+Baixe o arquivo do pacote de recuperação atual antes de fazer alterações na topologia da grade no sistema StorageGRID ou antes de atualizar o software.  Em seguida, baixe uma nova cópia do Pacote de Recuperação após fazer alterações na topologia da rede ou após atualizar o software.
+
+.Passos
+. Selecione *MANUTENÇÃO* > *Sistema* > *Pacote de recuperação*.
+. Digite a senha de provisionamento e selecione *Iniciar download*.
++
+O download começa imediatamente.
+
+. Quando o download for concluído, abra o `.zip` arquivo e confirme que você pode acessar o conteúdo, incluindo o `Passwords.txt` arquivo.
+. Copie o arquivo do pacote de recuperação baixado(`.zip` ) para dois locais seguros, protegidos e separados.
++
+
+CAUTION: O arquivo do pacote de recuperação deve ser protegido porque contém chaves de criptografia e senhas que podem ser usadas para obter dados do sistema StorageGRID .
+
+

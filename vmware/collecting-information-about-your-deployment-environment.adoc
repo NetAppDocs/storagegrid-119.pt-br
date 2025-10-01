@@ -1,0 +1,106 @@
+---
+permalink: vmware/collecting-information-about-your-deployment-environment.html 
+sidebar: sidebar 
+keywords: how to collect information about your deployment environment 
+summary: Antes de implantar nós de grade, você deve coletar informações sobre sua configuração de rede e ambiente VMware. 
+---
+= Colete informações sobre seu ambiente de implantação
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Antes de implantar nós de grade, você deve coletar informações sobre sua configuração de rede e ambiente VMware.
+
+
+NOTE: É mais eficiente executar uma única instalação de todos os nós, em vez de instalar alguns nós agora e outros depois.
+
+
+
+== Informações sobre VMware
+
+Você deve acessar o ambiente de implantação e coletar informações sobre o ambiente VMware; as redes que foram criadas para as redes Grid, Admin e Client; e os tipos de volume de armazenamento que você planeja usar para os nós de armazenamento.
+
+Você deve coletar informações sobre seu ambiente VMware, incluindo o seguinte:
+
+* O nome de usuário e a senha de uma conta do VMware vSphere que tenha permissões apropriadas para concluir a implantação.
+* Informações de configuração de host, armazenamento de dados e rede para cada máquina virtual do nó StorageGRID .
+
+
+
+NOTE: O VMware live vMotion faz com que o tempo do relógio da máquina virtual salte e não é compatível com nós de grade de nenhum tipo.  Embora raros, horários incorretos podem resultar em perda de dados ou atualizações de configuração.
+
+
+
+== Informações da rede de grade
+
+Você deve coletar informações sobre a rede VMware criada para a StorageGRID Grid Network (obrigatório), incluindo:
+
+* O nome da rede.
+* O método usado para atribuir endereços IP, estáticos ou DHCP.
++
+** Se você estiver usando endereços IP estáticos, os detalhes de rede necessários para cada nó da grade (endereço IP, gateway, máscara de rede).
+** Se você estiver usando DHCP, o endereço IP do nó de administração primário na rede de grade. Ver link:how-grid-nodes-discover-primary-admin-node.html["Como os nós da grade descobrem o nó administrativo principal"] para maiores informações.
+
+
+
+
+
+
+== Informações da rede de administração
+
+Para nós que serão conectados à Rede de Administração StorageGRID opcional, você deve coletar informações sobre a rede VMware criada para esta rede, incluindo:
+
+* O nome da rede.
+* O método usado para atribuir endereços IP, estáticos ou DHCP.
++
+** Se você estiver usando endereços IP estáticos, os detalhes de rede necessários para cada nó da grade (endereço IP, gateway, máscara de rede).
+** Se você estiver usando DHCP, o endereço IP do nó de administração primário na rede de grade. Ver link:how-grid-nodes-discover-primary-admin-node.html["Como os nós da grade descobrem o nó administrativo principal"] para maiores informações.
+
+
+* A lista de sub-redes externas (ESL) para a rede de administração.
+
+
+
+
+== Informações da rede do cliente
+
+Para nós que serão conectados à Rede de Cliente StorageGRID opcional, você deve coletar informações sobre a rede VMware criada para esta rede, incluindo:
+
+* O nome da rede.
+* O método usado para atribuir endereços IP, estáticos ou DHCP.
+* Se você estiver usando endereços IP estáticos, os detalhes de rede necessários para cada nó da grade (endereço IP, gateway, máscara de rede).
+
+
+
+
+== Informações sobre interfaces adicionais
+
+Opcionalmente, você pode adicionar interfaces de tronco ou de acesso à VM no vCenter depois de instalar o nó.  Por exemplo, você pode querer adicionar uma interface de tronco a um nó de administração ou gateway, para poder usar interfaces de VLAN para segregar o tráfego pertencente a diferentes aplicativos ou locatários.  Ou você pode querer adicionar uma interface de acesso para usar em um grupo de alta disponibilidade (HA).
+
+As interfaces adicionadas são exibidas na página de interfaces de VLAN e na página de grupos de HA no Grid Manager.
+
+* Se você adicionar uma interface de tronco, configure uma ou mais interfaces VLAN para cada nova interface pai. Ver link:../admin/configure-vlan-interfaces.html["configurar interfaces VLAN"] .
+* Se você adicionar uma interface de acesso, deverá adicioná-la diretamente aos grupos de HA. Ver link:../admin/configure-high-availability-group.html["configurar grupos de alta disponibilidade"] .
+
+
+
+
+== Volumes de armazenamento para nós de armazenamento virtuais
+
+Você deve coletar as seguintes informações para nós de armazenamento baseados em máquina virtual:
+
+* O número e o tamanho dos volumes de armazenamento (LUNs de armazenamento) que você planeja adicionar. Consultelink:storage-and-performance-requirements.html["Requisitos de armazenamento e desempenho"] .
+
+
+
+
+== Informações de configuração da grade
+
+Você deve coletar informações para configurar sua grade:
+
+* Licença de rede
+* Endereços IP do servidor Network Time Protocol (NTP)
+* Endereços IP do servidor DNS
+

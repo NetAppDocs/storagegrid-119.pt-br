@@ -1,0 +1,236 @@
+---
+permalink: admin/what-is-autosupport.html 
+sidebar: sidebar 
+keywords: autosupport, technical support, storagegrid health, system status, Active IQ 
+summary: O recurso AutoSupport permite que o StorageGRID envie pacotes de integridade e status ao suporte técnico da NetApp . 
+---
+= O que é AutoSupport?
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+O recurso AutoSupport permite que o StorageGRID envie pacotes de integridade e status ao suporte técnico da NetApp .
+
+Usar o AutoSupport pode acelerar significativamente a determinação e a resolução de problemas.  O suporte técnico também pode monitorar as necessidades de armazenamento do seu sistema e ajudar você a determinar se precisa adicionar novos nós ou sites.  Opcionalmente, você pode configurar os pacotes do AutoSupport para serem enviados para um destino adicional.
+
+O StorageGRID tem dois tipos de AutoSupport:
+
+* * StorageGRID AutoSupport* relata problemas de software StorageGRID .  Ativado por padrão quando você instala o StorageGRID pela primeira vez.  Você podelink:configure-autosupport-grid-manager.html["alterar a configuração padrão do AutoSupport"] se necessário.
++
+
+NOTE: Se o StorageGRID AutoSupport não estiver habilitado, uma mensagem será exibida no painel do Grid Manager. A mensagem inclui um link para a página de configuração do AutoSupport .  Se você fechar a mensagem, ela não aparecerá novamente até que o cache do navegador seja limpo, mesmo que o AutoSupport permaneça desativado.
+
+* * O AutoSupport de hardware do dispositivo* relata problemas no dispositivo StorageGRID .  Você develink:configure-autosupport-grid-manager.html#autosupport-for-appliances["configurar o AutoSupport de hardware em cada dispositivo"] .
+
+
+
+
+== O que é Active IQ?
+
+O Active IQ é um consultor digital baseado em nuvem que aproveita a análise preditiva e a sabedoria da comunidade da base instalada da NetApp.  Suas avaliações contínuas de risco, alertas preditivos, orientação prescritiva e ações automatizadas ajudam a prevenir problemas antes que eles ocorram, resultando em melhor integridade do sistema e maior disponibilidade do sistema.
+
+Se quiser usar os painéis e a funcionalidade do Active IQ no site de suporte da NetApp , você deve habilitar o AutoSupport.
+
+https://docs.netapp.com/us-en/active-iq/index.html["Documentação do Digital Advisor Active IQ"^]
+
+
+
+== Informações incluídas no pacote AutoSupport
+
+Um pacote AutoSupport contém os seguintes arquivos e detalhes.
+
+[cols="2a,2a,3a"]
+|===
+| Nome do arquivo | Campos | Descrição 
+
+
+ a| 
+AUTOSUPPORT-HISTORY.XML
+ a| 
+Número de sequência do AutoSupport + Destino para este AutoSupport + Status da entrega + Tentativas de entrega + Assunto do AutoSupport + URI de entrega + Último erro + Nome do arquivo PUT do AutoSupport + Hora da geração + Tamanho compactado do AutoSupport + Tamanho descompactado do AutoSupport + Tempo total de coleta (ms)
+ a| 
+Arquivo de histórico do AutoSupport .
+
+
+
+ a| 
+AUTOSUPPORT.XML
+ a| 
+Nó + Protocolo para contato com o suporte + URL de suporte para HTTP/HTTPS + Endereço de suporte + Estado do AutoSupport OnDemand + URL do servidor do AutoSupport OnDemand + Intervalo de pesquisa do AutoSupport OnDemand
+ a| 
+Arquivo de status do AutoSupport .  Fornece detalhes do protocolo usado, URL e endereço de suporte técnico, intervalo de pesquisa e OnDemand AutoSupport , se ativado ou desativado.
+
+
+
+ a| 
+BUCKETS.XML
+ a| 
+ID do bucket + ID da conta + Versão da compilação + Configuração de restrição de local + Conformidade habilitada + Configuração de conformidade + Bloqueio de objeto S3 habilitado + Configuração de bloqueio de objeto S3 + Configuração de consistência + CORS habilitado + Configuração do CORS + Hora do último acesso habilitada + Política habilitada + Configuração da política + Notificações habilitadas + Configuração de notificações + Cloud Mirror habilitado + Configuração do Cloud Mirror + Pesquisa habilitada + Configuração de pesquisa + Marcação de bucket habilitada + Configuração de marcação de bucket + Configuração de controle de versão
+ a| 
+Fornece detalhes de configuração e estatísticas no nível do bucket.  Exemplos de configurações de bucket incluem serviços de plataforma, conformidade e consistência de bucket.
+
+
+
+ a| 
+CONFIGURAÇÕES DE GRADE.XML
+ a| 
+ID do atributo + Nome do atributo + Valor + Índice + ID da tabela + Nome da tabela
+ a| 
+Arquivo de informações de configuração de toda a rede.  Contém informações sobre certificados de grade, espaço reservado de metadados, definições de configuração de toda a grade (conformidade, bloqueio de objeto S3, compactação de objeto, alertas, syslog e configuração de ILM), detalhes do perfil de codificação de eliminação, nome DNS elink:../primer/nodes-and-services.html#storagegrid-services["Nome da NMS"] .
+
+
+
+ a| 
+ESPECIFICAÇÃO DE GRADE.XML
+ a| 
+Especificações de grade, XML bruto
+ a| 
+Usado para configurar e implantar o StorageGRID.  Contém especificações de grade, IP do servidor NTP, IP do servidor DNS, topologia de rede e perfis de hardware dos nós.
+
+
+
+ a| 
+GRID-TASKS.XML
+ a| 
+Nó + Caminho do serviço + ID do atributo + Nome do atributo + Valor + Índice + ID da tabela + Nome da tabela
+ a| 
+Arquivo de status de tarefas de grade (procedimentos de manutenção).  Fornece detalhes das tarefas ativas, encerradas, concluídas, com falha e pendentes da grade.
+
+
+
+ a| 
+GRADE.JSON
+ a| 
+Grade + Revisão + Versão do Software + Descrição + Licença + Senhas + DNS + NTP + Sites + Nós
+ a| 
+Informações da grade.
+
+
+
+ a| 
+ILM-CONFIGURAÇÃO.XML
+ a| 
+ID do atributo + Nome do atributo + Valor + Índice + ID da tabela + Nome da tabela
+ a| 
+Lista de atributos para configurações de ILM.
+
+
+
+ a| 
+ILM-STATUS.XML
+ a| 
+Nó + Caminho do serviço + ID do atributo + Nome do atributo + Valor + Índice + ID da tabela + Nome da tabela
+ a| 
+Arquivo de informações de métricas do ILM.  Contém taxas de avaliação de ILM para cada nó e métricas de toda a grade.
+
+
+
+ a| 
+ILM.XML
+ a| 
+XML bruto do ILM
+ a| 
+Arquivo de política ativa do ILM.  Contém detalhes sobre as políticas ativas do ILM, como ID do pool de armazenamento, comportamento de ingestão, filtros, regras e descrição.
+
+
+
+ a| 
+LOG.TGZ
+ a| 
+_n / D_
+ a| 
+Arquivo de log para download.  Contém `bycast-err.log` e `servermanager.log` de cada nó.
+
+
+
+ a| 
+MANIFESTO.XML
+ a| 
+Ordem de coleta + Nome do arquivo de conteúdo do AutoSupport para esses dados + Descrição deste item de dados + Número de bytes coletados + Tempo gasto na coleta + Status deste item de dados + Descrição do erro + Tipo de conteúdo do AutoSupport para esses dados +
+ a| 
+Contém metadados do AutoSupport e breves descrições de todos os arquivos do AutoSupport .
+
+
+
+ a| 
+NMS-ENTIDADES.XML
+ a| 
+Índice de atributo + OID da entidade + ID do nó + ID do modelo do dispositivo + Versão do modelo do dispositivo + Nome da entidade
+ a| 
+Entidades de grupo e de serviço nolink:../primer/nodes-and-services.html#storagegrid-services["Árvore NMS"] .  Fornece detalhes da topologia da grade.  O nó pode ser determinado com base nos serviços em execução no nó.
+
+
+
+ a| 
+OBJETOS-STATUS.XML
+ a| 
+Nó + Caminho do serviço + ID do atributo + Nome do atributo + Valor + Índice + ID da tabela + Nome da tabela
+ a| 
+Status do objeto, incluindo status de verificação em segundo plano, transferência ativa, taxa de transferência, transferências totais, taxa de exclusão, fragmentos corrompidos, objetos perdidos, objetos ausentes, tentativa de reparo, taxa de verificação, período estimado de verificação e status de conclusão do reparo.
+
+
+
+ a| 
+STATUS-DO-SERVIDOR.XML
+ a| 
+Nó + Caminho do serviço + ID do atributo + Nome do atributo + Valor + Índice + ID da tabela + Nome da tabela
+ a| 
+Configurações do servidor.  Contém estes detalhes para cada nó: tipo de plataforma, sistema operacional, memória instalada, memória disponível, conectividade de armazenamento, número de série do chassi do dispositivo de armazenamento, contagem de unidades com falha do controlador de armazenamento, temperatura do chassi do controlador de computação, hardware de computação, número de série do controlador de computação, fonte de alimentação, tamanho da unidade e tipo de unidade.
+
+
+
+ a| 
+STATUS-DO-SERVIÇO.XML
+ a| 
+Nó + Caminho do serviço + ID do atributo + Nome do atributo + Valor + Índice + ID da tabela + Nome da tabela
+ a| 
+Arquivo de informações do nó de serviço.  Contém detalhes como espaço de tabela alocado, espaço de tabela livre, métricas do Reaper do banco de dados, duração do reparo do segmento, duração do trabalho de reparo, reinicializações automáticas do trabalho e encerramento automático do trabalho.
+
+
+
+ a| 
+ARMAZENAMENTO-GRADES.XML
+ a| 
+ID do nível de armazenamento + Nome do nível de armazenamento + ID do nó de armazenamento + Caminho do nó de armazenamento
+ a| 
+Arquivo de definições de nível de armazenamento para cada nó de armazenamento.
+
+
+
+ a| 
+RESUMO-ATRIBUTOS.XML
+ a| 
+OID do grupo + Caminho do grupo + ID do atributo de resumo + Nome do atributo de resumo + Valor + Índice + ID da tabela + Nome da tabela
+ a| 
+Dados de status do sistema de alto nível que resumem as informações de uso do StorageGRID .  Fornece detalhes como nome da grade, nomes dos sites, número de nós de armazenamento por grade e por site, tipo de licença, capacidade e uso da licença, termos de suporte de software e detalhes das operações do S3.
+
+
+
+ a| 
+ALERTAS-DO-SISTEMA.XML
+ a| 
+Nome + Gravidade + Nome do nó + Status do alerta + Nome do site + Hora de acionamento do alerta + Hora de resolução do alerta + ID da regra + ID do nó + ID do site + Silenciado + Outras anotações + Outros rótulos
+ a| 
+Alertas atuais do sistema que indicam possíveis problemas no sistema StorageGRID .
+
+
+
+ a| 
+AGENTES DO USUÁRIO.XML
+ a| 
+Agente do usuário + Número de dias + Total de solicitações HTTP + Total de bytes ingeridos + Total de bytes recuperados + Solicitações PUT + Solicitações GET + Solicitações DELETE + Solicitações HEAD + Solicitações POST + Solicitações OPTIONS + Tempo médio de solicitação (ms) + Tempo médio de solicitação PUT (ms) + Tempo médio de solicitação GET (ms) + Tempo médio de solicitação DELETE (ms) + Tempo médio de solicitação HEAD (ms) + Tempo médio de solicitação POST (ms) + Tempo médio de solicitação OPTIONS (ms)
+ a| 
+Estatísticas baseadas nos agentes de usuários do aplicativo.  Por exemplo, o número de operações PUT/GET/DELETE/HEAD por agente de usuário e o tamanho total de bytes de cada operação.
+
+
+
+ a| 
+X-HEADER-DATA
+ a| 
+X-Netapp-asup-generated-on + X-Netapp-asup-hostname + X-Netapp-asup-os-version + X-Netapp-asup-serial-num + X-Netapp-asup-subject + X-Netapp-asup-system-id + X-Netapp-asup-model-name +
+ a| 
+Dados do cabeçalho do AutoSupport .
+
+|===

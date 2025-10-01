@@ -1,0 +1,21 @@
+---
+permalink: maintain/decommissioning-multiple-storage-nodes.html 
+sidebar: sidebar 
+keywords: storagegrid, decommission nodes, storage node, multiple storage nodes 
+summary: Se precisar remover mais de um nó de armazenamento, você poderá desativá-los sequencialmente ou em paralelo. 
+---
+= Descomissionar vários nós de armazenamento
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Se precisar remover mais de um nó de armazenamento, você poderá desativá-los sequencialmente ou em paralelo.
+
+
+CAUTION: Tenha cuidado ao desativar nós de armazenamento em uma grade contendo nós somente de metadados baseados em software.  Se você desativar todos os nós configurados para armazenar _tanto_ objetos quanto metadados, a capacidade de armazenar objetos será removida da grade.  Verlink:../primer/what-storage-node-is.html#types-of-storage-nodes["Tipos de nós de armazenamento"] para obter mais informações sobre nós de armazenamento somente de metadados.
+
+* Se você desativar os Nós de Armazenamento sequencialmente, deverá aguardar a conclusão do primeiro Nó de Armazenamento antes de iniciar a desativação do próximo Nó de Armazenamento.
+* Se você desativar os Nós de Armazenamento em paralelo, os Nós de Armazenamento processarão simultaneamente as tarefas de desativação para todos os Nós de Armazenamento que estão sendo desativados.  Isso pode resultar em uma situação em que todas as cópias permanentes de um arquivo são marcadas como "somente leitura", desabilitando temporariamente a exclusão em grades onde essa funcionalidade está habilitada.
+

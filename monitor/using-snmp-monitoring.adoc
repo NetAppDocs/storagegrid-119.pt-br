@@ -1,0 +1,122 @@
+---
+permalink: monitor/using-snmp-monitoring.html 
+sidebar: sidebar 
+keywords: snmp, monitoring 
+summary: 'Se você quiser monitorar o StorageGRID usando o Protocolo Simples de Gerenciamento de Rede (SNMP), será necessário configurar o agente SNMP incluído no StorageGRID.' 
+---
+= Usar monitoramento SNMP
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Se você quiser monitorar o StorageGRID usando o Protocolo Simples de Gerenciamento de Rede (SNMP), deverá configurar o agente SNMP incluído no StorageGRID.
+
+* link:configuring-snmp-agent.html["Configurar o agente SNMP"]
+* link:updating-snmp-agent.html["Atualizar o agente SNMP"]
+
+
+
+
+== Capacidades
+
+Cada nó StorageGRID executa um agente SNMP, ou daemon, que fornece um MIB.  O MIB StorageGRID contém definições de tabela e notificação para alertas.  O MIB também contém informações de descrição do sistema, como plataforma e número do modelo para cada nó.  Cada nó StorageGRID também suporta um subconjunto de objetos MIB-II.
+
+
+NOTE: Verlink:access-snmp-mib.html["Acessar arquivos MIB"] se você quiser baixar os arquivos MIB nos nós da sua grade.
+
+Inicialmente, o SNMP é desabilitado em todos os nós.  Quando você configura o agente SNMP, todos os nós do StorageGRID recebem a mesma configuração.
+
+O agente SNMP do StorageGRID suporta todas as três versões do protocolo SNMP.  Ele fornece acesso MIB somente leitura para consultas e pode enviar dois tipos de notificações orientadas a eventos para um sistema de gerenciamento:
+
+Armadilhas:: Armadilhas são notificações enviadas pelo agente SNMP que não exigem confirmação pelo sistema de gerenciamento.  As armadilhas servem para notificar o sistema de gerenciamento de que algo aconteceu no StorageGRID, como um alerta sendo disparado.
++
+--
+As armadilhas são suportadas em todas as três versões do SNMP.
+
+--
+Informa:: As informações são semelhantes às armadilhas, mas exigem reconhecimento pelo sistema de gerenciamento.  Se o agente SNMP não receber uma confirmação dentro de um determinado período de tempo, ele reenviará a informação até que uma confirmação seja recebida ou o valor máximo de novas tentativas seja atingido.
++
+--
+As informações são suportadas em SNMPv2c e SNMPv3.
+
+--
+
+
+Notificações de captura e informação são enviadas nos seguintes casos:
+
+* Um alerta padrão ou personalizado é acionado em qualquer nível de gravidade.  Para suprimir notificações SNMP para um alerta, você develink:silencing-alert-notifications.html["configurar um silêncio"] para o alerta.  As notificações de alerta são enviadas pelolink:../primer/what-admin-node-is.html["nó de administração do remetente preferencial"] .
++
+Cada alerta é mapeado para um dos três tipos de armadilhas com base no nível de gravidade do alerta: activeMinorAlert, activeMajorAlert e activeCriticalAlert.  Para obter uma lista dos alertas que podem disparar essas armadilhas, consulte olink:alerts-reference.html["Referência de alertas"] .
+
+
+
+
+
+== Suporte à versão SNMP
+
+A tabela fornece um resumo de alto nível do que é suportado para cada versão do SNMP.
+
+[cols="1a,2a,2a,2a"]
+|===
+|  | SNMPv1 | SNMPv2c | SNMPv3 
+
+
+ a| 
+Consultas
+
+(GET e GETNEXT)
+ a| 
+Consultas MIB somente leitura
+ a| 
+Consultas MIB somente leitura
+ a| 
+Consultas MIB somente leitura
+
+
+
+ a| 
+Autenticação de consulta
+ a| 
+Cadeia de caracteres da comunidade
+ a| 
+Cadeia de caracteres da comunidade
+ a| 
+Usuário do Modelo de Segurança Baseado no Usuário (USM)
+
+
+
+ a| 
+Notificações
+
+(ARMAZENAR e INFORMAR)
+ a| 
+Apenas armadilhas
+ a| 
+Armadilhas e informações
+ a| 
+Armadilhas e informações
+
+
+
+ a| 
+Autenticação de notificação
+ a| 
+Comunidade de armadilhas padrão ou uma sequência de comunidade personalizada para cada destino de armadilha
+ a| 
+Comunidade de armadilhas padrão ou uma sequência de comunidade personalizada para cada destino de armadilha
+ a| 
+Usuário USM para cada destino de armadilha
+
+|===
+
+
+== Limitações
+
+* O StorageGRID suporta acesso MIB somente leitura.  O acesso de leitura e gravação não é suportado.
+* Todos os nós na grade recebem a mesma configuração.
+* SNMPv3: O StorageGRID não oferece suporte ao Modo de Suporte de Transporte (TSM).
+* SNMPv3: O único protocolo de autenticação suportado é o SHA (HMAC-SHA-96).
+* SNMPv3: O único protocolo de privacidade suportado é o AES.
+

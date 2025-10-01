@@ -1,0 +1,61 @@
+---
+permalink: maintain/obtaining-required-materials-for-hotfix.html 
+sidebar: sidebar 
+keywords: storagegrid, hotfix 
+summary: Antes de aplicar um hotfix, você deve obter todos os materiais necessários. 
+---
+= Obtenha os materiais necessários para o hotfix
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Antes de aplicar um hotfix, você deve obter todos os materiais necessários.
+
+[cols="1a,2a"]
+|===
+| Item | Notas 
+
+
+ a| 
+Arquivo de correção do StorageGRID
+ a| 
+Você deve baixar o arquivo de hotfix do StorageGRID .
+
+
+
+ a| 
+* Porta de rede
+* link:../admin/web-browser-requirements.html["Navegador da Web compatível"]
+* Cliente SSH (por exemplo, PuTTY)
+
+ a| 
+
+
+
+ a| 
+Pacote de Recuperação(`.zip` ) arquivo
+ a| 
+Antes de aplicar um hotfix,link:downloading-recovery-package.html["baixe o arquivo do pacote de recuperação mais recente"] caso ocorra algum problema durante o hotfix. Depois que o hotfix for aplicado, baixe uma nova cópia do arquivo do Pacote de Recuperação e salve-o em um local seguro.  O arquivo do Pacote de Recuperação atualizado permite restaurar o sistema caso ocorra uma falha.
+
+
+
+| Arquivo Passwords.txt  a| 
+Opcional e usado somente se você estiver aplicando um hotfix manualmente usando o cliente SSH. O `Passwords.txt` o arquivo faz parte do Pacote de Recuperação `.zip` arquivo.
+
+
+
+ a| 
+Senha de provisionamento
+ a| 
+A senha é criada e documentada quando o sistema StorageGRID é instalado pela primeira vez. A senha de provisionamento não está listada no `Passwords.txt` arquivo.
+
+
+
+ a| 
+Documentação relacionada
+ a| 
+`readme.txt`arquivo para o hotfix.  Este arquivo está incluído na página de download do hotfix.  Não deixe de revisar o `readme` arquive com cuidado antes de aplicar o hotfix.
+
+|===

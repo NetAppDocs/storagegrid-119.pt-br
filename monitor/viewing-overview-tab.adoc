@@ -1,0 +1,62 @@
+---
+permalink: monitor/viewing-overview-tab.html 
+sidebar: sidebar 
+keywords: overview tab 
+summary: A guia Visão geral fornece informações básicas sobre cada nó.  Ele também mostra todos os alertas que estão afetando o nó no momento. 
+---
+= Exibir a guia Visão geral
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+A guia Visão geral fornece informações básicas sobre cada nó.  Ele também mostra todos os alertas que estão afetando o nó no momento.
+
+A guia Visão geral é exibida para todos os nós.
+
+
+
+== Informações do nó
+
+A seção Informações do nó da guia Visão geral lista informações básicas sobre o nó.
+
+image::../media/nodes_page_overview_tab.png[Guia Visão geral da página Nós]
+
+As informações gerais de um nó incluem o seguinte:
+
+* *Nome de exibição* (mostrado somente se o nó tiver sido renomeado): O nome de exibição atual do nó.  Use olink:../maintain/rename-grid-site-node-overview.html["Renomear grade, sites e nós"] procedimento para atualizar este valor.
+* *Nome do sistema*: O nome que você inseriu para o nó durante a instalação.  Os nomes do sistema são usados ​​para operações internas do StorageGRID e não podem ser alterados.
+* *Tipo*: O tipo de nó — Nó de administração, Nó de administração primário, Nó de armazenamento ou Nó de gateway.
+* *ID*: O identificador exclusivo do nó, também conhecido como UUID.
+* *Estado da conexão*: Um dos três estados.  O ícone para o estado mais grave é mostrado.
++
+** *Desconhecido*image:../media/icon_alarm_blue_unknown.png["ícone de ponto de interrogação azul"] : Por um motivo desconhecido, o nó não está conectado à rede ou um ou mais serviços estão inesperadamente inativos.  Por exemplo, a conexão de rede entre os nós foi perdida, a energia caiu ou um serviço caiu.  O alerta *Não foi possível comunicar com o nó* também pode ser acionado.  Outros alertas também podem estar ativos.  Esta situação requer atenção imediata.
++
+
+NOTE: Um nó pode aparecer como Desconhecido durante operações de desligamento gerenciado.  Você pode ignorar o estado Desconhecido nesses casos.
+
+** *Administrativamente inativo*image:../media/icon_alarm_gray_administratively_down.png["ícone de ponto de interrogação cinza"] : O nó não está conectado à rede por um motivo esperado.  Por exemplo, o nó, ou os serviços no nó, foram desligados corretamente, o nó está sendo reinicializado ou o software está sendo atualizado.  Um ou mais alertas também podem estar ativos.
+** *Conectado*image:../media/icon_alert_green_checkmark.png["ícone alerta marca de verificação verde"] : O nó está conectado à rede.
+
+
+* *Armazenamento usado*: somente para nós de armazenamento.
++
+** *Dados do objeto*: A porcentagem do espaço total utilizável para dados do objeto que foi usada no nó de armazenamento.
+** *Metadados do objeto*: A porcentagem do espaço total permitido para metadados do objeto que foi usada no nó de armazenamento.
+
+
+* *Versão do software*: A versão do StorageGRID que está instalada no nó.
+* *Grupos HA*: somente para nós de administração e nós de gateway.  Mostrado se uma interface de rede no nó está incluída em um grupo de alta disponibilidade e se essa interface é a interface primária.
+* *Endereços IP*: Endereços IP do nó.  Clique em *Mostrar endereços IP adicionais* para visualizar os endereços IPv4 e IPv6 do nó e os mapeamentos de interface.
+
+
+
+
+== Alertas
+
+A seção Alertas da guia Visão geral lista qualquerlink:monitoring-system-health.html#view-current-and-resolved-alerts["alertas que atualmente afetam este nó e que não foram silenciados"] .  Selecione o nome do alerta para ver detalhes adicionais e ações recomendadas.
+
+image::../media/nodes_page_alerts_table.png[Tabela de alertas de página de nós]
+
+Alertas também estão incluídos paralink:monitoring-system-health.html#monitor-node-connection-states["estados de conexão do nó"] .

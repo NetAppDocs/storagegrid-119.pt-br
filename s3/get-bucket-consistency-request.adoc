@@ -1,0 +1,94 @@
+---
+permalink: s3/get-bucket-consistency-request.html 
+sidebar: sidebar 
+keywords: S3 REST API, S3 operations, GET bucket consistency 
+summary: A solicitação de consistência GET Bucket permite que você determine a consistência que está sendo aplicada a um bucket específico. 
+---
+= Consistência do balde GET
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+A solicitação de consistência GET Bucket permite que você determine a consistência que está sendo aplicada a um bucket específico.
+
+A consistência padrão é definida para garantir leitura após gravação para objetos recém-criados.
+
+Você deve ter a permissão s3:GetBucketConsistency ou ser root da conta para concluir esta operação.
+
+
+
+== Exemplo de solicitação
+
+[listing, subs="specialcharacters,quotes"]
+----
+GET /bucket?x-ntap-sg-consistency HTTP/1.1
+Date: _date_
+Authorization: _authorization string_
+Host: _host_
+----
+
+
+== Resposta
+
+No XML de resposta, `<Consistency>` retornará um dos seguintes valores:
+
+[cols="1a,2a"]
+|===
+| Consistência | Descrição 
+
+
+ a| 
+todos
+ a| 
+Todos os nós recebem os dados imediatamente, ou a solicitação falhará.
+
+
+
+ a| 
+forte-global
+ a| 
+Garante consistência de leitura após gravação para todas as solicitações de clientes em todos os sites.
+
+
+
+ a| 
+site forte
+ a| 
+Garante consistência de leitura após gravação para todas as solicitações de clientes em um site.
+
+
+
+ a| 
+leitura após nova escrita
+ a| 
+(Padrão) Fornece consistência de leitura após gravação para novos objetos e consistência eventual para atualizações de objetos.  Oferece alta disponibilidade e garantias de proteção de dados.  Recomendado para a maioria dos casos.
+
+
+
+ a| 
+disponível
+ a| 
+Fornece consistência eventual para novos objetos e atualizações de objetos.  Para buckets S3, use somente quando necessário (por exemplo, para um bucket que contém valores de log que raramente são lidos ou para operações HEAD ou GET em chaves que não existem).  Não suportado para buckets do S3 FabricPool .
+
+|===
+
+
+== Exemplo de resposta
+
+[listing]
+----
+HTTP/1.1 200 OK
+Date: Fri, 18 Sep 2020 01:02:18 GMT
+Connection: CLOSE
+Server: StorageGRID/11.5.0
+x-amz-request-id: 12345
+Content-Length: 127
+Content-Type: application/xml
+
+<?xml version="1.0" encoding="UTF-8"?>
+<Consistency xmlns="http://s3.storagegrid.com/doc/2015-02-01/">read-after-new-write</Consistency>
+----
+.Informações relacionadas
+link:consistency-controls.html["Valores de consistência"]

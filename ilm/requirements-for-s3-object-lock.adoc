@@ -1,0 +1,107 @@
+---
+permalink: ilm/requirements-for-s3-object-lock.html 
+sidebar: sidebar 
+keywords: requirements, s3 object lock, compliant ilm rule, compliant ilm policy 
+summary: Você deve revisar os requisitos para habilitar a configuração global do S3 Object Lock, os requisitos para criar regras e políticas de ILM compatíveis e as restrições que o StorageGRID impõe aos buckets e objetos que usam o S3 Object Lock. 
+---
+= Requisitos para bloqueio de objeto S3
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Você deve revisar os requisitos para habilitar a configuração global do S3 Object Lock, os requisitos para criar regras e políticas de ILM compatíveis e as restrições que o StorageGRID impõe aos buckets e objetos que usam o S3 Object Lock.
+
+
+
+== Requisitos para usar a configuração global de bloqueio de objeto do S3
+
+* Você deve habilitar a configuração global de Bloqueio de Objeto do S3 usando o Grid Manager ou a API de Gerenciamento de Grade antes que qualquer locatário do S3 possa criar um bucket com o Bloqueio de Objeto do S3 habilitado.
+* Habilitar a configuração global de Bloqueio de Objeto S3 permite que todas as contas de locatários do S3 criem buckets com o Bloqueio de Objeto S3 habilitado.
+* Depois de habilitar a configuração global de Bloqueio de Objeto do S3, você não poderá desabilitá-la.
+* Não é possível habilitar o bloqueio de objeto S3 global, a menos que a regra padrão em todas as políticas ativas do ILM seja _compatível_ (ou seja, a regra padrão deve estar em conformidade com os requisitos de buckets com o bloqueio de objeto S3 habilitado).
+* Quando a configuração global de Bloqueio de Objeto S3 estiver habilitada, você não poderá criar uma nova política de ILM ou ativar uma política de ILM existente, a menos que a regra padrão na política esteja em conformidade.  Depois que a configuração global de Bloqueio de Objeto do S3 for habilitada, as páginas de regras e políticas do ILM indicam quais regras do ILM são compatíveis.
+
+
+
+
+== Requisitos para regras ILM compatíveis
+
+Se você quiser habilitar a configuração global de Bloqueio de Objeto do S3, deverá garantir que a regra padrão em todas as políticas ativas do ILM esteja em conformidade.  Uma regra compatível satisfaz os requisitos de ambos os buckets com o Bloqueio de Objeto S3 habilitado e de quaisquer buckets existentes que tenham a Conformidade herdada habilitada:
+
+* Ele deve criar pelo menos duas cópias de objetos replicados ou uma cópia codificada para eliminação.
+* Essas cópias devem existir nos Nós de Armazenamento durante toda a duração de cada linha nas instruções de posicionamento.
+* Cópias de objetos não podem ser salvas em um pool de armazenamento em nuvem.
+* Pelo menos uma linha das instruções de posicionamento deve começar no dia 0, usando *Horário de ingestão* como horário de referência.
+* Pelo menos uma linha das instruções de posicionamento deve ser "para sempre".
+
+
+
+
+== Requisitos para políticas de ILM
+
+Quando a configuração global de Bloqueio de Objeto do S3 está habilitada, as políticas ativas e inativas do ILM podem incluir regras compatíveis e não compatíveis.
+
+* A regra padrão em uma política de ILM ativa ou inativa deve ser compatível.
+* Regras não compatíveis só se aplicam a objetos em buckets que não têm o Bloqueio de Objeto do S3 habilitado ou que não têm o recurso de Conformidade legado habilitado.
+* Regras de conformidade podem ser aplicadas a objetos em qualquer bucket; o bloqueio de objeto S3 ou a conformidade herdada não precisam ser habilitados para o bucket.
+
+
+link:example-7-compliant-ilm-policy-for-s3-object-lock.html["Exemplo de uma política de ILM compatível para bloqueio de objeto S3"]
+
+
+
+== Requisitos para buckets com bloqueio de objeto S3 habilitado
+
+* Se a configuração global do S3 Object Lock estiver habilitada para o sistema StorageGRID , você poderá usar o Tenant Manager, a Tenant Management API ou a S3 REST API para criar buckets com o S3 Object Lock habilitado.
+* Se você planeja usar o S3 Object Lock, deverá habilitar o S3 Object Lock ao criar o bucket.  Não é possível habilitar o S3 Object Lock para um bucket existente.
+* Quando o S3 Object Lock é habilitado para um bucket, o StorageGRID habilita automaticamente o controle de versão para esse bucket.  Não é possível desabilitar o bloqueio de objeto do S3 ou suspender o controle de versão do bucket.
+* Opcionalmente, você pode especificar um modo de retenção padrão e um período de retenção para cada bucket usando o Tenant Manager, a Tenant Management API ou a S3 REST API.  As configurações de retenção padrão do bucket se aplicam somente a novos objetos adicionados ao bucket que não têm suas próprias configurações de retenção.  Você pode substituir essas configurações padrão especificando um modo de retenção e retenção até a data para cada versão do objeto quando ele for carregado.
+* A configuração do ciclo de vida do bucket é suportada para buckets com o S3 Object Lock habilitado.
+* A replicação do CloudMirror não é suportada para buckets com S3 Object Lock habilitado.
+
+
+
+
+== Requisitos para objetos em buckets com bloqueio de objeto S3 habilitado
+
+* Para proteger uma versão do objeto, você pode especificar configurações de retenção padrão para o bucket ou especificar configurações de retenção para cada versão do objeto.  As configurações de retenção no nível do objeto podem ser especificadas usando o aplicativo cliente S3 ou a API REST do S3.
+* As configurações de retenção se aplicam a versões de objetos individuais.  Uma versão de objeto pode ter uma configuração de retenção até a data e uma configuração de retenção legal, uma mas não a outra, ou nenhuma delas.  Especificar uma configuração de retenção até a data ou de retenção legal para um objeto protege apenas a versão especificada na solicitação.  Você pode criar novas versões do objeto, enquanto a versão anterior do objeto permanece bloqueada.
+
+
+
+
+== Ciclo de vida de objetos em buckets com bloqueio de objeto S3 habilitado
+
+Cada objeto salvo em um bucket com o S3 Object Lock habilitado passa por estas etapas:
+
+. *Ingestão de objetos*
++
+Quando uma versão de objeto é adicionada ao bucket que tem o S3 Object Lock ativado, as configurações de retenção são aplicadas da seguinte maneira:
+
++
+** Se as configurações de retenção forem especificadas para o objeto, as configurações no nível do objeto serão aplicadas.  Todas as configurações de bucket padrão são ignoradas.
+** Se nenhuma configuração de retenção for especificada para o objeto, as configurações de bucket padrão serão aplicadas, se existirem.
+** Se nenhuma configuração de retenção for especificada para o objeto ou o bucket, o objeto não será protegido pelo S3 Object Lock.
+
+
++
+Se as configurações de retenção forem aplicadas, tanto o objeto quanto quaisquer metadados definidos pelo usuário do S3 serão protegidos.
+
+. *Retenção e exclusão de objetos*
++
+Várias cópias de cada objeto protegido são armazenadas pelo StorageGRID pelo período de retenção especificado.  O número exato e o tipo de cópias de objetos e os locais de armazenamento são determinados pelas regras de conformidade nas políticas ativas do ILM.  Se um objeto protegido pode ser excluído antes que sua data de retenção seja atingida depende do seu modo de retenção.
+
++
+** Se um objeto estiver sob retenção legal, ninguém poderá excluí-lo, independentemente do seu modo de retenção.
+
+
+
+
+.Informações relacionadas
+* link:../tenant/creating-s3-bucket.html["Criar um bucket S3"]
+* link:../tenant/update-default-retention-settings.html["Atualizar retenção padrão do bloqueio de objeto S3"]
+* link:../s3/use-s3-api-for-s3-object-lock.html["Use a API REST do S3 para configurar o bloqueio de objeto do S3"]
+* link:example-7-compliant-ilm-policy-for-s3-object-lock.html["Exemplo 7: Política ILM compatível para bloqueio de objeto S3"]
+

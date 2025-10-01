@@ -1,0 +1,86 @@
+= Qual procedimento devo usar?
+:allow-uri-read: 
+
+
+
+
+== Qual procedimento devo usar?
+
+Sempre que possível, restaure os dados do objeto usando a página *Restauração de volume* no Grid Manager.
+
+* Se os volumes estiverem listados em *MANUTENÇÃO* > *Restauração de volume* > *Nós a serem restaurados*, restaure os dados do objeto usando olink:../maintain/restoring-volume.html["Página de restauração de volume no Grid Manager"] .
+* Se os volumes não estiverem listados em *MANUTENÇÃO* > *Restauração de volume* > *Nós para restaurar*, siga as etapas abaixo para usar o `repair-data` script para restaurar dados do objeto.
++
+Se o nó de armazenamento recuperado contiver menos volumes do que o nó que está substituindo, você deverá usar o `repair-data` roteiro.
+
+
+
+
+NOTE: O script repair-data está obsoleto e será removido em uma versão futura.  Quando possível, use olink:../maintain/restoring-volume.html["Procedimento de restauração de volume no Grid Manager"] .
+
+
+
+== Use o `repair-data` script para restaurar dados de objetos
+
+.Antes de começar
+* Você confirmou que o nó de armazenamento recuperado tem um estado de conexão de *Conectado*image:../media/icon_alert_green_checkmark.png["ícone alerta marca de verificação verde"] na aba *NÓS* > *Visão geral* no Gerenciador de grade.
+
+
+.Sobre esta tarefa
+Dados de objetos podem ser restaurados de outros nós de armazenamento ou de um pool de armazenamento em nuvem, supondo que as regras de ILM da grade tenham sido configuradas de forma que cópias de objetos estejam disponíveis.
+
+Observe o seguinte:
+
+* Se uma regra de ILM foi configurada para armazenar apenas uma cópia replicada e essa cópia existia em um volume de armazenamento que falhou, você não poderá recuperar o objeto.
+* Se a única cópia restante de um objeto estiver em um Cloud Storage Pool, o StorageGRID deverá emitir várias solicitações ao ponto de extremidade do Cloud Storage Pool para restaurar os dados do objeto.  Antes de executar este procedimento, entre em contato com o suporte técnico para obter ajuda na estimativa do tempo de recuperação e dos custos associados.
+
+
+
+
+== Sobre o `repair-data` roteiro
+
+Para restaurar dados do objeto, execute o `repair-data` roteiro.  Este script inicia o processo de restauração de dados do objeto e trabalha com a varredura do ILM para garantir que as regras do ILM sejam atendidas.
+
+Selecione *Dados replicados* ou *Dados codificados por eliminação (EC)* abaixo para aprender as diferentes opções para `repair-data` script, com base no fato de você estar restaurando dados replicados ou dados codificados para eliminação.  Se precisar restaurar ambos os tipos de dados, você deverá executar ambos os conjuntos de comandos.
+
+
+NOTE: Para mais informações sobre o `repair-data` script, digite `repair-data --help` da linha de comando do nó de administração primário.
+
+
+NOTE: O script repair-data está obsoleto e será removido em uma versão futura.  Quando possível, use olink:../maintain/restoring-volume.html["Procedimento de restauração de volume no Grid Manager"] .
+
+[role="tabbed-block"]
+====
+.Dados replicados
+--
+Dois comandos estão disponíveis para restaurar dados replicados, dependendo se você precisa reparar o nó inteiro ou apenas determinados volumes no nó:
+
+`repair-data start-replicated-node-repair`
+
+`repair-data start-replicated-volume-repair`
+
+Você pode rastrear reparos de dados replicados com este comando:
+
+`repair-data show-replicated-repair-status`
+
+--
+.Dados codificados por apagamento (EC)
+--
+Dois comandos estão disponíveis para restaurar dados codificados para eliminação, dependendo se você precisa reparar o nó inteiro ou apenas determinados volumes no nó:
+
+`repair-data start-ec-node-repair`
+
+`repair-data start-ec-volume-repair`
+
+Você pode rastrear reparos de dados codificados para eliminação com este comando:
+
+`repair-data show-ec-repair-status`
+
+
+NOTE: Os reparos de dados codificados para eliminação podem começar enquanto alguns nós de armazenamento estão offline.  Entretanto, se todos os dados codificados para eliminação não puderem ser contabilizados, o reparo não poderá ser concluído.  O reparo será concluído depois que todos os nós estiverem disponíveis.
+
+
+NOTE: O trabalho de reparo do EC reserva temporariamente uma grande quantidade de armazenamento.  Alertas de armazenamento podem ser acionados, mas serão resolvidos quando o reparo for concluído.  Se não houver armazenamento suficiente para a reserva, o trabalho de reparo do EC falhará.  As reservas de armazenamento são liberadas quando o trabalho de reparo do EC é concluído, independentemente de o trabalho ter falhado ou sido bem-sucedido.
+
+--
+====

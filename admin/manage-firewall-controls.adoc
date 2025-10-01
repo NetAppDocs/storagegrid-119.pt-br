@@ -1,0 +1,130 @@
+---
+permalink: admin/manage-firewall-controls.html 
+sidebar: sidebar 
+keywords: firewall controls, untrusted client network, privileged address, manage external access 
+summary: O StorageGRID inclui um firewall interno em cada nó que melhora a segurança da sua grade, permitindo que você personalize o acesso à Rede da Grade, à Rede de Administração e à Rede do Cliente. 
+---
+= Gerenciar controles internos de firewall
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+O StorageGRID inclui um firewall interno em cada nó que aumenta a segurança da sua grade, permitindo que você controle o acesso da rede ao nó.  Use o firewall para impedir o acesso à rede em todas as portas, exceto aquelas necessárias para sua implantação de grade específica.  As alterações de configuração feitas na página de controle do Firewall são implantadas em cada nó.
+
+Use as três guias na página de controle do Firewall para personalizar o acesso necessário para sua grade.
+
+* *Lista de endereços privilegiados*: Use esta aba para permitir acesso selecionado a portas fechadas.  Você pode adicionar endereços IP ou sub-redes na notação CIDR que podem acessar portas fechadas usando a guia Gerenciar acesso externo.
+* *Gerenciar acesso externo*: use esta guia para fechar portas que estão abertas por padrão ou reabrir portas fechadas anteriormente.
+* *Rede de cliente não confiável*: use esta guia para especificar se um nó confia no tráfego de entrada da rede de cliente.
++
+As configurações nesta guia substituem as configurações na guia Gerenciar acesso externo.
+
++
+** Um nó com uma rede de cliente não confiável aceitará apenas conexões em portas de ponto de extremidade do balanceador de carga configuradas naquele nó (pontos de extremidade globais, de interface de nó e vinculados ao tipo de nó).
+** As portas de ponto de extremidade do balanceador de carga _são as únicas portas abertas_ em redes de clientes não confiáveis, independentemente das configurações na guia Gerenciar redes externas.
+** Quando confiáveis, todas as portas abertas na guia Gerenciar acesso externo ficam acessíveis, assim como quaisquer pontos de extremidade do balanceador de carga abertos na Rede do Cliente.
+
+
+
+
+
+NOTE: As configurações feitas em uma guia podem afetar as alterações de acesso feitas em outra guia.  Não deixe de verificar as configurações em todas as abas para garantir que sua rede se comporte da maneira esperada.
+
+Para configurar os controles internos do firewall, consultelink:../admin/configure-firewall-controls.html["Configurar controles de firewall"] .
+
+Para obter mais informações sobre firewalls externos e segurança de rede, consultelink:../admin/controlling-access-through-firewalls.html["Controle de acesso em firewall externo"] .
+
+
+
+== Lista de endereços privilegiados e guias Gerenciar acesso externo
+
+A guia Lista de endereços privilegiados permite que você registre um ou mais endereços IP que têm acesso às portas de rede que estão fechadas.  A guia Gerenciar acesso externo permite que você feche o acesso externo a portas externas selecionadas ou a todas as portas externas abertas (portas externas são portas que são acessíveis por nós não pertencentes à grade por padrão).  Essas duas guias geralmente podem ser usadas juntas para personalizar o acesso exato à rede que você precisa permitir para sua grade.
+
+
+NOTE: Endereços IP privilegiados não têm acesso à porta de rede interna por padrão.
+
+
+
+=== Exemplo 1: Use um host de salto para tarefas de manutenção
+
+Suponha que você queira usar um host de salto (um host com segurança reforçada) para administração de rede.  Você pode usar estas etapas gerais:
+
+. Use a guia Lista de endereços privilegiados para adicionar o endereço IP do host de salto.
+. Use a guia Gerenciar acesso externo para bloquear todas as portas.
+
+
+
+CAUTION: Adicione o endereço IP privilegiado antes de bloquear as portas 443 e 8443.  Qualquer usuário conectado em uma porta bloqueada, incluindo você, perderá o acesso ao Grid Manager, a menos que seu endereço IP tenha sido adicionado à lista de endereços privilegiados.
+
+Depois de salvar sua configuração, todas as portas externas no nó de administração em sua grade serão bloqueadas para todos os hosts, exceto o host de salto.  Você pode então usar o jump host para executar tarefas de manutenção na sua rede com mais segurança.
+
+
+
+=== Exemplo 2: Bloquear portas sensíveis
+
+Suponha que você queira bloquear portas sensíveis e o serviço nessa porta (por exemplo, SSH na porta 22). Você pode usar as seguintes etapas gerais:
+
+. Use a guia Lista de endereços privilegiados para conceder acesso somente aos hosts que precisam acessar o serviço.
+. Use a guia Gerenciar acesso externo para bloquear todas as portas.
+
+
+
+CAUTION: Adicione o endereço IP privilegiado antes de bloquear o acesso a quaisquer portas atribuídas para acessar o Grid Manager e o Tenant Manager (as portas predefinidas são 443 e 8443).  Qualquer usuário conectado em uma porta bloqueada, incluindo você, perderá o acesso ao Grid Manager, a menos que seu endereço IP tenha sido adicionado à lista de endereços privilegiados.
+
+Depois de salvar sua configuração, a porta 22 e o serviço SSH estarão disponíveis para hosts na lista de endereços privilegiados.  Todos os outros hosts terão o acesso ao serviço negado, independentemente da interface de onde a solicitação vier.
+
+
+
+=== Exemplo 3: Desabilitar acesso a serviços não utilizados
+
+No nível da rede, você pode desabilitar alguns serviços que não pretende usar.  Por exemplo, para bloquear o tráfego do cliente HTTP S3, você usaria a alternância na guia Gerenciar acesso externo para bloquear a porta 18084.
+
+
+
+== Guia Redes de clientes não confiáveis
+
+Se estiver usando uma rede de cliente, você pode ajudar a proteger o StorageGRID de ataques hostis aceitando tráfego de cliente de entrada somente em endpoints configurados explicitamente.
+
+Por padrão, a Rede do Cliente em cada nó da grade é _confiável_.  Ou seja, por padrão, o StorageGRID confia nas conexões de entrada para cada nó da grade em todos oslink:../network/external-communications.html["portas externas disponíveis"] .
+
+Você pode reduzir a ameaça de ataques hostis ao seu sistema StorageGRID especificando que a Rede do Cliente em cada nó seja _não confiável_.  Se a rede do cliente de um nó não for confiável, o nó só aceitará conexões de entrada em portas explicitamente configuradas como pontos de extremidade do balanceador de carga. Verlink:../admin/configuring-load-balancer-endpoints.html["Configurar pontos de extremidade do balanceador de carga"] elink:../admin/configure-firewall-controls.html["Configurar controles de firewall"] .
+
+
+
+=== Exemplo 1: O nó de gateway aceita apenas solicitações HTTPS S3
+
+Suponha que você queira que um nó de gateway recuse todo o tráfego de entrada na rede do cliente, exceto solicitações HTTPS S3.  Você executaria estas etapas gerais:
+
+. Dolink:../admin/configuring-load-balancer-endpoints.html["Pontos de extremidade do balanceador de carga"] página, configure um ponto de extremidade do balanceador de carga para S3 sobre HTTPS na porta 443.
+. Na página de controle do Firewall, selecione Não confiável para especificar que a Rede do Cliente no Nó do Gateway não é confiável.
+
+
+Depois de salvar sua configuração, todo o tráfego de entrada na rede do cliente do nó do gateway será descartado, exceto solicitações HTTPS S3 na porta 443 e solicitações de eco ICMP (ping).
+
+
+
+=== Exemplo 2: O nó de armazenamento envia solicitações de serviços da plataforma S3
+
+Suponha que você queira habilitar o tráfego de serviços de plataforma S3 de saída de um nó de armazenamento, mas deseja impedir qualquer conexão de entrada para esse nó de armazenamento na rede do cliente.  Você executaria esta etapa geral:
+
+* Na guia Redes de clientes não confiáveis da página de controle do firewall, indique que a Rede de clientes no nó de armazenamento não é confiável.
+
+
+Depois de salvar sua configuração, o Nó de Armazenamento não aceita mais nenhum tráfego de entrada na Rede do Cliente, mas continua permitindo solicitações de saída para destinos de serviços de plataforma configurados.
+
+
+
+=== Exemplo 3: Limitando o acesso ao Grid Manager a uma sub-rede
+
+Suponha que você queira permitir acesso do Grid Manager somente em uma sub-rede específica.  Você executaria os seguintes passos:
+
+. Anexe a rede do cliente dos seus nós de administração à sub-rede.
+. Use a guia Rede de cliente não confiável para configurar a Rede de cliente como não confiável.
+. Ao criar um ponto de extremidade do balanceador de carga da interface de gerenciamento, insira a porta e selecione a interface de gerenciamento que a porta acessará.
+. Selecione *Sim* para Rede de cliente não confiável.
+. Use a guia Gerenciar acesso externo para bloquear todas as portas externas (com ou sem endereços IP privilegiados definidos para hosts fora dessa sub-rede).
+
+
+Depois de salvar sua configuração, somente hosts na sub-rede especificada poderão acessar o Grid Manager.  Todos os outros hosts estão bloqueados.

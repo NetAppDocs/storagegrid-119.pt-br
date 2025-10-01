@@ -1,0 +1,268 @@
+---
+permalink: s3/use-s3-api-for-s3-object-lock.html 
+sidebar: sidebar 
+keywords: how to configure S3 object lock, object lock, default bucket retention, governance, compliance, retain-until-date, legal hold 
+summary: Se a configuração global do S3 Object Lock estiver habilitada para seu sistema StorageGRID , você poderá criar buckets com o S3 Object Lock habilitado.  Você pode especificar a retenção padrão para cada bucket ou configurações de retenção para cada versão do objeto. 
+---
+= Use a API REST do S3 para configurar o bloqueio de objeto do S3
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Se a configuração global do S3 Object Lock estiver habilitada para seu sistema StorageGRID , você poderá criar buckets com o S3 Object Lock habilitado.  Você pode especificar a retenção padrão para cada bucket ou configurações de retenção para cada versão do objeto.
+
+
+
+== Como habilitar o bloqueio de objeto S3 para um bucket
+
+Se a configuração global S3 Object Lock estiver habilitada para seu sistema StorageGRID , você poderá habilitar o S3 Object Lock ao criar cada bucket.
+
+O bloqueio de objeto do S3 é uma configuração permanente que só pode ser ativada quando você cria um bucket.  Não é possível adicionar ou desabilitar o S3 Object Lock após a criação de um bucket.
+
+Para habilitar o bloqueio de objeto S3 para um bucket, use um destes métodos:
+
+* Crie o bucket usando o Tenant Manager. Ver link:../tenant/creating-s3-bucket.html["Criar bucket S3"] .
+* Crie o bucket usando uma solicitação CreateBucket com o `x-amz-bucket-object-lock-enabled` cabeçalho da solicitação. Ver link:operations-on-buckets.html["Operações em baldes"] .
+
+
+O S3 Object Lock requer controle de versão do bucket, que é ativado automaticamente quando o bucket é criado.  Não é possível suspender o controle de versão do bucket. Ver link:object-versioning.html["Controle de versão de objetos"] .
+
+
+
+== Configurações de retenção padrão para um bucket
+
+Quando o Bloqueio de Objeto S3 estiver habilitado para um bucket, você poderá, opcionalmente, habilitar a retenção padrão para o bucket e especificar um modo de retenção padrão e um período de retenção padrão.
+
+
+
+=== Modo de retenção padrão
+
+* No modo CONFORMIDADE:
++
+** O objeto não pode ser excluído até que sua data de retenção seja atingida.
+** A data de retenção do objeto pode ser aumentada, mas não diminuída.
+** A data de retenção do objeto não pode ser removida até que essa data seja atingida.
+
+
+* No modo GOVERNANÇA:
++
+** Usuários com o `s3:BypassGovernanceRetention` permissão pode usar o `x-amz-bypass-governance-retention: true` cabeçalho de solicitação para ignorar as configurações de retenção.
+** Esses usuários podem excluir uma versão do objeto antes que sua data de retenção seja atingida.
+** Esses usuários podem aumentar, diminuir ou remover a data de retenção de um objeto.
+
+
+
+
+
+
+=== Período de retenção padrão
+
+Cada bucket pode ter um período de retenção padrão especificado em anos ou dias.
+
+
+
+== Como definir a retenção padrão para um bucket
+
+Para definir a retenção padrão para um bucket, use um destes métodos:
+
+* Gerencie as configurações do bucket no Gerenciador de locatários. Verlink:../tenant/creating-s3-bucket.html["Criar um bucket S3"] elink:../tenant/update-default-retention-settings.html["Atualizar retenção padrão do bloqueio de objeto S3"] .
+* Emita uma solicitação PutObjectLockConfiguration para o bucket para especificar o modo padrão e o número padrão de dias ou anos.
+
+
+
+
+=== PutObjectLockConfiguration
+
+A solicitação PutObjectLockConfiguration permite que você defina e modifique o modo de retenção padrão e o período de retenção padrão para um bucket que tenha o S3 Object Lock habilitado.  Você também pode remover as configurações de retenção padrão configuradas anteriormente.
+
+Quando novas versões de objetos são ingeridas no bucket, o modo de retenção padrão é aplicado se `x-amz-object-lock-mode` e `x-amz-object-lock-retain-until-date` não são especificados.  O período de retenção padrão é usado para calcular a data de retenção se `x-amz-object-lock-retain-until-date` não é especificado.
+
+Se o período de retenção padrão for modificado após a ingestão de uma versão do objeto, a data de retenção da versão do objeto permanecerá a mesma e não será recalculada usando o novo período de retenção padrão.
+
+Você deve ter o `s3:PutBucketObjectLockConfiguration` permissão, ou ser root da conta, para concluir esta operação.
+
+O `Content-MD5` O cabeçalho da solicitação deve ser especificado na solicitação PUT.
+
+
+
+==== Exemplo de solicitação
+
+Este exemplo habilita o S3 Object Lock para um bucket e define o modo de retenção padrão como COMPLIANCE e o período de retenção padrão como 6 anos.
+
+[listing, subs="specialcharacters,quotes"]
+----
+PUT /bucket?object-lock HTTP/1.1
+Accept-Encoding: identity
+Content-Length: 308
+Host: _host_
+Content-MD5: _request header_
+User-Agent: s3sign/1.0.0 requests/2.24.0 python/3.8.2
+X-Amz-Date: _date_
+X-Amz-Content-SHA256: _authorization-string_
+Authorization: _authorization-string_
+
+<ObjectLockConfiguration>
+    <ObjectLockEnabled>Enabled</ObjectLockEnabled>
+    <Rule>
+        <DefaultRetention>
+            <Mode>COMPLIANCE</Mode>
+            <Years>6</Years>
+        </DefaultRetention>
+    </Rule>
+</ObjectLockConfiguration>
+----
+
+
+== Como determinar a retenção padrão para um bucket
+
+Para determinar se o S3 Object Lock está habilitado para um bucket e para ver o modo de retenção padrão e o período de retenção, use um destes métodos:
+
+* Visualize o bucket no Gerenciador de locatários. Ver link:../tenant/viewing-s3-bucket-details.html["Exibir buckets S3"] .
+* Emita uma solicitação GetObjectLockConfiguration.
+
+
+
+
+=== ObterConfiguraçãoObjectLock
+
+A solicitação GetObjectLockConfiguration permite que você determine se o S3 Object Lock está habilitado para um bucket e, se estiver, veja se há um modo de retenção padrão e um período de retenção configurados para o bucket.
+
+Quando novas versões de objetos são ingeridas no bucket, o modo de retenção padrão é aplicado se `x-amz-object-lock-mode` não é especificado.  O período de retenção padrão é usado para calcular a data de retenção se `x-amz-object-lock-retain-until-date` não é especificado.
+
+Você deve ter o `s3:GetBucketObjectLockConfiguration` permissão, ou ser root da conta, para concluir esta operação.
+
+
+
+==== Exemplo de solicitação
+
+[listing, subs="specialcharacters,quotes"]
+----
+GET /bucket?object-lock HTTP/1.1
+Host: _host_
+Accept-Encoding: identity
+User-Agent: aws-cli/1.18.106 Python/3.8.2 Linux/4.4.0-18362-Microsoft botocore/1.17.29
+x-amz-date: _date_
+x-amz-content-sha256: _authorization-string_
+Authorization: _authorization-string_
+----
+
+
+==== Exemplo de resposta
+
+[listing]
+----
+HTTP/1.1 200 OK
+x-amz-id-2: iVmcB7OXXJRkRH1FiVq1151/T24gRfpwpuZrEG11Bb9ImOMAAe98oxSpXlknabA0LTvBYJpSIXk=
+x-amz-request-id: B34E94CACB2CEF6D
+Date: Fri, 04 Sep 2020 22:47:09 GMT
+Transfer-Encoding: chunked
+Server: AmazonS3
+
+<?xml version="1.0" encoding="UTF-8"?>
+<ObjectLockConfiguration xmlns="http://s3.amazonaws.com/doc/2006-03-01/">
+    <ObjectLockEnabled>Enabled</ObjectLockEnabled>
+    <Rule>
+        <DefaultRetention>
+            <Mode>COMPLIANCE</Mode>
+            <Years>6</Years>
+        </DefaultRetention>
+    </Rule>
+</ObjectLockConfiguration>
+----
+
+
+== Como especificar configurações de retenção para um objeto
+
+Um bucket com o S3 Object Lock ativado pode conter uma combinação de objetos com e sem configurações de retenção do S3 Object Lock.
+
+As configurações de retenção no nível do objeto são especificadas usando a API REST do S3.  As configurações de retenção de um objeto substituem quaisquer configurações de retenção padrão do bucket.
+
+Você pode especificar as seguintes configurações para cada objeto:
+
+* *Modo de retenção*: CONFORMIDADE ou GOVERNANÇA.
+* *Retain-until-date*: Uma data que especifica por quanto tempo a versão do objeto deve ser retida pelo StorageGRID.
++
+** No modo CONFORMIDADE, se a data de retenção for no futuro, o objeto poderá ser recuperado, mas não poderá ser modificado ou excluído.  A data de retenção pode ser aumentada, mas esta data não pode ser diminuída ou removida.
+** No modo GOVERNANÇA, usuários com permissão especial podem ignorar a configuração de retenção até a data.  Eles podem excluir uma versão do objeto antes que seu período de retenção termine.  Eles também podem aumentar, diminuir ou até mesmo remover a data de retenção.
+
+
+* *Retenção legal*: Aplicar uma retenção legal a uma versão de objeto bloqueia imediatamente esse objeto.  Por exemplo, você pode precisar reter legalmente um objeto relacionado a uma investigação ou disputa legal.  Uma retenção legal não tem data de expiração, mas permanece em vigor até ser explicitamente removida.
++
+A configuração de retenção legal para um objeto é independente do modo de retenção e da data de retenção.  Se uma versão do objeto estiver sob retenção legal, ninguém poderá excluí-la.
+
+
+
+Para especificar as configurações de bloqueio de objeto do S3 ao adicionar uma versão de objeto a um bucket, emita umlink:put-object.html["ColocarObjeto"] ,link:put-object-copy.html["CopiarObjeto"] , oulink:initiate-multipart-upload.html["CriarMultipartUpload"] solicitar.
+
+Você pode usar o seguinte:
+
+* `x-amz-object-lock-mode`, que pode ser COMPLIANCE ou GOVERNANCE (diferencia maiúsculas de minúsculas).
++
+
+NOTE: Se você especificar `x-amz-object-lock-mode` , você também deve especificar `x-amz-object-lock-retain-until-date` .
+
+* `x-amz-object-lock-retain-until-date`
++
+** O valor reter-até-data deve estar no formato `2020-08-10T21:46:00Z` .  Segundos fracionários são permitidos, mas apenas 3 dígitos decimais são preservados (precisão de milissegundos).  Outros formatos ISO 8601 não são permitidos.
+** A data de retenção deve ser no futuro.
+
+
+* `x-amz-object-lock-legal-hold`
++
+Se a retenção legal estiver LIGADA (diferencia maiúsculas de minúsculas), o objeto será colocado sob retenção legal.  Se a retenção legal estiver DESLIGADA, nenhuma retenção legal será aplicada.  Qualquer outro valor resulta em um erro 400 Bad Request (InvalidArgument).
+
+
+
+Se você usar qualquer um desses cabeçalhos de solicitação, esteja ciente destas restrições:
+
+* O `Content-MD5` o cabeçalho da solicitação é necessário se houver `x-amz-object-lock-*` O cabeçalho da solicitação está presente na solicitação PutObject. `Content-MD5` não é necessário para CopyObject ou CreateMultipartUpload.
+* Se o bucket não tiver o S3 Object Lock habilitado e um `x-amz-object-lock-*` Se o cabeçalho da solicitação estiver presente, um erro 400 Bad Request (InvalidRequest) será retornado.
+* A solicitação PutObject suporta o uso de `x-amz-storage-class: REDUCED_REDUNDANCY` para corresponder ao comportamento da AWS.  No entanto, quando um objeto é ingerido em um bucket com o S3 Object Lock habilitado, o StorageGRID sempre executará uma ingestão de confirmação dupla.
+* Uma resposta de versão GET ou HeadObject subsequente incluirá os cabeçalhos `x-amz-object-lock-mode` , `x-amz-object-lock-retain-until-date` , e `x-amz-object-lock-legal-hold` , se configurado e se o remetente da solicitação tiver o correto `s3:Get*` permissões.
+
+
+Você pode usar o `s3:object-lock-remaining-retention-days` chave de condição de política para limitar os períodos mínimos e máximos de retenção permitidos para seus objetos.
+
+
+
+== Como atualizar as configurações de retenção de um objeto
+
+Se precisar atualizar as configurações de retenção ou retenção legal para uma versão de objeto existente, você pode executar as seguintes operações de sub-recursos do objeto:
+
+* `PutObjectLegalHold`
++
+Se o novo valor de retenção legal for LIGADO, o objeto será colocado sob retenção legal.  Se o valor de retenção legal estiver DESLIGADO, a retenção legal será suspensa.
+
+* `PutObjectRetention`
++
+** O valor do modo pode ser CONFORMIDADE ou GOVERNANÇA (diferencia maiúsculas de minúsculas).
+** O valor reter-até-data deve estar no formato `2020-08-10T21:46:00Z` .  Segundos fracionários são permitidos, mas apenas 3 dígitos decimais são preservados (precisão de milissegundos).  Outros formatos ISO 8601 não são permitidos.
+** Se uma versão do objeto tiver uma data de retenção existente, você só poderá aumentá-la.  O novo valor deve estar no futuro.
+
+
+
+
+
+
+== Como usar o modo GOVERNANÇA
+
+Usuários que possuem o `s3:BypassGovernanceRetention` a permissão pode ignorar as configurações de retenção ativas de um objeto que usa o modo GOVERNANCE.  Qualquer operação DELETE ou PutObjectRetention deve incluir o `x-amz-bypass-governance-retention:true` cabeçalho da solicitação.  Esses usuários podem executar estas operações adicionais:
+
+* Execute as operações DeleteObject ou DeleteObjects para excluir uma versão do objeto antes que seu período de retenção termine.
++
+Objetos que estão sob retenção legal não podem ser excluídos.  A retenção legal deve estar DESLIGADA.
+
+* Execute operações PutObjectRetention que alterem o modo de versão de um objeto de GOVERNANCE para COMPLIANCE antes que o período de retenção do objeto tenha decorrido.
++
+Alterar o modo de CONFORMIDADE para GOVERNANÇA nunca é permitido.
+
+* Execute operações PutObjectRetention para aumentar, diminuir ou remover o período de retenção de uma versão do objeto.
+
+
+.Informações relacionadas
+* link:../ilm/managing-objects-with-s3-object-lock.html["Gerenciar objetos com o S3 Object Lock"]
+* link:../tenant/using-s3-object-lock.html["Use o S3 Object Lock para reter objetos"]
+* https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-lock.html["Guia do usuário do Amazon Simple Storage Service: Bloqueio de objetos"^]
+

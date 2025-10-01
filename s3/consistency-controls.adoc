@@ -1,0 +1,124 @@
+---
+permalink: s3/consistency-controls.html 
+sidebar: sidebar 
+keywords: consistency, consistency control, consistency values 
+summary: A consistência fornece um equilíbrio entre a disponibilidade dos objetos e a consistência desses objetos em diferentes nós de armazenamento e sites.  Você pode alterar a consistência conforme exigido pelo seu aplicativo. 
+---
+= Valores de consistência
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+A consistência fornece um equilíbrio entre a disponibilidade dos objetos e a consistência desses objetos em diferentes nós de armazenamento e sites.  Você pode alterar a consistência conforme exigido pelo seu aplicativo.
+
+Por padrão, o StorageGRID garante consistência de leitura após gravação para objetos recém-criados. Qualquer GET após um PUT concluído com sucesso poderá ler os dados recém-gravados. Substituições de objetos existentes, atualizações de metadados e exclusões são eventualmente consistentes. As substituições geralmente levam segundos ou minutos para se propagar, mas podem levar até 15 dias.
+
+Se você quiser executar operações de objeto com uma consistência diferente, você pode:
+
+* Especifique uma consistência para<<bucket-consistency-control,cada balde>> .
+* Especifique uma consistência para<<api-operation-consistency-control,cada operação de API>> .
+* Altere a consistência padrão em toda a grade executando uma das seguintes tarefas:
++
+** No Grid Manager, vá para *CONFIGURAÇÃO* > *Sistema* > *Configurações de armazenamento* > *Consistência padrão*.
+**  .
++
+
+NOTE: Uma alteração na consistência de toda a grade se aplica somente aos buckets criados após a configuração ter sido alterada.  Para determinar os detalhes de uma alteração, consulte o log de auditoria localizado em `/var/local/log` (pesquise por *consistencyLevel*).
+
+
+
+
+
+
+
+== Valores de consistência
+
+A consistência afeta como os metadados que o StorageGRID usa para rastrear objetos são distribuídos entre os nós e, portanto, a disponibilidade dos objetos para solicitações do cliente.
+
+Você pode definir a consistência de um bucket ou de uma operação de API para um dos seguintes valores:
+
+* *Todos*: Todos os nós recebem os dados imediatamente, ou a solicitação falhará.
+* *Strong-global*: Garante consistência de leitura após gravação para todas as solicitações de clientes em todos os sites.
+* *Strong-site*: Garante consistência de leitura após gravação para todas as solicitações de clientes dentro de um site.
+* *Leitura após nova gravação*: (Padrão) Fornece consistência de leitura após gravação para novos objetos e consistência eventual para atualizações de objetos.  Oferece alta disponibilidade e garantias de proteção de dados.  Recomendado para a maioria dos casos.
+* *Disponível*: Fornece consistência eventual para novos objetos e atualizações de objetos.  Para buckets S3, use somente quando necessário (por exemplo, para um bucket que contém valores de log que raramente são lidos ou para operações HEAD ou GET em chaves que não existem).  Não suportado para buckets do S3 FabricPool .
+
+
+
+
+== Use a consistência "Leitura após nova gravação" e "Disponível"
+
+Quando uma operação HEAD ou GET usa a consistência "Leitura após nova gravação", o StorageGRID executa a pesquisa em várias etapas, da seguinte maneira:
+
+* Primeiro, ele procura o objeto usando uma consistência baixa.
+* Se essa pesquisa falhar, ela será repetida no próximo valor de consistência até atingir uma consistência equivalente ao comportamento de strong-global.
+
+
+Se uma operação HEAD ou GET usar a consistência "Leitura após nova gravação", mas o objeto não existir, a pesquisa de objetos sempre alcançará uma consistência equivalente ao comportamento de strong-global.  Como essa consistência exige que várias cópias dos metadados do objeto estejam disponíveis em cada site, você poderá receber um alto número de erros 500 do servidor interno se dois ou mais nós de armazenamento no mesmo site estiverem indisponíveis.
+
+A menos que você precise de garantias de consistência semelhantes às do Amazon S3, você pode evitar esses erros para operações HEAD e GET definindo a consistência como "Disponível".  Quando uma operação HEAD ou GET usa a consistência "Disponível", o StorageGRID fornece apenas consistência eventual.  Ele não tenta novamente uma operação com falha para aumentar a consistência, portanto, não exige que várias cópias dos metadados do objeto estejam disponíveis.
+
+
+
+== [[api-operation-consistency-control]]Especificar consistência para operação de API
+
+Para definir a consistência de uma operação de API individual, os valores de consistência devem ser suportados para a operação e você deve especificar a consistência no cabeçalho da solicitação.  Este exemplo define a consistência como "Strong-site" para uma operação GetObject.
+
+[listing, subs="specialcharacters,quotes"]
+----
+GET /bucket/object HTTP/1.1
+Date: date
+Authorization: _authorization name_
+Host: _host_
+Consistency-Control: strong-site
+----
+
+NOTE: Você deve usar a mesma consistência para as operações PutObject e GetObject.
+
+
+
+== [[bucket-consistency-control]]Especificar consistência para bucket
+
+Para definir a consistência do bucket, você pode usar o StorageGRIDlink:put-bucket-consistency-request.html["Consistência do balde PUT"] solicitar.  Ou você podelink:../tenant/manage-bucket-consistency.html#change-bucket-consistency["alterar a consistência de um balde"] do gerente do inquilino.
+
+Ao definir a consistência de um bucket, esteja ciente do seguinte:
+
+* Definir a consistência de um bucket determina qual consistência será usada para operações do S3 executadas nos objetos no bucket ou na configuração do bucket.  Não afeta as operações no próprio bucket.
+* A consistência de uma operação de API individual substitui a consistência do bucket.
+* Em geral, os buckets devem usar a consistência padrão, "Leitura após nova gravação".  Se as solicitações não estiverem funcionando corretamente, altere o comportamento do cliente do aplicativo, se possível.  Ou configure o cliente para especificar a consistência para cada solicitação de API.  Defina a consistência no nível do bucket somente como último recurso.
+
+
+
+
+== [[como-controles-de-consistência-e-regras-de-ILM-interagem]]Como a consistência e as regras de ILM interagem para afetar a proteção de dados
+
+Tanto sua escolha de consistência quanto sua regra de ILM afetam como os objetos são protegidos.  Essas configurações podem interagir.
+
+Por exemplo, a consistência usada quando um objeto é armazenado afeta o posicionamento inicial dos metadados do objeto, enquanto o comportamento de ingestão selecionado para a regra ILM afeta o posicionamento inicial das cópias do objeto.  Como o StorageGRID requer acesso aos metadados de um objeto e seus dados para atender às solicitações do cliente, selecionar níveis correspondentes de proteção para consistência e comportamento de ingestão pode fornecer melhor proteção inicial de dados e respostas do sistema mais previsíveis.
+
+A seguirlink:../ilm/data-protection-options-for-ingest.html["opções de ingestão"] estão disponíveis para regras ILM:
+
+Comprometimento duplo:: O StorageGRID faz imediatamente cópias provisórias do objeto e retorna sucesso ao cliente.  Cópias especificadas na regra ILM são feitas quando possível.
+Estrito:: Todas as cópias especificadas na regra ILM devem ser feitas antes que o sucesso seja retornado ao cliente.
+Equilibrado:: O StorageGRID tenta fazer todas as cópias especificadas na regra ILM na ingestão; se isso não for possível, cópias provisórias são feitas e o sucesso é retornado ao cliente.  As cópias especificadas na regra ILM são feitas quando possível.
+
+
+
+
+== Exemplo de como a consistência e a regra ILM podem interagir
+
+Suponha que você tenha uma grade de dois sites com a seguinte regra ILM e a seguinte consistência:
+
+* *Regra do ILM*: Crie duas cópias de objetos, uma no site local e outra em um site remoto. Use o comportamento de ingestão estrito.
+* *consistência*: Forte-global (os metadados do objeto são imediatamente distribuídos para todos os sites).
+
+
+Quando um cliente armazena um objeto na grade, o StorageGRID faz cópias do objeto e distribui metadados para ambos os sites antes de retornar o sucesso ao cliente.
+
+O objeto é totalmente protegido contra perda no momento da ingestão bem-sucedida da mensagem. Por exemplo, se o site local for perdido logo após a ingestão, cópias dos dados do objeto e dos metadados do objeto ainda existirão no site remoto.  O objeto é totalmente recuperável.
+
+Se, em vez disso, você usasse a mesma regra de ILM e a consistência de site forte, o cliente poderia receber uma mensagem de sucesso depois que os dados do objeto fossem replicados para o site remoto, mas antes que os metadados do objeto fossem distribuídos lá. Nesse caso, o nível de proteção dos metadados do objeto não corresponde ao nível de proteção dos dados do objeto. Se o site local for perdido logo após a ingestão, os metadados do objeto serão perdidos. O objeto não pode ser recuperado.
+
+A inter-relação entre consistência e regras de ILM pode ser complexa.  Entre em contato com a NetApp se precisar de assistência.

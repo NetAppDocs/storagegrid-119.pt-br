@@ -1,0 +1,82 @@
+---
+permalink: maintain/monitoring-services-appliance-installation.html 
+sidebar: sidebar 
+keywords: storagegrid, recover, appliance 
+summary: O instalador do dispositivo StorageGRID fornece status até que a instalação seja concluída.  Quando a instalação do software estiver concluída, o dispositivo será reinicializado. 
+---
+= Instalação de aparelhos de serviços de monitoramento
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+O instalador do dispositivo StorageGRID fornece status até que a instalação seja concluída.  Quando a instalação do software estiver concluída, o dispositivo será reinicializado.
+
+.Passos
+. Para monitorar o progresso da instalação, clique em *Monitorar instalação* na barra de menu.
++
+A página Instalação do Monitor mostra o progresso da instalação.
+
++
+image::../media/monitor_installation_services_appl.png[Instalação de Monitores - Serviços Appl]
+
++
+A barra de status azul indica qual tarefa está em andamento.  Barras de status verdes indicam tarefas que foram concluídas com sucesso.
+
++
+
+NOTE: O instalador garante que as tarefas concluídas em uma instalação anterior não sejam executadas novamente.  Se você estiver executando uma instalação novamente, todas as tarefas que não precisam ser executadas novamente serão exibidas com uma barra de status verde e o status "Ignorada".
+
+. Revise o progresso dos dois primeiros estágios da instalação.
++
+** *1.  Configurar armazenamento*
++
+Durante esta etapa, o instalador limpa qualquer configuração existente das unidades e define as configurações do host.
+
+** *2.  Instalar SO*
++
+Durante esse estágio, o instalador copia a imagem do sistema operacional base para o StorageGRID do nó de administração principal para o dispositivo ou instala o sistema operacional base do pacote de instalação para o nó de administração principal.
+
+
+
+. Continue monitorando o progresso da instalação até que ocorra uma das seguintes situações:
++
+** Para nós de gateway de dispositivo ou nós de administração de dispositivo não primários, o estágio *Instalar StorageGRID* é pausado e uma mensagem é exibida no console incorporado, solicitando que você aprove esse nó no nó de administração usando o Grid Manager.
++
+image::../media/monitor_installation_install_sgws.gif[A imagem é descrita pelo texto ao redor]
+
+** Para os nós de administração primários do dispositivo, uma quinta fase (Carregar instalador do StorageGRID ) é exibida.  Se a quinta fase estiver em andamento por mais de 10 minutos, atualize a página manualmente.
++
+image::../media/monitor_reinstallation_primary_admin.png[captura de tela da 5ª fase para reinstalação do nó de administração primário]
+
+
+
+. Vá para a próxima etapa do processo de recuperação para o tipo de nó de grade do dispositivo que você está recuperando.
++
+[cols="1a,2a"]
+|===
+| Tipo de recuperação | Referência 
+
+
+ a| 
+Nó de gateway
+ a| 
+link:selecting-start-recovery-to-configure-gateway-node.html["Selecione Iniciar recuperação para configurar o nó do gateway"]
+
+
+
+ a| 
+Nó de administração não primário
+ a| 
+link:selecting-start-recovery-to-configure-non-primary-admin-node.html["Selecione Iniciar recuperação para configurar o nó de administração não primário"]
+
+
+
+ a| 
+Nó de administração primário
+ a| 
+link:configuring-replacement-primary-admin-node.html["Configurar nó de administração primário de substituição"]
+
+|===
+

@@ -1,0 +1,33 @@
+---
+permalink: maintain/checking-systems-condition-before-applying-hotfix.html 
+sidebar: sidebar 
+keywords: storagegrid, hotfix 
+summary: Você deve verificar se o sistema está pronto para acomodar o hotfix. 
+---
+= Verifique a condição do sistema antes de aplicar o hotfix
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Você deve verificar se o sistema está pronto para acomodar o hotfix.
+
+. Sign in no Grid Manager usando umlink:../admin/web-browser-requirements.html["navegador da web compatível"] .
+. Se possível, certifique-se de que o sistema esteja funcionando normalmente e que todos os nós da rede estejam conectados à rede.
++
+Os nós conectados têm marcas de verificação verdesimage:../media/icon_alert_green_checkmark.png["ícone alerta marca de verificação verde"] na página Nós.
+
+. Verifique e resolva quaisquer alertas atuais, se possível.
+. Certifique-se de que não haja outros procedimentos de manutenção em andamento, como um procedimento de atualização, recuperação, expansão ou desativação.
++
+Você deve esperar a conclusão de quaisquer procedimentos de manutenção ativos antes de aplicar um hotfix.
+
++
+Não é possível aplicar um hotfix do StorageGRID quando outro procedimento de manutenção estiver em execução.  Por exemplo, você não pode aplicar um hotfix enquanto um procedimento de desativação, expansão ou recuperação estiver em execução.
+
++
+
+NOTE: Se um nó ou sitelink:pausing-and-resuming-decommission-process-for-storage-nodes.html["procedimento de descomissionamento está pausado"] , você pode aplicar um hotfix com segurança.  Além disso, você pode aplicar um hotfix durante os estágios finais de um procedimento de atualização do StorageGRID . Veja as instruções paralink:../upgrade/index.html["atualizando o software StorageGRID"] .
+
+

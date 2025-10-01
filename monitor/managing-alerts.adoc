@@ -1,0 +1,39 @@
+---
+permalink: monitor/managing-alerts.html 
+sidebar: sidebar 
+keywords: alert rules, managing alerts, alerts, alert notifications. edit alert rules 
+summary: O sistema de alerta fornece uma interface fácil de usar para detectar, avaliar e resolver problemas que podem ocorrer durante a operação do StorageGRID . 
+---
+= Gerenciar alertas
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+O sistema de alerta fornece uma interface fácil de usar para detectar, avaliar e resolver problemas que podem ocorrer durante a operação do StorageGRID .
+
+Os alertas são acionados em níveis de gravidade específicos quando as condições da regra de alerta são avaliadas como verdadeiras.  Quando um alerta é disparado, as seguintes ações ocorrem:
+
+* Um ícone de gravidade de alerta é exibido no painel do Grid Manager, e a contagem de Alertas Atuais é incrementada.
+* O alerta é exibido na página de resumo *NODES* e na guia *NODES* > *_node_* > *Overview*.
+* Uma notificação por e-mail é enviada, supondo que você tenha configurado um servidor SMTP e fornecido endereços de e-mail para os destinatários.
+* Uma notificação do Protocolo Simples de Gerenciamento de Rede (SNMP) é enviada, supondo que você tenha configurado o agente SNMP do StorageGRID .
+
+
+Você pode criar alertas personalizados, editar ou desabilitar alertas e gerenciar notificações de alertas.
+
+Para saber mais:
+
+* Reveja o vídeo: https://netapp.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=2eea81c5-8323-417f-b0a0-b1ff008506c1["Vídeo: Visão geral dos alertas"^]
++
+[link=https://netapp.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=2eea81c5-8323-417f-b0a0-b1ff008506c1]
+image::../media/video-screenshot-alert-overview-118.png[Vídeo: Visão geral dos alertas]
+
+* Reveja o vídeo: https://netapp.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=54af90c4-9a38-4136-9621-b1ff008604a3["Vídeo: Alertas personalizados"^]
++
+[link=https://netapp.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=54af90c4-9a38-4136-9621-b1ff008604a3]
+image::../media/video-screenshot-alert-create-custom-118.png[Vídeo: Alertas personalizados]
+
+* Veja olink:alerts-reference.html["Referência de alertas"] .
+

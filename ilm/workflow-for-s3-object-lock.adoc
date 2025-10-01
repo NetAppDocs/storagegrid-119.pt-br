@@ -1,0 +1,52 @@
+---
+permalink: ilm/workflow-for-s3-object-lock.html 
+sidebar: sidebar 
+keywords: object lock workflow 
+summary: Como administrador de grade, você deve coordenar-se estreitamente com os usuários locatários para garantir que os objetos sejam protegidos de uma maneira que atenda aos seus requisitos de retenção. 
+---
+= Tarefas de bloqueio de objeto S3
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Como administrador de grade, você deve coordenar-se estreitamente com os usuários locatários para garantir que os objetos sejam protegidos de uma maneira que atenda aos seus requisitos de retenção.
+
+
+NOTE: A aplicação das configurações do locatário na grade pode levar 15 minutos ou mais, dependendo da conectividade da rede, do status do nó e das operações do Cassandra.
+
+As listas a seguir para administradores de grade e usuários locatários contêm as tarefas de alto nível para usar o recurso S3 Object Lock.
+
+Administrador de rede::
++
+--
+* Habilitar a configuração global de bloqueio de objeto S3 para todo o sistema StorageGRID .
+* Garantir que as políticas de gestão do ciclo de vida da informação (ILM) sejam _compatíveis_; ou seja, que atendam aoslink:../ilm/managing-objects-with-s3-object-lock.html["requisitos de buckets com bloqueio de objeto S3 habilitado"] .
+* Conforme necessário, permita que um locatário use Conformidade como modo de retenção.  Caso contrário, somente o modo Governança é permitido.
+* Conforme necessário, defina um período máximo de retenção para um locatário.
+
+
+--
+Usuário locatário::
++
+--
+* Revise as considerações para buckets e objetos com o S3 Object Lock.
+* Conforme necessário, entre em contato com o administrador da grade para habilitar a configuração global de bloqueio de objeto do S3 e definir permissões.
+* Crie buckets com o S3 Object Lock habilitado.
+* Opcionalmente, configure as definições de retenção padrão para um bucket:
++
+** Modo de retenção padrão: Governança ou Conformidade, se permitido pelo administrador da rede.
+** Período de retenção padrão: deve ser menor ou igual ao período máximo de retenção definido pelo administrador da grade.
+
+
+* Use o aplicativo cliente S3 para adicionar objetos e, opcionalmente, definir a retenção específica do objeto:
++
+** Modo de retenção.  Governança ou conformidade, se permitido pelo administrador da rede.
+** Data de retenção: deve ser menor ou igual ao que é permitido pelo período máximo de retenção definido pelo administrador da grade.
+
+
+
+
+--
+

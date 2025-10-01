@@ -1,0 +1,156 @@
+---
+permalink: audit/s3-select-request.html 
+sidebar: sidebar 
+keywords: storagegrid, audit, message, S3SL, S3 Select request 
+summary: Esta mensagem indica que um usuário iniciou um trabalho do S3 Select. 
+---
+= S3SL: Solicitação de seleção S3
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Esta mensagem registra uma conclusão após uma solicitação S3 Select ter sido retornada ao cliente.  A mensagem S3SL pode incluir detalhes da mensagem de erro e do código de erro.  A solicitação pode não ter sido bem-sucedida.
+
+[cols="1a,1a,4a"]
+|===
+| Código | Campo | Descrição 
+
+
+ a| 
+BYSC
+ a| 
+Bytes escaneados
+ a| 
+Número de bytes escaneados (recebidos) dos nós de armazenamento.
+
+BYSC e BYPR provavelmente serão diferentes se o objeto for compactado.  Se o objeto for compactado, BYSC terá a contagem de bytes compactados e BYPR serão os bytes após a descompactação.
+
+
+
+ a| 
+BYPR
+ a| 
+Bytes processados
+ a| 
+Número de bytes processados.  Indica quantos bytes de "Bytes escaneados" foram realmente processados ou acionados por um trabalho S3 Select.
+
+
+
+ a| 
+BYRT
+ a| 
+Bytes retornados
+ a| 
+Número de bytes que um trabalho S3 Select retornou ao cliente.
+
+
+
+ a| 
+REPR
+ a| 
+Registros processados
+ a| 
+Número de registros ou linhas que um trabalho S3 Select recebeu dos nós de armazenamento.
+
+
+
+ a| 
+RERT
+ a| 
+Registros Retornados
+ a| 
+Número de registros ou linhas que um trabalho do S3 Select retornou ao cliente.
+
+
+
+ a| 
+JOFI
+ a| 
+Trabalho concluído
+ a| 
+Indica se o trabalho S3 Select concluiu o processamento ou não.  Se isso for falso, o trabalho não foi concluído e os campos de erro provavelmente conterão dados.  O cliente pode ter recebido resultados parciais ou nenhum resultado.
+
+
+
+ a| 
+REID
+ a| 
+ID da solicitação
+ a| 
+Identificador para a solicitação S3 Select.
+
+
+
+ a| 
+EXTM
+ a| 
+Tempo de execução
+ a| 
+O tempo, em segundos, que levou para o S3 Select Job ser concluído.
+
+
+
+ a| 
+ERMG
+ a| 
+Mensagem de erro
+ a| 
+Mensagem de erro gerada pelo trabalho S3 Select.
+
+
+
+ a| 
+ERTY
+ a| 
+Tipo de erro
+ a| 
+Tipo de erro gerado pelo trabalho S3 Select.
+
+
+
+ a| 
+ERST
+ a| 
+Rastreamento de pilha de erros
+ a| 
+Rastreamento de pilha de erros gerado pelo trabalho S3 Select.
+
+
+
+ a| 
+S3BK
+ a| 
+Balde S3
+ a| 
+O nome do bucket S3.
+
+
+
+ a| 
+S3AK
+ a| 
+ID da chave de acesso S3 (remetente da solicitação)
+ a| 
+O ID da chave de acesso S3 para o usuário que enviou a solicitação.
+
+
+
+ a| 
+S3AI
+ a| 
+ID da conta do locatário S3 (remetente da solicitação)
+ a| 
+O ID da conta do locatário do usuário que enviou a solicitação.
+
+
+
+ a| 
+S3KY
+ a| 
+Chave S3
+ a| 
+O nome da chave S3, sem incluir o nome do bucket.
+
+|===

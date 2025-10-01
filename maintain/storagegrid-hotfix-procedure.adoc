@@ -1,0 +1,53 @@
+---
+permalink: maintain/storagegrid-hotfix-procedure.html 
+sidebar: sidebar 
+keywords: apply hotfix, install hotfix, replace primary admin node 
+summary: Pode ser necessário aplicar um hotfix ao seu sistema StorageGRID se problemas com o software forem detectados e resolvidos entre os lançamentos de recursos. 
+---
+= Procedimento de correção do StorageGRID
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Pode ser necessário aplicar um hotfix ao seu sistema StorageGRID se problemas com o software forem detectados e resolvidos entre os lançamentos de recursos.
+
+Os hotfixes do StorageGRID contêm alterações de software que são disponibilizadas fora de um recurso ou lançamento de patch.  As mesmas alterações estão incluídas em uma versão futura.  Além disso, cada versão de hotfix contém um resumo de todos os hotfixes anteriores dentro da versão do recurso ou patch.
+
+
+
+== Considerações para aplicar um hotfix
+
+Não é possível aplicar um hotfix do StorageGRID quando outro procedimento de manutenção estiver em execução.  Por exemplo, você não pode aplicar um hotfix enquanto um procedimento de desativação, expansão ou recuperação estiver em execução.
+
+
+NOTE: Se um procedimento de desativação de nó ou site for pausado, você poderá aplicar um hotfix com segurança.  Além disso, você pode aplicar um hotfix durante os estágios finais de um procedimento de atualização do StorageGRID .  Consulte as instruções para atualizar o software StorageGRID para obter detalhes.
+
+Depois de carregar o hotfix no Grid Manager, ele será aplicado automaticamente ao nó de administração principal.  Em seguida, você pode aprovar a aplicação do hotfix ao restante dos nós no seu sistema StorageGRID .
+
+Se um hotfix não for aplicado a um ou mais nós, o motivo da falha aparecerá na coluna Detalhes da tabela de progresso do hotfix.  Você deve resolver quaisquer problemas que causaram as falhas e depois tentar todo o processo novamente.  Os nós com uma aplicação bem-sucedida anterior do hotfix serão ignorados em aplicações subsequentes.  Você pode tentar novamente o processo de hotfix com segurança quantas vezes forem necessárias até que todos os nós tenham sido atualizados.  O hotfix deve ser instalado com sucesso em todos os nós da grade para que o aplicativo seja concluído.
+
+Embora os nós da grade sejam atualizados com a nova versão do hotfix, as alterações reais em um hotfix podem afetar apenas serviços específicos em tipos específicos de nós.  Por exemplo, um hotfix pode afetar apenas o serviço LDR em nós de armazenamento.
+
+
+
+== Como os hotfixes são aplicados para recuperação e expansão
+
+Depois que um hotfix é aplicado à sua grade, o nó de administração principal instala automaticamente a mesma versão do hotfix em todos os nós restaurados por operações de recuperação ou adicionados em uma expansão.
+
+No entanto, se você precisar recuperar o nó de administração principal, deverá instalar manualmente a versão correta do StorageGRID e, em seguida, aplicar o hotfix.  A versão final do StorageGRID do nó administrativo primário deve corresponder à versão dos outros nós na grade.
+
+O exemplo a seguir ilustra como aplicar um hotfix ao recuperar o nó de administração primário:
+
+. Suponha que a grade esteja executando uma versão StorageGRID 11._A.B_ com o hotfix mais recente.  A "versão em grade" é 11._A.B.y_.
+. O nó de administração primário falha.
+. Você reimplanta o nó de administração primário usando o StorageGRID 11._A.B_ e executa o procedimento de recuperação.
++
+
+NOTE: Conforme necessário para corresponder à versão da grade, você pode usar uma versão secundária ao implantar o nó; não é necessário implantar a versão principal primeiro.
+
+. Em seguida, aplique o hotfix 11._A.B.y_ ao nó de administração primário.
+
+
+Para obter mais informações, consulte link:configuring-replacement-primary-admin-node.html["Configurar nó de administração primário de substituição"] .

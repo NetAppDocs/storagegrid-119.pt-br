@@ -1,0 +1,30 @@
+= 
+:allow-uri-read: 
+
+
+[cols="1a,2a"]
+|===
+| Modo de retenção padrão | Descrição 
+
+
+ a| 
+Governança
+ a| 
+* Usuários com o `s3:BypassGovernanceRetention` permissão pode usar o `x-amz-bypass-governance-retention: true` cabeçalho de solicitação para ignorar as configurações de retenção.
+* Esses usuários podem excluir uma versão do objeto antes que sua data de retenção seja atingida.
+* Esses usuários podem aumentar, diminuir ou remover a data de retenção de um objeto.
+
+
+
+
+ a| 
+Conformidade
+ a| 
+* O objeto não pode ser excluído até que sua data de retenção seja atingida.
+* A data de retenção do objeto pode ser aumentada, mas não diminuída.
+* A data de retenção do objeto não pode ser removida até que essa data seja atingida.
+
+
+*Observação*: o administrador da sua rede deve permitir que você use o modo de conformidade.
+
+|===

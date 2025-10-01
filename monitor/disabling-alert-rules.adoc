@@ -1,0 +1,49 @@
+---
+permalink: monitor/disabling-alert-rules.html 
+sidebar: sidebar 
+keywords: how to disable alert rules, how to remove a custom alert rule 
+summary: Você pode alterar o estado ativado/desativado de uma regra de alerta padrão ou personalizada. 
+---
+= Desativar regras de alerta
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Você pode alterar o estado ativado/desativado de uma regra de alerta padrão ou personalizada.
+
+.Antes de começar
+* Você está conectado ao Grid Manager usando umlink:../admin/web-browser-requirements.html["navegador da web compatível"] .
+* Você tem olink:../admin/admin-group-permissions.html["Gerenciar alertas ou permissão de acesso root"] .
+
+
+.Sobre esta tarefa
+Quando uma regra de alerta é desabilitada, suas expressões não são avaliadas e nenhum alerta é acionado.
+
+
+CAUTION: Em geral, não é recomendado desabilitar uma regra de alerta padrão.  Se uma regra de alerta estiver desabilitada, você poderá não detectar um problema subjacente até que ele impeça a conclusão de uma operação crítica.
+
+.Passos
+. Selecione *ALERTAS* > *Regras*.
++
+A página Regras de alerta é exibida.
+
+. Selecione o botão de opção da regra de alerta que você deseja desabilitar ou habilitar.
+. Selecione *Editar regra*.
++
+A caixa de diálogo Editar regra é exibida.
+
+. Marque ou desmarque a caixa de seleção *Ativado* para determinar se esta regra de alerta está ativada no momento.
++
+Se uma regra de alerta estiver desabilitada, suas expressões não serão avaliadas e nenhum alerta será acionado.
+
++
+
+NOTE: Se você desabilitar a regra de alerta para um alerta atual, deverá aguardar alguns minutos para que o alerta não seja mais exibido como um alerta ativo.
+
+. Selecione *Salvar*.
++
+*Desativado* aparece na coluna *Status*.
+
+

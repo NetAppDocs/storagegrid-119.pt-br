@@ -1,0 +1,46 @@
+---
+permalink: ilm/editing-storage-pool.html 
+sidebar: sidebar 
+keywords: edit storage pool 
+summary: Você pode editar um pool de armazenamento para alterar seu nome ou atualizar sites e níveis de armazenamento. 
+---
+= Editar pool de armazenamento
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Você pode editar um pool de armazenamento para alterar seu nome ou atualizar sites e níveis de armazenamento.
+
+.Antes de começar
+* Você está conectado ao Grid Manager usando umlink:../admin/web-browser-requirements.html["navegador da web compatível"] .
+* Você temlink:../admin/admin-group-permissions.html["permissões de acesso específicas"] .
+* Você revisou olink:guidelines-for-creating-storage-pools.html["diretrizes para criação de pools de armazenamento"] .
+* Se você planeja editar um pool de armazenamento usado por uma regra na política ILM ativa, você deve considerar como suas alterações afetarão o posicionamento dos dados do objeto.
+
+
+.Sobre esta tarefa
+Se você estiver adicionando um novo site ou nível de armazenamento a um pool de armazenamento usado na política de ILM ativa, esteja ciente de que os nós de armazenamento no novo site ou nível de armazenamento não serão usados ​​automaticamente.  Para forçar o StorageGRID a usar um novo site ou nível de armazenamento, você deve ativar uma nova política de ILM depois de salvar o pool de armazenamento editado.
+
+.Passos
+. Selecione *ILM* > *Pools de armazenamento*.
+. Marque a caixa de seleção do pool de armazenamento que você deseja editar.
++
+Não é possível editar o pool de armazenamento Todos os nós de armazenamento (StorageGRID 11.6 e anteriores).
+
+. Selecione *Editar*.
+. Conforme necessário, altere o nome do pool de armazenamento.
+. Conforme necessário, selecione outros locais e níveis de armazenamento.
++
+Você não poderá alterar o site ou o nível de armazenamento se o pool de armazenamento for usado em um perfil de codificação de eliminação e a alteração fizer com que o esquema de codificação de eliminação se torne inválido.  Por exemplo, se um pool de armazenamento usado em um perfil de codificação de eliminação atualmente inclui um nível de armazenamento com apenas um site, você não poderá usar um nível de armazenamento com dois sites porque a alteração tornaria o esquema de codificação de eliminação inválido.
+
++
+
+CAUTION: Adicionar ou remover sites de um pool de armazenamento existente não moverá nenhum dado codificado para eliminação existente.  Se quiser mover os dados existentes do site, você deverá criar um novo pool de armazenamento e um perfil EC para recodificar os dados.
+
+. Selecione *Salvar*.
+
+
+.Depois que você terminar
+Se você adicionou um novo site ou nível de armazenamento a um pool de armazenamento usado na política de ILM ativa, ative uma nova política de ILM para forçar o StorageGRID a usar o novo site ou nível de armazenamento.  Por exemplo, clone sua política de ILM existente e depois ative o clone. Ver link:working-with-ilm-rules-and-ilm-policies.html["Trabalhar com regras e políticas do ILM"] .

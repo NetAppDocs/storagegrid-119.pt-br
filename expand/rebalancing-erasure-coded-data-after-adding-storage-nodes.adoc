@@ -1,0 +1,150 @@
+---
+permalink: expand/rebalancing-erasure-coded-data-after-adding-storage-nodes.html 
+sidebar: sidebar 
+keywords: erasure coding, EC, rebalancing, site rebalance procedure 
+summary: Depois de adicionar nós de armazenamento, você pode usar o procedimento de rebalanceamento de codificação de eliminação para redistribuir fragmentos codificados por eliminação entre os nós de armazenamento existentes e novos. 
+---
+= Rebalancear dados codificados para eliminação após adicionar nós de armazenamento
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Depois de adicionar nós de armazenamento, você pode usar o procedimento de rebalanceamento de codificação de eliminação (EC) para redistribuir fragmentos codificados por eliminação entre os nós de armazenamento existentes e novos.
+
+.Antes de começar
+* Você concluiu as etapas de expansão para adicionar os novos nós de armazenamento.
+* Você revisou olink:considerations-for-rebalancing-erasure-coded-data.html["considerações para rebalanceamento de dados codificados por apagamento"] .
+* Você entende que os dados do objeto replicado não serão movidos por este procedimento e que o procedimento de rebalanceamento do EC não considera o uso de dados replicados em cada nó de armazenamento ao determinar para onde mover os dados codificados para eliminação.
+* Você tem o `Passwords.txt` arquivo.
+
+
+.O que acontece quando este procedimento é executado
+Antes de iniciar o procedimento, observe o seguinte:
+
+* O procedimento de rebalanceamento do EC não será iniciado se um ou mais volumes estiverem offline (desmontados) ou se estiverem online (montados), mas em estado de erro.
+* O procedimento de rebalanceamento da CE reserva temporariamente uma grande quantidade de armazenamento.  Alertas de armazenamento podem ser acionados, mas serão resolvidos quando o rebalanceamento for concluído.  Se não houver armazenamento suficiente para a reserva, o procedimento de rebalanceamento do EC falhará.  As reservas de armazenamento são liberadas quando o procedimento de rebalanceamento do EC é concluído, independentemente de o procedimento ter falhado ou sido bem-sucedido.
+* Se um volume ficar offline enquanto o procedimento de rebalanceamento do EC estiver em andamento, o procedimento de rebalanceamento será encerrado.  Todos os fragmentos de dados que já foram movidos permanecerão em seus novos locais e nenhum dado será perdido.
++
+Você pode executar o procedimento novamente depois que todos os volumes estiverem online novamente.
+
+* Quando o procedimento de rebalanceamento do EC estiver em execução, o desempenho das operações do ILM e das operações do cliente S3 poderá ser afetado.
++
+
+NOTE: As operações da API S3 para carregar objetos (ou partes de objetos) podem falhar durante o procedimento de rebalanceamento do EC se levarem mais de 24 horas para serem concluídas.  As operações PUT de longa duração falharão se a regra ILM aplicável usar posicionamento Balanceado ou Estrito na ingestão.  O seguinte erro será relatado: `500 Internal Server Error` .
+
+* Durante este procedimento, todos os nós têm um limite de capacidade de armazenamento de 80%.  Os nós que excedem esse limite, mas ainda armazenam abaixo da partição de dados de destino, são excluídos de:
++
+** O valor do desequilíbrio do site
+** Quaisquer condições de conclusão do trabalho
++
+
+NOTE: A partição de dados de destino é calculada dividindo o total de dados de um site pelo número de nós.
+
+
+
+* *Condições de conclusão do trabalho*.  O procedimento de reequilíbrio da CE é considerado completo quando qualquer uma das seguintes situações for verdadeira:
++
+** Ele não pode mover mais dados codificados para eliminação.
+** Os dados em todos os nós estão dentro de um desvio de 5% da partição de dados de destino.
+** O procedimento está em andamento há 30 dias.
+
+
+
+
+.Passos
+. [[review_object_storage]]Revise os detalhes atuais do armazenamento de objetos do site que você planeja rebalancear.
++
+.. Selecione *NODES*.
+.. Selecione o primeiro nó de armazenamento no site.
+.. Selecione a aba *Armazenamento*.
+.. Posicione o cursor sobre o gráfico Armazenamento usado - Dados do objeto para ver a quantidade atual de dados replicados e dados codificados para eliminação no nó de armazenamento.
+.. Repita essas etapas para visualizar os outros nós de armazenamento no site.
+
+
+. Efetue login no nó de administração principal:
++
+.. Digite o seguinte comando: `ssh admin@_primary_Admin_Node_IP_`
+.. Digite a senha listada no `Passwords.txt` arquivo.
+.. Digite o seguinte comando para alternar para root: `su -`
+.. Digite a senha listada no `Passwords.txt` arquivo.
++
+Quando você está logado como root, o prompt muda de `$` para `#` .
+
+
+
+. Inicie o procedimento:
++
+`rebalance-data start --site "_nome-do-site_"
+
++
+Para "_site-name_", especifique o primeiro site onde você adicionou um ou mais novos nós de armazenamento.  Incluir `site-name` entre aspas.
+
++
+O procedimento de rebalanceamento do EC é iniciado e um ID de trabalho é retornado.
+
+. Copie o ID do trabalho.
+. [[view-status]]Monitorar o status do procedimento de rebalanceamento da CE.
++
+** Para visualizar o status de um único procedimento de rebalanceamento de CE:
++
+`rebalance-data status --job-id _job-id_`
+
++
+Para `_job-id_` , especifique o ID que foi retornado quando você iniciou o procedimento.
+
+** Para visualizar o status do procedimento atual de rebalanceamento do EC e quaisquer procedimentos concluídos anteriormente:
++
+`rebalance-data status`
+
++
+[NOTE]
+====
+Para obter ajuda sobre o comando rebalance-data:
+
+`rebalance-data --help`
+
+====
+
+
+. Execute etapas adicionais com base no status retornado:
++
+** Se `State` é `In progress` , a operação de rebalanceamento da CE ainda está em execução.  Você deve monitorar o procedimento periodicamente até que ele seja concluído.
++
+Use o `Site Imbalance` valor para avaliar o quão desequilibrado é o uso de dados do código de eliminação nos nós de armazenamento do site.  Esse valor pode variar de 1,0 a 0, com 0 indicando que o uso de dados de codificação de eliminação é completamente equilibrado em todos os nós de armazenamento no site.
+
++
+O trabalho de rebalanceamento do EC é considerado concluído e será interrompido quando os dados em todos os nós estiverem dentro de um desvio de 5% da partição de dados de destino.
+
+** Se `State` é `Success` , opcionalmente<<review_object_storage,revisar armazenamento de objetos>> para ver os detalhes atualizados do site.
++
+Os dados codificados para eliminação agora devem ser mais equilibrados entre os nós de armazenamento no site.
+
+** Se `State` é `Failure` :
++
+... Confirme se todos os nós de armazenamento no local estão conectados à rede.
+... Verifique e resolva quaisquer alertas que possam estar afetando esses nós de armazenamento.
+... Reinicie o procedimento de rebalanceamento da CE:
++
+`rebalance-data start –-job-id _job-id_`
+
+... <<view-status,Ver o status>>do novo procedimento.  Se `State` ainda é `Failure` , entre em contato com o suporte técnico.
+
+
+
+
+. Se o procedimento de rebalanceamento do EC estiver gerando muita carga (por exemplo, operações de ingestão afetadas), pause o procedimento.
++
+`rebalance-data pause --job-id _job-id_`
+
+. Se você precisar encerrar o procedimento de rebalanceamento do EC (por exemplo, para poder executar uma atualização do software StorageGRID ), insira o seguinte:
++
+`rebalance-data terminate --job-id _job-id_`
+
++
+
+NOTE: Quando você encerra um procedimento de rebalanceamento de EC, todos os fragmentos de dados que já foram movidos permanecem em seus novos locais.  Os dados não são movidos de volta para o local original.
+
+. Se você estiver usando codificação de eliminação em mais de um site, execute este procedimento para todos os outros sites afetados.
+

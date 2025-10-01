@@ -1,0 +1,23 @@
+---
+permalink: admin/administering-storagegrid-system.html 
+sidebar: sidebar 
+keywords: administration overview 
+summary: Use estas instruções para configurar e administrar um sistema StorageGRID . 
+---
+= Administrar um sistema StorageGRID
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Use estas instruções para configurar e administrar um sistema StorageGRID .
+
+Estas instruções descrevem como usar o Grid Manager para configurar grupos e usuários, criar contas de locatário para permitir que aplicativos cliente S3 armazenem e recuperem objetos, configurar e gerenciar redes StorageGRID , configurar o AutoSupport, gerenciar configurações de nós e muito mais.
+
+Estas instruções são para pessoal técnico que configurará, administrará e dará suporte a um sistema StorageGRID após sua instalação.
+
+.Antes de começar
+* Você tem uma compreensão geral do sistema StorageGRID .
+* Você tem conhecimento bastante detalhado de shells de comando do Linux, redes e configuração e instalação de hardware de servidor.
+

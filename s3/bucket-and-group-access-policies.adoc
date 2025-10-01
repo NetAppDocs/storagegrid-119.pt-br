@@ -1,0 +1,1371 @@
+---
+permalink: s3/bucket-and-group-access-policies.html 
+sidebar: sidebar 
+keywords: bucket access policies, group access policies 
+summary:  
+---
+= Use políticas de acesso a buckets e grupos
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+O StorageGRID usa a linguagem de política da Amazon Web Services (AWS) para permitir que os locatários do S3 controlem o acesso a buckets e objetos dentro desses buckets.  O sistema StorageGRID implementa um subconjunto da linguagem de política da API REST do S3.  As políticas de acesso para a API do S3 são escritas em JSON.
+
+
+
+== Visão geral da política de acesso
+
+Há dois tipos de políticas de acesso suportadas pelo StorageGRID.
+
+* *Políticas de bucket*, que são gerenciadas usando as operações da API S3 GetBucketPolicy, PutBucketPolicy e DeleteBucketPolicy ou a API Tenant Manager ou Tenant Management.  As políticas de bucket são anexadas aos buckets, portanto, elas são configuradas para controlar o acesso de usuários na conta do proprietário do bucket ou de outras contas ao bucket e aos objetos nele contidos.  Uma política de bucket se aplica a apenas um bucket e possivelmente a vários grupos.
+* *Políticas de grupo*, que são configuradas usando o Tenant Manager ou a Tenant Management API.  As políticas de grupo são anexadas a um grupo na conta, portanto, elas são configuradas para permitir que esse grupo acesse recursos específicos de propriedade dessa conta.  Uma política de grupo se aplica a apenas um grupo e possivelmente a vários buckets.
+
+
+
+NOTE: Não há diferença de prioridade entre políticas de grupo e de bucket.
+
+As políticas de grupo e bucket do StorageGRID seguem uma gramática específica definida pela Amazon.  Dentro de cada política há uma série de declarações de política, e cada declaração contém os seguintes elementos:
+
+* ID da declaração (Sid) (opcional)
+* Efeito
+* Principal/Não Principal
+* Recurso/NãoRecurso
+* Ação/NãoAção
+* Condição (opcional)
+
+
+As declarações de política são criadas usando esta estrutura para especificar permissões: Conceder <Efeito> para permitir/negar que <Principal> execute <Ação> em <Recurso> quando <Condição> se aplicar.
+
+Cada elemento de política é usado para uma função específica:
+
+[cols="1a,2a"]
+|===
+| Elemento | Descrição 
+
+
+ a| 
+Sido
+ a| 
+O elemento Sid é opcional.  O Sid serve apenas como uma descrição para o usuário.  Ele é armazenado, mas não interpretado pelo sistema StorageGRID .
+
+
+
+ a| 
+Efeito
+ a| 
+Use o elemento Efeito para estabelecer se as operações especificadas são permitidas ou negadas.  Você deve identificar as operações que permite (ou nega) em buckets ou objetos usando as palavras-chave do elemento Action suportadas.
+
+
+
+ a| 
+Principal/Não Principal
+ a| 
+Você pode permitir que usuários, grupos e contas acessem recursos específicos e executem ações específicas.  Se nenhuma assinatura S3 for incluída na solicitação, o acesso anônimo será permitido especificando o caractere curinga (*) como principal.  Por padrão, somente o root da conta tem acesso aos recursos de propriedade da conta.
+
+Você só precisa especificar o elemento Principal em uma política de bucket.  Para políticas de grupo, o grupo ao qual a política está anexada é o elemento Principal implícito.
+
+
+
+ a| 
+Recurso/NãoRecurso
+ a| 
+O elemento Resource identifica buckets e objetos.  Você pode permitir ou negar permissões para buckets e objetos usando o Amazon Resource Name (ARN) para identificar o recurso.
+
+
+
+ a| 
+Ação/NãoAção
+ a| 
+Os elementos Ação e Efeito são os dois componentes das permissões.  Quando um grupo solicita um recurso, o acesso ao recurso é concedido ou negado.  O acesso será negado, a menos que você atribua permissões especificamente, mas você pode usar a negação explícita para substituir uma permissão concedida por outra política.
+
+
+
+ a| 
+Doença
+ a| 
+O elemento Condition é opcional.  As condições permitem que você crie expressões para determinar quando uma política deve ser aplicada.
+
+|===
+No elemento Ação, você pode usar o caractere curinga (*) para especificar todas as operações ou um subconjunto de operações.  Por exemplo, esta Ação corresponde a permissões como s3:GetObject, s3:PutObject e s3:DeleteObject.
+
+[listing]
+----
+s3:*Object
+----
+No elemento Recurso, você pode usar os caracteres curinga (\*) e (?).  Enquanto o asterisco (*) corresponde a 0 ou mais caracteres, o ponto de interrogação (?) corresponde a qualquer caractere único.
+
+No elemento Principal, caracteres curinga não são suportados, exceto para definir acesso anônimo, que concede permissão a todos.  Por exemplo, você define o curinga (*) como o valor Principal.
+
+[listing]
+----
+"Principal":"*"
+----
+[listing]
+----
+"Principal":{"AWS":"*"}
+----
+No exemplo a seguir, a instrução está usando os elementos Effect, Principal, Action e Resource.  Este exemplo mostra uma declaração de política de bucket completa que usa o efeito "Permitir" para dar aos Principais, o grupo de administração `federated-group/admin` e o grupo financeiro `federated-group/finance` , permissões para executar a Ação `s3:ListBucket` no balde chamado `mybucket` e a Ação `s3:GetObject` em todos os objetos dentro desse balde.
+
+[listing]
+----
+{
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": [
+          "arn:aws:iam::27233906934684427525:federated-group/admin",
+          "arn:aws:iam::27233906934684427525:federated-group/finance"
+        ]
+      },
+      "Action": [
+        "s3:ListBucket",
+        "s3:GetObject"
+      ],
+      "Resource": [
+        "arn:aws:s3:::mybucket",
+        "arn:aws:s3:::mybucket/*"
+      ]
+    }
+  ]
+}
+----
+A política de bucket tem um limite de tamanho de 20.480 bytes, e a política de grupo tem um limite de tamanho de 5.120 bytes.
+
+
+
+== Consistência para políticas
+
+Por padrão, todas as atualizações feitas nas políticas de grupo serão consistentes.  Quando uma política de grupo se torna consistente, as alterações podem levar mais 15 minutos para entrar em vigor, devido ao cache de políticas.  Por padrão, todas as atualizações feitas nas políticas de bucket são fortemente consistentes.
+
+Conforme necessário, você pode alterar as garantias de consistência para atualizações de política de bucket.  Por exemplo, você pode querer que uma alteração em uma política de bucket esteja disponível durante uma interrupção do site.
+
+Neste caso, você pode definir o `Consistency-Control` cabeçalho na solicitação PutBucketPolicy ou você pode usar a solicitação de consistência PUT Bucket.  Quando uma política de bucket se torna consistente, as alterações podem levar mais 8 segundos para entrar em vigor, devido ao cache de políticas.
+
+
+NOTE: Se você definir a consistência para um valor diferente para contornar uma situação temporária, certifique-se de definir a configuração do nível do bucket de volta para seu valor original quando terminar.  Caso contrário, todas as solicitações futuras de bucket usarão a configuração modificada.
+
+
+
+== Use ARN em declarações de política
+
+Em declarações de política, o ARN é usado nos elementos Principal e Resource.
+
+* Use esta sintaxe para especificar o ARN do recurso S3:
++
+[listing]
+----
+arn:aws:s3:::bucket-name
+arn:aws:s3:::bucket-name/object_key
+----
+* Use esta sintaxe para especificar o ARN do recurso de identidade (usuários e grupos):
++
+[listing]
+----
+arn:aws:iam::account_id:root
+arn:aws:iam::account_id:user/user_name
+arn:aws:iam::account_id:group/group_name
+arn:aws:iam::account_id:federated-user/user_name
+arn:aws:iam::account_id:federated-group/group_name
+----
+
+
+Outras considerações:
+
+* Você pode usar o asterisco (*) como curinga para corresponder a zero ou mais caracteres dentro da chave do objeto.
+* Caracteres internacionais, que podem ser especificados na chave do objeto, devem ser codificados usando JSON UTF-8 ou usando sequências de escape JSON \u.  A codificação percentual não é suportada.
++
+https://www.ietf.org/rfc/rfc2141.txt["Sintaxe URN RFC 2141"^]
+
++
+O corpo da solicitação HTTP para a operação PutBucketPolicy deve ser codificado com charset=UTF-8.
+
+
+
+
+
+== Especificar recursos em uma política
+
+Em declarações de política, você pode usar o elemento Resource para especificar o bucket ou objeto para o qual as permissões são permitidas ou negadas.
+
+* Cada declaração de política requer um elemento Recurso.  Em uma política, os recursos são denotados pelo elemento `Resource` , ou alternativamente, `NotResource` para exclusão.
+* Você especifica recursos com um ARN de recurso S3. Por exemplo:
++
+[listing]
+----
+"Resource": "arn:aws:s3:::mybucket/*"
+----
+* Você também pode usar variáveis de política dentro da chave do objeto. Por exemplo:
++
+[listing]
+----
+"Resource": "arn:aws:s3:::mybucket/home/${aws:username}/*"
+----
+* O valor do recurso pode especificar um bucket que ainda não existe quando uma política de grupo é criada.
+
+
+
+
+== Especificar os principais em uma política
+
+Use o elemento Principal para identificar o usuário, grupo ou conta de locatário que tem acesso permitido/negado ao recurso pela declaração de política.
+
+* Cada declaração de política em uma política de bucket deve incluir um elemento Principal.  Declarações de política em uma política de grupo não precisam do elemento Principal porque o grupo é entendido como o principal.
+* Em uma política, os principais são indicados pelo elemento "Principal" ou, alternativamente, "NotPrincipal" para exclusão.
+* Identidades baseadas em conta devem ser especificadas usando um ID ou um ARN:
++
+[listing]
+----
+"Principal": { "AWS": "account_id"}
+"Principal": { "AWS": "identity_arn" }
+----
+* Este exemplo usa o ID da conta de locatário 27233906934684427525, que inclui a raiz da conta e todos os usuários na conta:
++
+[listing]
+----
+ "Principal": { "AWS": "27233906934684427525" }
+----
+* Você pode especificar apenas a raiz da conta:
++
+[listing]
+----
+"Principal": { "AWS": "arn:aws:iam::27233906934684427525:root" }
+----
+* Você pode especificar um usuário federado específico ("Alex"):
++
+[listing]
+----
+"Principal": { "AWS": "arn:aws:iam::27233906934684427525:federated-user/Alex" }
+----
+* Você pode especificar um grupo federado específico ("Gerentes"):
++
+[listing]
+----
+"Principal": { "AWS": "arn:aws:iam::27233906934684427525:federated-group/Managers"  }
+----
+* Você pode especificar um principal anônimo:
++
+[listing]
+----
+"Principal": "*"
+----
+* Para evitar ambiguidade, você pode usar o UUID do usuário em vez do nome de usuário:
++
+[listing]
+----
+arn:aws:iam::27233906934684427525:user-uuid/de305d54-75b4-431b-adb2-eb6b9e546013
+----
++
+Por exemplo, suponha que Alex deixe a organização e o nome de usuário `Alex` é excluído.  Se um novo Alex se juntar à organização e for designado para o mesmo `Alex` nome de usuário, o novo usuário pode herdar involuntariamente as permissões concedidas ao usuário original.
+
+* O valor principal pode especificar um nome de grupo/usuário que ainda não existe quando uma política de bucket é criada.
+
+
+
+
+== Especificar permissões em uma política
+
+Em uma política, o elemento Ação é usado para permitir/negar permissões para um recurso.  Há um conjunto de permissões que você pode especificar em uma política, que são indicadas pelo elemento "Ação" ou, alternativamente, "NãoAção" para exclusão.  Cada um desses elementos mapeia operações específicas da API REST do S3.
+
+As tabelas listam as permissões que se aplicam aos buckets e as permissões que se aplicam aos objetos.
+
+
+NOTE: O Amazon S3 agora usa a permissão s3:PutReplicationConfiguration para as ações PutBucketReplication e DeleteBucketReplication.  O StorageGRID usa permissões separadas para cada ação, o que corresponde à especificação original do Amazon S3.
+
+
+NOTE: Uma exclusão é realizada quando um put é usado para substituir um valor existente.
+
+
+
+=== Permissões que se aplicam a buckets
+
+[cols="2a,2a,1a"]
+|===
+| Permissões | Operações da API REST do S3 | Personalizado para StorageGRID 
+
+
+ a| 
+s3:CriarBucket
+ a| 
+CriarBucket
+ a| 
+Sim.
+
+*Observação*: Use somente em políticas de grupo.
+
+
+
+ a| 
+s3:ExcluirBucket
+ a| 
+ExcluirBucket
+ a| 
+
+
+
+ a| 
+s3:DeleteBucketMetadataNotification
+ a| 
+EXCLUIR configuração de notificação de metadados do bucket
+ a| 
+Sim
+
+
+
+ a| 
+s3:DeleteBucketPolicy
+ a| 
+Política de exclusão de balde
+ a| 
+
+
+
+ a| 
+s3:ExcluirConfiguração de Replicação
+ a| 
+DeleteBucketReplication
+ a| 
+Sim, permissões separadas para PUT e DELETE
+
+
+
+ a| 
+s3:ObterBucketAcl
+ a| 
+ObterBucketAcl
+ a| 
+
+
+
+ a| 
+s3:ObterConformidade doBucket
+ a| 
+Conformidade com o GET Bucket (obsoleto)
+ a| 
+Sim
+
+
+
+ a| 
+s3:ObterConsistência doBucket
+ a| 
+Consistência do balde GET
+ a| 
+Sim
+
+
+
+ a| 
+s3:ObterBucketCORS
+ a| 
+ObterBucketCors
+ a| 
+
+
+
+ a| 
+s3:ObterConfiguração de Criptografia
+ a| 
+Obter criptografia do Bucket
+ a| 
+
+
+
+ a| 
+s3:GetBucketÚltimoAcessoHora
+ a| 
+Último horário de acesso do Bucket GET
+ a| 
+Sim
+
+
+
+ a| 
+s3:ObterLocalização do Balde
+ a| 
+ObterBucketLocation
+ a| 
+
+
+
+ a| 
+s3:GetBucketMetadataNotification
+ a| 
+Configuração de notificação de metadados do GET Bucket
+ a| 
+Sim
+
+
+
+ a| 
+s3:GetBucketNotification
+ a| 
+Obter configuração de notificação de bucket
+ a| 
+
+
+
+ a| 
+s3:GetBucketObjectLockConfiguration
+ a| 
+ObterConfiguraçãoObjectLock
+ a| 
+
+
+
+ a| 
+s3:ObterPolítica deBucket
+ a| 
+ObterBucketPolicy
+ a| 
+
+
+
+ a| 
+s3:Obter marcação de balde
+ a| 
+Obter marcação de balde
+ a| 
+
+
+
+ a| 
+s3:GetBucketVersionamento
+ a| 
+ObterVersionamento doBucket
+ a| 
+
+
+
+ a| 
+s3:ObterConfiguração do Ciclo de Vida
+ a| 
+Obter configuração do ciclo de vida do Bucket
+ a| 
+
+
+
+ a| 
+s3:ObterConfiguração de Replicação
+ a| 
+Obter replicação do Bucket
+ a| 
+
+
+
+ a| 
+s3:ListarTodosOsMeusBuckets
+ a| 
+* ListBuckets
+* Uso de armazenamento GET
+
+ a| 
+Sim, para uso de armazenamento GET.
+
+*Observação*: Use somente em políticas de grupo.
+
+
+
+ a| 
+s3:ListBucket
+ a| 
+* Objetos de Lista
+* Balde de cabeça
+* RestaurarObjeto
+
+ a| 
+
+
+
+ a| 
+s3:ListBucketMultipartUploads
+ a| 
+* ListarMultipartUploads
+* RestaurarObjeto
+
+ a| 
+
+
+
+ a| 
+s3:ListBucketVersões
+ a| 
+Versões do GET Bucket
+ a| 
+
+
+
+ a| 
+s3:Conformidade com PutBucket
+ a| 
+Conformidade com o PUT Bucket (obsoleto)
+ a| 
+Sim
+
+
+
+ a| 
+s3:ConsistênciaPutBucket
+ a| 
+Consistência do balde PUT
+ a| 
+Sim
+
+
+
+ a| 
+s3:ColocarBucketCORS
+ a| 
+* ExcluirBucketCors†
+* ColoqueBucketCors
+
+ a| 
+
+
+
+ a| 
+s3:PutEncryptionConfiguration
+ a| 
+* DeleteBucketEncryption
+* PutBucketEncryption
+
+ a| 
+
+
+
+ a| 
+s3:ColocarBucketÚltimoAcessoHora
+ a| 
+Hora do último acesso ao bucket PUT
+ a| 
+Sim
+
+
+
+ a| 
+s3:PutBucketMetadataNotification
+ a| 
+Configuração de notificação de metadados do PUT Bucket
+ a| 
+Sim
+
+
+
+ a| 
+s3:NotificaçãoPutBucket
+ a| 
+Configuração de notificação PutBucket
+ a| 
+
+
+
+ a| 
+s3:PutBucketObjectLockConfiguração
+ a| 
+* CreateBucket com o `x-amz-bucket-object-lock-enabled: true` cabeçalho de solicitação (também requer a permissão s3:CreateBucket)
+* PutObjectLockConfiguration
+
+ a| 
+
+
+
+ a| 
+s3:PolíticaPutBucket
+ a| 
+PutBucketPolicy
+ a| 
+
+
+
+ a| 
+s3:PutBucketTagging
+ a| 
+* ExcluirBucketTagging†
+* Colocar marcação de balde
+
+ a| 
+
+
+
+ a| 
+s3:PutBucketVersionamento
+ a| 
+Versão PutBucket
+ a| 
+
+
+
+ a| 
+s3:PutLifecycleConfiguration
+ a| 
+* Ciclo de vida do DeleteBucket†
+* Configuração do ciclo de vida do PutBucket
+
+ a| 
+
+
+
+ a| 
+s3:PutReplicationConfiguration
+ a| 
+PutBucketReplicação
+ a| 
+Sim, permissões separadas para PUT e DELETE
+
+|===
+
+
+=== Permissões que se aplicam a objetos
+
+[cols="2a,2a,1a"]
+|===
+| Permissões | Operações da API REST do S3 | Personalizado para StorageGRID 
+
+
+ a| 
+s3:AbortarUploadMultipart
+ a| 
+* AbortarMultipartUpload
+* RestaurarObjeto
+
+ a| 
+
+
+
+ a| 
+s3:Ignorar Governança Retenção
+ a| 
+* ExcluirObjeto
+* ExcluirObjetos
+* ColocarRetençãoDeObjeto
+
+ a| 
+
+
+
+ a| 
+s3:ExcluirObjeto
+ a| 
+* ExcluirObjeto
+* ExcluirObjetos
+* RestaurarObjeto
+
+ a| 
+
+
+
+ a| 
+s3:ExcluirMarcaçãoDeObjeto
+ a| 
+ExcluirMarcaçãoDeObjeto
+ a| 
+
+
+
+ a| 
+s3:ExcluirMarcaçãoDeVersãoDoObjeto
+ a| 
+DeleteObjectTagging (uma versão específica do objeto)
+ a| 
+
+
+
+ a| 
+s3:ExcluirVersãoDoObjeto
+ a| 
+DeleteObject (uma versão específica do objeto)
+ a| 
+
+
+
+ a| 
+s3:ObterObjeto
+ a| 
+* ObterObjeto
+* CabeçaObjeto
+* RestaurarObjeto
+* SelecionarObjetoConteúdo
+
+ a| 
+
+
+
+ a| 
+s3:ObterAclDeObjeto
+ a| 
+ObterAclObjeto
+ a| 
+
+
+
+ a| 
+s3:ObterObjetoLegalHold
+ a| 
+ObterObjetoLegalHold
+ a| 
+
+
+
+ a| 
+s3:ObterRetençãoDeObjeto
+ a| 
+ObterRetençãoDeObjeto
+ a| 
+
+
+
+ a| 
+s3:ObterMarcaçãoDeObjeto
+ a| 
+Obter marcação de objeto
+ a| 
+
+
+
+ a| 
+s3:ObterTag deVersão do Objeto
+ a| 
+GetObjectTagging (uma versão específica do objeto)
+ a| 
+
+
+
+ a| 
+s3:ObterVersãoDoObjeto
+ a| 
+GetObject (uma versão específica do objeto)
+ a| 
+
+
+
+ a| 
+s3:ListMultipartUploadParts
+ a| 
+ListParts, RestaurarObjeto
+ a| 
+
+
+
+ a| 
+s3:ColocarObjeto
+ a| 
+* ColocarObjeto
+* CopiarObjeto
+* RestaurarObjeto
+* CriarMultipartUpload
+* Upload completo de várias partes
+* UploadPart
+* UploadPartCopy
+
+ a| 
+
+
+
+ a| 
+s3:ColocarObjetoLegalHold
+ a| 
+ColocarObjetoLegalHold
+ a| 
+
+
+
+ a| 
+s3:PutObjectRetention
+ a| 
+ColocarRetençãoDeObjeto
+ a| 
+
+
+
+ a| 
+s3:PutObjectTagging
+ a| 
+Colocar marcação de objeto
+ a| 
+
+
+
+ a| 
+s3:PutObjectVersionTagging
+ a| 
+PutObjectTagging (uma versão específica do objeto)
+ a| 
+
+
+
+ a| 
+s3:ColocarObjetoSobrescrito
+ a| 
+* ColocarObjeto
+* CopiarObjeto
+* Colocar marcação de objeto
+* ExcluirMarcaçãoDeObjeto
+* Upload completo de várias partes
+
+ a| 
+Sim
+
+
+
+ a| 
+s3:RestaurarObjeto
+ a| 
+RestaurarObjeto
+ a| 
+
+|===
+
+
+== Usar permissão PutOverwriteObject
+
+A permissão s3:PutOverwriteObject é uma permissão personalizada do StorageGRID que se aplica a operações que criam ou atualizam objetos.  A configuração dessa permissão determina se o cliente pode substituir os dados de um objeto, metadados definidos pelo usuário ou marcação de objetos do S3.
+
+As configurações possíveis para essa permissão incluem:
+
+* *Permitir*: O cliente pode substituir um objeto.  Esta é a configuração padrão.
+* *Negar*: O cliente não pode substituir um objeto.  Quando definida como Negar, a permissão PutOverwriteObject funciona da seguinte maneira:
++
+** Se um objeto existente for encontrado no mesmo caminho:
++
+*** Os dados do objeto, os metadados definidos pelo usuário ou a marcação de objetos S3 não podem ser substituídos.
+*** Todas as operações de ingestão em andamento são canceladas e um erro é retornado.
+*** Se o controle de versão do S3 estiver habilitado, a configuração Negar impedirá que as operações PutObjectTagging ou DeleteObjectTagging modifiquem o TagSet de um objeto e suas versões não atuais.
+
+
+** Se um objeto existente não for encontrado, esta permissão não terá efeito.
+
+
+* Quando essa permissão não está presente, o efeito é o mesmo que se Permitir estivesse definido.
+
+
+
+NOTE: Se a política atual do S3 permitir a substituição e a permissão PutOverwriteObject estiver definida como Negar, o cliente não poderá substituir os dados de um objeto, os metadados definidos pelo usuário ou a marcação de objetos. Além disso, se a caixa de seleção *Impedir modificação do cliente* estiver marcada (*CONFIGURAÇÃO* > *Configurações de segurança* > *Rede e objetos*), essa configuração substituirá a configuração da permissão PutOverwriteObject.
+
+
+
+== Especificar condições em uma política
+
+As condições definem quando uma política estará em vigor.  As condições consistem em operadores e pares chave-valor.
+
+As condições usam pares chave-valor para avaliação.  Um elemento Condition pode conter várias condições, e cada condição pode conter vários pares chave-valor.  O bloco de condição usa o seguinte formato:
+
+[listing, subs="specialcharacters,quotes"]
+----
+Condition: {
+     _condition_type_: {
+          _condition_key_: _condition_values_
+----
+No exemplo a seguir, a condição IpAddress usa a chave de condição SourceIp.
+
+[listing]
+----
+"Condition": {
+    "IpAddress": {
+      "aws:SourceIp": "54.240.143.0/24"
+		...
+},
+		...
+----
+
+
+=== Operadores de condição suportados
+
+Os operadores de condição são categorizados da seguinte forma:
+
+* Corda
+* Numérico
+* Booleano
+* Endereço IP
+* Verificação nula
+
+
+[cols="1a,2a"]
+|===
+| Operadores de condição | Descrição 
+
+
+ a| 
+StringEquals
+ a| 
+Compara uma chave a um valor de string com base na correspondência exata (diferencia maiúsculas de minúsculas).
+
+
+
+ a| 
+StringNotEquals
+ a| 
+Compara uma chave a um valor de string com base na correspondência negada (diferencia maiúsculas de minúsculas).
+
+
+
+ a| 
+StringEqualsIgnoreCase
+ a| 
+Compara uma chave a um valor de string com base na correspondência exata (ignora maiúsculas e minúsculas).
+
+
+
+ a| 
+StringNotEqualsIgnoreCase
+ a| 
+Compara uma chave a um valor de string com base na correspondência negada (ignora maiúsculas e minúsculas).
+
+
+
+ a| 
+StringLike
+ a| 
+Compara uma chave a um valor de string com base na correspondência exata (diferencia maiúsculas de minúsculas).  Pode incluir caracteres curinga * e ?.
+
+
+
+ a| 
+StringNotLike
+ a| 
+Compara uma chave a um valor de string com base na correspondência negada (diferencia maiúsculas de minúsculas).  Pode incluir caracteres curinga * e ?.
+
+
+
+ a| 
+NumericEquals
+ a| 
+Compara uma chave a um valor numérico com base na correspondência exata.
+
+
+
+ a| 
+NuméricoNãoIgual
+ a| 
+Compara uma chave a um valor numérico com base na correspondência negada.
+
+
+
+ a| 
+NuméricoMaiorQue
+ a| 
+Compara uma chave a um valor numérico com base na correspondência "maior que".
+
+
+
+ a| 
+NuméricoMaiorQueIgual
+ a| 
+Compara uma chave a um valor numérico com base na correspondência "maior ou igual a".
+
+
+
+ a| 
+NuméricoMenorQue
+ a| 
+Compara uma chave a um valor numérico com base na correspondência "menor que".
+
+
+
+ a| 
+NuméricoMenorQueIgual
+ a| 
+Compara uma chave a um valor numérico com base na correspondência "menor ou igual a".
+
+
+
+ a| 
+Bool
+ a| 
+Compara uma chave a um valor booleano com base na correspondência "verdadeiro ou falso".
+
+
+
+ a| 
+Endereço IP
+ a| 
+Compara uma chave a um endereço IP ou intervalo de endereços IP.
+
+
+
+ a| 
+Não Endereço IP
+ a| 
+Compara uma chave a um endereço IP ou intervalo de endereços IP com base na correspondência negada.
+
+
+
+ a| 
+Nulo
+ a| 
+Verifica se uma chave de condição está presente no contexto de solicitação atual.
+
+|===
+
+
+=== Chaves de condição suportadas
+
+[cols="1a,1a,2a"]
+|===
+| Chaves de condição | Ações | Descrição 
+
+
+ a| 
+aws:SourceIp
+ a| 
+Operadores de IP
+ a| 
+Será comparado ao endereço IP de onde a solicitação foi enviada.  Pode ser usado para operações de bucket ou objeto.
+
+*Observação:* Se a solicitação S3 foi enviada por meio do serviço Load Balancer nos nós de administração e nos nós de gateway, isso será comparado ao endereço IP upstream do serviço Load Balancer.
+
+*Observação*: se um balanceador de carga de terceiros não transparente for usado, isso será comparado ao endereço IP desse balanceador de carga.  Qualquer `X-Forwarded-For` O cabeçalho será ignorado porque sua validade não pode ser verificada.
+
+
+
+ a| 
+aws:nome de usuário
+ a| 
+Recurso/Identidade
+ a| 
+Será comparado ao nome de usuário do remetente de onde a solicitação foi enviada.  Pode ser usado para operações de bucket ou objeto.
+
+
+
+ a| 
+s3:delimitador
+ a| 
+s3:ListBucket e
+
+Permissões s3:ListBucketVersions
+ a| 
+Será comparado ao parâmetro delimitador especificado em uma solicitação ListObjects ou ListObjectVersions.
+
+
+
+ a| 
+s3:ExistingObjectTag/<chave-tag>
+ a| 
+s3:ExcluirMarcaçãoDeObjeto
+
+s3:ExcluirMarcaçãoDeVersãoDoObjeto
+
+s3:ObterObjeto
+
+s3:ObterAclDeObjeto
+
+3: Obter marcação de objeto
+
+s3:ObterVersãoDoObjeto
+
+s3:ObterVersãoDoObjetoAcl
+
+s3:ObterTag deVersão do Objeto
+
+s3:ColocarObjetoAcl
+
+s3:PutObjectTagging
+
+s3:PutObjectVersionAcl
+
+s3:PutObjectVersionTagging
+ a| 
+Exigirá que o objeto existente tenha a chave e o valor de tag específicos.
+
+
+
+ a| 
+s3:max-chaves
+ a| 
+s3:ListBucket e
+
+Permissões s3:ListBucketVersions
+ a| 
+Será comparado ao parâmetro max-keys especificado em uma solicitação ListObjects ou ListObjectVersions.
+
+
+
+ a| 
+s3:object-lock-remaining-retention-days
+ a| 
+s3:ColocarObjeto
+ a| 
+Compara com a data de retenção especificada no `x-amz-object-lock-retain-until-date` cabeçalho de solicitação ou calculado a partir do período de retenção padrão do bucket para garantir que esses valores estejam dentro do intervalo permitido para as seguintes solicitações:
+
+* ColocarObjeto
+* CopiarObjeto
+* CriarMultipartUpload
+
+
+
+
+ a| 
+s3:object-lock-remaining-retention-days
+ a| 
+s3:PutObjectRetention
+ a| 
+Compara com a data de retenção especificada na solicitação PutObjectRetention para garantir que esteja dentro do intervalo permitido.
+
+
+
+ a| 
+s3:prefix
+ a| 
+s3:ListBucket e
+
+Permissões s3:ListBucketVersions
+ a| 
+Será comparado ao parâmetro de prefixo especificado em uma solicitação ListObjects ou ListObjectVersions.
+
+
+
+ a| 
+s3:RequestObjectTag/<chave-tag>
+ a| 
+s3:ColocarObjeto
+
+s3:PutObjectTagging
+
+s3:PutObjectVersionTagging
+ a| 
+Exigirá uma chave de tag e um valor específicos quando a solicitação de objeto incluir marcação.
+
+|===
+
+
+== Especificar variáveis em uma política
+
+Você pode usar variáveis em políticas para preencher informações de políticas quando elas estiverem disponíveis.  Você pode usar variáveis de política no `Resource` elemento e em comparações de strings no `Condition` elemento.
+
+Neste exemplo, a variável `${aws:username}` faz parte do elemento Recurso:
+
+[listing]
+----
+"Resource": "arn:aws:s3:::bucket-name/home/${aws:username}/*"
+----
+Neste exemplo, a variável `${aws:username}` faz parte do valor da condição no bloco de condição:
+
+[listing]
+----
+"Condition": {
+    "StringLike": {
+      "s3:prefix": "${aws:username}/*"
+		...
+},
+		...
+----
+[cols="1a,2a"]
+|===
+| Variável | Descrição 
+
+
+ a| 
+`${aws:SourceIp}`
+ a| 
+Usa a chave SourceIp como a variável fornecida.
+
+
+
+ a| 
+`${aws:username}`
+ a| 
+Usa a chave de nome de usuário como a variável fornecida.
+
+
+
+ a| 
+`${s3:prefix}`
+ a| 
+Usa a chave de prefixo específica do serviço como a variável fornecida.
+
+
+
+ a| 
+`${s3:max-keys}`
+ a| 
+Usa a chave max-keys específica do serviço como a variável fornecida.
+
+
+
+ a| 
+`${*}`
+ a| 
+Caractere especial.  Usa o caractere como um caractere * literal.
+
+
+
+ a| 
+`${?}`
+ a| 
+Caractere especial.  Usa o caractere como um caractere literal ?.
+
+
+
+ a| 
+`${$}`
+ a| 
+Caractere especial.  Usa o caractere como um caractere $ literal.
+
+|===
+
+
+== Crie políticas que exijam tratamento especial
+
+Às vezes, uma política pode conceder permissões que são perigosas para a segurança ou perigosas para operações contínuas, como bloquear o usuário root da conta.  A implementação da API REST do StorageGRID S3 é menos restritiva durante a validação de políticas do que a Amazon, mas igualmente rigorosa durante a avaliação de políticas.
+
+[cols="2a,1a,2a,2a"]
+|===
+| Descrição da política | Tipo de política | Comportamento da Amazon | Comportamento do StorageGRID 
+
+
+ a| 
+Negar a si mesmo quaisquer permissões para a conta root
+ a| 
+Balde
+ a| 
+Válido e aplicado, mas a conta do usuário root mantém a permissão para todas as operações de política do bucket S3
+ a| 
+Mesmo
+
+
+
+ a| 
+Negar a si mesmo quaisquer permissões para usuário/grupo
+ a| 
+Grupo
+ a| 
+Válido e aplicado
+ a| 
+Mesmo
+
+
+
+ a| 
+Permitir qualquer permissão a um grupo de contas estrangeiras
+ a| 
+Balde
+ a| 
+Principal inválido
+ a| 
+Válido, mas as permissões para todas as operações de política de bucket do S3 retornam um erro 405 Método Não Permitido quando permitidas por uma política
+
+
+
+ a| 
+Permitir que uma conta estrangeira root ou usuário tenha qualquer permissão
+ a| 
+Balde
+ a| 
+Válido, mas as permissões para todas as operações de política de bucket do S3 retornam um erro 405 Método Não Permitido quando permitidas por uma política
+ a| 
+Mesmo
+
+
+
+ a| 
+Permitir que todos tenham permissão para todas as ações
+ a| 
+Balde
+ a| 
+Válido, mas as permissões para todas as operações de política do bucket S3 retornam um erro 405 Método Não Permitido para a raiz da conta estrangeira e usuários
+ a| 
+Mesmo
+
+
+
+ a| 
+Negar a todos permissões para todas as ações
+ a| 
+Balde
+ a| 
+Válido e aplicado, mas a conta do usuário root mantém a permissão para todas as operações de política do bucket S3
+ a| 
+Mesmo
+
+
+
+ a| 
+Principal é um usuário ou grupo inexistente
+ a| 
+Balde
+ a| 
+Principal inválido
+ a| 
+Válido
+
+
+
+ a| 
+O recurso é um bucket S3 inexistente
+ a| 
+Grupo
+ a| 
+Válido
+ a| 
+Mesmo
+
+
+
+ a| 
+Principal é um grupo local
+ a| 
+Balde
+ a| 
+Principal inválido
+ a| 
+Válido
+
+
+
+ a| 
+A política concede a uma conta não proprietária (incluindo contas anônimas) permissões para colocar objetos.
+ a| 
+Balde
+ a| 
+Válido.  Os objetos são de propriedade da conta do criador e a política de bucket não se aplica.  A conta do criador deve conceder permissões de acesso ao objeto usando ACLs de objeto.
+ a| 
+Válido.  Os objetos são de propriedade da conta do proprietário do bucket.  Aplica-se a política de balde.
+
+|===
+
+
+== Proteção WORM (gravação única e leitura múltipla)
+
+Você pode criar buckets WORM (write-once-read-many) para proteger dados, metadados de objetos definidos pelo usuário e marcação de objetos do S3.  Configure os buckets WORM para permitir a criação de novos objetos e evitar substituições ou exclusões de conteúdo existente.  Use uma das abordagens descritas aqui.
+
+Para garantir que as substituições sejam sempre negadas, você pode:
+
+* No Grid Manager, vá para *CONFIGURAÇÃO* > *Segurança* > *Configurações de segurança* > *Rede e objetos* e marque a caixa de seleção *Impedir modificação do cliente*.
+* Aplique as seguintes regras e políticas do S3:
++
+** Adicione uma operação PutOverwriteObject DENY à política S3.
+** Adicione uma operação DeleteObject DENY à política S3.
+** Adicione uma operação PutObject ALLOW à política S3.
+
+
+
+
+
+NOTE: Definir DeleteObject como DENY em uma política do S3 não impede que o ILM exclua objetos quando existe uma regra como "zero cópias após 30 dias".
+
+
+NOTE: Mesmo quando todas essas regras e políticas são aplicadas, elas não protegem contra gravações simultâneas (veja Situação A).  Eles protegem contra sobrescritas sequenciais concluídas (veja Situação B).
+
+*Situação A*: Gravações simultâneas (não protegidas)
+
+[listing]
+----
+/mybucket/important.doc
+PUT#1 ---> OK
+PUT#2 -------> OK
+----
+*Situação B*: Substituições sequenciais concluídas (protegidas contra)
+
+[listing]
+----
+/mybucket/important.doc
+PUT#1 -------> PUT#2 ---X (denied)
+----
+.Informações relacionadas
+* link:how-storagegrid-ilm-rules-manage-objects.html["Como as regras do StorageGRID ILM gerenciam objetos"]
+* link:example-bucket-policies.html["Exemplos de políticas de bucket"]
+* link:example-group-policies.html["Exemplo de políticas de grupo"]
+* link:../ilm/index.html["Gerenciar objetos com ILM"]
+* link:../tenant/index.html["Use uma conta de inquilino"]
+

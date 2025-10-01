@@ -1,0 +1,46 @@
+---
+permalink: network/subnet-requirements.html 
+sidebar: sidebar 
+keywords: network subnets 
+summary: Siga estes requisitos e diretrizes para sub-redes de rede. 
+---
+= Requisitos de sub-rede
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Siga estes requisitos e diretrizes para sub-redes de rede.
+
+
+NOTE: Cada rede deve ser conectada à sua própria sub-rede que não se sobreponha a nenhuma outra rede no nó.
+
+As seguintes restrições são aplicadas pelo Grid Manager durante a implantação.  Eles são fornecidos aqui para auxiliar no planejamento da rede de pré-implantação.
+
+* A máscara de sub-rede para qualquer endereço IP de rede não pode ser 255.255.255.254 ou 255.255.255.255 (/31 ou /32 na notação CIDR).
+* A sub-rede definida por um endereço IP de interface de rede e máscara de sub-rede (CIDR) não pode sobrepor a sub-rede de nenhuma outra interface configurada no mesmo nó.
+* Não use sub-redes que contenham os seguintes endereços IPv4 para a Rede de Grade, Rede de Administração ou Rede de Cliente de qualquer nó:
++
+** 192.168.130.101
+** 192.168.131.101
+** 192.168.130.102
+** 192.168.131.102
+** 198.51.100.2
+** 198.51.100.4
+
+
++
+Por exemplo, não use os seguintes intervalos de sub-rede para a Rede de Grade, Rede de Administração ou Rede de Cliente de nenhum nó:
+
++
+** 192.168.130.0/24 porque este intervalo de sub-rede contém os endereços IP 192.168.130.101 e 192.168.130.102
+** 192.168.131.0/24 porque este intervalo de sub-rede contém os endereços IP 192.168.131.101 e 192.168.131.102
+** 198.51.100.0/24 porque este intervalo de sub-rede contém os endereços IP 198.51.100.2 e 198.51.100.4
+
+
+* A sub-rede da rede de grade para cada nó deve ser incluída no GNSL.
+* A sub-rede da rede de administração não pode sobrepor a sub-rede da rede de grade, a sub-rede da rede do cliente ou qualquer sub-rede no GNSL.
+* As sub-redes no AESL não podem se sobrepor a nenhuma sub-rede no GNSL.
+* A sub-rede da rede do cliente não pode sobrepor a sub-rede da rede da grade, a sub-rede da rede do administrador, nenhuma sub-rede no GNSL ou nenhuma sub-rede no AESL.
+

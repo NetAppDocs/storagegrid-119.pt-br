@@ -1,0 +1,36 @@
+---
+permalink: maintain/stopping-server-manager-and-all-services.html 
+sidebar: sidebar 
+keywords: storagegrid, recover, stop server manager, stop all services, stop services 
+summary: O Gerenciador do Servidor deve ser executado o tempo todo, mas pode ser necessário interromper o Gerenciador do Servidor e todos os serviços em execução em um nó de grade. 
+---
+= Pare o Gerenciador do Servidor e todos os serviços
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+O Gerenciador do Servidor deve ser executado o tempo todo, mas pode ser necessário interromper o Gerenciador do Servidor e todos os serviços em execução em um nó de grade.
+
+.Antes de começar
+Você tem o `Passwords.txt` arquivo.
+
+.Passos
+. Efetue login no nó da grade:
++
+.. Digite o seguinte comando: `ssh admin@_grid_node_IP_`
+.. Digite a senha listada no `Passwords.txt` arquivo.
+.. Digite o seguinte comando para alternar para root: `su -`
+.. Digite a senha listada no `Passwords.txt` arquivo.
+
+
++
+Quando você está logado como root, o prompt muda de `$` para `#` .
+
+. Pare o gerenciador do servidor e todos os serviços em execução no nó da grade: `service servermanager stop`
++
+O Gerenciador do Servidor e todos os serviços em execução no nó da grade são encerrados normalmente.  Os serviços podem levar até 15 minutos para serem encerrados.
+
+. Sair do shell de comando: `exit`
+

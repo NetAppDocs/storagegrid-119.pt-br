@@ -1,0 +1,29 @@
+---
+permalink: network/grid-network-topology.html 
+sidebar: sidebar 
+keywords: grid network topology 
+summary: A topologia de rede mais simples é criada configurando apenas a Rede de Grade. 
+---
+= Topologia de rede em grade
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+A topologia de rede mais simples é criada configurando apenas a Rede de Grade.
+
+Ao configurar a Grid Network, você estabelece o endereço IP do host, a máscara de sub-rede e o endereço IP do gateway para a interface eth0 para cada nó da grade.
+
+Durante a configuração, você deve adicionar todas as sub-redes da Grid Network à Grid Network Subnet List (GNSL).  Esta lista inclui todas as sub-redes de todos os sites e também pode incluir sub-redes externas que fornecem acesso a serviços críticos, como NTP, DNS ou LDAP.
+
+Na instalação, a interface da Grid Network aplica rotas estáticas para todas as sub-redes no GNSL e define a rota padrão do nó para o gateway da Grid Network, se houver um configurado.  O GNSL não é necessário se não houver uma rede cliente e o gateway da rede Grid for a rota padrão do nó.  Rotas de host para todos os outros nós na grade também são geradas.
+
+Neste exemplo, todo o tráfego compartilha a mesma rede, incluindo o tráfego relacionado às solicitações do cliente S3 e às funções administrativas e de manutenção.
+
+
+NOTE: Essa topologia é apropriada para implantações de site único que não estão disponíveis externamente, implantações de teste ou de prova de conceito, ou quando um balanceador de carga de terceiros atua como limite de acesso do cliente.  Sempre que possível, a Rede Grid deve ser usada exclusivamente para tráfego interno.  Tanto a Rede de Administração quanto a Rede de Cliente têm restrições adicionais de firewall que bloqueiam o tráfego externo para serviços internos.  O uso da Grid Network para tráfego de clientes externos é suportado, mas esse uso oferece menos camadas de proteção.
+
+image::../media/grid_network.png[Rede de grade]
+
+image::../media/grid_network_ips.png[IPs de rede de grade]

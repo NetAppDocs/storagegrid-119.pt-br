@@ -1,0 +1,29 @@
+---
+permalink: maintain/installing-services-appliance-platform-change-only.html 
+sidebar: sidebar 
+keywords: storagegrid, recover services appliance, recover appliance, recovering appliance, recovering services appliance, install services appliance, installing services appliance, services appliance 
+summary: 'Ao recuperar um nó de grade com falha que estava hospedado no VMware ou em um host Linux e estiver usando um dispositivo de serviços para o nó de substituição, você deve primeiro instalar o novo hardware do dispositivo usando o mesmo nome de nó (nome do sistema) do nó com falha.' 
+---
+= Instalar serviço de appliance (somente mudança de plataforma)
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Ao recuperar um nó de grade com falha que estava hospedado no VMware ou em um host Linux e estiver usando um dispositivo de serviços para o nó de substituição, você deve primeiro instalar o novo hardware do dispositivo usando o mesmo nome de nó (nome do sistema) do nó com falha.
+
+.Antes de começar
+Você tem as seguintes informações sobre o nó com falha:
+
+* *Nome do nó*: você deve instalar o dispositivo de serviços usando o mesmo nome de nó do nó com falha.  O nome do nó é o nome do host (nome do sistema).
+* *Endereços IP*: Você pode atribuir ao dispositivo de serviços os mesmos endereços IP do nó com falha, que é a opção preferencial, ou pode selecionar um novo endereço IP não utilizado em cada rede.
+
+
+.Sobre esta tarefa
+Execute este procedimento somente se estiver recuperando um nó com falha que estava hospedado no VMware ou Linux e o estiver substituindo por um nó hospedado em um dispositivo de serviços.
+
+.Passos
+. Siga as instruções para instalar um novo dispositivo de serviços. Ver https://docs.netapp.com/us-en/storagegrid-appliances/installconfig/index.html["Início rápido para instalação de hardware"^] .
+. Quando solicitado um nome de nó, use o nome do nó com falha.
+

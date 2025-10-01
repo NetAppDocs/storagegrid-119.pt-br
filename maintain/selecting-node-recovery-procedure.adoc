@@ -1,0 +1,62 @@
+---
+permalink: maintain/selecting-node-recovery-procedure.html 
+sidebar: sidebar 
+keywords: storagegrid, recover, procedure 
+summary: Você deve selecionar o procedimento de recuperação correto para o tipo de nó que falhou. 
+---
+= Selecione o procedimento de recuperação do nó
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Você deve selecionar o procedimento de recuperação correto para o tipo de nó que falhou.
+
+[cols="1a,2a"]
+|===
+| Nó de grade | Procedimento de recuperação 
+
+
+ a| 
+Mais de um nó de armazenamento
+ a| 
+Entre em contato com o suporte técnico. Se mais de um nó de armazenamento falhar, o suporte técnico deverá auxiliar na recuperação para evitar inconsistências no banco de dados que possam levar à perda de dados.  Um procedimento de recuperação do site pode ser necessário.
+
+link:how-site-recovery-is-performed-by-technical-support.html["Como o suporte técnico recupera um site"]
+
+
+
+ a| 
+Um único nó de armazenamento
+ a| 
+O procedimento de recuperação do nó de armazenamento depende do tipo e da duração da falha.
+
+link:recovering-from-storage-node-failures.html["Recuperar de falhas do nó de armazenamento"]
+
+
+
+ a| 
+Nó de administração
+ a| 
+O procedimento do nó administrativo depende se você precisa recuperar o nó administrativo primário ou um nó administrativo não primário.
+
+link:recovering-from-admin-node-failures.html["Recuperar de falhas do nó de administração"]
+
+
+
+ a| 
+Nó de gateway
+ a| 
+link:replacing-gateway-node.html["Recuperar de falhas do nó de gateway"]
+
+
+
+ a| 
+Nó de arquivo
+ a| 
+https://docs.netapp.com/us-en/storagegrid-118/maintain/recovering-from-archive-node-failures.html["Recuperar de falhas do nó de arquivamento (site de documentação do StorageGRID 11.8)"^]
+
+|===
+
+NOTE: Se um servidor que hospeda mais de um nó de grade falhar, você poderá recuperar os nós em qualquer ordem. Entretanto, se o servidor com falha estiver hospedando o nó de administração principal, você deverá recuperar esse nó primeiro. Recuperar primeiro o nó de administração primário evita que outras recuperações de nós sejam interrompidas enquanto aguardam para entrar em contato com o nó de administração primário.

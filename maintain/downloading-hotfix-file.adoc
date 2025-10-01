@@ -1,0 +1,48 @@
+---
+permalink: maintain/downloading-hotfix-file.html 
+sidebar: sidebar 
+keywords: storagegrid, hotfix, download 
+summary: Você deve baixar o arquivo de hotfix antes de poder aplicá-lo. 
+---
+= Baixar arquivo de hotfix
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Você deve baixar o arquivo de hotfix antes de poder aplicá-lo.
+
+.Passos
+. Vá para https://mysupport.netapp.com/site/products/all/details/storagegrid/downloads-tab["Downloads da NetApp : StorageGRID"^] .
+. Selecione a seta para baixo em *Software disponível* para ver uma lista de hotfixes disponíveis para download.
++
+
+NOTE: As versões do arquivo de hotfix têm o formato: 11.4__.x.y__.
+
+. Revise as alterações incluídas na atualização.
++
+
+NOTE: Se você acabou delink:configuring-replacement-primary-admin-node.html["recuperou o nó de administração primário"] e você precisa aplicar um hotfix, selecione a mesma versão do hotfix que está instalada nos outros nós da grade.
+
++
+.. Selecione a versão do hotfix que deseja baixar e selecione *Ir*.
+.. Sign in usando o nome de usuário e a senha da sua conta NetApp .
+.. Leia e aceite o Contrato de Licença do Usuário Final.
++
+A página de download da versão selecionada será exibida.
+
+.. Baixe o hotfix `readme.txt` arquivo para ver um resumo das alterações incluídas no hotfix.
+
+
+. Selecione o botão de download do hotfix e salve o arquivo.
++
+
+NOTE: Não altere o nome deste arquivo.
+
++
+
+NOTE: Se você estiver usando um dispositivo macOS, o arquivo de hotfix pode ser salvo automaticamente como um `.txt` arquivo.  Se for, você deve renomear o arquivo sem o `.txt` extensão.
+
+. Selecione um local para o download e selecione *Salvar*.
+

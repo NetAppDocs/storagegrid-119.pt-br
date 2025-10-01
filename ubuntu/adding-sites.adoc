@@ -1,0 +1,26 @@
+---
+permalink: ubuntu/adding-sites.html 
+sidebar: sidebar 
+keywords: how to create a site 
+summary: Você deve criar pelo menos um site ao instalar o StorageGRID.  Você pode criar sites adicionais para aumentar a confiabilidade e a capacidade de armazenamento do seu sistema StorageGRID . 
+---
+= Adicionar sites
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Você deve criar pelo menos um site ao instalar o StorageGRID.  Você pode criar sites adicionais para aumentar a confiabilidade e a capacidade de armazenamento do seu sistema StorageGRID .
+
+.Passos
+. Na página Sites, insira o *Nome do Site*.
+. Para adicionar outros sites, clique no sinal de mais ao lado da última entrada do site e digite o nome na nova caixa de texto *Nome do site*.
++
+Adicione quantos sites adicionais forem necessários para sua topologia de grade.  Você pode adicionar até 16 sites.
+
++
+image::../media/3_gmi_installer_sites_page.gif[Esta imagem é explicada pelo texto ao redor.]
+
+. Clique em *Avançar*.
+

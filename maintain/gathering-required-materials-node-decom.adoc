@@ -1,0 +1,49 @@
+---
+permalink: maintain/gathering-required-materials-node-decom.html 
+sidebar: sidebar 
+keywords: storagegrid, node decommission, decommission 
+summary: Antes de executar a desativação de um nó de rede, você deve obter as seguintes informações. 
+---
+= Reúna os materiais necessários
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Antes de executar a desativação de um nó de rede, você deve obter as seguintes informações.
+
+[cols="1a,2a"]
+|===
+| Item | Notas 
+
+
+ a| 
+Pacote de Recuperação `.zip` arquivo
+ a| 
+Você develink:downloading-recovery-package.html["baixe o pacote de recuperação mais recente"] `.zip` arquivo(`sgws-recovery-package-_id-revision_.zip` ). Você pode usar o arquivo do Pacote de Recuperação para restaurar o sistema caso ocorra uma falha.
+
+
+
+ a| 
+`Passwords.txt`arquivo
+ a| 
+Este arquivo contém as senhas necessárias para acessar os nós da grade na linha de comando e está incluído no Pacote de Recuperação.
+
+
+
+ a| 
+Senha de provisionamento
+ a| 
+A senha é criada e documentada quando o sistema StorageGRID é instalado pela primeira vez.  A senha de provisionamento não está no `Passwords.txt` arquivo.
+
+
+
+ a| 
+Descrição da topologia do sistema StorageGRID antes do descomissionamento
+ a| 
+Se disponível, obtenha qualquer documentação que descreva a topologia atual do sistema.
+
+|===
+.Informações relacionadas
+link:../admin/web-browser-requirements.html["Requisitos do navegador da Web"]

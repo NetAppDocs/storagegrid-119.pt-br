@@ -1,0 +1,125 @@
+---
+permalink: ilm/example-1-ilm-rules-and-policy-for-object-storage.html 
+sidebar: sidebar 
+keywords: example ILM rule, information lifecycle rule examples 
+summary: Você pode usar as seguintes regras e políticas de exemplo como ponto de partida ao definir uma política de ILM para atender aos seus requisitos de proteção e retenção de objetos. 
+---
+= Exemplo 1: regras e políticas do ILM para armazenamento de objetos
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Você pode usar as seguintes regras e políticas de exemplo como ponto de partida ao definir uma política de ILM para atender aos seus requisitos de proteção e retenção de objetos.
+
+
+CAUTION: As seguintes regras e políticas do ILM são apenas exemplos.  Há muitas maneiras de configurar regras de ILM.  Antes de ativar uma nova política, simule-a para confirmar se ela funcionará conforme o esperado para proteger o conteúdo contra perdas.
+
+
+
+== Regra 1 do ILM, por exemplo 1: Copiar dados do objeto para dois sites
+
+Este exemplo de regra ILM copia dados de objeto para pools de armazenamento em dois sites.
+
+[cols="1a,2a"]
+|===
+| Definição de regra | Valor de exemplo 
+
+
+ a| 
+Pools de armazenamento de um único local
+ a| 
+Dois pools de armazenamento, cada um contendo sites diferentes, chamados Site 1 e Site 2.
+
+
+
+ a| 
+Nome da regra
+ a| 
+Duas cópias, dois sites
+
+
+
+ a| 
+Tempo de referência
+ a| 
+Tempo de ingestão
+
+
+
+ a| 
+Posicionamentos
+ a| 
+Do Dia 0 até sempre, mantenha uma cópia replicada no Site 1 e uma cópia replicada no Site 2.
+
+|===
+A seção Análise de regras do diagrama de retenção afirma:
+
+* A proteção contra perda de site do StorageGRID será aplicada durante a vigência desta regra.
+* Objetos processados por esta regra não serão excluídos pelo ILM.
+
+
+image::../media/ilm_rule_two_copies_two_data_centers.png[Regra 1 do ILM, por exemplo 1: Copiar dados do objeto para dois sites]
+
+
+
+== Regra 2 do ILM, por exemplo 1: Perfil de codificação de apagamento com correspondência de bucket
+
+Este exemplo de regra ILM usa um perfil de codificação de eliminação e um bucket S3 para determinar onde e por quanto tempo o objeto é armazenado.
+
+[cols="1a,2a"]
+|===
+| Definição de regra | Valor de exemplo 
+
+
+ a| 
+Pool de armazenamento com vários locais
+ a| 
+* Um pool de armazenamento em três locais (locais 1, 2, 3)
+* Use o esquema de codificação de apagamento 6+3
+
+
+
+
+ a| 
+Nome da regra
+ a| 
+Registros financeiros do S3 Bucket
+
+
+
+ a| 
+Tempo de referência
+ a| 
+Tempo de ingestão
+
+
+
+ a| 
+Posicionamentos
+ a| 
+Para objetos no bucket do S3 denominados finance-records, crie uma cópia codificada para eliminação no pool especificado pelo perfil de codificação para eliminação.  Guarde esta cópia para sempre.
+
+|===
+image::../media/ilm_rule_ec_for_s3_bucket_finance_records.png[Regra 2 do ILM, por exemplo 1: perfil de codificação de eliminação com correspondência de bucket]
+
+
+
+== Política ILM, por exemplo 1
+
+Na prática, a maioria das políticas de ILM são simples, embora o sistema StorageGRID permita que você crie políticas de ILM sofisticadas e complexas.
+
+Uma política de ILM típica para uma grade multisite pode incluir regras de ILM como as seguintes:
+
+* Na ingestão, armazene todos os objetos pertencentes ao bucket S3 denominado `finance-records` em um pool de armazenamento que contém três sites.  Use a codificação de eliminação 6+3.
+* Se um objeto não corresponder à primeira regra do ILM, use a regra do ILM padrão da política, Duas Cópias, Dois Data Centers, para armazenar uma cópia desse objeto no Site 1 e uma cópia no Site 2.
++
+image::../media/policy_1_configured_policy.png[Política ILM, por exemplo 1]
+
+
+
+.Informações relacionadas
+* link:ilm-policy-overview.html["Usar políticas de ILM"]
+* link:creating-ilm-policy.html["Criar políticas de ILM"]
+

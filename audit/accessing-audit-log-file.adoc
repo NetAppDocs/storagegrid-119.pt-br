@@ -1,0 +1,39 @@
+---
+permalink: audit/accessing-audit-log-file.html 
+sidebar: sidebar 
+keywords: storagegrid, audit, log, log file, access, accessing 
+summary: O compartilhamento de auditoria contém o arquivo audit.log ativo e quaisquer arquivos de log de auditoria compactados.  Você pode acessar arquivos de log de auditoria diretamente da linha de comando do nó de administração. 
+---
+= Arquivo de log de auditoria de acesso
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+O compartilhamento de auditoria contém o ativo `audit.log` arquivo e quaisquer arquivos de log de auditoria compactados.  Você pode acessar arquivos de log de auditoria diretamente da linha de comando do nó de administração.
+
+.Antes de começar
+* Você temlink:../admin/admin-group-permissions.html["permissões de acesso específicas"] .
+* Você deve ter o `Passwords.txt` arquivo.
+* Você deve saber o endereço IP de um nó de administração.
+
+
+.Passos
+. Efetue login em um nó de administração:
++
+.. Digite o seguinte comando: `ssh admin@_primary_Admin_Node_IP_`
+.. Digite a senha listada no `Passwords.txt` arquivo.
+.. Digite o seguinte comando para alternar para root: `su -`
+.. Digite a senha listada no `Passwords.txt` arquivo.
++
+Quando você está logado como root, o prompt muda de `$` para `#` .
+
+
+
+. Vá para o diretório que contém os arquivos de log de auditoria:
++
+`cd /var/local/log`
+
+. Visualize o arquivo de log de auditoria atual ou salvo, conforme necessário.
+

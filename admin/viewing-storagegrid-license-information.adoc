@@ -1,0 +1,49 @@
+---
+permalink: admin/viewing-storagegrid-license-information.html 
+sidebar: sidebar 
+keywords: storagegrid license, view license, licensed capacity of grid 
+summary: Você pode visualizar as informações de licença do seu sistema StorageGRID , como a capacidade máxima de armazenamento da sua grade, sempre que necessário. 
+---
+= Ver informações da licença do StorageGRID
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Você pode visualizar as informações de licença do seu sistema StorageGRID , como a capacidade máxima de armazenamento da sua grade, sempre que necessário.
+
+.Antes de começar
+Você está conectado ao Grid Manager usando umlink:../admin/web-browser-requirements.html["navegador da web compatível"] .
+
+.Sobre esta tarefa
+Se houver um problema com a licença de software para este sistema StorageGRID , o cartão de status de integridade no painel incluirá um ícone de status da licença e um link *Licença*.  O número indica o número de problemas relacionados à licença.
+
+image::../media/dashboard_health_panel_license_status.png[Status de saúde do painel Status da licença do cartão]
+
+.Passos
+. Acesse a página de Licença seguindo um destes procedimentos:
++
+** Selecione *MANUTENÇÃO* > *Sistema* > *Licença*.
+** No cartão Status de integridade no painel, selecione o ícone Status da licença ou o link *Licença*.
++
+Este link só aparece se houver um problema com a licença.
+
+
+
+. Veja os detalhes somente leitura da licença atual:
++
+** ID do sistema StorageGRID , que é o número de identificação exclusivo para esta instalação do StorageGRID
+** Número de série da licença
+** Tipo de licença, *Perpétua* ou *Assinatura*
+** Capacidade de armazenamento licenciada da rede
+** Capacidade de armazenamento suportada
+** Data de término da licença.  *N/A* aparece para uma licença perpétua.
+** Data de término do suporte
++
+Esta data é lida do arquivo de licença atual e pode estar desatualizada se você estendeu ou renovou o contrato de serviço de suporte após obter o arquivo de licença.  Para atualizar este valor, consultelink:updating-storagegrid-license-information.html["Atualizar informações da licença do StorageGRID"] .  Você também pode visualizar a data real de término do contrato usando o Active IQ.
+
+** Conteúdo do arquivo de texto da licença
+
+
+

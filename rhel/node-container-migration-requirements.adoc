@@ -1,0 +1,66 @@
+---
+permalink: rhel/node-container-migration-requirements.html 
+sidebar: sidebar 
+keywords: how to migrate a node 
+summary: O recurso de migração de nós permite que você mova manualmente um nó de um host para outro.  Normalmente, ambos os hosts estão no mesmo data center físico. 
+---
+= Requisitos de migração do contêiner de nó
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+O recurso de migração de nós permite que você mova manualmente um nó de um host para outro.  Normalmente, ambos os hosts estão no mesmo data center físico.
+
+A migração de nós permite que você execute a manutenção do host físico sem interromper as operações da rede.  Você move todos os nós do StorageGRID , um de cada vez, para outro host antes de colocar o host físico offline.  A migração de nós requer apenas um curto período de inatividade para cada nó e não deve afetar a operação ou a disponibilidade dos serviços de rede.
+
+Se você quiser usar o recurso de migração de nós do StorageGRID , sua implantação deverá atender a requisitos adicionais:
+
+* Nomes de interface de rede consistentes em hosts em um único data center físico
+* Armazenamento compartilhado para metadados do StorageGRID e volumes de repositório de objetos que podem ser acessados ​​por todos os hosts em um único data center físico.  Por exemplo, você pode usar matrizes de armazenamento NetApp E-Series.
+
+
+Se você estiver usando hosts virtuais e a camada do hipervisor subjacente oferecer suporte à migração de VM, talvez seja interessante usar esse recurso em vez do recurso de migração de nós no StorageGRID.  Nesse caso, você pode ignorar esses requisitos adicionais.
+
+Antes de executar a migração ou a manutenção do hipervisor, desligue os nós corretamente. Veja as instruções paralink:../maintain/shutting-down-grid-node.html["desligando um nó de grade"] .
+
+
+
+== VMware Live Migration não suportado
+
+Ao executar a instalação bare-metal em VMs VMware, o OpenStack Live Migration e o VMware live vMotion fazem com que o tempo do relógio da máquina virtual salte e não são suportados para nós de grade de nenhum tipo.  Embora raros, horários incorretos podem resultar em perda de dados ou atualizações de configuração.
+
+A migração fria é suportada.  Na migração a frio, você desliga os nós do StorageGRID antes de migrá-los entre hosts. Veja as instruções paralink:../maintain/shutting-down-grid-node.html["desligando um nó de grade"] .
+
+
+
+== Nomes de interface de rede consistentes
+
+Para mover um nó de um host para outro, o serviço de host StorageGRID precisa ter alguma confiança de que a conectividade de rede externa que o nó tem em seu local atual pode ser duplicada no novo local.  Ele obtém essa confiança por meio do uso de nomes de interface de rede consistentes nos hosts.
+
+Suponha, por exemplo, que o StorageGRID NodeA em execução no Host1 tenha sido configurado com os seguintes mapeamentos de interface:
+
+image::../media/eth0_bond.gif[Esta imagem é explicada pelo texto ao redor.]
+
+O lado esquerdo das setas corresponde às interfaces tradicionais visualizadas de dentro de um contêiner StorageGRID (ou seja, as interfaces Grid, Admin e Client Network, respectivamente).  O lado direito das setas corresponde às interfaces de host reais que fornecem essas redes, que são três interfaces VLAN subordinadas ao mesmo vínculo de interface física.
+
+Agora, suponha que você queira migrar o NodeA para o Host2.  Se o Host2 também tiver interfaces denominadas bond0.1001, bond0.1002 e bond0.1003, o sistema permitirá a movimentação, supondo que as interfaces com nomes semelhantes fornecerão a mesma conectividade no Host2 que no Host1.  Se o Host2 não tiver interfaces com os mesmos nomes, a movimentação não será permitida.
+
+Existem muitas maneiras de obter uma nomenclatura de interface de rede consistente em vários hosts; consultelink:configuring-host-network.html["Configurando a rede host"] para alguns exemplos.
+
+
+
+== Armazenamento compartilhado
+
+Para obter migrações de nós rápidas e com baixa sobrecarga, o recurso de migração de nós do StorageGRID não move fisicamente os dados dos nós.  Em vez disso, a migração de nós é realizada como um par de operações de exportação e importação, da seguinte maneira:
+
+. Durante a operação de "exportação de nó", uma pequena quantidade de dados de estado persistentes é extraída do contêiner de nó em execução no HostA e armazenada em cache no volume de dados do sistema desse nó.  Em seguida, o contêiner do nó no HostA é desinstanciado.
+. Durante a operação "importação de nó", o contêiner de nó no HostB que usa a mesma interface de rede e mapeamentos de armazenamento em bloco que estavam em vigor no HostA é instanciado.  Em seguida, os dados de estado persistentes armazenados em cache são inseridos na nova instância.
+
+
+Dado esse modo de operação, todos os dados do sistema e volumes de armazenamento de objetos do nó devem ser acessíveis tanto do HostA quanto do HostB para que a migração seja permitida e funcione.  Além disso, eles devem ter sido mapeados no nó usando nomes que certamente fazem referência aos mesmos LUNs no HostA e no HostB.
+
+O exemplo a seguir mostra uma solução para mapeamento de dispositivo de bloco para um nó de armazenamento StorageGRID , onde o multipathing DM está em uso nos hosts e o campo alias foi usado em `/etc/multipath.conf` para fornecer nomes de dispositivos de bloco consistentes e amigáveis ​​disponíveis em todos os hosts.
+
+image::../media/block_device_mapping_rhel.gif[Esta imagem é explicada pelo texto ao redor.]

@@ -1,0 +1,127 @@
+---
+permalink: maintain/stopping-services-and-shutting-down-grid-nodes.html 
+sidebar: sidebar 
+keywords: recover, stop services, shut down nodes, node shutdown 
+summary: Antes de desligar um sistema StorageGRID , você deve interromper todos os serviços em execução em cada nó da grade e, em seguida, desligar todas as máquinas virtuais VMware, mecanismos de contêiner e dispositivos StorageGRID . 
+---
+= Interrompa os serviços e desligue os nós da rede
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Antes de desligar um sistema StorageGRID , você deve interromper todos os serviços em execução em cada nó da grade e, em seguida, desligar todas as máquinas virtuais VMware, mecanismos de contêiner e dispositivos StorageGRID .
+
+.Sobre esta tarefa
+Primeiro, interrompa os serviços nos nós de administração e nos nós de gateway e, depois, interrompa os serviços nos nós de armazenamento.
+
+Essa abordagem permite que você use o nó de administração principal para monitorar o status dos outros nós da grade pelo maior tempo possível.
+
+
+NOTE: Se um único host incluir mais de um nó de grade, não desligue o host até ter parado todos os nós nele.  Se o host incluir o nó de administração primário, desligue esse host por último.
+
+
+NOTE: Se necessário, você podelink:linux-migrating-grid-node-to-new-host.html["migrar nós de um host Linux para outro"] para executar a manutenção do host sem afetar a funcionalidade ou a disponibilidade da sua rede.
+
+.Passos
+. Impeça que todos os aplicativos clientes acessem a grade.
+. [[log_in_to_gn]]Faça login em cada nó do Gateway:
++
+.. Digite o seguinte comando: `ssh admin@_grid_node_IP_`
+.. Digite a senha listada no `Passwords.txt` arquivo.
+.. Digite o seguinte comando para alternar para root: `su -`
+.. Digite a senha listada no `Passwords.txt` arquivo.
++
+Quando você está logado como root, o prompt muda de `$` para `#` .
+
+
+
+. [[stop_all_services]]Parar todos os serviços em execução no nó: `service servermanager stop`
++
+Os serviços podem levar até 15 minutos para serem desligados, e talvez você queira fazer login no sistema remotamente para monitorar o processo de desligamento.
+
+
+
+. Repita as duas etapas anteriores para interromper os serviços em todos os nós de armazenamento e nós de administração não primários.
++
+Você pode interromper os serviços nesses nós em qualquer ordem.
+
++
+
+NOTE: Se você emitir o `service servermanager stop` comando para interromper os serviços em um nó de armazenamento do dispositivo, você deve desligar e ligar o dispositivo para reiniciar o nó.
+
+. Para o nó de administração primário, repita as etapas para<<log_in_to_gn,fazendo login no nó>> e<<stop_all_services,parando todos os serviços no nó>> .
+. Para nós que estão sendo executados em hosts Linux:
++
+.. Efetue login no sistema operacional do host.
+.. Pare o nó: `storagegrid node stop`
+.. Desligue o sistema operacional do host.
+
+
+. Para nós em execução em máquinas virtuais VMware e para nós de armazenamento de dispositivos, emita o comando shutdown: `shutdown -h now`
++
+Execute esta etapa independentemente do resultado da `service servermanager stop` comando.
+
++
+Para o dispositivo, este comando desliga o controlador de computação, mas o dispositivo ainda fica ligado.  Você deve concluir a próxima etapa.
+
+. Se você tiver nós de dispositivo:
++
+** Para aparelhos de serviços ou aparelhos SGF6112
++
+... Desligue a energia do aparelho.
+... Aguarde até que o LED azul de energia desligue.
+
+
+** Para o aparelho SG6160
++
+... Desligue a energia do controlador de armazenamento SG6100-CN.
+... Aguarde até que o LED azul de energia no controlador de armazenamento SG6100-CN desligue.
+
+
+** Para o aparelho SG6000
++
+... Aguarde até que o LED verde Cache Active na parte traseira dos controladores de armazenamento desligue.
++
+Este LED fica aceso quando dados em cache precisam ser gravados nas unidades.  Você deve esperar que este LED desligue antes de desligar a energia.
+
+... Desligue o aparelho e aguarde até que o LED azul de energia apague.
+
+
+** Para o aparelho SG5800
++
+... Aguarde até que o LED verde Cache Active na parte traseira do controlador de armazenamento desligue.
++
+Este LED fica aceso quando dados em cache precisam ser gravados nas unidades.  Você deve esperar que este LED desligue antes de desligar a energia.
+
+... Na página inicial do SANtricity System Manager, selecione *Exibir operações em andamento*.
+... Confirme se todas as operações foram concluídas antes de continuar com a próxima etapa.
+... Desligue os dois interruptores de energia na prateleira do controlador e espere até que todos os LEDs na prateleira do controlador se apaguem.
+
+
+** Para o aparelho SG5700
++
+... Aguarde até que o LED verde Cache Active na parte traseira do controlador de armazenamento desligue.
++
+Este LED fica aceso quando dados em cache precisam ser gravados nas unidades.  Você deve esperar que este LED desligue antes de desligar a energia.
+
+... Desligue o aparelho e aguarde até que toda a atividade do LED e do display de sete segmentos pare.
+
+
+
+
+. Se necessário, saia do shell de comando: `exit`
++
+A grade StorageGRID foi desligada.
+
+
+
+.Informações relacionadas
+* link:https://docs.netapp.com/us-en/storagegrid-appliances/sg6100/index.html["Dispositivos de armazenamento SGF6112 e SG6160"^]
+* link:https://docs.netapp.com/us-en/storagegrid-appliances/sg6000/index.html["Dispositivos de armazenamento SG6000"^]
+* link:https://docs.netapp.com/us-en/storagegrid-appliances/sg5800/index.html["Dispositivos de armazenamento SG5800"^]
+* link:https://docs.netapp.com/us-en/storagegrid-appliances/sg5700/index.html["Dispositivos de armazenamento SG5700"^]
+* link:https://docs.netapp.com/us-en/storagegrid-appliances/sg110-1100/index.html["Aparelhos de serviço SG110 e SG1100"^]
+* link:https://docs.netapp.com/us-en/storagegrid-appliances/sg100-1000/index.html["Aparelhos de serviços SG100 e SG1000"^]
+

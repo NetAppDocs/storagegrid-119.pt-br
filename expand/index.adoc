@@ -1,0 +1,74 @@
+---
+permalink: expand/index.html 
+sidebar: sidebar 
+keywords: expand grid 
+summary: Você pode expandir a capacidade ou os recursos do seu sistema StorageGRID sem interromper as operações do sistema. 
+---
+= Tipos de expansão
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Você pode expandir a capacidade ou os recursos do seu sistema StorageGRID sem interromper as operações do sistema.
+
+Uma expansão StorageGRID permite que você adicione:
+
+* Volumes de armazenamento para nós de armazenamento
+* Novos nós de grade para um site existente
+* Um site totalmente novo
+
+
+O motivo pelo qual você está realizando a expansão determina quantos novos nós de cada tipo você deve adicionar e a localização desses novos nós.  Por exemplo, há diferentes requisitos de nó se você estiver realizando uma expansão para aumentar a capacidade de armazenamento, adicionar capacidade de metadados ou adicionar redundância ou novos recursos.
+
+Siga os passos para o tipo de expansão que você está realizando:
+
+[role="tabbed-block"]
+====
+.Adicionar volumes de armazenamento
+--
+Siga os passos paralink:adding-storage-volumes-to-storage-nodes.html["adicionando volumes de armazenamento aos nós de armazenamento"] .
+
+--
+.Adicionar nós de grade
+--
+. Siga os passos paralink:adding-grid-nodes-to-existing-site-or-adding-new-site.html["adicionando nós de grade a um site existente"] .
+. link:updating-subnets-for-grid-network.html["Atualizar as sub-redes"] .
+. Implantar nós de grade:
++
+** link:deploying-new-grid-nodes.html#appliances-deploying-storage-gateway-or-non-primary-admin-nodes["Eletrodomésticos"]
+** link:deploying-new-grid-nodes.html#vmware-deploy-grid-nodes["VMware"]
+** link:deploying-new-grid-nodes.html#linux-deploy-grid-nodes["Linux"]
++
+
+NOTE: "Linux" refere-se a uma implantação do Red Hat Enterprise Linux, Ubuntu ou Debian. Para obter uma lista de versões suportadas, consulte o https://imt.netapp.com/matrix/#welcome["Ferramenta de Matriz de Interoperabilidade NetApp (IMT)"^] .
+
+
+
+. link:performing-expansion.html["Executar a expansão"] .
+. link:configuring-expanded-storagegrid-system.html["Configurar o sistema expandido"] .
+
+
+--
+.Adicionar novo site
+--
+. Siga os passos paralink:adding-grid-nodes-to-existing-site-or-adding-new-site.html["Adicionando um novo site"] .
+. link:updating-subnets-for-grid-network.html["Atualizar as sub-redes"] .
+. Implantar nós de grade:
++
+** link:deploying-new-grid-nodes.html#appliances-deploying-storage-gateway-or-non-primary-admin-nodes["Eletrodomésticos"]
+** link:deploying-new-grid-nodes.html#vmware-deploy-grid-nodes["VMware"]
+** link:deploying-new-grid-nodes.html#linux-deploy-grid-nodes["Linux"]
++
+
+NOTE: "Linux" refere-se a uma implantação do Red Hat Enterprise Linux, Ubuntu ou Debian. Para obter uma lista de versões suportadas, consulte o https://imt.netapp.com/matrix/#welcome["Ferramenta de Matriz de Interoperabilidade NetApp (IMT)"^] .
+
+
+
+. link:performing-expansion.html["Executar a expansão"] .
+. link:configuring-expanded-storagegrid-system.html["Configurar o sistema expandido"] .
+
+
+--
+====

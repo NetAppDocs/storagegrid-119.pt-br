@@ -1,0 +1,166 @@
+---
+permalink: upgrade/troubleshooting-upgrade-issues.html 
+sidebar: sidebar 
+keywords: upgrade, troubleshoot, troubleshooting, errors, upgrade precheck 
+summary: Se algo der errado ao realizar uma atualização, você poderá resolver o problema sozinho.  Se você não conseguir resolver um problema, reúna o máximo de informações possível e entre em contato com o suporte técnico. 
+---
+= Solucionar problemas de atualização
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Se algo der errado ao realizar uma atualização, você poderá resolver o problema sozinho.  Se você não conseguir resolver um problema, reúna o máximo de informações possível e entre em contato com o suporte técnico.
+
+
+
+== A atualização não foi concluída
+
+As seções a seguir descrevem como se recuperar de situações em que a atualização falhou parcialmente.
+
+
+
+=== Erros de pré-verificação de atualização
+
+Para detectar e resolver problemas, você pode executar manualmente as pré-verificações de atualização antes de iniciar a atualização real.  A maioria dos erros de pré-verificação fornece informações sobre como resolver o problema.
+
+
+
+=== Falhas de provisionamento
+
+Se o processo de provisionamento automático falhar, entre em contato com o suporte técnico.
+
+
+
+=== O nó da grade trava ou não inicia
+
+Se um nó da grade travar durante o processo de atualização ou não iniciar com sucesso após a conclusão da atualização, entre em contato com o suporte técnico para investigar e corrigir quaisquer problemas subjacentes.
+
+
+
+=== A ingestão ou recuperação de dados é interrompida
+
+Se a ingestão ou recuperação de dados for interrompida inesperadamente quando você não estiver atualizando um nó de grade, entre em contato com o suporte técnico.
+
+
+
+=== Erros de atualização do banco de dados
+
+Se a atualização do banco de dados falhar com um erro, tente atualizar novamente.  Se falhar novamente, entre em contato com o suporte técnico.
+
+.Informações relacionadas
+link:checking-systems-condition-before-upgrading-software.html["Verificando a condição do sistema antes de atualizar o software"]
+
+
+
+== Problemas de interface do usuário
+
+Você pode ter problemas com o Grid Manager ou o Tenant Manager durante ou após a atualização.
+
+
+
+=== O Grid Manager exibe várias mensagens de erro durante a atualização
+
+Se você atualizar seu navegador ou navegar para outra página do Grid Manager enquanto o nó de administração principal estiver sendo atualizado, poderá ver várias mensagens "503: Serviço indisponível" e "Problema ao conectar ao servidor".  Você pode ignorar essas mensagens com segurança — elas deixarão de aparecer assim que o nó for atualizado.
+
+Se essas mensagens aparecerem por mais de uma hora após o início da atualização, algo pode ter ocorrido que impediu a atualização do nó de administração principal.  Se você não conseguir resolver o problema sozinho, entre em contato com o suporte técnico.
+
+
+
+=== A interface da Web não responde conforme o esperado
+
+O Grid Manager ou o Tenant Manager podem não responder conforme o esperado após a atualização do software StorageGRID .
+
+Se você tiver problemas com a interface da web:
+
+* Certifique-se de que você está usando umlink:../admin/web-browser-requirements.html["navegador da web compatível"] .
++
+
+NOTE: O suporte ao navegador normalmente muda para cada versão do StorageGRID .
+
+* Limpe o cache do seu navegador.
++
+Limpar o cache remove recursos desatualizados usados ​​pela versão anterior do software StorageGRID e permite que a interface do usuário opere corretamente novamente.  Para obter instruções, consulte a documentação do seu navegador.
+
+
+
+
+
+== Mensagens de erro "Verificação de disponibilidade de imagem do Docker"
+
+Ao tentar iniciar o processo de atualização, você pode receber uma mensagem de erro que diz "Os seguintes problemas foram identificados pelo conjunto de validação de verificação de disponibilidade de imagem do Docker".  Todos os problemas devem ser resolvidos antes que você possa concluir a atualização.
+
+Entre em contato com o suporte técnico se não tiver certeza das alterações necessárias para resolver os problemas identificados.
+
+[cols="1a,1a,1a"]
+|===
+| Mensagem | Causa | Solução 
+
+
+ a| 
+Não foi possível determinar a versão de atualização.  Arquivo de informações da versão de atualização `{file_path}` não correspondeu ao formato esperado.
+ a| 
+O pacote de atualização está corrompido.
+ a| 
+Faça upload novamente do pacote de atualização e tente novamente.  Se o problema persistir, entre em contato com o suporte técnico.
+
+
+
+ a| 
+Arquivo de informações da versão de atualização `{file_path}` não foi encontrado.  Não foi possível determinar a versão de atualização.
+ a| 
+O pacote de atualização está corrompido.
+ a| 
+Faça upload novamente do pacote de atualização e tente novamente.  Se o problema persistir, entre em contato com o suporte técnico.
+
+
+
+ a| 
+Não é possível determinar a versão de lançamento atualmente instalada em `{node_name}` .
+ a| 
+Um arquivo crítico no nó está corrompido.
+ a| 
+Entre em contato com o suporte técnico.
+
+
+
+ a| 
+Erro de conexão ao tentar listar versões em `{node_name}`
+ a| 
+O nó está offline ou a conexão foi interrompida.
+ a| 
+Verifique se todos os nós estão on-line e acessíveis a partir do nó de administração principal e tente novamente.
+
+
+
+ a| 
+O host para o nó `{node_name}` não tem StorageGRID `{upgrade_version}` imagem carregada.  Imagens e serviços devem ser instalados no host antes que a atualização possa prosseguir.
+ a| 
+Os pacotes RPM ou DEB para a atualização não foram instalados no host onde o nó está sendo executado ou as imagens ainda estão em processo de importação.
+
+*Observação:* Este erro se aplica somente a nós que estão sendo executados como contêineres no Linux.
+ a| 
+Verifique se os pacotes RPM ou DEB foram instalados em todos os hosts Linux onde os nós estão em execução.  Certifique-se de que a versão esteja correta tanto para o serviço quanto para o arquivo de imagens.  Aguarde alguns minutos e tente novamente.
+
+Ver link:../upgrade/linux-installing-rpm-or-deb-package-on-all-hosts.html["Linux: Instale o pacote RPM ou DEB em todos os hosts"] .
+
+
+
+ a| 
+Erro ao verificar o nó `{node_name}`
+ a| 
+Ocorreu um erro inesperado.
+ a| 
+Aguarde alguns minutos e tente novamente.
+
+
+
+ a| 
+Erro não detectado ao executar pré-verificações. `{error_string}`
+ a| 
+Ocorreu um erro inesperado.
+ a| 
+Aguarde alguns minutos e tente novamente.
+
+|===

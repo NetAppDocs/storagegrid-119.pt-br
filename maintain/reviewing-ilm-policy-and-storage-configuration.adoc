@@ -1,0 +1,65 @@
+---
+permalink: maintain/reviewing-ilm-policy-and-storage-configuration.html 
+sidebar: sidebar 
+keywords: storagegrid, restore, ilm policy, storage configuration 
+summary: Se você planeja desativar um nó de armazenamento, revise a política de ILM do seu sistema StorageGRID antes de iniciar o processo de desativação. 
+---
+= Revisar a política do ILM e a configuração de armazenamento
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Se você planeja desativar um nó de armazenamento, revise a política de ILM do seu sistema StorageGRID antes de iniciar o processo de desativação.
+
+Durante o descomissionamento, todos os dados do objeto são migrados do nó de armazenamento desativado para outros nós de armazenamento.
+
+
+NOTE: A política de ILM que você tiver _durante_ a desativação será a mesma usada _após_ a desativação.  Você deve garantir que esta política atenda aos seus requisitos de dados antes de iniciar a desativação e depois que ela for concluída.
+
+Você deve revisar as regras em cadalink:../ilm/creating-ilm-policy.html["política ILM ativa"] para garantir que o sistema StorageGRID continuará a ter capacidade suficiente do tipo correto e nos locais corretos para acomodar o descomissionamento de um nó de armazenamento.
+
+Considere o seguinte:
+
+* Será possível que os serviços de avaliação do ILM copiem dados de objetos de forma que as regras do ILM sejam atendidas?
+* O que acontece se um site ficar temporariamente indisponível enquanto o descomissionamento estiver em andamento?  Cópias adicionais podem ser feitas em um local alternativo?
+* Como o processo de desativação afetará a distribuição final do conteúdo?  Conforme descrito emlink:consolidating-storage-nodes.html["Consolidar nós de armazenamento"] , você develink:../expand/index.html["adicionar novos nós de armazenamento"] antes de descomissionar os antigos.  Se você adicionar um nó de armazenamento de substituição maior após desativar um nó de armazenamento menor, os nós de armazenamento antigos poderão estar próximos da capacidade máxima e o novo nó de armazenamento poderá não ter quase nenhum conteúdo.  A maioria das operações de gravação de novos dados de objeto seriam direcionadas ao novo Nó de Armazenamento, reduzindo a eficiência geral das operações do sistema.
+* O sistema incluirá, em todos os momentos, nós de armazenamento suficientes para satisfazer as políticas de ILM ativas?
++
+
+NOTE: Uma política de ILM que não pode ser atendida levará a atrasos e alertas, e pode interromper a operação do sistema StorageGRID .
+
+
+
+Verifique se a topologia proposta que resultará do processo de descomissionamento atende à política do ILM avaliando as áreas listadas na tabela.
+
+[cols="1a,2a"]
+|===
+| Área a ser avaliada | O que considerar 
+
+
+ a| 
+Capacidade disponível
+ a| 
+Haverá capacidade de armazenamento suficiente para acomodar todos os dados de objetos armazenados no sistema StorageGRID , incluindo as cópias permanentes dos dados de objetos atualmente armazenados no nó de armazenamento a ser desativado?
+
+Haverá capacidade suficiente para lidar com o crescimento previsto nos dados de objetos armazenados por um intervalo de tempo razoável após a conclusão do descomissionamento?
+
+
+
+ a| 
+Localização do armazenamento
+ a| 
+Se houver capacidade suficiente no sistema StorageGRID como um todo, a capacidade estará nos locais corretos para satisfazer as regras de negócios do sistema StorageGRID ?
+
+
+
+ a| 
+Tipo de armazenamento
+ a| 
+Haverá armazenamento suficiente do tipo apropriado após a conclusão do descomissionamento?
+
+Por exemplo, as regras de ILM podem mover conteúdo de um tipo de armazenamento para outro à medida que o conteúdo envelhece.  Nesse caso, você deve garantir que haja armazenamento suficiente do tipo apropriado disponível na configuração final do sistema StorageGRID .
+
+|===

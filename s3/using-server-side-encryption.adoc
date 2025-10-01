@@ -1,0 +1,113 @@
+---
+permalink: s3/using-server-side-encryption.html 
+sidebar: sidebar 
+keywords: server side encryption, encryption, operations on objects, objects 
+summary: A criptografia do lado do servidor permite que você proteja os dados do seu objeto em repouso.  O StorageGRID criptografa os dados enquanto grava o objeto e descriptografa os dados quando você acessa o objeto. 
+---
+= Use criptografia do lado do servidor
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+A criptografia do lado do servidor permite que você proteja os dados do seu objeto em repouso.  O StorageGRID criptografa os dados enquanto grava o objeto e descriptografa os dados quando você acessa o objeto.
+
+Se você quiser usar a criptografia do lado do servidor, poderá escolher uma das duas opções mutuamente exclusivas, com base em como as chaves de criptografia são gerenciadas:
+
+* *SSE (criptografia do lado do servidor com chaves gerenciadas StorageGRID)*: quando você emite uma solicitação S3 para armazenar um objeto, o StorageGRID criptografa o objeto com uma chave exclusiva.  Quando você emite uma solicitação S3 para recuperar o objeto, o StorageGRID usa a chave armazenada para descriptografar o objeto.
+* *SSE-C (criptografia do lado do servidor com chaves fornecidas pelo cliente)*: Quando você emite uma solicitação S3 para armazenar um objeto, você fornece sua própria chave de criptografia.  Ao recuperar um objeto, você fornece a mesma chave de criptografia como parte de sua solicitação.  Se as duas chaves de criptografia corresponderem, o objeto será descriptografado e os dados do objeto serão retornados.
++
+Embora o StorageGRID gerencie todas as operações de criptografia e descriptografia de objetos, você deve gerenciar as chaves de criptografia fornecidas.
+
++
+
+CAUTION: As chaves de criptografia fornecidas nunca são armazenadas.  Se você perder uma chave de criptografia, perderá o objeto correspondente.
+
++
+
+NOTE: Se um objeto for criptografado com SSE ou SSE-C, todas as configurações de criptografia em nível de bucket ou de grade serão ignoradas.
+
+
+
+
+
+== Usar SSE
+
+Para criptografar um objeto com uma chave exclusiva gerenciada pelo StorageGRID, use o seguinte cabeçalho de solicitação:
+
+`x-amz-server-side-encryption`
+
+O cabeçalho de solicitação SSE é suportado pelas seguintes operações de objeto:
+
+* link:put-object.html["ColocarObjeto"]
+* link:put-object-copy.html["CopiarObjeto"]
+* link:initiate-multipart-upload.html["CriarMultipartUpload"]
+
+
+
+
+== Usar SSE-C
+
+Para criptografar um objeto com uma chave exclusiva que você gerencia, use três cabeçalhos de solicitação:
+
+[cols="1a,2a"]
+|===
+| Cabeçalho da solicitação | Descrição 
+
+
+ a| 
+`x-amz-server-side​-encryption​-customer-algorithm`
+ a| 
+Especifique o algoritmo de criptografia.  O valor do cabeçalho deve ser `AES256` .
+
+
+
+ a| 
+`x-amz-server-side​-encryption​-customer-key`
+ a| 
+Especifique a chave de criptografia que será usada para criptografar ou descriptografar o objeto.  O valor da chave deve ser de 256 bits, codificado em base64.
+
+
+
+ a| 
+`x-amz-server-side​-encryption​-customer-key-MD5`
+ a| 
+Especifique o resumo MD5 da chave de criptografia de acordo com o RFC 1321, que é usado para garantir que a chave de criptografia foi transmitida sem erros.  O valor do resumo MD5 deve ser codificado em base64 de 128 bits.
+
+|===
+Os cabeçalhos de solicitação SSE-C são suportados pelas seguintes operações de objeto:
+
+* link:get-object.html["ObterObjeto"]
+* link:head-object.html["CabeçaObjeto"]
+* link:put-object.html["ColocarObjeto"]
+* link:put-object-copy.html["CopiarObjeto"]
+* link:initiate-multipart-upload.html["CriarMultipartUpload"]
+* link:upload-part.html["UploadPart"]
+* link:upload-part-copy.html["UploadPartCopy"]
+
+
+
+
+== Considerações sobre o uso de criptografia do lado do servidor com chaves fornecidas pelo cliente (SSE-C)
+
+Antes de usar o SSE-C, esteja ciente das seguintes considerações:
+
+* Você deve usar https.
++
+
+CAUTION: O StorageGRID rejeita quaisquer solicitações feitas via http ao usar SSE-C. Por questões de segurança, considere que qualquer chave enviada acidentalmente via http estará comprometida.  Descarte a chave e gire conforme apropriado.
+
+* O ETag na resposta não é o MD5 dos dados do objeto.
+* Você deve gerenciar o mapeamento de chaves de criptografia para objetos.  O StorageGRID não armazena chaves de criptografia.  Você é responsável por rastrear a chave de criptografia fornecida para cada objeto.
+* Se o seu bucket tiver controle de versão habilitado, cada versão do objeto deverá ter sua própria chave de criptografia.  Você é responsável por rastrear a chave de criptografia usada para cada versão do objeto.
+* Como você gerencia chaves de criptografia no lado do cliente, também deve gerenciar quaisquer proteções adicionais, como rotação de chaves, no lado do cliente.
++
+
+CAUTION: As chaves de criptografia fornecidas nunca são armazenadas.  Se você perder uma chave de criptografia, perderá o objeto correspondente.
+
+* Se a replicação entre grades ou a replicação do CloudMirror estiver configurada para o bucket, você não poderá ingerir objetos SSE-C. A operação de ingestão falhará.
+
+
+.Informações relacionadas
+https://docs.aws.amazon.com/AmazonS3/latest/dev/ServerSideEncryptionCustomerKeys.html["Guia do usuário do Amazon S3: usando criptografia do lado do servidor com chaves fornecidas pelo cliente (SSE-C)"^]

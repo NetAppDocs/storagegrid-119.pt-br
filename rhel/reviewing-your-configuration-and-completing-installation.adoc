@@ -1,0 +1,47 @@
+---
+permalink: rhel/reviewing-your-configuration-and-completing-installation.html 
+sidebar: sidebar 
+keywords: how to complete installation red hat linux 
+summary: Você deve revisar cuidadosamente as informações de configuração inseridas para garantir que a instalação seja concluída com sucesso. 
+---
+= Revise sua configuração e conclua a instalação
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Você deve revisar cuidadosamente as informações de configuração inseridas para garantir que a instalação seja concluída com sucesso.
+
+.Passos
+. Veja a página *Resumo*.
++
+image::../media/11_gmi_installer_summary_page.gif[Esta imagem é explicada pelo texto ao redor.]
+
+. Verifique se todas as informações de configuração da grade estão corretas.  Use os links Modificar na página Resumo para voltar e corrigir quaisquer erros.
+. Clique em *Instalar*.
++
+
+NOTE: Se um nó estiver configurado para usar a Rede do Cliente, o gateway padrão para esse nó muda da Rede de Grade para a Rede do Cliente quando você clica em *Instalar*.  Se você perder a conectividade, certifique-se de estar acessando o nó de administração principal por meio de uma sub-rede acessível. Verlink:../network/index.html["Diretrizes de rede"] para mais detalhes.
+
+. Clique em *Baixar pacote de recuperação*.
++
+Quando a instalação avança até o ponto em que a topologia da grade é definida, você é solicitado a baixar o arquivo do pacote de recuperação(`.zip` ) e confirme se você consegue acessar com sucesso o conteúdo deste arquivo.  Você deve baixar o arquivo do pacote de recuperação para poder recuperar o sistema StorageGRID se um ou mais nós da grade falharem.  A instalação continua em segundo plano, mas você não poderá concluir a instalação e acessar o sistema StorageGRID até baixar e verificar este arquivo.
+
+. Verifique se você pode extrair o conteúdo do `.zip` arquivo e salve-o em dois locais seguros, protegidos e separados.
++
+
+CAUTION: O arquivo do pacote de recuperação deve ser protegido porque contém chaves de criptografia e senhas que podem ser usadas para obter dados do sistema StorageGRID .
+
+. Marque a caixa de seleção *Eu baixei e verifiquei com sucesso o arquivo do pacote de recuperação* e clique em *Avançar*.
++
+Se a instalação ainda estiver em andamento, a página de status será exibida.  Esta página indica o progresso da instalação de cada nó da grade.
+
++
+image::../media/12_gmi_installer_status_page.gif[Esta imagem é explicada pelo texto ao redor.]
+
++
+Quando o estágio Concluído for atingido para todos os nós da grade, a página de login do Gerenciador de Grade será exibida.
+
+. Sign in no Grid Manager usando o usuário "root" e a senha que você especificou durante a instalação.
+

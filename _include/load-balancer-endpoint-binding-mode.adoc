@@ -1,0 +1,40 @@
+= 
+:allow-uri-read: 
+
+
+[cols="1a,3a"]
+|===
+| Modo | Descrição 
+
+
+ a| 
+Global (padrão)
+ a| 
+Os clientes podem acessar o ponto de extremidade usando o endereço IP de qualquer nó de gateway ou nó de administração, o endereço IP virtual (VIP) de qualquer grupo de HA em qualquer rede ou um FQDN correspondente.
+
+Use a configuração *Global* (padrão), a menos que você precise restringir a acessibilidade deste ponto de extremidade.
+
+
+
+ a| 
+IPs virtuais de grupos HA
+ a| 
+Os clientes devem usar um endereço IP virtual (ou FQDN correspondente) de um grupo HA para acessar este ponto de extremidade.
+
+Os endpoints com esse modo de vinculação podem usar o mesmo número de porta, desde que os grupos de HA selecionados para os endpoints não se sobreponham.
+
+
+
+ a| 
+Interfaces de nó
+ a| 
+Os clientes devem usar os endereços IP (ou FQDNs correspondentes) das interfaces de nó selecionadas para acessar este ponto de extremidade.
+
+
+
+ a| 
+Tipo de nó
+ a| 
+Com base no tipo de nó selecionado, os clientes devem usar o endereço IP (ou FQDN correspondente) de qualquer nó de administração ou o endereço IP (ou FQDN correspondente) de qualquer nó de gateway para acessar esse ponto de extremidade.
+
+|===

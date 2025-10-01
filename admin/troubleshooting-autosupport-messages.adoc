@@ -1,0 +1,54 @@
+---
+permalink: admin/troubleshooting-autosupport-messages.html 
+sidebar: sidebar 
+keywords: troubleshoot autosupport, asup package 
+summary: Se uma tentativa de enviar um pacote AutoSupport falhar, o sistema StorageGRID tomará ações diferentes dependendo do tipo de pacote AutoSupport . Você pode verificar o status dos pacotes do AutoSupport selecionando Suporte \> Ferramentas \> AutoSupport \> Resultados. 
+---
+= Solucionar problemas de pacotes AutoSupport
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Se uma tentativa de enviar um pacote AutoSupport falhar, o sistema StorageGRID tomará ações diferentes dependendo do tipo de pacote AutoSupport . Você pode verificar o status dos pacotes do AutoSupport selecionando *SUPPORT* > *Tools* > * AutoSupport* > *Results*.
+
+Quando o pacote AutoSupport falha ao enviar, "Falha" aparece na guia *Resultados* da página * AutoSupport*.
+
+
+NOTE: Se você configurou um servidor proxy para encaminhar pacotes do AutoSupport para o NetApp, você develink:configuring-admin-proxy-settings.html["verifique se as configurações do servidor proxy estão corretas"] .
+
+
+
+== Falha no pacote AutoSupport semanal
+
+Se um pacote semanal do AutoSupport não for enviado, o sistema StorageGRID tomará as seguintes ações:
+
+. Atualiza o atributo Resultado Mais Recente para Tentando Novamente.
+. Tenta reenviar o pacote AutoSupport 15 vezes a cada quatro minutos durante uma hora.
+. Após uma hora de falhas de envio, atualiza o atributo Resultado Mais Recente para Falha.
+. Tenta enviar um pacote AutoSupport novamente no próximo horário agendado.
+. Mantém o cronograma regular do AutoSupport se o pacote falhar porque o serviço NMS não está disponível e se um pacote for enviado antes de sete dias.
+. Quando o serviço NMS estiver disponível novamente, envie um pacote AutoSupport imediatamente se um pacote não tiver sido enviado por sete dias ou mais.
+
+
+
+
+== Falha do pacote AutoSupport acionada pelo usuário ou por evento
+
+Se um pacote AutoSupport acionado pelo usuário ou por evento não for enviado, o sistema StorageGRID executará as seguintes ações:
+
+. Exibe uma mensagem de erro se o erro for conhecido.  Por exemplo, se um usuário selecionar o protocolo SMTP sem fornecer as configurações de e-mail corretas, o seguinte erro será exibido: `AutoSupport packages cannot be sent using SMTP protocol due to incorrect settings on the E-mail Server page.`
+. Não tente enviar o pacote novamente.
+. Registra o erro em `nms.log` .
+
+
+Se ocorrer uma falha e o SMTP for o protocolo selecionado, verifique se o servidor de e-mail do sistema StorageGRID está configurado corretamente e se o seu servidor de e-mail está em execução (*SUPORTE* > *Alarmes (antigos)* > *Configuração de e-mail legado*). A seguinte mensagem de erro pode aparecer na página AutoSupport : `AutoSupport packages cannot be sent using SMTP protocol due to incorrect settings on the E-mail Server page.`
+
+Saiba como link:../monitor/email-alert-notifications.html["configurar as configurações do servidor de e-mail"] .
+
+
+
+== Corrigir uma falha no pacote AutoSupport
+
+Se ocorrer uma falha e SMTP for o protocolo selecionado, verifique se o servidor de e-mail do sistema StorageGRID está configurado corretamente e se seu servidor de e-mail está em execução. A seguinte mensagem de erro pode aparecer na página AutoSupport : `AutoSupport packages cannot be sent using SMTP protocol due to incorrect settings on the E-mail Server page.`

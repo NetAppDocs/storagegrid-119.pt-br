@@ -1,0 +1,23 @@
+---
+permalink: maintain/consolidating-storage-nodes.html 
+sidebar: sidebar 
+keywords: storagegrid, storage node, consolidate storage node, consolidating storage node 
+summary: Você pode consolidar nós de armazenamento para reduzir a contagem de nós de armazenamento para um site ou implantação e, ao mesmo tempo, aumentar a capacidade de armazenamento. 
+---
+= Consolidar nós de armazenamento
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Você pode consolidar nós de armazenamento para reduzir a contagem de nós de armazenamento para um site ou implantação e, ao mesmo tempo, aumentar a capacidade de armazenamento.
+
+Ao consolidar nós de armazenamento, vocêlink:../expand/index.html["expandir o sistema StorageGRID"] adicionando novos nós de armazenamento de maior capacidade e, em seguida, descomissionando os antigos nós de armazenamento de menor capacidade.  Durante o procedimento de desativação, os objetos são migrados dos antigos nós de armazenamento para os novos nós de armazenamento.
+
+
+NOTE: Se você estiver consolidando aparelhos mais antigos e menores com novos modelos ou aparelhos de maior capacidade, considere https://docs.netapp.com/us-en/storagegrid-appliances/commonhardware/how-appliance-node-cloning-works.html["clonando o nó do aparelho"^] (ou use a clonagem de nó do dispositivo e o procedimento de descomissionamento se você não estiver fazendo uma substituição um-para-um).
+
+Por exemplo, você pode adicionar dois novos nós de armazenamento com maior capacidade para substituir três nós de armazenamento mais antigos.  Primeiro, você usaria o procedimento de expansão para adicionar os dois novos nós de armazenamento maiores e, em seguida, usaria o procedimento de descomissionamento para remover os três antigos nós de armazenamento de menor capacidade.
+
+Ao adicionar nova capacidade antes de remover os nós de armazenamento existentes, você garante uma distribuição mais equilibrada de dados no sistema StorageGRID .  Você também reduz a possibilidade de um nó de armazenamento existente ser empurrado além do nível de marca d'água de armazenamento.

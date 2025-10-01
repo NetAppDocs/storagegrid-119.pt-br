@@ -1,0 +1,56 @@
+---
+permalink: maintain/rebooting-grid-node-from-grid-manager.html 
+sidebar: sidebar 
+keywords: reboot grid node, tasks tab 
+summary: Você pode reinicializar um nó de grade individual na guia Tarefas na página Nós. 
+---
+= Reiniciar nó de grade na aba Tarefas
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Você pode reinicializar um nó de grade individual na guia Tarefas na página Nós.
+
+.Antes de começar
+* Você está conectado ao Grid Manager usando umlink:../admin/web-browser-requirements.html["navegador da web compatível"] .
+* Você tem olink:../admin/admin-group-permissions.html["Permissão de acesso de manutenção ou root"] .
+* Você tem a senha de provisionamento.
+* Se você estiver reinicializando o nó de administração primário ou qualquer nó de armazenamento, revise as seguintes considerações:
++
+** Quando você reinicia o nó de administração principal, seu navegador perde temporariamente o acesso ao Grid Manager.
+** Se você reiniciar dois ou mais nós de armazenamento em um determinado site, talvez não consiga acessar determinados objetos durante a reinicialização.  Esse problema pode ocorrer se qualquer regra do ILM usar a opção de ingestão *Dual commit* (ou uma regra especificar *Balanced* e não for possível criar imediatamente todas as cópias necessárias).  Nesse caso, o StorageGRID enviará os objetos recém-ingeridos para dois nós de armazenamento no mesmo site e avaliará o ILM posteriormente.
+** Para garantir que você possa acessar todos os objetos enquanto um nó de armazenamento estiver sendo reinicializado, interrompa a ingestão de objetos em um site por aproximadamente uma hora antes de reinicializar o nó.
+
+
+
+
+.Sobre esta tarefa
+Quando o StorageGRID reinicia um nó de grade, ele emite o `reboot` comando no nó, que faz com que o nó seja desligado e reiniciado.  Todos os serviços são reiniciados automaticamente.
+
+* Reinicializar um nó VMware reinicializa a máquina virtual.
+* Reinicializar um nó Linux reinicializa o contêiner.
+* Reinicializar um nó do StorageGRID Appliance reinicializa o controlador de computação.
+
+
+
+TIP: Se você precisar reinicializar mais de um nó, você pode usar olink:../maintain/rolling-reboot-procedure.html["procedimento de reinicialização contínua"] .
+
+.Passos
+. Selecione *NODES*.
+. Selecione o nó da grade que você deseja reinicializar.
+. Selecione a aba *Tarefas*.
+. Selecione *Reiniciar*.
++
+Uma caixa de diálogo de confirmação é exibida.  Se você estiver reiniciando o nó de administração principal, a caixa de diálogo de confirmação lembrará que a conexão do seu navegador com o Grid Manager será perdida temporariamente quando os serviços forem interrompidos.
+
+. Digite a senha de provisionamento e selecione *OK*.
+. Aguarde a reinicialização do nó.
++
+Pode levar algum tempo para que os serviços sejam encerrados.
+
++
+Quando o nó está sendo reinicializado, o ícone cinza (Administrativamente inativo) aparece para o nó na página Nós.  Quando todos os serviços forem reiniciados e o nó estiver conectado com sucesso à rede, a página Nós deverá exibir o status normal (sem ícones à esquerda do nome do nó), indicando que nenhum alerta está ativo e que o nó está conectado à rede.
+
+

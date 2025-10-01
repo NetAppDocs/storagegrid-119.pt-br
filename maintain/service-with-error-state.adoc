@@ -1,0 +1,60 @@
+---
+permalink: maintain/service-with-error-state.html 
+sidebar: sidebar 
+keywords: storagegrid, recover, service error state, error, error state 
+summary: Se você detectar que um serviço entrou em estado de erro, tente reiniciá-lo. 
+---
+= Serviço com estado de erro
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Se você detectar que um serviço entrou em estado de erro, tente reiniciá-lo.
+
+.Antes de começar
+Você tem o `Passwords.txt` arquivo.
+
+.Sobre esta tarefa
+O Gerenciador do Servidor monitora serviços e reinicia aqueles que foram interrompidos inesperadamente.  Se um serviço falhar, o Gerenciador do Servidor tentará reiniciá-lo.  Se houver três tentativas fracassadas de iniciar um serviço em cinco minutos, o serviço entrará em estado de erro.  O Gerenciador do Servidor não tenta outra reinicialização.
+
+.Passos
+. Efetue login no nó da grade:
++
+.. Digite o seguinte comando: `ssh admin@_grid_node_IP_`
+.. Digite a senha listada no `Passwords.txt` arquivo.
+.. Digite o seguinte comando para alternar para root: `su -`
+.. Digite a senha listada no `Passwords.txt` arquivo.
+
+
++
+Quando você está logado como root, o prompt muda de `$` para `#` .
+
+. Confirme o estado de erro do serviço: `service _servicename_ status`
++
+Por exemplo:
+
++
+[listing]
+----
+service ldr status
+----
++
+Se o serviço estiver em estado de erro, a seguinte mensagem será retornada: `_servicename_ in error state` . Por exemplo:
+
++
+[listing]
+----
+ldr in error state
+----
++
+
+NOTE: Se o status do serviço for `disabled` , veja as instruções paralink:using-donotstart-file.html["removendo um arquivo DoNotStart para um serviço"] .
+
+. Tente remover o estado de erro reiniciando o serviço: `service _servicename_ restart`
++
+Se o serviço não reiniciar, entre em contato com o suporte técnico.
+
+. Sair do shell de comando: `exit`
+

@@ -1,0 +1,80 @@
+---
+permalink: monitor/view-alert-rules.html 
+sidebar: sidebar 
+keywords: how to manage alert rules 
+summary: As regras de alerta definem as condições que acionam alertas específicos.  O StorageGRID inclui um conjunto de regras de alerta padrão, que você pode usar como estão ou modificar, ou pode criar regras de alerta personalizadas. 
+---
+= Ver regras de alerta
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+As regras de alerta definem as condições que desencadeiamlink:alerts-reference.html["alertas específicos"] .  O StorageGRID inclui um conjunto de regras de alerta padrão, que você pode usar como estão ou modificar, ou pode criar regras de alerta personalizadas.
+
+Você pode visualizar a lista de todas as regras de alerta padrão e personalizadas para saber quais condições acionarão cada alerta e para ver se algum alerta está desabilitado.
+
+.Antes de começar
+* Você está conectado ao Grid Manager usando umlink:../admin/web-browser-requirements.html["navegador da web compatível"] .
+* Você tem olink:../admin/admin-group-permissions.html["Gerenciar alertas ou permissão de acesso root"] .
+* Opcionalmente, você assistiu ao vídeo: https://netapp.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=2eea81c5-8323-417f-b0a0-b1ff008506c1["Vídeo: Visão geral dos alertas"^]
++
+[link=https://netapp.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=2eea81c5-8323-417f-b0a0-b1ff008506c1]
+image::../media/video-screenshot-alert-overview-118.png[Vídeo: Visão geral dos alertas]
+
+
+
+.Passos
+. Selecione *ALERTAS* > *Regras*.
++
+A página Regras de alerta é exibida.
+
++
+image::../media/alert_rules_page.png[Página de regras de alerta]
+
+. Revise as informações na tabela de regras de alerta:
++
+[cols="1a,3a"]
+|===
+| Cabeçalho da coluna | Descrição 
+
+
+ a| 
+Nome
+ a| 
+O nome exclusivo e a descrição da regra de alerta.  As regras de alerta personalizadas são listadas primeiro, seguidas pelas regras de alerta padrão.  O nome da regra de alerta é o assunto das notificações por e-mail.
+
+
+
+ a| 
+Condições
+ a| 
+As expressões do Prometheus que determinam quando esse alerta é acionado.  Um alerta pode ser disparado em um ou mais dos seguintes níveis de gravidade, mas não é necessária uma condição para cada gravidade.
+
+** *Crítico*image:../media/icon_alert_red_critical.png["Ícone Alerta Vermelho Crítico"] : Existe uma condição anormal que interrompeu as operações normais de um nó ou serviço do StorageGRID .  Você deve resolver o problema subjacente imediatamente.  Pode haver interrupção do serviço e perda de dados se o problema não for resolvido.
+** *Principal*image:../media/icon_alert_orange_major.png["Ícone Alerta Laranja Maior"] : Existe uma condição anormal que está afetando as operações atuais ou se aproximando do limite para um alerta crítico.  Você deve investigar os principais alertas e resolver quaisquer problemas subjacentes para garantir que a condição anormal não interrompa a operação normal de um nó ou serviço do StorageGRID .
+** *Menor*image:../media/icon_alert_yellow_minor.png["Ícone Alerta Amarelo Menor"] : O sistema está operando normalmente, mas existe uma condição anormal que pode afetar a capacidade do sistema de operar se continuar.  Você deve monitorar e resolver alertas menores que não desaparecem sozinhos para garantir que eles não resultem em um problema mais sério.
+
+
+
+
+ a| 
+Tipo
+ a| 
+O tipo de regra de alerta:
+
+** *Padrão*: Uma regra de alerta fornecida com o sistema.  Você pode desabilitar uma regra de alerta padrão ou editar as condições e a duração de uma regra de alerta padrão.  Você não pode remover uma regra de alerta padrão.
+** *Padrão**: Uma regra de alerta padrão que inclui uma condição ou duração editada.  Conforme necessário, você pode facilmente reverter uma condição modificada para o padrão original.
+** *Personalizado*: Uma regra de alerta que você criou.  Você pode desabilitar, editar e remover regras de alerta personalizadas.
+
+
+
+
+ a| 
+Status
+ a| 
+Se esta regra de alerta está habilitada ou desabilitada no momento.  As condições para regras de alerta desabilitadas não são avaliadas, portanto, nenhum alerta é acionado.
+
+|===
+

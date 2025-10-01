@@ -1,0 +1,126 @@
+---
+permalink: maintain/powering-down-host.html 
+sidebar: sidebar 
+keywords: storagegrid, recover, stop services, power down host, power off host 
+summary: Antes de desligar um host, você deve interromper os serviços em todos os nós da grade naquele host. 
+---
+= Desligar o host
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Antes de desligar um host, você deve interromper os serviços em todos os nós da grade naquele host.
+
+.Passos
+. Efetue login no nó da grade:
++
+.. Digite o seguinte comando: `ssh admin@_grid_node_IP_`
+.. Digite a senha listada no `Passwords.txt` arquivo.
+.. Digite o seguinte comando para alternar para root: `su -`
+.. Digite a senha listada no `Passwords.txt` arquivo.
+
+
++
+Quando você está logado como root, o prompt muda de `$` para `#` .
+
+. Pare todos os serviços em execução no nó: `service servermanager stop`
++
+Os serviços podem levar até 15 minutos para serem desligados, e talvez você queira fazer login no sistema remotamente para monitorar o processo de desligamento.
+
+. Repita as etapas 1 e 2 para cada nó no host.
+. Se você tiver um host Linux:
++
+.. Efetue login no sistema operacional do host.
+.. Pare o nó: `storagegrid node stop`
+.. Desligue o sistema operacional do host.
+
+
+. Se o nó estiver sendo executado em uma máquina virtual VMware ou for um nó de dispositivo, emita o comando shutdown: `shutdown -h now`
++
+Execute esta etapa independentemente do resultado da `service servermanager stop` comando.
+
++
+
+NOTE: Depois de emitir o `shutdown -h now` comando em um nó do dispositivo, você deve desligar e ligar o dispositivo para reiniciá-lo.
+
++
+Para o dispositivo, este comando desliga o controlador, mas o dispositivo continua ligado.  Você deve concluir a próxima etapa.
+
+. Se você estiver desligando um nó do dispositivo, siga as etapas para o seu dispositivo.
++
+[role="tabbed-block"]
+====
+.SG6160
+--
+.. Desligue a energia do controlador de armazenamento SG6100-CN.
+.. Aguarde até que o LED azul de energia no controlador de armazenamento SG6100-CN desligue.
+
+
+--
+.SGF6112
+--
+.. Desligue a energia do aparelho.
+.. Aguarde até que o LED azul de energia desligue.
+
+
+--
+.SG6000
+--
+.. Aguarde até que o LED verde Cache Active na parte traseira dos controladores de armazenamento desligue.
++
+Este LED fica aceso quando dados em cache precisam ser gravados nas unidades.  Você deve esperar que este LED desligue antes de desligar a energia.
+
+.. Desligue o aparelho e aguarde até que o LED azul de energia apague.
+
+
+--
+.SG5800
+--
+.. Aguarde até que o LED verde Cache Active na parte traseira do controlador de armazenamento desligue.
++
+Este LED fica aceso quando dados em cache precisam ser gravados nas unidades.  Você deve esperar que este LED desligue antes de desligar a energia.
+
+.. Na página inicial do SANtricity System Manager, selecione *Exibir operações em andamento*.
+.. Confirme se todas as operações foram concluídas antes de continuar com a próxima etapa.
+.. Desligue os dois interruptores de energia na prateleira do controlador e espere até que todos os LEDs na prateleira do controlador se apaguem.
+
+
+--
+.SG5700
+--
+.. Aguarde até que o LED verde Cache Active na parte traseira do controlador de armazenamento desligue.
++
+Este LED fica aceso quando dados em cache precisam ser gravados nas unidades.  Você deve esperar que este LED desligue antes de desligar a energia.
+
+.. Desligue o aparelho e aguarde até que toda a atividade do LED e do display de sete segmentos pare.
+
+
+--
+.SG110 ou SG1100
+--
+.. Desligue a energia do aparelho.
+.. Aguarde até que o LED azul de energia desligue.
+
+
+--
+.SG100 ou SG1000
+--
+.. Desligue a energia do aparelho.
+.. Aguarde até que o LED azul de energia desligue.
+
+
+--
+====
+. Sair do shell de comando: `exit`
+
+
+.Informações relacionadas
+* link:https://docs.netapp.com/us-en/storagegrid-appliances/sg6100/index.html["Dispositivos de armazenamento SGF6112 e SG6160"^]
+* link:https://docs.netapp.com/us-en/storagegrid-appliances/sg6000/index.html["Dispositivos de armazenamento SG6000"^]
+* link:https://docs.netapp.com/us-en/storagegrid-appliances/sg5700/index.html["Dispositivos de armazenamento SG5700"^]
+* link:https://docs.netapp.com/us-en/storagegrid-appliances/sg5800/index.html["Dispositivos de armazenamento SG5800"^]
+* link:https://docs.netapp.com/us-en/storagegrid-appliances/sg110-1100/index.html["Aparelhos de serviço SG110 e SG1100"^]
+* link:https://docs.netapp.com/us-en/storagegrid-appliances/sg100-1000/index.html["Aparelhos de serviços SG100 e SG1000"^]
+

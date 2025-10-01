@@ -1,0 +1,70 @@
+---
+permalink: admin/changing-browser-session-timeout-interface.html 
+sidebar: sidebar 
+keywords: security, browser inactivity timeout, management API stack track 
+summary: As configurações de segurança da interface permitem que você controle se os usuários serão desconectados caso fiquem inativos por mais tempo do que o especificado e se um rastreamento de pilha será incluído nas respostas de erro da API. 
+---
+= Alterar as configurações de segurança da interface
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+As configurações de segurança da interface permitem que você controle se os usuários serão desconectados caso fiquem inativos por mais tempo do que o especificado e se um rastreamento de pilha será incluído nas respostas de erro da API.
+
+.Antes de começar
+* Você está conectado ao Grid Manager usando umlink:../admin/web-browser-requirements.html["navegador da web compatível"] .
+* Você temlink:admin-group-permissions.html["Permissão de acesso root"] .
+
+
+.Sobre esta tarefa
+A página *Configurações de segurança* inclui as configurações de *Tempo limite de inatividade do navegador* e *Rastreamento de pilha da API de gerenciamento*.
+
+Tempo limite de inatividade do navegador:: Indica por quanto tempo o navegador de um usuário pode ficar inativo antes que ele seja desconectado.  O padrão é 15 minutos.
++
+--
+O tempo limite de inatividade do navegador também é controlado pelo seguinte:
+
+* Um temporizador StorageGRID separado e não configurável, incluído para segurança do sistema.  O token de autenticação de cada usuário expira 16 horas após o usuário efetuar login. Quando a autenticação de um usuário expira, esse usuário é desconectado automaticamente, mesmo que o tempo limite de inatividade do navegador esteja desativado ou o valor do tempo limite do navegador não tenha sido atingido.  Para renovar o token, o usuário deve efetuar login novamente.
+* Configurações de tempo limite para o provedor de identidade, supondo que o logon único (SSO) esteja habilitado para StorageGRID.
++
+Se o SSO estiver habilitado e o navegador do usuário expirar, o usuário deverá inserir novamente suas credenciais de SSO para acessar o StorageGRID novamente. Ver link:configuring-sso.html["Configurar logon único"] .
+
+
+
+--
+Rastreamento de pilha da API de gerenciamento:: Controla se um rastreamento de pilha é retornado nas respostas de erro da API do Grid Manager e do Tenant Manager.
++
+--
+Esta opção está desabilitada por padrão, mas talvez você queira habilitar essa funcionalidade para um ambiente de teste.  Em geral, você deve deixar o rastreamento de pilha desabilitado em ambientes de produção para evitar revelar detalhes internos do software quando ocorrerem erros de API.
+
+--
+
+
+.Passos
+. Selecione *CONFIGURAÇÃO* > *Segurança* > *Configurações de segurança*.
+. Selecione a aba *Interface*.
+. Para alterar a configuração de tempo limite de inatividade do navegador:
++
+.. Expanda o acordeão.
+.. Para alterar o período de tempo limite, especifique um valor entre 60 segundos e 7 dias.  O tempo limite padrão é 15 minutos.
+.. Para desativar esse recurso, desmarque a caixa de seleção.
+.. Selecione *Salvar*.
++
+A nova configuração não afeta os usuários que estão conectados no momento. Os usuários devem fazer login novamente ou atualizar seus navegadores para que a nova configuração de tempo limite entre em vigor.
+
+
+
+. Para alterar a configuração do rastreamento de pilha da API de gerenciamento:
++
+.. Expanda o acordeão.
+.. Marque a caixa de seleção para retornar um rastreamento de pilha nas respostas de erro da API do Grid Manager e do Tenant Manager.
++
+
+CAUTION: Deixe o rastreamento de pilha desabilitado em ambientes de produção para evitar revelar detalhes internos do software quando ocorrerem erros de API.
+
+.. Selecione *Salvar*.
+
+
+

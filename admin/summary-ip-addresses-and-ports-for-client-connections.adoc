@@ -1,0 +1,129 @@
+---
+permalink: admin/summary-ip-addresses-and-ports-for-client-connections.html 
+sidebar: sidebar 
+keywords: ip addresses for client, how to connect to storagegrid, ports, vip 
+summary: 'Para armazenar ou recuperar objetos, os aplicativos cliente S3 se conectam ao serviço Load Balancer, que está incluído em todos os nós de administração e nós de gateway, ou ao serviço Local Distribution Router (LDR), que está incluído em todos os nós de armazenamento.' 
+---
+= Resumo: Endereços IP e portas para conexões de clientes
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Para armazenar ou recuperar objetos, os aplicativos cliente S3 se conectam ao serviço Load Balancer, que está incluído em todos os nós de administração e nós de gateway, ou ao serviço Local Distribution Router (LDR), que está incluído em todos os nós de armazenamento.
+
+Os aplicativos cliente podem se conectar ao StorageGRID usando o endereço IP de um nó de grade e o número da porta do serviço nesse nó.  Opcionalmente, você pode criar grupos de alta disponibilidade (HA) de nós de balanceamento de carga para fornecer conexões de alta disponibilidade que usam endereços IP virtuais (VIP).  Se você quiser se conectar ao StorageGRID usando um nome de domínio totalmente qualificado (FQDN) em vez de um endereço IP ou VIP, você pode configurar entradas de DNS.
+
+Esta tabela resume as diferentes maneiras pelas quais os clientes podem se conectar ao StorageGRID e os endereços IP e portas usados ​​para cada tipo de conexão.  Se você já criou endpoints do balanceador de carga e grupos de alta disponibilidade (HA), consulte<<Onde encontrar endereços IP>> para localizar esses valores no Grid Manager.
+
+[cols="1a,1a,1a,1a"]
+|===
+| Onde a conexão é feita | Serviço ao qual o cliente se conecta | Endereço IP | Porta 
+
+
+ a| 
+Grupo HA
+ a| 
+Balanceador de carga
+ a| 
+Endereço IP virtual de um grupo HA
+ a| 
+Porta atribuída ao ponto de extremidade do balanceador de carga
+
+
+
+ a| 
+Nó de administração
+ a| 
+Balanceador de carga
+ a| 
+Endereço IP do nó de administração
+ a| 
+Porta atribuída ao ponto de extremidade do balanceador de carga
+
+
+
+ a| 
+Nó de gateway
+ a| 
+Balanceador de carga
+ a| 
+Endereço IP do nó de gateway
+ a| 
+Porta atribuída ao ponto de extremidade do balanceador de carga
+
+
+
+ a| 
+Nó de armazenamento
+ a| 
+LDR
+ a| 
+Endereço IP do nó de armazenamento
+ a| 
+Portas S3 padrão:
+
+* HTTPS: 18082
+* HTTP: 18084
+
+
+|===
+
+
+== URLs de exemplo
+
+Para conectar um aplicativo cliente ao ponto de extremidade do balanceador de carga de um grupo HA de nós de gateway, use uma URL estruturada conforme mostrado abaixo:
+
+`https://_VIP-of-HA-group:LB-endpoint-port_`
+
+Por exemplo, se o endereço IP virtual do grupo HA for 192.0.2.5 e o número da porta do ponto de extremidade do balanceador de carga for 10443, um aplicativo poderá usar a seguinte URL para se conectar ao StorageGRID:
+
+`\https://192.0.2.5:10443`
+
+
+
+== Onde encontrar endereços IP
+
+. Sign in no Grid Manager usando umlink:../admin/web-browser-requirements.html["navegador da web compatível"] .
+. Para encontrar o endereço IP de um nó de grade:
++
+.. Selecione *NODES*.
+.. Selecione o nó de administração, nó de gateway ou nó de armazenamento ao qual você deseja se conectar.
+.. Selecione a aba *Visão geral*.
+.. Na seção Informações do nó, observe os endereços IP do nó.
+.. Selecione *Mostrar mais* para visualizar endereços IPv6 e mapeamentos de interface.
++
+Você pode estabelecer conexões de aplicativos clientes para qualquer um dos endereços IP na lista:
+
++
+*** *eth0:* Rede de grade
+*** *eth1:* Rede de administração (opcional)
+*** *eth2:* Rede do cliente (opcional)
++
+
+NOTE: Se você estiver visualizando um nó de administração ou um nó de gateway e ele for o nó ativo em um grupo de alta disponibilidade, o endereço IP virtual do grupo de alta disponibilidade será mostrado em eth2.
+
+
+
+
+
+. Para encontrar o endereço IP virtual de um grupo de alta disponibilidade:
++
+.. Selecione *CONFIGURAÇÃO* > *Rede* > *Grupos de alta disponibilidade*.
+.. Na tabela, observe o endereço IP virtual do grupo HA.
+
+
+. Para encontrar o número da porta de um ponto de extremidade do Load Balancer:
++
+.. Selecione *CONFIGURAÇÃO* > *Rede* > *Pontos de extremidade do balanceador de carga*.
+.. Anote o número da porta do ponto de extremidade que você deseja usar.
++
+
+NOTE: Se o número da porta for 80 ou 443, o ponto de extremidade será configurado somente em nós de gateway, porque essas portas são reservadas em nós de administração.  Todas as outras portas são configuradas nos nós de gateway e nos nós de administração.
+
+.. Selecione o nome do ponto de extremidade na tabela.
+.. Confirme se o *Tipo de cliente* (S3) corresponde ao aplicativo cliente que usará o ponto de extremidade.
+
+
+

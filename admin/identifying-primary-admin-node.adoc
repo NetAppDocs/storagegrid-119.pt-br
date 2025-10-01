@@ -1,0 +1,29 @@
+---
+permalink: admin/identifying-primary-admin-node.html 
+sidebar: sidebar 
+keywords: primary admin node, configuration management node 
+summary: O nó administrativo primário fornece mais funcionalidades do que os nós administrativos não primários.  Por exemplo, alguns procedimentos de manutenção devem ser executados usando o nó de administração principal. 
+---
+= Identifique o nó de administração principal
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+O nó administrativo primário fornece mais funcionalidades do que os nós administrativos não primários.  Por exemplo, alguns procedimentos de manutenção devem ser executados usando o nó de administração principal.
+
+Para obter mais informações sobre nós de administração, consultelink:../primer/what-admin-node-is.html["O que é um nó de administração"] .
+
+.Antes de começar
+* Você está conectado ao Grid Manager usando umlink:../admin/web-browser-requirements.html["navegador da web compatível"] .
+* Você temlink:admin-group-permissions.html["permissões de acesso específicas"] .
+
+
+.Passos
+. Selecione *NODES*.
+. Digite *primário* na caixa de pesquisa.
++
+Nos resultados da pesquisa, identifique o nó com "Nó de administração principal" exibido na coluna Tipo.  Um nó de administração primário deve ser listado.
+
+

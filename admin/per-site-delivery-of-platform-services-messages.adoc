@@ -1,0 +1,24 @@
+---
+permalink: admin/per-site-delivery-of-platform-services-messages.html 
+sidebar: sidebar 
+keywords: platform services message delivery 
+summary: Todas as operações de serviços de plataforma são realizadas por site. 
+---
+= Entrega de mensagens de serviços de plataforma por site
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Todas as operações de serviços de plataforma são realizadas por site.
+
+Ou seja, se um locatário usar um cliente para executar uma operação de criação de API do S3 em um objeto conectando-se a um nó de gateway no site do data center 1, a notificação sobre essa ação será acionada e enviada do site do data center 1.
+
+image::../media/notification_multiple_sites.gif[Diagrama mostrando que a ação no objeto no site 1 aciona a notificação do site 1]
+
+Se o cliente posteriormente executar uma operação de exclusão da API S3 no mesmo objeto do Site do Data Center 2, a notificação sobre a ação de exclusão será acionada e enviada do Site do Data Center 2.
+
+image::../media/notifications_site_2.gif[diagrama mostrando ação no objeto do site 2 aciona notificações do site 2]
+
+Certifique-se de que a rede em cada site esteja configurada de forma que as mensagens dos serviços da plataforma possam ser entregues aos seus destinos.

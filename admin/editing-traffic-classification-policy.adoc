@@ -1,0 +1,52 @@
+---
+permalink: admin/editing-traffic-classification-policy.html 
+sidebar: sidebar 
+keywords: edit traffic classification policy 
+summary: Você pode editar uma política de classificação de tráfego para alterar seu nome ou descrição, ou para criar, editar ou excluir quaisquer regras ou limites para a política. 
+---
+= Editar política de classificação de tráfego
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Você pode editar uma política de classificação de tráfego para alterar seu nome ou descrição, ou para criar, editar ou excluir quaisquer regras ou limites para a política.
+
+.Antes de começar
+* Você está conectado ao Grid Manager usando umlink:../admin/web-browser-requirements.html["navegador da web compatível"] .
+* Você tem olink:admin-group-permissions.html["Permissão de acesso root"] .
+
+
+.Passos
+. Selecione *CONFIGURAÇÃO* > *Rede* > *Classificação de tráfego*.
++
+A página Políticas de classificação de tráfego é exibida e as políticas existentes são listadas em uma tabela.
+
+. Edite a política usando o menu Ações ou a página de detalhes.  Verlink:../admin/creating-traffic-classification-policies.html["criar políticas de classificação de tráfego"] para o que inserir.
++
+[role="tabbed-block"]
+====
+.Menu de ações
+--
+.. Marque a caixa de seleção da política.
+.. Selecione *Ações* > *Editar*.
+
+
+--
+.Página de detalhes
+--
+.. Selecione o nome da política.
+.. Selecione o botão *Editar* ao lado do nome da política.
+
+
+--
+====
+. Para a etapa Inserir nome da política, edite opcionalmente o nome ou a descrição da política e selecione *Continuar*.
+. Para a etapa Adicionar regras de correspondência, opcionalmente adicione uma regra ou edite o *Tipo* e o *Valor de correspondência* da regra existente e selecione *Continuar*.
+. Para a etapa Definir limites, opcionalmente adicione, edite ou exclua um limite e selecione *Continuar*.
+. Revise a política atualizada e selecione *Salvar e continuar*.
++
+As alterações feitas na política são salvas e o tráfego de rede agora é tratado de acordo com as políticas de classificação de tráfego.  Você pode visualizar gráficos de trânsito e verificar se as polícias estão aplicando os limites de tráfego esperados.
+
+

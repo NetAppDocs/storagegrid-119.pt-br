@@ -1,0 +1,225 @@
+---
+permalink: expand/performing-expansion.html 
+sidebar: sidebar 
+keywords: expand, expansion procedure 
+summary: Quando você executa a expansão, os novos nós de grade são adicionados à sua implantação existente do StorageGRID . 
+---
+= Executar expansão
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Quando você executa a expansão, os novos nós de grade são adicionados à sua implantação existente do StorageGRID .
+
+.Antes de começar
+* Você está conectado ao Grid Manager usando umlink:../admin/web-browser-requirements.html["navegador da web compatível"] .
+* Você tem a senha de provisionamento.
+* Você implantou todos os nós de grade que estão sendo adicionados nesta expansão.
+* Você tem olink:../admin/admin-group-permissions.html["Permissão de acesso de manutenção ou root"] .
+* Se você estiver adicionando nós de armazenamento, terá confirmado que todas as operações de reparo de dados executadas como parte de uma recuperação foram concluídas. Ver link:../maintain/checking-data-repair-jobs.html["Verifique os trabalhos de reparo de dados"] .
+* Se você estiver adicionando nós de armazenamento e quiser atribuir um grau de armazenamento personalizado a esses nós, você já deve terlink:../ilm/creating-and-assigning-storage-grades.html["criou o grau de armazenamento personalizado"] .  Você também tem a permissão de acesso Root ou as permissões de Manutenção e ILM.
+* Se você estiver adicionando um novo site, você revisou e atualizou as regras do ILM.  Você deve garantir que cópias de objetos não sejam armazenadas no novo site até que a expansão seja concluída.  Por exemplo, se uma regra usa o pool de armazenamento padrão (*Todos os nós de armazenamento*), você develink:../ilm/creating-storage-pool.html["criar um novo pool de armazenamento"] que contém apenas os nós de armazenamento existentes elink:../ilm/working-with-ilm-rules-and-ilm-policies.html["atualizar regras do ILM"] e a política do ILM para usar esse novo pool de armazenamento.  Caso contrário, os objetos serão copiados para o novo site assim que o primeiro nó naquele site se tornar ativo.
+
+
+.Sobre esta tarefa
+A execução da expansão inclui estas tarefas principais do usuário:
+
+. Configurar a expansão.
+. Inicie a expansão.
+. Baixe um novo arquivo do pacote de recuperação.
+. Monitore as etapas e estágios de expansão até que todos os novos nós sejam instalados e configurados e todos os serviços tenham sido iniciados.
++
+
+CAUTION: Algumas etapas e estágios de expansão podem levar um tempo significativo para serem executados em uma grade grande.  Por exemplo, transmitir o Cassandra para um novo nó de armazenamento pode levar apenas alguns minutos se o banco de dados do Cassandra estiver vazio.  No entanto, se o banco de dados Cassandra incluir uma grande quantidade de metadados de objetos, essa etapa poderá levar várias horas ou mais.  Não reinicie nenhum nó de armazenamento durante os estágios "Expandindo o cluster do Cassandra" ou "Iniciando o Cassandra e transmitindo dados".
+
+
+
+.Passos
+. Selecione *MANUTENÇÃO* > *Tarefas* > *Expansão*.
++
+A página Expansão da grade é exibida.  A seção Nós pendentes lista os nós que estão prontos para serem adicionados.
+
++
+image::../media/grid_expansion_page.png[captura de tela mostrando a página de expansão da grade]
+
+. Selecione *Configurar expansão*.
++
+A caixa de diálogo Seleção de Site é exibida.
+
+. Selecione o tipo de expansão que você está iniciando:
++
+** Se você estiver adicionando um novo site, selecione *Novo* e insira o nome do novo site.
+** Se você estiver adicionando um ou mais nós a um site existente, selecione *Existente*.
+
+
+. Selecione *Salvar*.
+. Revise a lista *Nós pendentes* e confirme se ela mostra todos os nós de grade que você implantou.
++
+Conforme necessário, você pode posicionar o cursor sobre o *Endereço MAC da rede Grid* de um nó para ver detalhes sobre esse nó.
+
++
+image::../media/grid_node_details.png[captura de tela dos detalhes do nó da grade]
+
++
+
+NOTE: Se um nó estiver faltando, confirme se ele foi implantado com sucesso.
+
+. Na lista de nós pendentes, aprove os nós que deseja adicionar nesta expansão.
++
+.. Selecione o botão de opção ao lado do primeiro nó de grade pendente que você deseja aprovar.
+.. Selecione *Aprovar*.
++
+O formulário de configuração do nó da grade é exibido.
+
+.. Conforme necessário, modifique as configurações gerais:
++
+[cols="1a,2a"]
+|===
+| Campo | Descrição 
+
+
+ a| 
+Site
+ a| 
+O nome do site ao qual o nó da grade será associado.  Se você estiver adicionando vários nós, certifique-se de selecionar o site correto para cada nó.  Se você estiver adicionando um novo site, todos os nós serão adicionados ao novo site.
+
+
+
+ a| 
+Nome
+ a| 
+O nome do sistema para o nó. Os nomes do sistema são necessários para operações internas do StorageGRID e não podem ser alterados.
+
+
+
+ a| 
+Tipo de armazenamento (somente nós de armazenamento)
+ a| 
+*** *Dados e metadados* ("combinados"): Nó de armazenamento de dados e metadados de objetos
+*** *Somente dados*: nó de armazenamento contendo apenas dados de objeto (sem metadados)
+*** *Somente metadados*: nó de armazenamento contendo apenas metadados (sem dados de objeto)
+
+
+
+
+ a| 
+Função NTP
+ a| 
+A função do Protocolo de Tempo de Rede (NTP) do nó da grade:
+
+*** Selecione *Automático* (padrão) para atribuir automaticamente a função NTP ao nó.  A função Primária será atribuída a nós de administração, nós de armazenamento com serviços ADC, nós de gateway e quaisquer nós de grade que tenham endereços IP não estáticos.  A função Cliente será atribuída a todos os outros nós da grade.
+*** Selecione *Primário* para atribuir manualmente a função NTP Primário ao nó.  Pelo menos dois nós em cada site devem ter a função Primária para fornecer acesso redundante do sistema a fontes de tempo externas.
+*** Selecione *Cliente* para atribuir manualmente a função NTP do Cliente ao nó.
+
+
+
+
+ a| 
+Serviço ADC (nós de armazenamento combinados ou somente de metadados)
+ a| 
+Se este nó de armazenamento executará o serviço Controlador de Domínio Administrativo (ADC). O serviço ADC monitora a localização e a disponibilidade dos serviços de rede. Pelo menos três nós de armazenamento em cada site devem incluir o serviço ADC. Não é possível adicionar o serviço ADC a um nó depois que ele for implantado.
+
+*** Selecione *Sim* se o nó de armazenamento que você está substituindo incluir o serviço ADC. Como não é possível desativar um nó de armazenamento se houver poucos serviços ADC restantes, isso garante que um novo serviço ADC esteja disponível antes que o serviço antigo seja removido.
+*** Selecione *Automático* para permitir que o sistema determine se este nó requer o serviço ADC.
+
+
+Aprenda sobre olink:../maintain/understanding-adc-service-quorum.html["Quórum do ADC"] .
+
+
+
+ a| 
+Grau de armazenamento (nós de armazenamento combinados ou somente de dados)
+ a| 
+Use o grau de armazenamento *Padrão* ou selecione o grau de armazenamento personalizado que deseja atribuir a este novo nó.
+
+Os níveis de armazenamento são usados pelos pools de armazenamento do ILM, portanto sua seleção pode afetar quais objetos serão colocados no Nó de Armazenamento.
+
+|===
+.. Conforme necessário, modifique as configurações da Rede de grade, Rede de administração e Rede de cliente.
++
+*** *Endereço IPv4 (CIDR)*: O endereço de rede CIDR para a interface de rede.  Por exemplo: 172.16.10.100/24
++
+
+NOTE: Se você descobrir que os nós têm endereços IP duplicados na Grid Network enquanto estiver aprovando nós, será necessário cancelar a expansão, reimplantar as máquinas virtuais ou os dispositivos com um IP não duplicado e reiniciar a expansão.
+
+*** *Gateway*: O gateway padrão do nó da grade.  Por exemplo: 172.16.10.1
+*** *Sub-redes (CIDR)*: Uma ou mais sub-redes para a Rede de Administração.
+
+
+.. Selecione *Salvar*.
++
+O nó de grade aprovado é movido para a lista de nós aprovados.
+
++
+*** Para modificar as propriedades de um nó de grade aprovado, selecione seu botão de opção e selecione *Editar*.
+*** Para mover um nó de grade aprovado de volta para a lista de Nós Pendentes, selecione seu botão de opção e selecione *Redefinir*.
+*** Para remover permanentemente um nó de rede aprovado, desligue-o.  Em seguida, selecione o botão de opção e selecione *Remover*.
+
+
+.. Repita essas etapas para cada nó de grade pendente que você deseja aprovar.
++
+
+NOTE: Se possível, você deve aprovar todas as notas de grade pendentes e executar uma única expansão.  Mais tempo será necessário se você realizar várias pequenas expansões.
+
+
+
+. Quando você tiver aprovado todos os nós da grade, insira a *Senha de provisionamento* e selecione *Expandir*.
++
+Após alguns minutos, esta página é atualizada para exibir o status do procedimento de expansão.  Quando tarefas que afetam nós de grade individuais estão em andamento, a seção Status do nó de grade lista o status atual de cada nó de grade.
+
++
+
+NOTE: Durante a etapa "Instalando nós de grade" para um novo dispositivo, o Instalador do Dispositivo StorageGRID mostra a instalação passando do Estágio 3 para o Estágio 4, Finalizar instalação.  Quando o Estágio 4 estiver concluído, o controlador será reinicializado.
+
++
+image::../media/grid_expansion_progress.png[Esta imagem é explicada pelo texto ao redor.]
+
++
+
+NOTE: Uma expansão do site inclui uma tarefa adicional para configurar o Cassandra para o novo site.
+
+. Assim que o link *Baixar pacote de recuperação* aparecer, baixe o arquivo do pacote de recuperação.
++
+Você deve baixar uma cópia atualizada do arquivo do pacote de recuperação o mais rápido possível após fazer alterações na topologia da grade no sistema StorageGRID .  O arquivo Recovery Package permite restaurar o sistema caso ocorra uma falha.
+
++
+.. Selecione o link para download.
+.. Digite a senha de provisionamento e selecione *Iniciar download*.
+.. Quando o download for concluído, abra o `.zip` arquivo e confirme que você pode acessar o conteúdo, incluindo o `Passwords.txt` arquivo.
+.. Copie o arquivo do pacote de recuperação baixado(`.zip` ) para dois locais seguros, protegidos e separados.
++
+
+CAUTION: O arquivo do pacote de recuperação deve ser protegido porque contém chaves de criptografia e senhas que podem ser usadas para obter dados do sistema StorageGRID .
+
+
+
+. Se você estiver adicionando nós de armazenamento a um site existente ou adicionando um site, monitore os estágios do Cassandra, que ocorrem quando os serviços são iniciados nos novos nós da grade.
++
+
+CAUTION: Não reinicie nenhum nó de armazenamento durante os estágios "Expandindo o cluster do Cassandra" ou "Iniciando o Cassandra e transmitindo dados".  Esses estágios podem levar muitas horas para serem concluídos para cada novo nó de armazenamento, especialmente se os nós de armazenamento existentes contiverem uma grande quantidade de metadados de objetos.
+
++
+[role="tabbed-block"]
+====
+.Adicionando nós de armazenamento
+--
+Se você estiver adicionando nós de armazenamento a um site existente, revise a porcentagem mostrada na mensagem de status "Iniciando o Cassandra e transmitindo dados".
+
+image::../media/grid_expansion_starting_cassandra.png[Expansão da grade > Iniciando o Cassandra e transmitindo dados]
+
+Essa porcentagem estima o quão completa é a operação de streaming do Cassandra, com base na quantidade total de dados do Cassandra disponíveis e na quantidade que já foi gravada no novo nó.
+
+--
+.Adicionando site
+--
+Se você estiver adicionando um novo site, use `nodetool status` para monitorar o progresso do streaming do Cassandra e ver quantos metadados foram copiados para o novo site durante o estágio "Expandindo o cluster do Cassandra".  A carga total de dados no novo site deve estar em cerca de 20% do total de um site atual.
+
+--
+====
+. Continue monitorando a expansão até que todas as tarefas sejam concluídas e o botão *Configurar expansão* reapareça.
+
+
+.Depois que você terminar
+Dependendo dos tipos de nós de grade que você adicionou, execute etapas adicionais de integração e configuração. Ver link:configuring-expanded-storagegrid-system.html["Etapas de configuração após expansão"] .

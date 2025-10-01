@@ -1,0 +1,21 @@
+---
+permalink: admin/kms-configuring.html 
+sidebar: sidebar 
+keywords: configure kms, key management server, kmip, Key Management Interoperability Protocol 
+summary: 'Um servidor de gerenciamento de chaves (KMS) é um sistema externo de terceiros que fornece chaves de criptografia para nós do dispositivo StorageGRID no site StorageGRID associado usando o Protocolo de Interoperabilidade de Gerenciamento de Chaves (KMIP).' 
+---
+= O que é um servidor de gerenciamento de chaves (KMS)?
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Um servidor de gerenciamento de chaves (KMS) é um sistema externo de terceiros que fornece chaves de criptografia para nós do dispositivo StorageGRID no site StorageGRID associado usando o Protocolo de Interoperabilidade de Gerenciamento de Chaves (KMIP).
+
+O StorageGRID suporta apenas determinados servidores de gerenciamento de chaves.  Para obter uma lista de produtos e versões suportados, use o https://imt.netapp.com/matrix/#welcome["Ferramenta de Matriz de Interoperabilidade NetApp (IMT)"^] .
+
+Você pode usar um ou mais servidores de gerenciamento de chaves para gerenciar as chaves de criptografia de nós para qualquer nó do dispositivo StorageGRID que tenha a configuração *Criptografia de Nó* ativada durante a instalação.  O uso de servidores de gerenciamento de chaves com esses nós de dispositivos permite que você proteja seus dados mesmo se um dispositivo for removido do data center.  Depois que os volumes do dispositivo forem criptografados, você não poderá acessar nenhum dado no dispositivo, a menos que o nó possa se comunicar com o KMS.
+
+
+CAUTION: O StorageGRID não cria nem gerencia as chaves externas usadas para criptografar e descriptografar nós do dispositivo.  Se você planeja usar um servidor externo de gerenciamento de chaves para proteger os dados do StorageGRID , você deve entender como configurar esse servidor e como gerenciar as chaves de criptografia.  A execução de tarefas de gerenciamento de chaves está além do escopo destas instruções.  Se precisar de ajuda, consulte a documentação do seu servidor de gerenciamento de chaves ou entre em contato com o suporte técnico.

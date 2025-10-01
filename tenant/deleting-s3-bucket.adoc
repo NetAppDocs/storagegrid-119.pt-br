@@ -1,0 +1,58 @@
+---
+permalink: tenant/deleting-s3-bucket.html 
+sidebar: sidebar 
+keywords: how to delete S3 bucket 
+summary: Você pode usar o Gerenciador de Tenants para excluir um bucket S3 que esteja vazio. 
+---
+= Excluir bucket S3
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Você pode usar o Gerenciador de Tenants para excluir um ou mais buckets do S3 que estão vazios.
+
+.Antes de começar
+* Você está conectado ao Gerenciador de Inquilinos usando umlink:../admin/web-browser-requirements.html["navegador da web compatível"] .
+* Você pertence a um grupo de usuários que tem olink:tenant-management-permissions.html["Gerenciar todos os buckets ou permissão de acesso root"] . Essas permissões substituem as configurações de permissões em políticas de grupo ou bucket.
+* Os buckets que você deseja excluir estão vazios.  Se os buckets que você deseja excluir _não_ estiverem vazios,link:../tenant/deleting-s3-bucket-objects.html["excluir objetos do bucket"] .
+
+
+.Sobre esta tarefa
+Estas instruções descrevem como excluir um bucket S3 usando o Gerenciador de Tenants.  Você também pode excluir buckets S3 usando olink:understanding-tenant-management-api.html["API de gerenciamento de inquilinos"] ou olink:../s3/operations-on-buckets.html["API REST S3"] .
+
+Não é possível excluir um bucket do S3 se ele contiver objetos, versões de objetos não atuais ou marcadores de exclusão.  Para obter informações sobre como os objetos versionados do S3 são excluídos, consultelink:../ilm/how-objects-are-deleted.html["Como os objetos são excluídos"] .
+
+.Passos
+. Selecione *Exibir buckets* no painel ou selecione *ARMAZENAMENTO (S3)* > *Buckets*.
++
+A página Buckets é exibida e mostra todos os buckets do S3 existentes.
+
+. Use o menu *Ações* ou a página de detalhes de um bucket específico.
++
+[role="tabbed-block"]
+====
+.Menu de ações
+--
+.. Marque a caixa de seleção de cada bucket que você deseja excluir.
+.. Selecione *Ações* > *Excluir buckets*.
+
+
+--
+.Página de detalhes
+--
+.. Selecione um nome de bucket para exibir seus detalhes.
+.. Selecione *Excluir bucket*.
+
+
+--
+====
+. Quando a caixa de diálogo de confirmação aparecer, selecione *Sim*.
++
+O StorageGRID confirma que cada bucket está vazio e então exclui cada bucket.  Esta operação pode levar alguns minutos.
+
++
+Se um bucket não estiver vazio, uma mensagem de erro será exibida.  Você develink:../tenant/deleting-s3-bucket-objects.html["exclua todos os objetos e quaisquer marcadores de exclusão no bucket"] antes de poder excluir o bucket.
+
+

@@ -1,0 +1,21 @@
+= 
+:allow-uri-read: 
+
+
+[cols="1a,1a"]
+|===
+| Caminho e nome do arquivo | Descrição 
+
+
+| ./debs/storagegrid-webscale-images-versão-SHA.deb  a| 
+Pacote DEB para instalar as imagens do nó StorageGRID em seus dispositivos.
+
+
+
+| ./debs/storagegrid-webscale-images-versão-SHA.deb.md5  a| 
+Soma de verificação MD5 para o arquivo `/debs/storagegridwebscale-
+images-version-SHA.deb` .
+
+|===
+
+NOTE: Para instalação do dispositivo, esses arquivos só são necessários se você precisar evitar tráfego de rede.  O dispositivo pode baixar os arquivos necessários do nó de administração principal.

@@ -1,0 +1,47 @@
+---
+permalink: admin/controlling-storagegrid-access.html 
+sidebar: sidebar 
+keywords: administrator access, single sign on, sso, users, groups, client certificates, passwords, passphrase 
+summary: 'Você controla quem pode acessar o StorageGRID e quais tarefas os usuários podem executar criando ou importando grupos e usuários e atribuindo permissões a cada grupo.  Opcionalmente, você pode habilitar o logon único (SSO), criar certificados de cliente e alterar senhas de grade.' 
+---
+= Controle de acesso ao StorageGRID
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Você controla quem pode acessar o StorageGRID e quais tarefas os usuários podem executar criando ou importando grupos e usuários e atribuindo permissões a cada grupo.  Opcionalmente, você pode habilitar o logon único (SSO), criar certificados de cliente e alterar senhas de grade.
+
+
+
+== Controle o acesso ao Grid Manager
+
+Você determina quem pode acessar o Grid Manager e a Grid Management API importando grupos e usuários de um serviço de federação de identidade ou configurando grupos e usuários locais.
+
+Usandolink:using-identity-federation.html["federação de identidade"] faz a configuraçãolink:managing-admin-groups.html["grupos"] elink:managing-users.html["Usuários"] mais rápido e permite que os usuários façam login no StorageGRID usando credenciais familiares.  Você pode configurar a federação de identidade se usar o Active Directory, o OpenLDAP ou o Oracle Directory Server.
+
+
+NOTE: Entre em contato com o suporte técnico se quiser usar outro serviço LDAP v3.
+
+Você determina quais tarefas cada usuário pode executar atribuindo diferenteslink:admin-group-permissions.html["permissões"] para cada grupo.  Por exemplo, você pode querer que usuários em um grupo possam gerenciar regras de ILM e usuários em outro grupo possam executar tarefas de manutenção.  Um usuário deve pertencer a pelo menos um grupo para acessar o sistema.
+
+Opcionalmente, você pode configurar um grupo para ser somente leitura.  Usuários em um grupo somente leitura podem apenas visualizar configurações e recursos.  Eles não podem fazer nenhuma alteração ou executar nenhuma operação no Grid Manager ou na Grid Management API.
+
+
+
+== Habilitar logon único
+
+O sistema StorageGRID oferece suporte ao logon único (SSO) usando o padrão Security Assertion Markup Language 2.0 (SAML 2.0). Depois de vocêlink:configuring-sso.html["configurar e habilitar o SSO"] , todos os usuários devem ser autenticados por um provedor de identidade externo antes de poderem acessar o Grid Manager, o Tenant Manager, a Grid Management API ou a Tenant Management API. Usuários locais não podem fazer login no StorageGRID.
+
+
+
+== Alterar senha de provisionamento
+
+A senha de provisionamento é necessária para muitos procedimentos de instalação e manutenção, e para baixar o Pacote de Recuperação do StorageGRID . A senha também é necessária para baixar backups das informações de topologia de grade e chaves de criptografia para o sistema StorageGRID . Você podelink:changing-provisioning-passphrase.html["alterar a senha"] conforme necessário.
+
+
+
+== Alterar senhas do console do nó
+
+Cada nó na sua grade tem uma senha exclusiva do console do nó, que você precisa para efetuar login no nó como "admin" usando SSH, ou como usuário root em uma conexão de console físico/VM. Conforme necessário, você podelink:change-node-console-password.html["alterar a senha do console do nó"] para cada nó.

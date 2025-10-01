@@ -1,0 +1,66 @@
+---
+permalink: maintain/restoring-prometheus-metrics-primary-admin-node.html 
+sidebar: sidebar 
+keywords: storagegrid, recover, restore metrics, restore prometheus, primary admin node 
+summary: Opcionalmente, você pode manter as métricas históricas mantidas pelo Prometheus em um nó de administração primário que falhou.  As métricas do Prometheus só poderão ser restauradas se o seu sistema StorageGRID incluir outro nó de administração. 
+---
+= Restaurar métricas do Prometheus ao recuperar o nó de administração primário
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Opcionalmente, você pode manter as métricas históricas mantidas pelo Prometheus em um nó de administração primário que falhou.  As métricas do Prometheus só poderão ser restauradas se o seu sistema StorageGRID incluir outro nó de administração.
+
+.Antes de começar
+* O nó de administração recuperado está instalado e em execução.
+* O sistema StorageGRID inclui pelo menos dois nós de administração.
+* Você tem o `Passwords.txt` arquivo.
+* Você tem a senha de provisionamento.
+
+
+.Sobre esta tarefa
+Se um nó administrativo falhar, as métricas mantidas no banco de dados Prometheus no nó administrativo serão perdidas.  Quando você recupera o nó de administração, o processo de instalação do software cria um novo banco de dados Prometheus.  Depois que o nó de administração recuperado é iniciado, ele registra métricas como se você tivesse executado uma nova instalação do sistema StorageGRID .
+
+Se você restaurou um nó de administração primário e seu sistema StorageGRID tiver outro nó de administração, você poderá restaurar as métricas históricas copiando o banco de dados Prometheus de um nó de administração não primário (o _nó de administração de origem_) para o nó de administração primário recuperado.  Se o seu sistema tiver apenas um nó de administração primário, você não poderá restaurar o banco de dados do Prometheus.
+
+
+NOTE: Copiar o banco de dados do Prometheus pode levar uma hora ou mais.  Alguns recursos do Grid Manager ficarão indisponíveis enquanto os serviços estiverem interrompidos no nó de administração de origem.
+
+.Passos
+. Efetue login no nó de administração de origem:
++
+.. Digite o seguinte comando: `ssh admin@_grid_node_IP_`
+.. Digite a senha listada no `Passwords.txt` arquivo.
+.. Digite o seguinte comando para alternar para root: `su -`
+.. Digite a senha listada no `Passwords.txt` arquivo.
+
+
+. No nó de administração de origem, pare o serviço Prometheus: `service prometheus stop`
+. Conclua as seguintes etapas no nó de administração recuperado:
++
+.. Efetue login no nó de administração recuperado:
++
+... Digite o seguinte comando: `ssh admin@_grid_node_IP_`
+... Digite a senha listada no `Passwords.txt` arquivo.
+... Digite o seguinte comando para alternar para root: `su -`
+... Digite a senha listada no `Passwords.txt` arquivo.
+
+
+.. Pare o serviço Prometheus: `service prometheus stop`
+.. Adicione a chave privada SSH ao agente SSH.  Digitar:``ssh-add``
+.. Digite a senha de acesso SSH listada no `Passwords.txt` arquivo.
+.. Copie o banco de dados Prometheus do nó de administração de origem para o nó de administração recuperado: `/usr/local/prometheus/bin/prometheus-clone-db.sh Source_Admin_Node_IP`
+.. Quando solicitado, pressione *Enter* para confirmar que deseja destruir o novo banco de dados Prometheus no nó de administração recuperado.
++
+O banco de dados original do Prometheus e seus dados históricos são copiados para o nó de administração recuperado.  Quando a operação de cópia estiver concluída, o script inicia o nó de administração recuperado.  O seguinte status aparece:
+
++
+Banco de dados clonado, iniciando serviços
+
+.. Quando você não precisar mais de acesso sem senha a outros servidores, remova a chave privada do agente SSH.  Digitar:``ssh-add -D``
+
+
+. Reinicie o serviço Prometheus no nó de administração de origem.`service prometheus start`
+

@@ -1,0 +1,230 @@
+---
+permalink: admin/configuring-custom-server-certificate-for-storage-node.html 
+sidebar: sidebar 
+keywords: global S3 API certificate 
+summary: Você pode substituir ou restaurar o certificado do servidor usado para conexões do cliente S3 com nós de armazenamento ou com pontos de extremidade do balanceador de carga.  O certificado de servidor personalizado de substituição é específico para sua organização. 
+---
+= Configurar certificados da API S3
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Você pode substituir ou restaurar o certificado do servidor usado para conexões do cliente S3 com nós de armazenamento ou com pontos de extremidade do balanceador de carga.  O certificado de servidor personalizado de substituição é específico para sua organização.
+
+
+TIP: Os detalhes do Swift foram removidos desta versão do site de documentação. Ver https://docs.netapp.com/us-en/storagegrid-118/admin/configuring-custom-server-certificate-for-storage-node.html["StorageGRID 11.8: Configurar certificados S3 e Swift API"^] .
+
+.Sobre esta tarefa
+Por padrão, cada nó de armazenamento recebe um certificado de servidor X.509 assinado pela CA da grade.  Esses certificados assinados pela CA podem ser substituídos por um único certificado de servidor personalizado comum e pela chave privada correspondente.
+
+Um único certificado de servidor personalizado é usado para todos os nós de armazenamento, portanto, você deve especificar o certificado como um certificado curinga ou multidomínio se os clientes precisarem verificar o nome do host ao se conectar ao ponto de extremidade de armazenamento.  Defina o certificado personalizado de forma que ele corresponda a todos os nós de armazenamento na grade.
+
+Após concluir a configuração no servidor, talvez você também precise instalar o certificado Grid CA no cliente S3 API que você usará para acessar o sistema, dependendo da autoridade de certificação raiz (CA) que estiver usando.
+
+
+NOTE: Para garantir que as operações não sejam interrompidas por um certificado de servidor com falha, o alerta *Expiração do certificado de servidor global para API S3* é acionado quando o certificado do servidor raiz está prestes a expirar. Conforme necessário, você pode visualizar quando o certificado atual expira selecionando *CONFIGURAÇÃO* > *Segurança* > *Certificados* e verificando a data de expiração do certificado da API S3 na guia Global.
+
+Você pode carregar ou gerar um certificado de API S3 personalizado.
+
+
+
+== Adicionar um certificado de API S3 personalizado
+
+.Passos
+. Selecione *CONFIGURAÇÃO* > *Segurança* > *Certificados*.
+. Na guia *Global*, selecione *Certificado S3 API*.
+. Selecione *Usar certificado personalizado*.
+. Carregue ou gere o certificado.
++
+[role="tabbed-block"]
+====
+.Carregar certificado
+--
+Carregue os arquivos de certificado do servidor necessários.
+
+.. Selecione *Carregar certificado*.
+.. Carregue os arquivos de certificado do servidor necessários:
++
+*** *Certificado do servidor*: O arquivo de certificado do servidor personalizado (codificado em PEM).
+*** *Chave privada do certificado*: O arquivo de chave privada do certificado do servidor personalizado(`.key` ).
++
+
+NOTE: As chaves privadas da EC devem ter 224 bits ou mais.  As chaves privadas RSA devem ter 2048 bits ou mais.
+
+*** *Pacote CA*: Um único arquivo opcional contendo os certificados de cada autoridade certificadora emissora intermediária.  O arquivo deve conter cada um dos arquivos de certificado CA codificados em PEM, concatenados na ordem da cadeia de certificados.
+
+
+.. Selecione os detalhes do certificado para exibir os metadados e o PEM para cada certificado de API S3 personalizado que foi carregado.  Se você carregou um pacote de CA opcional, cada certificado será exibido em sua própria guia.
++
+*** Selecione *Baixar certificado* para salvar o arquivo de certificado ou selecione *Baixar pacote de CA* para salvar o pacote de certificados.
++
+Especifique o nome do arquivo do certificado e o local do download.  Salve o arquivo com a extensão `.pem` .
+
++
+Por exemplo:  `storagegrid_certificate.pem`
+
+*** Selecione *Copiar certificado PEM* ou *Copiar pacote CA PEM* para copiar o conteúdo do certificado e colá-lo em outro lugar.
+
+
+.. Selecione *Salvar*.
++
+O certificado de servidor personalizado é usado para novas conexões de cliente S3 subsequentes.
+
+
+
+--
+.Gerar certificado
+--
+Gere os arquivos de certificado do servidor.
+
+.. Selecione *Gerar certificado*.
+.. Especifique as informações do certificado:
++
+[cols="1a,3a"]
+|===
+| Campo | Descrição 
+
+
+ a| 
+Nome de domínio
+ a| 
+Um ou mais nomes de domínio totalmente qualificados a serem incluídos no certificado.  Use um * como curinga para representar vários nomes de domínio.
+
+
+
+ a| 
+IP
+ a| 
+Um ou mais endereços IP a serem incluídos no certificado.
+
+
+
+ a| 
+Assunto (opcional)
+ a| 
+Assunto X.509 ou nome distinto (DN) do proprietário do certificado.
+
+Se nenhum valor for inserido neste campo, o certificado gerado usará o primeiro nome de domínio ou endereço IP como o nome comum do assunto (CN).
+
+
+
+ a| 
+Dias válidos
+ a| 
+Número de dias após a criação em que o certificado expira.
+
+
+
+ a| 
+Adicionar extensões de uso de chave
+ a| 
+Se selecionado (padrão e recomendado), as extensões de uso de chave e uso de chave estendido são adicionadas ao certificado gerado.
+
+Essas extensões definem a finalidade da chave contida no certificado.
+
+*Observação*: deixe esta caixa de seleção marcada, a menos que você tenha problemas de conexão com clientes mais antigos quando os certificados incluem essas extensões.
+
+|===
+.. Selecione *Gerar*.
+.. Selecione *Detalhes do certificado* para exibir os metadados e o PEM do certificado S3 API personalizado que foi gerado.
++
+*** Selecione *Baixar certificado* para salvar o arquivo de certificado.
++
+Especifique o nome do arquivo do certificado e o local do download.  Salve o arquivo com a extensão `.pem` .
+
++
+Por exemplo:  `storagegrid_certificate.pem`
+
+*** Selecione *Copiar certificado PEM* para copiar o conteúdo do certificado e colá-lo em outro lugar.
+
+
+.. Selecione *Salvar*.
++
+O certificado de servidor personalizado é usado para novas conexões de cliente S3 subsequentes.
+
+
+
+--
+====
+. Selecione uma guia para exibir metadados para o certificado do servidor StorageGRID padrão, um certificado assinado pela CA que foi carregado ou um certificado personalizado que foi gerado.
++
+
+NOTE: Após carregar ou gerar um novo certificado, aguarde até um dia para que quaisquer alertas de expiração de certificado relacionados sejam apagados.
+
+. Atualize a página para garantir que o navegador da web esteja atualizado.
+. Depois de adicionar um certificado de API S3 personalizado, a página de certificado de API S3 exibe informações detalhadas do certificado de API S3 personalizado que está em uso.  + Você pode baixar ou copiar o certificado PEM conforme necessário.
+
+
+
+
+== Restaurar o certificado padrão da API S3
+
+Você pode voltar a usar o certificado padrão da API S3 para conexões de cliente S3 com nós de armazenamento.  No entanto, você não pode usar o certificado padrão da API S3 para um ponto de extremidade do balanceador de carga.
+
+.Passos
+. Selecione *CONFIGURAÇÃO* > *Segurança* > *Certificados*.
+. Na guia *Global*, selecione *Certificado S3 API*.
+. Selecione *Usar certificado padrão*.
++
+Quando você restaura a versão padrão do certificado global da API S3, os arquivos de certificado de servidor personalizados que você configurou são excluídos e não podem ser recuperados do sistema.  O certificado padrão da API S3 será usado para novas conexões de cliente S3 subsequentes com os nós de armazenamento.
+
+. Selecione *OK* para confirmar o aviso e restaurar o certificado padrão da API S3.
++
+Se você tiver permissão de acesso Root e o certificado de API S3 personalizado tiver sido usado para conexões de ponto de extremidade do balanceador de carga, será exibida uma lista de pontos de extremidade do balanceador de carga que não estarão mais acessíveis usando o certificado de API S3 padrão.  Vá paralink:../admin/configuring-load-balancer-endpoints.html["Configurar pontos de extremidade do balanceador de carga"] para editar ou remover os endpoints afetados.
+
+. Atualize a página para garantir que o navegador da web esteja atualizado.
+
+
+
+
+== Baixe ou copie o certificado da API S3
+
+Você pode salvar ou copiar o conteúdo do certificado da API S3 para uso em outro lugar.
+
+.Passos
+. Selecione *CONFIGURAÇÃO* > *Segurança* > *Certificados*.
+. Na guia *Global*, selecione *Certificado S3 API*.
+. Selecione a aba *Servidor* ou *Pacote de CA* e então baixe ou copie o certificado.
++
+[role="tabbed-block"]
+====
+.Baixar arquivo de certificado ou pacote de CA
+--
+Baixe o certificado ou pacote de CA `.pem` arquivo.  Se você estiver usando um pacote de CA opcional, cada certificado no pacote será exibido em sua própria subguia.
+
+.. Selecione *Baixar certificado* ou *Baixar pacote de CA*.
++
+Se você estiver baixando um pacote de CA, todos os certificados nas guias secundárias do pacote de CA serão baixados como um único arquivo.
+
+.. Especifique o nome do arquivo do certificado e o local do download.  Salve o arquivo com a extensão `.pem` .
++
+Por exemplo:  `storagegrid_certificate.pem`
+
+
+
+--
+.Copiar certificado ou pacote CA PEM
+--
+Copie o texto do certificado para colar em outro lugar.  Se você estiver usando um pacote de CA opcional, cada certificado no pacote será exibido em sua própria subguia.
+
+.. Selecione *Copiar certificado PEM* ou *Copiar pacote CA PEM*.
++
+Se você estiver copiando um pacote de CA, todos os certificados nas guias secundárias do pacote de CA serão copiados juntos.
+
+.. Cole o certificado copiado em um editor de texto.
+.. Salve o arquivo de texto com a extensão `.pem` .
++
+Por exemplo:  `storagegrid_certificate.pem`
+
+
+
+--
+====
+
+
+.Informações relacionadas
+* link:../s3/index.html["Usar API REST do S3"]
+* link:configuring-s3-api-endpoint-domain-names.html["Configurar nomes de domínio de endpoint S3"]
+

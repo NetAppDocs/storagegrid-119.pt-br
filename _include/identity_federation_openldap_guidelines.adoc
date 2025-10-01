@@ -1,0 +1,30 @@
+= Sobreposições de membro e reintegração
+:allow-uri-read: 
+
+
+Se você quiser usar um servidor OpenLDAP para federação de identidade, deverá configurar definições específicas no servidor OpenLDAP.
+
+
+CAUTION: Para fontes de identidade que não sejam ActiveDirectory ou Azure, o StorageGRID não bloqueará automaticamente o acesso ao S3 para usuários desabilitados externamente. Para bloquear o acesso ao S3, exclua todas as chaves S3 do usuário ou remova o usuário de todos os grupos.
+
+
+
+=== Sobreposições de membro e reintegração
+
+As sobreposições memberof e refint devem ser habilitadas.  Para obter mais informações, consulte as instruções para manutenção de associação de grupo reverso nohttp://www.openldap.org/doc/admin24/index.html["Documentação do OpenLDAP: Guia do Administrador da Versão 2.4"^] .
+
+
+
+=== Indexação
+
+Você deve configurar os seguintes atributos OpenLDAP com as palavras-chave de índice especificadas:
+
+* `olcDbIndex: objectClass eq`
+* `olcDbIndex: uid eq,pres,sub`
+* `olcDbIndex: cn eq,pres,sub`
+* `olcDbIndex: entryUUID eq`
+
+
+Além disso, certifique-se de que os campos mencionados na ajuda para Nome de usuário sejam indexados para desempenho ideal.
+
+Veja as informações sobre manutenção de associação de grupo reverso nohttp://www.openldap.org/doc/admin24/index.html["Documentação do OpenLDAP: Guia do Administrador da Versão 2.4"^] .

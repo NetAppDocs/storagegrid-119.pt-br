@@ -1,0 +1,185 @@
+---
+permalink: expand/considerations-for-rebalancing-erasure-coded-data.html 
+sidebar: sidebar 
+keywords: erasure coding, rebalance, ec rebalance, site rebalance 
+summary: Se você estiver executando uma expansão para adicionar nós de armazenamento e usar regras de ILM para apagar dados de código, talvez seja necessário executar o procedimento de rebalanceamento de EC se não puder adicionar nós de armazenamento suficientes para o esquema de codificação de eliminação que estiver usando. 
+---
+= Considerações para rebalanceamento de dados codificados por eliminação
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Se você estiver executando uma expansão para adicionar nós de armazenamento e usar regras de ILM para apagar dados de código, talvez seja necessário executar o procedimento de rebalanceamento de codificação de eliminação (EC) se não puder adicionar nós de armazenamento suficientes para o esquema de codificação de eliminação que estiver usando.
+
+Após revisar essas considerações, execute a expansão e vá paralink:rebalancing-erasure-coded-data-after-adding-storage-nodes.html["Rebalancear dados codificados para eliminação após adicionar nós de armazenamento"] para executar o procedimento.
+
+
+
+== O que é rebalanceamento de CE?
+
+O rebalanceamento do EC é um procedimento do StorageGRID que pode ser necessário após uma expansão do nó de armazenamento.  O procedimento é executado como um script de linha de comando do nó de administração principal.  Quando você executa o procedimento de rebalanceamento do EC, o StorageGRID redistribui fragmentos codificados para eliminação entre os nós de armazenamento existentes e os recém-adicionados em um site.
+
+O procedimento de reequilíbrio da CE:
+
+* Move somente dados de objetos codificados para eliminação.  Ele não move dados de objetos replicados.
+* Redistribui os dados dentro de um site.  Ele não move dados entre sites.
+* Redistribui dados entre todos os nós de armazenamento em um site.  Ele não redistribui dados dentro dos volumes de armazenamento.
+* Não considera o uso de dados replicados em cada nó de armazenamento ao determinar para onde mover os dados codificados para eliminação.
+* Redistribui dados codificados para eliminação uniformemente entre os nós de armazenamento sem considerar as capacidades relativas de cada nó.
+* Não distribuirá dados codificados para eliminação para nós de armazenamento que estejam mais de 80% cheios.
+* Pode diminuir o desempenho das operações do ILM e das operações do cliente S3 quando ele é executado; recursos adicionais são necessários para redistribuir os fragmentos de codificação de eliminação.
+
+
+Quando o procedimento de reequilíbrio da CE estiver concluído:
+
+* Os dados codificados para eliminação serão movidos de nós de armazenamento com menos espaço disponível para nós de armazenamento com mais espaço disponível.
+* A proteção de dados de objetos codificados para eliminação não será alterada.
+* Os valores usados (%) podem ser diferentes entre os nós de armazenamento por dois motivos:
++
+** Cópias de objetos replicados continuarão consumindo espaço nos nós existentes; o procedimento de rebalanceamento do EC não move dados replicados.
+** Nós de maior capacidade estarão relativamente menos cheios do que nós de menor capacidade, embora todos os nós acabem com aproximadamente a mesma quantidade de dados codificados para eliminação.
++
+Por exemplo, suponha que três nós de 200 TB estejam cada um preenchido até 80% (200 &#215; 0,8 = 160 TB em cada nó, ou 480 TB para o site).  Se você adicionar um nó de 400 TB e executar o procedimento de rebalanceamento, todos os nós terão aproximadamente a mesma quantidade de dados de código de eliminação (480/4 = 120 TB).  Entretanto, o Usado (%) para o nó maior será menor que o Usado (%) para os nós menores.
+
++
+image::../media/used_space_with_larger_node.png[Espaço usado antes da expansão]
+
+
+
+
+
+
+
+== Quando rebalancear dados codificados por eliminação
+
+Considere o seguinte cenário:
+
+* O StorageGRID está sendo executado em um único site, que contém três nós de armazenamento.
+* A política ILM usa uma regra de codificação de eliminação 2+1 para todos os objetos maiores que 1,0 MB e uma regra de replicação de 2 cópias para objetos menores.
+* Todos os nós de armazenamento ficaram completamente cheios.  O alerta *Low Object Storage* foi acionado no nível de gravidade mais alto.
++
+image::../media/used_space_before_expansion.png[Espaço usado antes da expansão]
+
+
+
+
+
+=== O rebalanceamento não é necessário se você adicionar nós suficientes
+
+Para entender quando o rebalanceamento do EC não é necessário, suponha que você adicionou três (ou mais) novos nós de armazenamento.  Neste caso, você não precisa realizar o rebalanceamento do EC.  Os nós de armazenamento originais permanecerão cheios, mas novos objetos agora usarão os três novos nós para codificação de eliminação 2+1; os dois fragmentos de dados e o fragmento de paridade podem ser armazenados em um nó diferente.
+
+image::../media/used_space_after_3_node_expansion.png[Espaço usado após expansão de 3 nós]
+
+
+CAUTION: Embora você possa executar o procedimento de rebalanceamento do EC neste caso, mover os dados codificados para eliminação existentes diminuirá temporariamente o desempenho da grade, o que pode afetar as operações do cliente.
+
+
+
+=== O rebalanceamento é necessário se você não puder adicionar nós suficientes
+
+Para entender quando o rebalanceamento do EC é necessário, suponha que você só pode adicionar dois nós de armazenamento, em vez de três.  Como o esquema 2+1 exige que pelo menos três nós de armazenamento tenham espaço disponível, os nós vazios não podem ser usados para novos dados codificados para eliminação.
+
+image::../media/used_space_after_2_node_expansion.png[Espaço usado após expansão de 2 nós]
+
+Para utilizar os novos nós de armazenamento, você deve executar o procedimento de rebalanceamento do EC.  Quando esse procedimento é executado, o StorageGRID redistribui os dados codificados por eliminação e os fragmentos de paridade existentes entre todos os nós de armazenamento no site.  Neste exemplo, quando o procedimento de rebalanceamento do EC é concluído, todos os cinco nós estão agora apenas 60% cheios, e os objetos podem continuar a ser ingeridos no esquema de codificação de eliminação 2+1 em todos os nós de armazenamento.
+
+image::../media/used_space_after_ec_rebalance.png[Espaço usado após o reequilíbrio da CE]
+
+
+
+== Recomendações para o reequilíbrio da CE
+
+A NetApp exigirá o rebalanceamento do EC se _todas_ as seguintes afirmações forem verdadeiras:
+
+* Use codificação de eliminação para seus dados de objeto.
+* O alerta *Low Object Storage* foi acionado para um ou mais nós de armazenamento em um site, indicando que os nós estão 80% ou mais cheios.
+* Você não consegue adicionar novos Nós de Armazenamento suficientes para o esquema de codificação de eliminação em uso. Ver link:adding-storage-capacity-for-erasure-coded-objects.html["Adicionar capacidade de armazenamento para objetos codificados por eliminação"] .
+* Seus clientes S3 podem tolerar menor desempenho em suas operações de leitura e gravação enquanto o procedimento de rebalanceamento do EC estiver em execução.
+
+
+Opcionalmente, você pode executar o procedimento de rebalanceamento do EC se preferir que os nós de armazenamento sejam preenchidos com níveis semelhantes e seus clientes S3 puderem tolerar desempenho inferior para suas operações de leitura e gravação enquanto o procedimento de rebalanceamento do EC estiver em execução.
+
+
+
+== Como o procedimento de rebalanceamento da CE interage com outras tarefas de manutenção
+
+Não é possível executar determinados procedimentos de manutenção ao mesmo tempo em que se executa o procedimento de rebalanceamento do EC.
+
+[cols="1a,2a"]
+|===
+| Procedimento | Permitido durante o procedimento de rebalanceamento da CE? 
+
+
+ a| 
+Procedimentos adicionais de reequilíbrio da CE
+ a| 
+Não.
+
+Você só pode executar um procedimento de rebalanceamento de EC por vez.
+
+
+
+ a| 
+Procedimento de descomissionamento
+
+Trabalho de reparo de dados EC
+ a| 
+Não.
+
+* Você não poderá iniciar um procedimento de descomissionamento ou um reparo de dados do EC enquanto o procedimento de rebalanceamento do EC estiver em execução.
+* Você está impedido de iniciar o procedimento de rebalanceamento do EC enquanto um procedimento de desativação do nó de armazenamento ou um reparo de dados do EC estiver em execução.
+
+
+
+
+ a| 
+Procedimento de expansão
+ a| 
+Não.
+
+Se você precisar adicionar novos nós de armazenamento em uma expansão, execute o procedimento de rebalanceamento do EC após adicionar todos os novos nós.
+
+
+
+ a| 
+Procedimento de atualização
+ a| 
+Não.
+
+Se você precisar atualizar o software StorageGRID , execute o procedimento de atualização antes ou depois de executar o procedimento de rebalanceamento do EC.  Conforme necessário, você pode encerrar o procedimento de rebalanceamento do EC para realizar uma atualização de software.
+
+
+
+ a| 
+Procedimento de clonagem do nó do dispositivo
+ a| 
+Não.
+
+Se você precisar clonar um nó de armazenamento do dispositivo, execute o procedimento de rebalanceamento do EC após adicionar o novo nó.
+
+
+
+ a| 
+Procedimento de correção
+ a| 
+Sim.
+
+Você pode aplicar um hotfix do StorageGRID enquanto o procedimento de rebalanceamento do EC estiver em execução.
+
+
+
+ a| 
+Outros procedimentos de manutenção
+ a| 
+Não.
+
+Você deve encerrar o procedimento de rebalanceamento do EC antes de executar outros procedimentos de manutenção.
+
+|===
+
+
+== Como o procedimento de rebalanceamento da CE interage com o ILM
+
+Enquanto o procedimento de rebalanceamento do EC estiver em execução, evite fazer alterações no ILM que possam alterar a localização de objetos codificados para eliminação existentes.  Por exemplo, não comece a usar uma regra ILM que tenha um perfil de codificação de eliminação diferente.  Se precisar fazer tais alterações no ILM, você deverá encerrar o procedimento de rebalanceamento do EC.

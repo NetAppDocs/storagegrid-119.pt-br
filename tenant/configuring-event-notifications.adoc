@@ -1,0 +1,136 @@
+---
+permalink: tenant/configuring-event-notifications.html 
+sidebar: sidebar 
+keywords: how to configure event notifications, bucket notification 
+summary: Você habilita notificações para um bucket criando um XML de configuração de notificação e usando o Tenant Manager para aplicar o XML a um bucket. 
+---
+= Configurar notificações de eventos
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Você habilita notificações para um bucket criando um XML de configuração de notificação e usando o Tenant Manager para aplicar o XML a um bucket.
+
+.Antes de começar
+* Os serviços da plataforma foram habilitados para sua conta de locatário por um administrador do StorageGRID .
+* Você já criou um bucket para atuar como fonte de notificações.
+* O ponto de extremidade que você pretende usar como destino para notificações de eventos já existe e você tem seu URN.
+* Você pertence a um grupo de usuários que tem olink:tenant-management-permissions.html["Gerenciar todos os buckets ou permissão de acesso root"] .  Essas permissões substituem as configurações de permissão em políticas de grupo ou bucket ao configurar o bucket usando o Gerenciador de Tenants.
+
+
+.Sobre esta tarefa
+Você configura notificações de eventos associando o XML de configuração de notificação a um bucket de origem. O XML de configuração de notificação segue as convenções do S3 para configurar notificações de bucket, com o tópico de destino do Kafka ou do Amazon SNS especificado como o URN de um endpoint.
+
+Para obter informações gerais sobre notificações de eventos e como configurá-las, consulte o https://docs.aws.amazon.com/s3/["Documentação da Amazon"^] .  Para obter informações sobre como o StorageGRID implementa a API de configuração de notificação do bucket S3, consulte olink:../s3/index.html["instruções para implementar aplicativos cliente S3"] .
+
+Observe os seguintes requisitos e características ao configurar notificações de eventos para um bucket:
+
+* Ao criar e aplicar um XML de configuração de notificação válido, ele deve usar o URN de um ponto de extremidade de notificações de eventos para cada destino.
+* Embora a notificação de eventos possa ser configurada em um bucket com o S3 Object Lock habilitado, os metadados do S3 Object Lock (incluindo Retain Until Date e status de retenção legal) dos objetos não serão incluídos nas mensagens de notificação.
+* Depois de configurar as notificações de eventos, sempre que um evento especificado ocorrer para um objeto no bucket de origem, uma notificação será gerada e enviada ao tópico do Amazon SNS ou Kafka usado como endpoint de destino.
+* Se você habilitar notificações de eventos para um bucket que contém objetos, as notificações serão enviadas somente para ações executadas após a configuração de notificação ser salva.
+
+
+.Passos
+. Habilite notificações para seu bucket de origem:
++
+** Use um editor de texto para criar o XML de configuração de notificação necessário para habilitar notificações de eventos, conforme especificado na API de notificação do S3.
+** Ao configurar o XML, use o URN de um ponto de extremidade de notificações de eventos como o tópico de destino.
++
+[listing]
+----
+<NotificationConfiguration>
+  <TopicConfiguration>
+     <Id>Image-created</Id>
+     <Filter>
+        <S3Key>
+          <FilterRule>
+            <Name>prefix</Name>
+            <Value>images/</Value>
+          </FilterRule>
+        </S3Key>
+    </Filter>
+    <Topic>arn:aws:sns:us-east-1:050340950352:sgws-topic</Topic>
+    <Event>s3:ObjectCreated:*</Event>
+   </TopicConfiguration>
+ </NotificationConfiguration>
+----
+
+
+. No Gerenciador de locatários, selecione *ARMAZENAMENTO (S3)* > *Buckets*.
+. Selecione o nome do bucket de origem.
++
+A página de detalhes do bucket é exibida.
+
+. Selecione *Serviços de plataforma* > *Notificações de eventos*.
+. Marque a caixa de seleção *Ativar notificações de eventos*.
+. Cole o XML de configuração de notificação na caixa de texto e selecione *Salvar alterações*.
++
+
+NOTE: Os serviços da plataforma devem ser habilitados para cada conta de locatário por um administrador do StorageGRID usando o Grid Manager ou a API de gerenciamento de grade.  Entre em contato com o administrador do StorageGRID se ocorrer um erro ao salvar o XML de configuração.
+
+. Verifique se as notificações de eventos estão configuradas corretamente:
++
+.. Execute uma ação em um objeto no bucket de origem que atenda aos requisitos para acionar uma notificação, conforme configurado no XML de configuração.
++
+No exemplo, uma notificação de evento é enviada sempre que um objeto é criado com o `images/` prefixo.
+
+.. Confirme se uma notificação foi entregue ao tópico de destino do Amazon SNS ou do Kafka.
++
+Por exemplo, se o seu tópico de destino estiver hospedado no Amazon SNS, você poderá configurar o serviço para lhe enviar um e-mail quando a notificação for entregue.
+
++
+[listing]
+----
+{
+   "Records":[
+      {
+         "eventVersion":"2.0",
+         "eventSource":"sgws:s3",
+         "eventTime":"2017-08-08T23:52:38Z",
+         "eventName":"ObjectCreated:Put",
+         "userIdentity":{
+            "principalId":"1111111111111111111"
+         },
+         "requestParameters":{
+            "sourceIPAddress":"193.51.100.20"
+         },
+         "responseElements":{
+            "x-amz-request-id":"122047343"
+         },
+         "s3":{
+            "s3SchemaVersion":"1.0",
+            "configurationId":"Image-created",
+            "bucket":{
+               "name":"test1",
+               "ownerIdentity":{
+                  "principalId":"1111111111111111111"
+               },
+               "arn":"arn:sgws:s3:::test1"
+            },
+            "object":{
+               "key":"images/cat.jpg",
+               "size":0,
+               "eTag":"d41d8cd98f00b204e9800998ecf8427e",
+               "sequencer":"14D90402421461C7"
+            }
+         }
+      }
+   ]
+}
+----
++
+Se a notificação for recebida no tópico de destino, você configurou com sucesso seu bucket de origem para notificações do StorageGRID .
+
+
+
+
+
+.Informações relacionadas
+link:understanding-notifications-for-buckets.html["Entenda as notificações para buckets"]
+
+link:../s3/index.html["Usar API REST do S3"]
+
+link:creating-platform-services-endpoint.html["Criar ponto de extremidade de serviços de plataforma"]

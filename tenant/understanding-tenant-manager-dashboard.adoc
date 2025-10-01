@@ -1,0 +1,94 @@
+---
+permalink: tenant/understanding-tenant-manager-dashboard.html 
+sidebar: sidebar 
+keywords: how to understand tenant manager dashboard 
+summary: 'O painel do Tenant Manager fornece uma visão geral da configuração de uma conta de locatário e da quantidade de espaço usado por objetos nos buckets \(S3\) ou contêineres \(Swift\) do locatário. Se o locatário tiver uma cota, o painel mostrará quanto da cota foi usado e quanto resta. Se houver algum erro relacionado à conta do locatário, os erros serão exibidos no painel.' 
+---
+= Entenda o painel do Tenant Manager
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+O painel do Tenant Manager fornece uma visão geral da configuração de uma conta de locatário e da quantidade de espaço usado por objetos nos buckets (S3) ou contêineres (Swift) do locatário. Se o locatário tiver uma cota, o painel mostrará quanto da cota foi usado e quanto resta. Se houver algum erro relacionado à conta do locatário, os erros serão exibidos no painel.
+
+
+NOTE: Os valores do Espaço utilizado são estimativas. Essas estimativas são afetadas pelo tempo de ingestão, pela conectividade de rede e pelo status do nó.
+
+Quando os objetos são carregados, o painel fica como no exemplo a seguir:
+
+image::../media/tenant_dashboard_with_buckets.png[Painel - Lista de desejos]
+
+
+
+== Informações da conta do inquilino
+
+A parte superior do painel exibe o número de buckets ou contêineres, grupos e usuários configurados.  Ele também exibe o número de pontos de extremidade de serviços de plataforma, se algum tiver sido configurado.  Selecione os links para ver os detalhes.
+
+Dependendo dolink:tenant-management-permissions.html["permissões de gerenciamento de inquilinos"] você tem e as opções que você configurou, o restante do painel exibe várias combinações de diretrizes, uso de armazenamento, informações de objeto e detalhes do locatário.
+
+
+
+== Armazenamento e uso de cota
+
+O painel de uso de armazenamento contém as seguintes informações:
+
+* A quantidade de dados de objeto para o locatário.
++
+Este valor indica a quantidade total de dados de objetos carregados e não representa o espaço usado para armazenar cópias desses objetos e seus metadados.
+
+* Se uma cota for definida, a quantidade total de espaço disponível para dados de objeto e a quantidade e a porcentagem de espaço restante.  A cota limita a quantidade de dados de objetos que podem ser ingeridos.
++
+
+CAUTION: O uso da cota é baseado em estimativas internas e pode ser excedido em alguns casos.  Por exemplo, o StorageGRID verifica a cota quando um locatário começa a carregar objetos e rejeita novas ingestões se o locatário tiver excedido a cota.  No entanto, o StorageGRID não leva em consideração o tamanho do upload atual ao determinar se a cota foi excedida.  Se os objetos forem excluídos, um locatário poderá ser temporariamente impedido de carregar novos objetos até que o uso da cota seja recalculado.  Os cálculos de uso de cota podem levar 10 minutos ou mais.
+
+* Um gráfico de barras que representa os tamanhos relativos dos maiores baldes ou recipientes.
++
+Você pode colocar o cursor sobre qualquer um dos segmentos do gráfico para visualizar o espaço total consumido por aquele bucket ou contêiner.
+
++
+image::../media/tenant_dashboard_storage_usage_segment.png[Segmento do gráfico de barras]
+
+* Para corresponder ao gráfico de barras, uma lista dos maiores buckets ou contêineres, incluindo a quantidade total de dados do objeto e o número de objetos para cada bucket ou contêiner.
++
+image::../media/tenant_dashboard_buckets.png[Baldes do painel do locatário]
+
++
+Se o inquilino tiver mais de nove baldes ou contêineres, todos os outros baldes ou contêineres serão combinados em uma única entrada na parte inferior da lista.
+
+
+
+
+NOTE: Para alterar as unidades dos valores de armazenamento exibidos no Gerenciador de Tenants, selecione o menu suspenso do usuário no canto superior direito do Gerenciador de Tenants e selecione *Preferências do usuário*.
+
+
+
+== Alertas de uso de cota
+
+Se os alertas de uso de cota tiverem sido habilitados no Grid Manager, esses alertas aparecerão no Tenant Manager quando a cota estiver baixa ou for excedida, da seguinte forma:
+
+* Se 90% ou mais da cota de um locatário tiver sido usada, o alerta *Uso alto da cota do locatário* será acionado.
++
+Considere pedir ao administrador da sua rede para aumentar a cota.
+
+* Se você exceder sua cota, uma notificação informará que você não poderá carregar novos objetos.
+
+
+
+
+== [[bucket-capacity-usage]]Uso do limite de capacidade
+
+Se você definiu um limite de capacidade para seus buckets, o painel do Gerenciador de Tenants exibirá uma lista dos principais buckets por uso de limite de capacidade.
+
+Se nenhum limite for definido para um bucket, sua capacidade será ilimitada.  No entanto, se sua conta de locatário tiver uma cota total de armazenamento e essa cota for atingida, você não poderá ingerir mais objetos, independentemente do limite de capacidade restante em um bucket.
+
+
+
+== Erros de endpoint
+
+Se você usou o Grid Manager para configurar um ou mais endpoints para uso com serviços de plataforma, o painel do Tenant Manager exibirá um alerta se algum erro de endpoint tiver ocorrido nos últimos sete dias.
+
+image::../media/tenant_dashboard_endpoint_error.png[Painel mostrando mensagem de endpoint]
+
+Para ver detalhes sobrelink:troubleshooting-platform-services-endpoint-errors.html["erros de ponto de extremidade de serviços de plataforma"] , selecione *Endpoints* para exibir a página Endpoints.

@@ -1,0 +1,259 @@
+---
+permalink: ilm/example-6-changing-ilm-policy.html 
+sidebar: sidebar 
+keywords: change ILM policy, example ILM policy, information lifecycle policy example 
+summary: Se sua proteção de dados precisar ser alterada ou você adicionar novos sites, você poderá criar e ativar uma nova política de ILM. 
+---
+= Exemplo 6: Alterar uma política de ILM
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Se sua proteção de dados precisar ser alterada ou você adicionar novos sites, você poderá criar e ativar uma nova política de ILM.
+
+Antes de alterar uma política, você deve entender como as alterações nos posicionamentos do ILM podem afetar temporariamente o desempenho geral de um sistema StorageGRID .
+
+Neste exemplo, um novo site StorageGRID foi adicionado em uma expansão, e uma nova política de ILM ativa precisa ser implementada para armazenar dados no novo site.  Para implementar uma nova política ativa, primeirolink:creating-ilm-policy.html["criar uma política"] .  Depois, você develink:../ilm/creating-ilm-policy.html#simulate-ilm-policy["simular"] e entãolink:../ilm/creating-ilm-policy.html#activate-ilm-policy["ativar"] a nova política.
+
+
+CAUTION: As seguintes regras e políticas do ILM são apenas exemplos.  Há muitas maneiras de configurar regras de ILM.  Antes de ativar uma nova política, simule-a para confirmar se ela funcionará conforme o esperado para proteger o conteúdo contra perdas.
+
+
+
+== Como a alteração de uma política de ILM afeta o desempenho
+
+Ao ativar uma nova política de ILM, o desempenho do seu sistema StorageGRID pode ser temporariamente afetado, especialmente se as instruções de posicionamento na nova política exigirem que muitos objetos existentes sejam movidos para novos locais.
+
+Quando você ativa uma nova política de ILM, o StorageGRID a usa para gerenciar todos os objetos, incluindo objetos existentes e objetos recém-ingeridos.  Antes de ativar uma nova política de ILM, revise quaisquer alterações no posicionamento de objetos replicados e codificados para eliminação existentes.  Alterar a localização de um objeto existente pode resultar em problemas temporários de recursos quando os novos posicionamentos são avaliados e implementados.
+
+Para garantir que uma nova política de ILM não afete o posicionamento de objetos replicados e codificados para eliminação existentes, você podelink:create-ilm-rule-enter-details.html#use-advanced-filters-in-ilm-rules["crie uma regra ILM com um filtro de tempo de ingestão"] .  Por exemplo, *O tempo de ingestão _é em ou após_ _<data e hora>_*, de modo que a nova regra se aplica somente a objetos ingeridos na data e hora especificadas ou após ela.
+
+Os tipos de alterações na política do ILM que podem afetar temporariamente o desempenho do StorageGRID incluem o seguinte:
+
+* Aplicar um perfil de codificação de eliminação diferente a objetos codificados por eliminação existentes.
++
+
+NOTE: O StorageGRID considera cada perfil de codificação de eliminação como único e não reutiliza fragmentos de codificação de eliminação quando um novo perfil é usado.
+
+* Alterar o tipo de cópias necessárias para objetos existentes; por exemplo, converter uma grande porcentagem de objetos replicados em objetos codificados para eliminação.
+* Mover cópias de objetos existentes para um local completamente diferente; por exemplo, mover um grande número de objetos de ou para um pool de armazenamento em nuvem ou de ou para um site remoto.
+
+
+
+
+== Política de ILM ativa, por exemplo 6: Proteção de dados em dois sites
+
+Neste exemplo, a política ILM ativa foi projetada inicialmente para um sistema StorageGRID de dois sites e usa duas regras ILM.
+
+image::../media/policy_6_active_policy.png[Exemplo de política ativa da política 6 do ILM]
+
+Nesta política de ILM, os objetos pertencentes ao Locatário A são protegidos pela codificação de eliminação 2+1 em um único site, enquanto os objetos pertencentes a todos os outros locatários são protegidos em dois sites usando replicação de 2 cópias.
+
+
+
+=== Regra 1: Codificação de eliminação de um site para o Locatário A
+
+[cols="1a,2a"]
+|===
+| Definição de regra | Valor de exemplo 
+
+
+ a| 
+Nome da regra
+ a| 
+Codificação de eliminação de um site para o inquilino A
+
+
+
+ a| 
+Conta de inquilino
+ a| 
+Inquilino A
+
+
+
+ a| 
+Pool de armazenamento
+ a| 
+Sítio 1
+
+
+
+ a| 
+Posicionamentos
+ a| 
+Codificação de eliminação 2+1 no Site 1 do dia 0 até sempre
+
+|===
+
+
+=== Regra 2: Replicação de dois sites para outros locatários
+
+[cols="1a,2a"]
+|===
+| Definição de regra | Valor de exemplo 
+
+
+ a| 
+Nome da regra
+ a| 
+Replicação de dois sites para outros locatários
+
+
+
+ a| 
+Conta de inquilino
+ a| 
+Ignorar
+
+
+
+ a| 
+Pools de armazenamento
+ a| 
+Sítio 1 e Sítio 2
+
+
+
+ a| 
+Posicionamentos
+ a| 
+Duas cópias replicadas do dia 0 até sempre: uma cópia no Site 1 e uma cópia no Site 2.
+
+|===
+
+
+== Política de ILM, exemplo 6: Proteção de dados em três locais
+
+Neste exemplo, a política ILM está sendo substituída por uma nova política para um sistema StorageGRID de três sites.
+
+Após executar uma expansão para adicionar o novo site, o administrador da grade criou dois novos pools de armazenamento: um pool de armazenamento para o Site 3 e um pool de armazenamento contendo todos os três sites (não o mesmo que o pool de armazenamento padrão Todos os Nós de Armazenamento).  Em seguida, o administrador criou duas novas regras de ILM e uma nova política de ILM, projetadas para proteger dados em todos os três sites.
+
+Quando essa nova política de ILM for ativada, os objetos pertencentes ao Locatário A serão protegidos pela codificação de eliminação 2+1 em três sites, enquanto os objetos pertencentes a outros locatários (e objetos menores pertencentes ao Locatário A) serão protegidos em três sites usando replicação de 3 cópias.
+
+
+
+=== Regra 1: Codificação de eliminação de três sites para o Locatário A
+
+[cols="1a,2a"]
+|===
+| Definição de regra | Valor de exemplo 
+
+
+ a| 
+Nome da regra
+ a| 
+Codificação de eliminação de três sites para o inquilino A
+
+
+
+ a| 
+Conta de inquilino
+ a| 
+Inquilino A
+
+
+
+ a| 
+Pool de armazenamento
+ a| 
+Todos os 3 sites (inclui Site 1, Site 2 e Site 3)
+
+
+
+ a| 
+Posicionamentos
+ a| 
+Codificação de eliminação 2+1 em todos os 3 sites do dia 0 até sempre
+
+|===
+
+
+=== Regra 2: Replicação de três sites para outros inquilinos
+
+[cols="1a,2a"]
+|===
+| Definição de regra | Valor de exemplo 
+
+
+ a| 
+Nome da regra
+ a| 
+Replicação de três sites para outros inquilinos
+
+
+
+ a| 
+Conta de inquilino
+ a| 
+Ignorar
+
+
+
+ a| 
+Pools de armazenamento
+ a| 
+Sítio 1, Sítio 2 e Sítio 3
+
+
+
+ a| 
+Posicionamentos
+ a| 
+Três cópias replicadas do dia 0 até sempre: uma cópia no Local 1, uma cópia no Local 2 e uma cópia no Local 3.
+
+|===
+
+
+== Ativando a política ILM, por exemplo 6
+
+Quando você ativa uma nova política de ILM, objetos existentes podem ser movidos para novos locais ou novas cópias de objetos podem ser criadas para objetos existentes, com base nas instruções de posicionamento em quaisquer regras novas ou atualizadas.
+
+
+CAUTION: Erros em uma política de ILM podem causar perda irrecuperável de dados.  Revise e simule cuidadosamente a política antes de ativá-la para confirmar se ela funcionará conforme o esperado.
+
+
+CAUTION: Quando você ativa uma nova política de ILM, o StorageGRID a usa para gerenciar todos os objetos, incluindo objetos existentes e objetos recém-ingeridos.  Antes de ativar uma nova política de ILM, revise quaisquer alterações no posicionamento de objetos replicados e codificados para eliminação existentes.  Alterar a localização de um objeto existente pode resultar em problemas temporários de recursos quando os novos posicionamentos são avaliados e implementados.
+
+
+
+=== O que acontece quando as instruções de codificação de apagamento mudam
+
+Na política ILM atualmente ativa para este exemplo, os objetos pertencentes ao Locatário A são protegidos usando codificação de eliminação 2+1 no Site 1.  Na nova política de ILM, os objetos pertencentes ao Locatário A serão protegidos usando codificação de eliminação 2+1 nos Sites 1, 2 e 3.
+
+Quando a nova política de ILM é ativada, ocorrem as seguintes operações de ILM:
+
+* Novos objetos ingeridos pelo Tenant A são divididos em dois fragmentos de dados e um fragmento de paridade é adicionado.  Então, cada um dos três fragmentos é armazenado em um local diferente.
+* Os objetos existentes pertencentes ao Locatário A são reavaliados durante o processo de verificação do ILM em andamento.  Como as instruções de posicionamento do ILM usam um novo perfil de codificação de eliminação, fragmentos inteiramente novos codificados por eliminação são criados e distribuídos para os três locais.
++
+
+NOTE: Os fragmentos 2+1 existentes no Sítio 1 não são reutilizados.  O StorageGRID considera cada perfil de codificação de eliminação como único e não reutiliza fragmentos de codificação de eliminação quando um novo perfil é usado.
+
+
+
+
+
+=== O que acontece quando as instruções de replicação mudam
+
+Na política de ILM atualmente ativa para este exemplo, objetos pertencentes a outros locatários são protegidos usando duas cópias replicadas em pools de armazenamento nos Sites 1 e 2.  Na nova política de ILM, objetos pertencentes a outros locatários serão protegidos usando três cópias replicadas em pools de armazenamento nos Sites 1, 2 e 3.
+
+Quando a nova política de ILM é ativada, ocorrem as seguintes operações de ILM:
+
+* Quando qualquer locatário diferente do Locatário A ingere um novo objeto, o StorageGRID cria três cópias e salva uma cópia em cada site.
+* Objetos existentes pertencentes a esses outros inquilinos são reavaliados durante o processo de verificação contínua do ILM.  Como as cópias de objetos existentes no Site 1 e no Site 2 continuam a atender aos requisitos de replicação da nova regra do ILM, o StorageGRID precisa criar apenas uma nova cópia do objeto para o Site 3.
+
+
+
+
+=== Impacto no desempenho da ativação desta política
+
+Quando a política ILM neste exemplo for ativada, o desempenho geral deste sistema StorageGRID será temporariamente afetado.  Serão necessários níveis de recursos de grade maiores que o normal para criar novos fragmentos codificados por eliminação para os objetos existentes do Locatário A e novas cópias replicadas no Site 3 para os objetos existentes de outros locatários.
+
+Como resultado da alteração da política de ILM, as solicitações de leitura e gravação do cliente podem apresentar latências temporariamente maiores que o normal.  As latências retornarão aos níveis normais depois que as instruções de posicionamento forem totalmente implementadas na grade.
+
+Para evitar problemas de recursos ao ativar uma nova política de ILM, você pode usar o filtro avançado Tempo de ingestão em qualquer regra que possa alterar a localização de um grande número de objetos existentes.  Defina o tempo de ingestão como maior ou igual ao tempo aproximado em que a nova política entrará em vigor para garantir que os objetos existentes não sejam movidos desnecessariamente.
+
+
+NOTE: Entre em contato com o suporte técnico se precisar diminuir ou aumentar a taxa de processamento de objetos após uma alteração na política do ILM.

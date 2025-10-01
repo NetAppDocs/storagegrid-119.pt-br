@@ -1,0 +1,63 @@
+---
+permalink: tenant/creating-your-own-s3-access-keys.html 
+sidebar: sidebar 
+keywords: how to create your own S3 access key 
+summary: Se você estiver usando um locatário S3 e tiver a permissão apropriada, poderá criar suas próprias chaves de acesso S3.  Você precisa ter uma chave de acesso para acessar seus buckets e objetos. 
+---
+= Crie suas próprias chaves de acesso S3
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Se você estiver usando um locatário S3 e tiver a permissão apropriada, poderá criar suas próprias chaves de acesso S3.  Você precisa ter uma chave de acesso para acessar seus buckets e objetos.
+
+.Antes de começar
+* Você está conectado ao Gerenciador de Inquilinos usando umlink:../admin/web-browser-requirements.html["navegador da web compatível"] .
+* Você pertence a um grupo de usuários que tem olink:tenant-management-permissions.html["Gerencie suas próprias credenciais S3 ou permissão de acesso Root"] .
+
+
+.Sobre esta tarefa
+Você pode criar uma ou mais chaves de acesso S3 que permitem criar e gerenciar buckets para sua conta de locatário.  Depois de criar uma nova chave de acesso, atualize o aplicativo com seu novo ID de chave de acesso e chave de acesso secreta.  Por segurança, não crie mais chaves do que o necessário e exclua as chaves que não estiver usando.  Se você tiver apenas uma chave e ela estiver prestes a expirar, crie uma nova chave antes que a antiga expire e, em seguida, exclua-a.
+
+Cada chave pode ter um tempo de expiração específico ou não ter expiração.  Siga estas diretrizes para o tempo de expiração:
+
+* Defina um tempo de expiração para suas chaves para limitar seu acesso a um determinado período de tempo.  Definir um tempo de expiração curto pode ajudar a reduzir o risco caso seu ID de chave de acesso e sua chave de acesso secreta sejam acidentalmente expostos.  Chaves expiradas são removidas automaticamente.
+* Se o risco de segurança no seu ambiente for baixo e você não precisar criar novas chaves periodicamente, não será necessário definir um tempo de expiração para suas chaves.  Se você decidir criar novas chaves posteriormente, exclua as chaves antigas manualmente.
+
+
+
+CAUTION: Os buckets e objetos do S3 pertencentes à sua conta podem ser acessados usando o ID da chave de acesso e a chave de acesso secreta exibidas para sua conta no Gerenciador de Tenants.  Por esse motivo, proteja as chaves de acesso como faria com uma senha.  Alterne as chaves de acesso regularmente, remova quaisquer chaves não utilizadas da sua conta e nunca as compartilhe com outros usuários.
+
+.Passos
+. Selecione *ARMAZENAMENTO (S3)* > *Minhas chaves de acesso*.
++
+A página Minhas chaves de acesso é exibida e lista todas as chaves de acesso existentes.
+
+. Selecione *Criar chave*.
+. Faça um dos seguintes:
++
+** Selecione *Não definir um tempo de expiração* para criar uma chave que não irá expirar.  (Padrão)
+** Selecione *Definir um tempo de expiração* e defina a data e a hora de expiração.
++
+
+NOTE: A data de validade pode ser de no máximo cinco anos a partir da data atual.  O tempo de expiração pode ser de no mínimo um minuto a partir da hora atual.
+
+
+
+. Selecione *Criar chave de acesso*.
++
+A caixa de diálogo Baixar chave de acesso é exibida, listando seu ID de chave de acesso e sua chave de acesso secreta.
+
+. Copie o ID da chave de acesso e a chave de acesso secreta para um local seguro ou selecione *Baixar .csv* para salvar um arquivo de planilha contendo o ID da chave de acesso e a chave de acesso secreta.
++
+
+CAUTION: Não feche esta caixa de diálogo até ter copiado ou baixado estas informações.  Não é possível copiar ou baixar chaves depois que a caixa de diálogo for fechada.
+
+. Selecione *Concluir*.
++
+A nova chave está listada na página Minhas chaves de acesso.
+
+. Se sua conta de locatário tiver a permissão *Usar conexão de federação de grade*, opcionalmente, use a API de gerenciamento de locatários para clonar manualmente as chaves de acesso do S3 do locatário na grade de origem para o locatário na grade de destino. Ver link:grid-federation-clone-keys-with-api.html["Clonar chaves de acesso S3 usando a API"] .
+

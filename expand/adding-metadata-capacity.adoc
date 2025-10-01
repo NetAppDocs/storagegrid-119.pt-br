@@ -1,0 +1,73 @@
+---
+permalink: expand/adding-metadata-capacity.html 
+sidebar: sidebar 
+keywords: metadata capacity, add, adding, expand, expansion, guidelines, Storage Nodes, metadata storage 
+summary: Para garantir que haja espaço adequado disponível para metadados de objetos, talvez seja necessário executar um procedimento de expansão para adicionar novos nós de armazenamento em cada site. 
+---
+= Adicionar capacidade de metadados
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Para garantir que haja espaço adequado disponível para metadados de objetos, talvez seja necessário executar um procedimento de expansão para adicionar novos nós de armazenamento em cada site.
+
+O StorageGRID reserva espaço para metadados de objetos no volume 0 de cada nó de armazenamento.  Três cópias de todos os metadados do objeto são mantidas em cada site, distribuídas uniformemente entre todos os nós de armazenamento.
+
+Você pode usar o Grid Manager para monitorar a capacidade de metadados dos nós de armazenamento e estimar a rapidez com que a capacidade de metadados está sendo consumida.  Além disso, o alerta *Armazenamento de metadados baixo* é acionado para um Nó de Armazenamento quando o espaço de metadados usado atinge determinados limites.
+
+Observe que a capacidade de metadados de objetos de uma grade pode ser consumida mais rapidamente do que sua capacidade de armazenamento de objetos, dependendo de como você usa a grade.  Por exemplo, se você normalmente ingere grandes quantidades de objetos pequenos ou adiciona grandes quantidades de metadados ou tags de usuário a objetos, pode ser necessário adicionar Nós de Armazenamento para aumentar a capacidade de metadados, mesmo que ainda haja capacidade de armazenamento de objetos suficiente.
+
+Para mais informações, consulte o seguinte:
+
+* link:../admin/managing-object-metadata-storage.html["Gerenciar armazenamento de metadados de objetos"]
+* link:../monitor/monitoring-storage-capacity.html#monitor-object-metadata-capacity-for-each-storage-node["Monitorar a capacidade de metadados do objeto para cada nó de armazenamento"]
+
+
+
+
+== Diretrizes para aumentar a capacidade de metadados
+
+Antes de adicionar nós de armazenamento para aumentar a capacidade de metadados, revise as seguintes diretrizes e limitações:
+
+* Supondo que haja capacidade de armazenamento de objetos suficiente, ter mais espaço disponível para metadados de objetos aumenta o número de objetos que você pode armazenar no seu sistema StorageGRID .
+* Você pode aumentar a capacidade de metadados de uma grade adicionando um ou mais nós de armazenamento a cada site.
+* O espaço real reservado para metadados de objetos em qualquer nó de armazenamento depende da opção de armazenamento Espaço reservado de metadados (configuração de todo o sistema), da quantidade de RAM alocada ao nó e do tamanho do volume 0 do nó.
+* Não é possível aumentar a capacidade de metadados adicionando volumes de armazenamento aos nós de armazenamento existentes, porque os metadados são armazenados somente no volume 0.
+* Você não pode aumentar a capacidade de metadados adicionando um novo site.
+* O StorageGRID mantém três cópias de todos os metadados de objetos em cada site.  Por esse motivo, a capacidade de metadados do seu sistema é limitada pela capacidade de metadados do seu menor site.
+* Ao adicionar capacidade de metadados, você deve adicionar o mesmo número de nós de armazenamento a cada site.
+
+
+Os nós de armazenamento somente de metadados têm requisitos de hardware específicos:
+
+* Ao usar dispositivos StorageGRID , nós somente de metadados podem ser configurados somente em dispositivos SGF6112 com doze unidades de 1,9 TB ou doze de 3,8 TB.
+* Ao usar nós baseados em software, os recursos de nós somente de metadados devem corresponder aos recursos de nós de armazenamento existentes. Por exemplo:
++
+** Se o site StorageGRID existente estiver usando dispositivos SG6000 ou SG6100, os nós somente de metadados baseados em software deverão atender aos seguintes requisitos mínimos:
++
+*** 128 GB de RAM
+*** CPU de 8 núcleos
+*** 8 TB SSD ou armazenamento equivalente para o banco de dados Cassandra (rangedb/0)
+
+
+** Se o site StorageGRID existente estiver usando nós de armazenamento virtuais com 24 GB de RAM, CPU de 8 núcleos e 3 TB ou 4 TB de armazenamento de metadados, os nós somente de metadados baseados em software deverão usar recursos semelhantes (24 GB de RAM, CPU de 8 núcleos e 4 TB de armazenamento de metadados (rangedb/0).
+
+
+* Ao adicionar um novo site StorageGRID , a capacidade total de metadados do novo site deve, no mínimo, corresponder aos sites StorageGRID existentes e os novos recursos do site devem corresponder aos nós de armazenamento nos sites StorageGRID existentes.
+
+
+Veja olink:../admin/managing-object-metadata-storage.html["descrição do que é Espaço Reservado de Metadados"] .
+
+
+
+== Como os metadados são redistribuídos quando você adiciona nós de armazenamento
+
+Quando você adiciona nós de armazenamento em uma expansão, o StorageGRID redistribui os metadados do objeto existente para os novos nós em cada site, o que aumenta a capacidade geral de metadados da grade.  Nenhuma ação do usuário é necessária.
+
+A figura a seguir mostra como o StorageGRID redistribui metadados de objetos quando você adiciona nós de armazenamento em uma expansão.  O lado esquerdo da figura representa o volume 0 de três nós de armazenamento antes de uma expansão.  Os metadados estão consumindo uma parte relativamente grande do espaço de metadados disponível de cada nó, e o alerta *Armazenamento baixo de metadados* foi acionado.
+
+O lado direito da figura mostra como os metadados existentes são redistribuídos depois que dois nós de armazenamento são adicionados ao site.  A quantidade de metadados em cada nó diminuiu, o alerta *Armazenamento baixo de metadados* não é mais acionado e o espaço disponível para metadados aumentou.
+
+image::../media/metadata_space_after_expansion.png[Diagrama de metadados redistribuídos após a adição de dois nós de armazenamento]

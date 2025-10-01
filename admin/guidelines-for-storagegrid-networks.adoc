@@ -1,0 +1,99 @@
+---
+permalink: admin/guidelines-for-storagegrid-networks.html 
+sidebar: sidebar 
+keywords: admin network, client network, grid network, access interface, trunk interface 
+summary: O StorageGRID suporta até três interfaces de rede por nó de grade, permitindo que você configure a rede para cada nó de grade individual para atender aos seus requisitos de segurança e acesso. 
+---
+= Diretrizes para redes StorageGRID
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Você pode usar o Grid Manager para configurar e gerenciar redes e conexões do StorageGRID .
+
+Verlink:configuring-client-connections.html["Configurar conexões do cliente S3"] para aprender como conectar clientes S3.
+
+
+
+== Redes StorageGRID padrão
+
+Por padrão, o StorageGRID oferece suporte a três interfaces de rede por nó de grade, permitindo que você configure a rede para cada nó de grade individual para atender aos seus requisitos de segurança e acesso.
+
+Para obter mais informações sobre topologia de rede, consultelink:../network/index.html["Diretrizes de rede"] .
+
+
+
+=== Rede de grade
+
+Obrigatório.  A Grid Network é usada para todo o tráfego interno do StorageGRID .  Ele fornece conectividade entre todos os nós na grade, em todos os sites e sub-redes.
+
+
+
+=== Rede de administração
+
+Opcional.  A rede de administração é normalmente usada para administração e manutenção do sistema.  Ele também pode ser usado para acesso ao protocolo do cliente.  A rede de administração normalmente é uma rede privada e não precisa ser roteável entre sites.
+
+
+
+=== Rede de clientes
+
+Opcional.  A Rede do Cliente é uma rede aberta normalmente usada para fornecer acesso a aplicativos cliente S3, para que a Rede Grid possa ser isolada e protegida.  A Rede do Cliente pode se comunicar com qualquer sub-rede acessível através do gateway local.
+
+
+
+== Diretrizes
+
+* Cada nó StorageGRID requer uma interface de rede dedicada, endereço IP, máscara de sub-rede e gateway para cada rede à qual é atribuído.
+* Um nó de grade não pode ter mais de uma interface em uma rede.
+* Um único gateway, por rede, por nó de grade é suportado e deve estar na mesma sub-rede que o nó.  Você pode implementar um roteamento mais complexo no gateway, se necessário.
+* Em cada nó, cada rede é mapeada para uma interface de rede específica.
++
+[cols="1a,1a"]
+|===
+| Rede | Nome da interface 
+
+
+ a| 
+Grade
+ a| 
+eth0
+
+
+
+ a| 
+Administrador (opcional)
+ a| 
+eth1
+
+
+
+ a| 
+Cliente (opcional)
+ a| 
+eth2
+
+|===
+* Se o nó estiver conectado a um dispositivo StorageGRID , portas específicas serão usadas para cada rede.  Para mais detalhes, consulte as instruções de instalação do seu aparelho.
+* A rota padrão é gerada automaticamente, por nó.  Se eth2 estiver habilitado, então 0.0.0.0/0 usa a Rede do Cliente em eth2.  Se eth2 não estiver habilitado, então 0.0.0.0/0 usa a Grid Network em eth0.
+* A Rede do Cliente não se torna operacional até que o nó da rede se junte à rede
+* A rede de administração pode ser configurada durante a implantação do nó da grade para permitir acesso à interface do usuário de instalação antes que a grade esteja totalmente instalada.
+
+
+
+
+== Interfaces opcionais
+
+Opcionalmente, você pode adicionar interfaces extras a um nó.  Por exemplo, você pode querer adicionar uma interface de tronco a um nó de administração ou gateway, para que possa usarlink:../admin/configure-vlan-interfaces.html["Interfaces VLAN"] para segregar o tráfego pertencente a diferentes aplicativos ou locatários.  Ou você pode querer adicionar uma interface de acesso para usar em umlink:../admin/configure-high-availability-group.html["grupo de alta disponibilidade (HA)"] .
+
+Para adicionar interfaces de tronco ou acesso, consulte o seguinte:
+
+* *VMware (após instalar o nó)*:link:../maintain/vmware-adding-trunk-or-access-interfaces-to-node.html["VMware: Adicionar interfaces de tronco ou acesso a um nó"]
++
+** *Red Hat Enterprise Linux (antes de instalar o nó)*:link:../rhel/creating-node-configuration-files.html["Criar arquivos de configuração de nó"]
+** *Ubuntu ou Debian (antes de instalar o nó)*:link:../ubuntu/creating-node-configuration-files.html["Criar arquivos de configuração de nó"]
+** *RHEL, Ubuntu ou Debian (após instalar o nó)*:link:../maintain/linux-adding-trunk-or-access-interfaces-to-node.html["Linux: Adicionar interfaces de tronco ou acesso a um nó"]
+
+
+

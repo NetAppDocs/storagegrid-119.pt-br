@@ -1,0 +1,85 @@
+---
+permalink: maintain/step-2-view-details.html 
+sidebar: sidebar 
+keywords: storagegrid, recover, view details 
+summary: 'Na Etapa 2 \(Exibir detalhes\) do assistente de descomissionamento do site, você pode revisar quais nós estão incluídos no site, ver quanto espaço foi usado em cada nó de armazenamento e avaliar quanto espaço livre está disponível nos outros sites da sua grade.' 
+---
+= Etapa 2: Exibir detalhes
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Na Etapa 2 (Exibir detalhes) do assistente de descomissionamento do site, você pode revisar quais nós estão incluídos no site, ver quanto espaço foi usado em cada nó de armazenamento e avaliar quanto espaço livre está disponível nos outros sites da sua grade.
+
+.Antes de começar
+Antes de desativar um site, você deve revisar a quantidade de dados de objetos existentes no site.
+
+* Se você estiver executando uma desativação de site conectado, deverá entender quantos dados de objeto existem atualmente no site antes de atualizar o ILM.  Com base nas capacidades do site e nas suas necessidades de proteção de dados, você pode criar novas regras de ILM para mover dados para outros sites ou excluir dados de objetos do site.
+* Execute todas as expansões necessárias do nó de armazenamento antes de iniciar o procedimento de desativação, se possível.
+* Se você estiver realizando uma desativação de site desconectado, deverá entender quantos dados de objeto ficarão permanentemente inacessíveis quando você remover o site.
+
+
+
+CAUTION: Se você estiver executando uma desativação de site desconectado, o ILM não poderá mover ou excluir dados de objeto.  Todos os dados que permanecerem no site serão perdidos.  No entanto, se sua política de ILM foi projetada para proteger contra a perda de um único site, cópias dos dados do seu objeto ainda existirão nos sites restantes. Ver link:../ilm/using-multiple-storage-pools-for-cross-site-replication.html["Habilitar proteção contra perda de site"] .
+
+.Passos
+. Na Etapa 2 (Exibir detalhes), revise todos os avisos relacionados ao site que você selecionou para remover.
++
+image::../media/decommission_site_step_2_site_warnings.png[Avisos do local da etapa 2 de descomissionamento]
+
++
+Um aviso aparece nestes casos:
+
++
+** O site inclui um nó de gateway.  Se os clientes S3 estiverem se conectando a este nó, você deverá configurar um nó equivalente em outro site.  Certifique-se de que os clientes possam se conectar ao nó de substituição antes de continuar com o procedimento de desativação.
+** O site contém uma mistura de (image:../media/icon_alert_green_checkmark.png["Ícone Alerta Marca de verificação verde"] ) e nós desconectados (image:../media/icon_alarm_gray_administratively_down.png["Ícone de alarme cinza administrativamente inativo"] ouimage:../media/icon_alarm_blue_unknown.png["Ícone Alarme Azul Desconhecido"] ).  Antes de remover este site, você deve colocar todos os nós offline novamente online.
+
+
+. Revise os detalhes sobre o site que você selecionou para remover.
++
+image::../media/decommission_site_step_2_view_details.png[Desativação do local Etapa 2 Ver detalhes]
+
++
+As seguintes informações estão incluídas para o site selecionado:
+
++
+** Número de nós
+** O espaço total utilizado, o espaço livre e a capacidade de todos os nós de armazenamento no site.
++
+*** Para a desativação de um site conectado, o valor *Espaço Usado* representa a quantidade de dados de objeto que deve ser movida para outros sites ou excluída com o ILM.
+*** Para uma desativação de site desconectado, o valor *Espaço Usado* indica quantos dados de objeto ficarão inacessíveis quando você remover o site.
+
+
+** Nomes de nós, tipos e estados de conexão:
++
+*** image:../media/icon_alert_green_checkmark.png["Ícone Alerta Marca de verificação verde"](Conectado)
+*** image:../media/icon_alarm_gray_administratively_down.png["Ícone de alarme cinza administrativamente inativo"](Administrativamente inativo)
+*** image:../media/icon_alarm_blue_unknown.png["Ícone Alarme Azul Desconhecido"](Desconhecido)
+
+
+** Detalhes sobre cada nó:
++
+*** Para cada nó de armazenamento, a quantidade de espaço que foi usada para dados de objeto.
+*** Para nós de administração e nós de gateway, se o nó está sendo usado atualmente em um grupo de alta disponibilidade (HA).  Não é possível desativar um nó de administração ou um nó de gateway que seja usado em um grupo de alta disponibilidade.  Antes de iniciar a desativação, edite os grupos de HA para remover todos os nós do site ou remova o grupo de HA se ele incluir apenas nós deste site. Para obter instruções, consultelink:../admin/managing-high-availability-groups.html["Gerenciar grupos de alta disponibilidade (HA)"] .
+
+
+
+
+. Na seção Detalhes de outros sites da página, avalie quanto espaço está disponível nos outros sites da sua grade.
++
+image::../media/decommission_site_step_2_view_details_for_other_sites.png[Desativação do Site Etapa 2 Ver detalhes de outros sites]
+
++
+Se você estiver executando o descomissionamento de um site conectado e planeja usar o ILM para mover dados de objeto do site selecionado (em vez de apenas excluí-lo), você deve garantir que os outros sites tenham capacidade suficiente para acomodar os dados movidos e que haja capacidade adequada para crescimento futuro.
+
++
+
+NOTE: Um aviso será exibido se o *Espaço Usado* do site que você deseja remover for maior que o *Espaço Livre Total para Outros Sites*.  Para garantir que haja capacidade de armazenamento adequada disponível após a remoção do site, talvez seja necessário realizar uma expansão antes de executar este procedimento.
+
+. Selecione *Avançar*.
++
+A etapa 3 (Revisar política do ILM) é exibida.
+
+

@@ -1,0 +1,108 @@
+---
+permalink: tenant/viewing-s3-bucket-details.html 
+sidebar: sidebar 
+keywords: how to view bucket details 
+summary: Você pode visualizar os buckets na sua conta de locatário. 
+---
+= Ver detalhes do bucket
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Você pode visualizar os buckets na sua conta de locatário.
+
+.Antes de começar
+* Você está conectado ao Gerenciador de Inquilinos usando umlink:../admin/web-browser-requirements.html["navegador da web compatível"] .
+* Você pertence a um grupo de usuários que tem olink:tenant-management-permissions.html["Permissão de acesso root, gerenciar todos os buckets ou visualizar todos os buckets"] .  Essas permissões substituem as configurações de permissão em políticas de grupo ou bucket.
+
+
+.Passos
+. Selecione *Exibir buckets* no painel ou selecione *ARMAZENAMENTO (S3)* > *Buckets*.
++
+A página Buckets é exibida.
+
+. Revise a tabela de resumo para cada bucket.
++
+Conforme necessário, você pode classificar as informações por qualquer coluna ou pode avançar e voltar na lista.
+
++
+
+NOTE: Os valores de Contagem de Objetos, Espaço Usado e Uso exibidos são estimativas. Essas estimativas são afetadas pelo tempo de ingestão, pela conectividade de rede e pelo status do nó.  Se os buckets tiverem o controle de versão habilitado, as versões de objetos excluídas serão incluídas na contagem de objetos.
+
++
+Nome:: Nome exclusivo do bucket, que não pode ser alterado.
+Recursos habilitados:: A lista de recursos habilitados para o bucket.
+Bloqueio de Objeto S3:: Se o bloqueio de objeto S3 está habilitado para o bucket.
++
+--
+Esta coluna aparece somente se o Bloqueio de Objeto S3 estiver habilitado para a grade.  Esta coluna também mostra informações para quaisquer buckets compatíveis legados.
+
+--
+Região:: A região do bucket, que não pode ser alterada.  Esta coluna está oculta por padrão.
+Contagem de objetos:: O número de objetos neste bucket.  Se os buckets tiverem o controle de versão habilitado, versões de objetos não atuais serão incluídas neste valor.
++
+--
+Quando objetos são adicionados ou excluídos, esse valor pode não ser atualizado imediatamente.
+
+--
+Espaço utilizado:: O tamanho lógico de todos os objetos no bucket.  O tamanho lógico não inclui o espaço real necessário para cópias replicadas ou codificadas para eliminação ou para metadados de objetos.
++
+--
+Este valor pode levar até 10 minutos para ser atualizado.
+
+--
+Uso:: A porcentagem utilizada do limite de capacidade do bucket, se um tiver sido definido.
++
+--
+O valor de uso é baseado em estimativas internas e pode ser excedido em alguns casos.  Por exemplo, o StorageGRID verifica o limite de capacidade (se definido) quando um locatário começa a carregar objetos e rejeita novas ingestões para esse bucket se o locatário tiver excedido o limite de capacidade.  No entanto, o StorageGRID não leva em consideração o tamanho do upload atual ao determinar se o limite de capacidade foi excedido.  Se os objetos forem excluídos, um locatário poderá ser temporariamente impedido de carregar novos objetos neste bucket até que o uso do limite de capacidade seja recalculado.  Os cálculos podem levar 10 minutos ou mais.
+
+Este valor indica o tamanho lógico, não o tamanho físico necessário para armazenar os objetos e seus metadados.
+
+--
+Capacidade:: Se definido, o limite de capacidade do bucket.
+Data de criação:: Data e hora em que o bucket foi criado.  Esta coluna está oculta por padrão.
+
+
+. Para visualizar detalhes de um bucket específico, selecione o nome do bucket na tabela.
++
+.. Veja as informações resumidas na parte superior da página da web para confirmar os detalhes do bucket, como região e contagem de objetos.
+.. Veja a barra de uso do limite de capacidade.  Se o uso for de 100% ou próximo de 100%, considere aumentar o limite ou excluir alguns objetos.
+.. Conforme necessário, selecione *Excluir objetos no bucket* e *Excluir bucket*.
++
+[CAUTION]
+====
+Preste muita atenção aos avisos que aparecem quando você seleciona cada uma dessas opções. Para mais informações, consulte:
+
+*** link:deleting-s3-bucket-objects.html["Excluir todos os objetos em um bucket"]
+*** link:deleting-s3-bucket.html["Excluir um bucket"](o balde deve estar vazio)
+
+
+====
+.. Visualize ou altere as configurações do bucket em cada uma das guias, conforme necessário.
++
+*** *Console S3*: visualize os objetos do bucket. Para mais informações, consulte link:use-s3-console.html["Usar o console S3"] .
+*** *Opções de bucket*: visualize ou altere as configurações de opções.  Algumas configurações, como o S3 Object Lock, não podem ser alteradas após a criação do bucket.
++
+**** link:manage-bucket-consistency.html["Gerenciar consistência de bucket"]
+**** link:enabling-or-disabling-last-access-time-updates.html["Últimas atualizações de tempo de acesso"]
+**** link:../tenant/creating-s3-bucket.html#capacity-limit["Limite de capacidade"]
+**** link:changing-bucket-versioning.html["Controle de versão de objetos"]
+**** link:using-s3-object-lock.html["Bloqueio de Objeto S3"]
+**** link:update-default-retention-settings.html["Retenção de bucket padrão"]
+**** link:grid-federation-manage-cross-grid-replication.html["Gerenciar replicação entre redes"](se permitido para o inquilino)
+
+
+*** *Serviços de plataforma*:link:considerations-for-platform-services.html["Gerenciar serviços de plataforma"] (se permitido para o inquilino)
+*** *Acesso ao bucket*: visualize ou altere as configurações de opções.  Você deve ter permissões de acesso específicas.
++
+**** Configurarlink:configuring-cross-origin-resource-sharing-cors.html["Compartilhamento de Recursos de Origem Cruzada (CORS)"] para que o bucket e os objetos no bucket sejam acessíveis a aplicativos web em outros domínios.
+**** link:../tenant/manage-bucket-policy.html["Controlar o acesso do usuário"]para um bucket S3 e objetos nesse bucket.
+
+
+
+
+
+
+

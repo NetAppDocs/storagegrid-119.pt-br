@@ -1,0 +1,161 @@
+---
+permalink: troubleshoot/troubleshoot-low-watermark-alert.html 
+sidebar: sidebar 
+keywords: troubleshoot low soft read-only watermark override alert, optimized watermarks 
+summary: 'Se você usar valores personalizados para marcas d"água de volume de armazenamento, talvez seja necessário resolver o alerta de substituição de marca d"água somente leitura baixa.  Se possível, você deve atualizar seu sistema para começar a usar os valores otimizados.' 
+---
+= Solucionar problemas de alertas de substituição de marca d'água somente leitura
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Se você usar valores personalizados para marcas d'água de volume de armazenamento, talvez seja necessário resolver o alerta *Substituição de marca d'água somente leitura baixa*.  Se possível, você deve atualizar seu sistema para começar a usar os valores otimizados.
+
+Em lançamentos anteriores, os trêslink:../admin/what-storage-volume-watermarks-are.html["marcas d'água de volume de armazenamento"] eram configurações globais — os mesmos valores aplicados a cada volume de armazenamento em cada nó de armazenamento.  A partir do StorageGRID 11.6, o software pode otimizar essas marcas d'água para cada volume de armazenamento, com base no tamanho do nó de armazenamento e na capacidade relativa do volume.
+
+Ao atualizar para o StorageGRID 11.6 ou superior, marcas d'água otimizadas somente leitura e leitura/gravação são aplicadas automaticamente a todos os volumes de armazenamento, a menos que uma das seguintes condições seja verdadeira:
+
+* Seu sistema está próximo da capacidade máxima e não conseguirá aceitar novos dados se marcas d'água otimizadas forem aplicadas.  O StorageGRID não alterará as configurações da marca d'água neste caso.
+* Você definiu anteriormente qualquer uma das marcas d'água do volume de armazenamento para um valor personalizado.  O StorageGRID não substituirá as configurações de marca d'água personalizadas por valores otimizados.  No entanto, o StorageGRID pode disparar o alerta *Substituição de marca d'água somente leitura baixa* se o seu valor personalizado para a marca d'água somente leitura do volume de armazenamento for muito pequeno.
+
+
+
+
+== Entenda o alerta
+
+Se você usar valores personalizados para marcas d'água de volume de armazenamento, o alerta *Substituição de marca d'água somente leitura baixa* poderá ser acionado para um ou mais nós de armazenamento.
+
+Cada instância do alerta indica que o valor personalizado da marca d'água somente leitura do volume de armazenamento é menor que o valor mínimo otimizado para esse nó de armazenamento.  Se você continuar a usar a configuração personalizada, o Nó de Armazenamento poderá ficar com pouco espaço antes de poder fazer a transição segura para o estado somente leitura.  Alguns volumes de armazenamento podem ficar inacessíveis (desmontados automaticamente) quando o nó atinge a capacidade.
+
+Por exemplo, suponha que você tenha definido anteriormente a marca d'água somente leitura do volume de armazenamento para 5 GB.  Agora suponha que o StorageGRID tenha calculado os seguintes valores otimizados para os quatro volumes de armazenamento no Nó de Armazenamento A:
+
+[cols="2a,2a"]
+|===
+
+
+ a| 
+Volume 0
+ a| 
+12 GB
+
+
+
+ a| 
+Volume 1
+ a| 
+12 GB
+
+
+
+ a| 
+Volume 2
+ a| 
+11 GB
+
+
+
+ a| 
+Volume 3
+ a| 
+15 GB
+
+|===
+O alerta *Substituição de marca d'água somente leitura baixa* é acionado para o Nó de Armazenamento A porque sua marca d'água personalizada (5 GB) é menor que o valor mínimo otimizado para todos os volumes naquele nó (11 GB).  Se você continuar usando a configuração personalizada, o nó poderá ficar com pouco espaço antes de poder fazer a transição segura para o estado somente leitura.
+
+
+
+== Resolva o alerta
+
+Siga estas etapas se um ou mais alertas de *Substituição de marca d'água somente leitura baixa* tiverem sido acionados.  Você também pode usar estas instruções se atualmente usa configurações de marca d'água personalizadas e deseja começar a usar configurações otimizadas mesmo que nenhum alerta tenha sido acionado.
+
+.Antes de começar
+* Você concluiu a atualização para o StorageGRID 11.6 ou superior.
+* Você está conectado ao Grid Manager usando umlink:../admin/web-browser-requirements.html["navegador da web compatível"] .
+* Você tem olink:../admin/admin-group-permissions.html["Permissão de acesso root"] .
+
+
+.Sobre esta tarefa
+Você pode resolver o alerta *Substituição de marca d'água somente leitura baixa* atualizando as configurações de marca d'água personalizadas para as novas substituições de marca d'água.  No entanto, se um ou mais nós de armazenamento estiverem quase cheios ou se você tiver requisitos especiais de ILM, primeiro você deve visualizar as marcas d'água de armazenamento otimizadas e determinar se é seguro usá-las.
+
+
+
+=== Avalie o uso de dados do objeto para toda a grade
+
+.Passos
+. Selecione *NODES*.
+. Para cada site na grade, expanda a lista de nós.
+. Revise os valores percentuais mostrados na coluna *Dados do objeto usados* para cada nó de armazenamento em cada site.
++
+image::../media/nodes_page_object_data_used_with_alert.png[Página de nós mostrando dados de objetos usados para 3 SNs]
+
+. Siga o passo apropriado:
++
+.. Se nenhum dos nós de armazenamento estiver quase cheio (por exemplo, todos os valores de *Dados do objeto usados* forem inferiores a 80%), você poderá começar a usar as configurações de substituição. Vá para<<use-optimized-watermarks,Use marcas d'água otimizadas>> .
+.. Se as regras do ILM usarem o comportamento de ingestão estrito ou se pools de armazenamento específicos estiverem quase cheios, execute as etapas em<<view-optimized-watermarks,Exibir marcas d'água de armazenamento otimizadas>> e<<determine-optimized-watermarks,Determine se você pode usar marcas d'água otimizadas>> .
+
+
+
+
+
+
+=== [[view-optimized-watermarks]]Ver marcas d'água de armazenamento otimizadas
+
+O StorageGRID usa duas métricas do Prometheus para mostrar os valores otimizados que ele calculou para a marca d'água somente leitura do volume de armazenamento.  Você pode visualizar os valores mínimos e máximos otimizados para cada nó de armazenamento na sua grade.
+
+.Passos
+. Selecione *SUPORTE* > *Ferramentas* > *Métricas*.
+. Na seção Prometheus, selecione o link para acessar a interface do usuário do Prometheus.
+. Para ver a marca d'água mínima recomendada somente leitura, insira a seguinte métrica do Prometheus e selecione *Executar*:
++
+`storagegrid_storage_volume_minimum_optimized_soft_readonly_watermark`
+
++
+A última coluna mostra o valor mínimo otimizado da marca d'água somente leitura para todos os volumes de armazenamento em cada nó de armazenamento.  Se esse valor for maior que a configuração personalizada para a marca d'água somente leitura do volume de armazenamento, o alerta *Substituição de marca d'água somente leitura baixa* será acionado para o Nó de Armazenamento.
+
+. Para ver a marca d'água máxima recomendada para somente leitura, insira a seguinte métrica do Prometheus e selecione *Executar*:
++
+`storagegrid_storage_volume_maximum_optimized_soft_readonly_watermark`
+
++
+A última coluna mostra o valor máximo otimizado da marca d'água somente leitura para todos os volumes de armazenamento em cada nó de armazenamento.
+
+. [[maximum_optimized_value]]Observe o valor máximo otimizado para cada nó de armazenamento.
+
+
+
+
+=== [[determine-optimized-watermarks]]Determine se você pode usar marcas d'água otimizadas
+
+.Passos
+. Selecione *NODES*.
+. Repita estas etapas para cada nó de armazenamento on-line:
++
+.. Selecione *_Nó de armazenamento_* > *Armazenamento*.
+.. Role para baixo até a tabela Object Stores.
+.. Compare o valor *Disponível* para cada armazenamento de objetos (volume) com a marca d'água máxima otimizada que você anotou para esse Nó de Armazenamento.
+
+
+. Se pelo menos um volume em cada nó de armazenamento on-line tiver mais espaço disponível do que a marca d'água otimizada máxima para esse nó, vá para<<use-optimized-watermarks,Use marcas d'água otimizadas>> para começar a usar as marcas d'água otimizadas.
++
+Caso contrário, expanda a grade o mais rápido possível.  Qualquerlink:../expand/adding-storage-volumes-to-storage-nodes.html["adicionar volumes de armazenamento"] para um nó existente oulink:../expand/adding-grid-nodes-to-existing-site-or-adding-new-site.html["adicionar novos nós de armazenamento"] .  Então vá para<<use-optimized-watermarks,Use marcas d'água otimizadas>> para atualizar as configurações da marca d'água.
+
+. Se você precisar continuar usando valores personalizados para as marcas d'água do volume de armazenamento,link:../monitor/silencing-alert-notifications.html["silêncio"] oulink:../monitor/disabling-alert-rules.html["desabilitar"] o alerta *Substituição de marca d'água somente leitura baixa*.
++
+
+NOTE: Os mesmos valores de marca d'água personalizados são aplicados a cada volume de armazenamento em cada nó de armazenamento.  Usar valores menores que os recomendados para marcas d'água de volume de armazenamento pode fazer com que alguns volumes de armazenamento se tornem inacessíveis (desmontados automaticamente) quando o nó atingir a capacidade.
+
+
+
+
+
+=== [[use-optimized-watermarks]]Use marcas d'água otimizadas
+
+.Passos
+. Vá para *SUPORTE* > *Outros* > *Marcas d'água de armazenamento*.
+. Marque a caixa de seleção *Usar valores otimizados*.
+. Selecione *Salvar*.
+
+
+As configurações otimizadas de marca d'água do volume de armazenamento agora estão em vigor para cada volume de armazenamento, com base no tamanho do nó de armazenamento e na capacidade relativa do volume.

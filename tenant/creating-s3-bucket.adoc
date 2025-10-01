@@ -1,0 +1,161 @@
+---
+permalink: tenant/creating-s3-bucket.html 
+sidebar: sidebar 
+keywords: how to create S3 bucket 
+summary: Você pode usar o Tenant Manager para criar buckets do S3 para dados de objetos. 
+---
+= Criar um bucket S3
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Você pode usar o Tenant Manager para criar buckets do S3 para dados de objetos.
+
+.Antes de começar
+* Você está conectado ao Gerenciador de Inquilinos usando umlink:../admin/web-browser-requirements.html["navegador da web compatível"] .
+* Você pertence a um grupo de usuários que tem acesso Root ou Gerenciar todos os bucketslink:tenant-management-permissions.html["permissão"] . Essas permissões substituem as configurações de permissões em políticas de grupo ou bucket.
++
+
+NOTE: Permissões para definir ou modificar propriedades de bloqueio de objeto S3 de buckets ou objetos podem ser concedidas porlink:../s3/bucket-and-group-access-policies.html["política de bucket ou política de grupo"] .
+
+* Se você planeja habilitar o S3 Object Lock para um bucket, um administrador de grade habilitou a configuração global S3 Object Lock para o sistema StorageGRID , e você revisou os requisitos para buckets e objetos do S3 Object Lock.
+* Se cada locatário tiver 5.000 buckets, cada nó de armazenamento na grade terá no mínimo 64 GB de RAM.
++
+
+NOTE: Cada grade pode ter no máximo 100.000 buckets.
+
+
+
+
+
+== Acesse o assistente
+
+.Passos
+. Selecione *Exibir buckets* no painel ou selecione *ARMAZENAMENTO (S3)* > *Buckets*.
+. Selecione *Criar bucket*.
+
+
+
+
+== Insira os detalhes
+
+.Passos
+. Insira detalhes do bucket.
++
+[cols="1a,3a"]
+|===
+| Campo | Descrição 
+
+
+ a| 
+Nome do balde
+ a| 
+Um nome para o bucket que esteja em conformidade com estas regras:
+
+** Deve ser exclusivo em cada sistema StorageGRID (não apenas exclusivo na conta do locatário).
+** Deve ser compatível com DNS.
+** Deve conter no mínimo 3 e no máximo 63 caracteres.
+** Cada rótulo deve começar e terminar com uma letra minúscula ou um número e só pode usar letras minúsculas, números e hifens.
+** Não deve conter pontos em solicitações de estilo de hospedagem virtual.  Os períodos causarão problemas com a verificação do certificado curinga do servidor.
+
+
+Para mais informações, consulte o https://docs.aws.amazon.com/AmazonS3/latest/userguide/bucketnamingrules.html["Documentação da Amazon Web Services (AWS) sobre regras de nomenclatura de buckets"^] .
+
+*Observação*: você não pode alterar o nome do bucket depois de criá-lo.
+
+
+
+ a| 
+Região
+ a| 
+A região do balde.
+
+O administrador do StorageGRID gerencia as regiões disponíveis. A região de um bucket pode afetar a política de proteção de dados aplicada aos objetos. Por padrão, todos os buckets são criados no `us-east-1` região.
+
+*Observação*: você não pode alterar a região depois de criar o bucket.
+
+|===
+. Selecione *Continuar*.
+
+
+
+
+== Gerenciar configurações
+
+.Passos
+. Opcionalmente, habilite o controle de versão de objeto para o bucket.
++
+Habilite o controle de versão de objetos se quiser armazenar todas as versões de cada objeto neste bucket.  Você pode então recuperar versões anteriores de um objeto conforme necessário.  Você deve habilitar o controle de versão de objetos se o bucket for usado para replicação entre grades.
+
+. Se a configuração global do S3 Object Lock estiver habilitada, opcionalmente habilite o S3 Object Lock para que o bucket armazene objetos usando um modelo WORM (gravar uma vez e ler várias vezes).
++
+Habilite o Bloqueio de Objetos S3 para um bucket somente se você precisar manter objetos por um período fixo de tempo, por exemplo, para atender a determinados requisitos regulatórios. O Bloqueio de Objetos do S3 é uma configuração permanente que ajuda a evitar que objetos sejam excluídos ou substituídos por um período fixo de tempo ou indefinidamente.
+
++
+
+CAUTION: Depois que a configuração de bloqueio de objeto do S3 é habilitada para um bucket, ela não pode ser desabilitada. Qualquer pessoa com as permissões corretas pode adicionar objetos a este bucket que não podem ser alterados.  Talvez você não consiga excluir esses objetos ou o próprio bucket.
+
++
+Se você habilitar o S3 Object Lock para um bucket, o controle de versão do bucket será habilitado automaticamente.
+
+. Se você selecionou *Ativar bloqueio de objeto S3*, opcionalmente ative *Retenção padrão* para este bucket.
++
+
+NOTE: O administrador da sua rede deve dar-lhe permissão paralink:../tenant/using-s3-object-lock.html["usar recursos específicos do S3 Object Lock"] .
+
++
+Quando a *Retenção padrão* estiver habilitada, novos objetos adicionados ao bucket serão automaticamente protegidos contra exclusão ou substituição. A configuração *Retenção padrão* não se aplica a objetos que têm seus próprios períodos de retenção.
+
++
+.. Se *Retenção padrão* estiver habilitado, especifique um *Modo de retenção padrão* para o bucket.
++
+[cols="1a,2a"]
+|===
+| Modo de retenção padrão | Descrição 
+
+
+ a| 
+Governança
+ a| 
+*** Usuários com o `s3:BypassGovernanceRetention` permissão pode usar o `x-amz-bypass-governance-retention: true` cabeçalho de solicitação para ignorar as configurações de retenção.
+*** Esses usuários podem excluir uma versão do objeto antes que sua data de retenção seja atingida.
+*** Esses usuários podem aumentar, diminuir ou remover a data de retenção de um objeto.
+
+
+
+
+ a| 
+Conformidade
+ a| 
+*** O objeto não pode ser excluído até que sua data de retenção seja atingida.
+*** A data de retenção do objeto pode ser aumentada, mas não diminuída.
+*** A data de retenção do objeto não pode ser removida até que essa data seja atingida.
+
+
+*Observação*: o administrador da sua rede deve permitir que você use o modo de conformidade.
+
+|===
+.. Se *Retenção padrão* estiver habilitado, especifique o *Período de retenção padrão* para o bucket.
++
+O *Período de retenção padrão* indica por quanto tempo novos objetos adicionados a este bucket devem ser retidos, a partir do momento em que são ingeridos. Especifique um valor menor ou igual ao período máximo de retenção do locatário, conforme definido pelo administrador da grade.
+
++
+Um período de retenção _máximo_, que pode ser um valor de 1 dia a 100 anos, é definido quando o administrador da grade cria o locatário.  Quando você define um período de retenção _padrão_, ele não pode exceder o valor definido para o período máximo de retenção.  Se necessário, peça ao administrador da sua rede para aumentar ou diminuir o período máximo de retenção.
+
+
+
+. [[capacity-limit]]Opcionalmente, selecione *Ativar limite de capacidade*.
++
+O limite de capacidade é a capacidade máxima disponível para os objetos deste bucket. Este valor representa uma quantidade lógica (tamanho do objeto), não uma quantidade física (tamanho no disco).
+
++
+Se nenhum limite for definido, a capacidade deste bucket será ilimitada. Consulte link:../tenant/understanding-tenant-manager-dashboard.html#bucket-capacity-usage["Limite de utilização da capacidade"] para maiores informações.
+
+. Selecione *Criar bucket*.
++
+O bucket é criado e adicionado à tabela na página Buckets.
+
+. Opcionalmente, selecione *Ir para a página de detalhes do bucket* paralink:viewing-s3-bucket-details.html["ver detalhes do bucket"] e executar configurações adicionais.
+

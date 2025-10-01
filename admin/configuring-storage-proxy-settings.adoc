@@ -1,0 +1,46 @@
+---
+permalink: admin/configuring-storage-proxy-settings.html 
+sidebar: sidebar 
+keywords: storage proxy, non-transparent proxy, platform service endpoint 
+summary: Se estiver usando serviços de plataforma ou pools de armazenamento em nuvem, você poderá configurar um proxy não transparente entre os nós de armazenamento e os endpoints externos do S3.  Por exemplo, você pode precisar de um proxy não transparente para permitir que mensagens de serviços de plataforma sejam enviadas para endpoints externos, como um endpoint na Internet. 
+---
+= Configurar proxy de armazenamento
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Se estiver usando serviços de plataforma ou pools de armazenamento em nuvem, você poderá configurar um proxy não transparente entre os nós de armazenamento e os endpoints externos do S3.  Por exemplo, você pode precisar de um proxy não transparente para permitir que mensagens de serviços de plataforma sejam enviadas para endpoints externos, como um endpoint na Internet.
+
+
+NOTE: As configurações de proxy de armazenamento configuradas não se aplicam aos pontos de extremidade dos serviços da plataforma Kafka.
+
+.Antes de começar
+* Você temlink:admin-group-permissions.html["permissões de acesso específicas"] .
+* Você está conectado ao Grid Manager usando umlink:../admin/web-browser-requirements.html["navegador da web compatível"] .
+
+
+.Sobre esta tarefa
+Você pode configurar as configurações para um único proxy de armazenamento.
+
+.Passos
+. Selecione *CONFIGURAÇÃO* > *Segurança* > *Configurações de proxy*.
+. Na guia *Armazenamento*, marque a caixa de seleção *Ativar proxy de armazenamento*.
+. Selecione o protocolo para o proxy de armazenamento.
+. Digite o nome do host ou endereço IP do servidor proxy.
+. Opcionalmente, insira a porta usada para conectar ao servidor proxy.
++
+Deixe este campo em branco para usar a porta padrão para o protocolo: 80 para HTTP ou 1080 para SOCKS5.
+
+. Selecione *Salvar*.
++
+Depois que o proxy de armazenamento for salvo, novos endpoints para serviços de plataforma ou pools de armazenamento em nuvem poderão ser configurados e testados.
+
++
+
+NOTE: As alterações de proxy podem levar até 10 minutos para entrarem em vigor.
+
+. Verifique as configurações do seu servidor proxy para garantir que as mensagens relacionadas ao serviço de plataforma do StorageGRID não sejam bloqueadas.
+. Se precisar desabilitar um proxy de armazenamento, desmarque a caixa de seleção e selecione *Salvar*.
+

@@ -1,0 +1,139 @@
+---
+permalink: admin/configuring-sso.html 
+sidebar: sidebar 
+keywords: configure single sign on, sso, SAML 
+summary: 'Quando o logon único (SSO) estiver habilitado, os usuários só poderão acessar o Grid Manager, o Tenant Manager, a Grid Management API ou a Tenant Management API se suas credenciais forem autorizadas usando o processo de logon SSO implementado pela sua organização. Usuários locais não podem fazer login no StorageGRID.' 
+---
+= Configurar logon único
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Quando o logon único (SSO) estiver habilitado, os usuários só poderão acessar o Grid Manager, o Tenant Manager, a Grid Management API ou a Tenant Management API se suas credenciais forem autorizadas usando o processo de logon SSO implementado pela sua organização. Usuários locais não podem fazer login no StorageGRID.
+
+
+
+== Como funciona o logon único
+
+O sistema StorageGRID oferece suporte ao logon único (SSO) usando o padrão Security Assertion Markup Language 2.0 (SAML 2.0).
+
+Antes de habilitar o logon único (SSO), revise como os processos de login e logout do StorageGRID são afetados quando o SSO está habilitado.
+
+
+
+=== Sign in quando o SSO estiver habilitado
+
+Quando o SSO estiver habilitado e você fizer login no StorageGRID, você será redirecionado para a página SSO da sua organização para validar suas credenciais.
+
+.Passos
+. Insira o nome de domínio totalmente qualificado ou o endereço IP de qualquer nó de administração do StorageGRID em um navegador da web.
++
+A página de Sign in do StorageGRID é exibida.
+
++
+** Se esta for a primeira vez que você acessa a URL neste navegador, será solicitado um ID de conta:
++
+image::../media/sso_sign_in_first_time.png[Sign in com o primeiro acesso habilitado para SSO]
+
+** Se você já acessou o Grid Manager ou o Tenant Manager, será solicitado que você selecione uma conta recente ou insira um ID de conta:
++
+image::../media/sign_in_sso.png[Página de login do StorageGRID se o SSO estiver habilitado]
+
+
+
++
+
+NOTE: A página de Sign in do StorageGRID não é exibida quando você insere o URL completo de uma conta de locatário (ou seja, um nome de domínio totalmente qualificado ou endereço IP seguido por `/?accountId=_20-digit-account-id_` ).  Em vez disso, você será imediatamente redirecionado para a página de login SSO da sua organização, onde poderá<<signin_sso,faça login com suas credenciais SSO>> .
+
+. Indique se deseja acessar o Grid Manager ou o Tenant Manager:
++
+** Para acessar o Grid Manager, deixe o campo *ID da conta* em branco, digite *0* como ID da conta ou selecione *Grid Manager* se ele aparecer na lista de contas recentes.
+** Para acessar o Gerenciador de Inquilinos, insira o ID da conta do inquilino de 20 dígitos ou selecione um inquilino pelo nome se ele aparecer na lista de contas recentes.
+
+
+. Selecione * Sign in*
++
+O StorageGRID redireciona você para a página de login SSO da sua organização. Por exemplo:
+
++
+image::../media/sso_organization_page.gif[exemplo de página de login da organização para SSO]
+
+. [[signin_sso]] Sign in com suas credenciais de SSO.
++
+Se suas credenciais de SSO estiverem corretas:
+
++
+.. O provedor de identidade (IdP) fornece uma resposta de autenticação ao StorageGRID.
+.. O StorageGRID valida a resposta de autenticação.
+.. Se a resposta for válida e você pertencer a um grupo federado com permissões de acesso ao StorageGRID , você será conectado ao Grid Manager ou ao Tenant Manager, dependendo da conta selecionada.
++
+
+NOTE: Se a conta de serviço estiver inacessível, você ainda poderá fazer login, desde que seja um usuário existente que pertença a um grupo federado com permissões de acesso ao StorageGRID .
+
+
+
+. Opcionalmente, acesse outros nós de administração ou acesse o Grid Manager ou o Tenant Manager, se você tiver permissões adequadas.
++
+Você não precisa inserir novamente suas credenciais de SSO.
+
+
+
+
+
+=== Sair quando o SSO estiver habilitado
+
+Quando o SSO está habilitado para o StorageGRID, o que acontece quando você sai depende do que você está conectado e de onde você está saindo.
+
+.Passos
+. Localize o link *Sair* no canto superior direito da interface do usuário.
+. Selecione *Sair*.
++
+A página de Sign in do StorageGRID é exibida.  O menu suspenso *Contas recentes* foi atualizado para incluir *Grid Manager* ou o nome do locatário, para que você possa acessar essas interfaces de usuário mais rapidamente no futuro.
+
++
+[cols="1a,1a,1a"]
+|===
+| Se você estiver conectado a... | E você sai de... | Você está desconectado de... 
+
+
+ a| 
+Gerenciador de grade em um ou mais nós de administração
+ a| 
+Gerenciador de grade em qualquer nó de administração
+ a| 
+Gerenciador de grade em todos os nós de administração
+
+*Observação:* Se você usar o Azure para SSO, poderá levar alguns minutos para sair de todos os nós de administração.
+
+
+
+ a| 
+Gerenciador de locatários em um ou mais nós administrativos
+ a| 
+Gerenciador de inquilinos em qualquer nó de administração
+ a| 
+Gerenciador de inquilinos em todos os nós administrativos
+
+
+
+ a| 
+Tanto o Grid Manager quanto o Tenant Manager
+ a| 
+Gerenciador de grade
+ a| 
+Somente o Grid Manager.  Você também deve sair do Gerenciador de Locatários para sair do SSO.
+
+
+
+ a| 
+Gerente de inquilinos
+ a| 
+Somente o gerente do inquilino.  Você também deve sair do Grid Manager para sair do SSO.
+
+|===
+
+
+
+NOTE: A tabela resume o que acontece quando você sai se estiver usando uma única sessão do navegador.  Se você estiver conectado ao StorageGRID em várias sessões do navegador, será necessário sair de todas as sessões do navegador separadamente.

@@ -1,0 +1,32 @@
+---
+permalink: vmware/how-grid-nodes-discover-primary-admin-node.html 
+sidebar: sidebar 
+keywords: how grid nodes discover the primary Admin Node 
+summary: Os nós de grade se comunicam com o nó de administração principal para configuração e gerenciamento.  Cada nó da grade deve saber o endereço IP do nó administrativo primário na rede da grade. 
+---
+= Como os nós da grade descobrem o nó administrativo principal
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Os nós de grade se comunicam com o nó de administração principal para configuração e gerenciamento.  Cada nó da grade deve saber o endereço IP do nó administrativo primário na rede da grade.
+
+Para garantir que um nó de grade possa acessar o nó de administração principal, você pode fazer o seguinte ao implantar o nó:
+
+* Você pode usar o parâmetro ADMIN_IP para inserir manualmente o endereço IP do nó de administração principal.
+* Você pode omitir o parâmetro ADMIN_IP para que o nó da grade descubra o valor automaticamente.  A descoberta automática é especialmente útil quando a Grid Network usa DHCP para atribuir o endereço IP ao nó administrativo primário.
+
+
+A descoberta automática do nó de administração primário é realizada usando um sistema de nomes de domínio multicast (mDNS).  Quando o nó de administração primário é iniciado pela primeira vez, ele publica seu endereço IP usando mDNS.  Outros nós na mesma sub-rede podem então consultar o endereço IP e adquiri-lo automaticamente.  Entretanto, como o tráfego IP multicast normalmente não é roteável entre sub-redes, os nós em outras sub-redes não podem adquirir o endereço IP do nó administrativo principal diretamente.
+
+[NOTE]
+====
+Se você usar a descoberta automática:
+
+* Você deve incluir a configuração ADMIN_IP para pelo menos um nó de grade em qualquer sub-rede à qual o nó de administração primário não esteja diretamente conectado.  Este nó de grade publicará então o endereço IP do nó de administração principal para que outros nós na sub-rede o descubram com o mDNS.
+* Certifique-se de que sua infraestrutura de rede suporte a passagem de tráfego IP multicast dentro de uma sub-rede.
+
+
+====

@@ -1,0 +1,20 @@
+---
+permalink: admin/viewing-notification-status-and-queues.html 
+sidebar: sidebar 
+keywords: NMS service, network management system, interface engine 
+summary: 'O serviço do Sistema de Gerenciamento de Rede (NMS) nos Nós de Administração envia notificações ao servidor de e-mail.  Você pode visualizar o status atual do serviço NMS e o tamanho da fila de notificações na página Interface Engine.' 
+---
+= Ver status de notificação e filas
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+O serviço do Sistema de Gerenciamento de Rede (NMS) nos Nós de Administração envia notificações ao servidor de e-mail.  Você pode visualizar o status atual do serviço NMS e o tamanho da fila de notificações na página Interface Engine.
+
+Para acessar a página Interface Engine, selecione *SUPORTE* > *Ferramentas* > *Topologia de grade*.  Em seguida, selecione *_site_* > *_Admin Node_* > *NMS* > *Interface Engine*.
+
+image::../media/email_notification_status_and_queues.gif[Página do mecanismo de interface]
+
+As notificações são processadas pela fila de notificações por e-mail e enviadas ao servidor de e-mail uma após a outra na ordem em que são acionadas.  Se houver um problema (por exemplo, um erro de conexão de rede) e o servidor de e-mail não estiver disponível quando for feita a tentativa de enviar a notificação, uma tentativa de reenviar a notificação ao servidor de e-mail continuará por um período de 60 segundos.  Se a notificação não for enviada ao servidor de e-mail após 60 segundos, ela será descartada da fila de notificações e será feita uma tentativa de enviar a próxima notificação na fila.

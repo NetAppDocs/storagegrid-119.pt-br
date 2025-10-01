@@ -1,0 +1,38 @@
+---
+permalink: maintain/reviewing-warnings-for-system-drive-recovery.html 
+sidebar: sidebar 
+keywords: storagegrid, recover, system drive warning, storage node 
+summary: Antes de recuperar uma unidade de sistema com falha de um nó de armazenamento, revise os avisos e considerações gerais para recuperação de nó de grade e os seguintes avisos específicos. 
+---
+= Avisos para recuperação de unidade do sistema do nó de armazenamento
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Antes de recuperar uma unidade de sistema com falha de um nó de armazenamento, revise as informações geraislink:warnings-and-considerations-for-grid-node-recovery.html["avisos e considerações para recuperação de nós de rede"] e os seguintes avisos específicos.
+
+Os nós de armazenamento têm um banco de dados Cassandra que inclui metadados de objetos. O banco de dados Cassandra pode ser reconstruído nas seguintes circunstâncias:
+
+* Um nó de armazenamento é colocado novamente online após ficar offline por mais de 15 dias.
+* Um volume de armazenamento falhou e foi recuperado.
+* A unidade do sistema e um ou mais volumes de armazenamento falham e são recuperados.
+
+
+Quando o Cassandra é reconstruído, o sistema usa informações de outros nós de armazenamento. Se muitos nós de armazenamento estiverem offline, alguns dados do Cassandra podem não estar disponíveis. Se o Cassandra foi reconstruído recentemente, os dados do Cassandra podem ainda não ser consistentes em toda a grade.  Pode ocorrer perda de dados se o Cassandra for reconstruído quando muitos nós de armazenamento estiverem offline ou se dois ou mais nós de armazenamento forem reconstruídos com um intervalo de 15 dias entre si.
+
+
+CAUTION: Se mais de um nó de armazenamento falhar (ou estiver offline), entre em contato com o suporte técnico. Não execute o seguinte procedimento de recuperação. Pode ocorrer perda de dados.
+
+
+CAUTION: Se esta for a segunda falha do nó de armazenamento em menos de 15 dias após uma falha ou recuperação do nó de armazenamento, entre em contato com o suporte técnico.  Reconstruir o Cassandra em dois ou mais nós de armazenamento em 15 dias pode resultar em perda de dados.
+
+
+NOTE: Se mais de um nó de armazenamento em um site falhar, um procedimento de recuperação do site poderá ser necessário. Ver link:how-site-recovery-is-performed-by-technical-support.html["Como o suporte técnico recupera um site"] .
+
+
+CAUTION: Se este nó de armazenamento estiver no modo de manutenção somente leitura para permitir a recuperação de objetos por outro nó de armazenamento com volumes de armazenamento com falha, recupere os volumes no nó de armazenamento com volumes de armazenamento com falha antes de recuperar este nó de armazenamento com falha. Veja as instruções paralink:recovering-from-storage-volume-failure-where-system-drive-is-intact.html["recuperar de falha de volume de armazenamento onde a unidade do sistema está intacta"] .
+
+
+CAUTION: Se as regras do ILM estiverem configuradas para armazenar apenas uma cópia replicada e a cópia existir em um volume de armazenamento que falhou, você não poderá recuperar o objeto.

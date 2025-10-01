@@ -1,0 +1,86 @@
+---
+permalink: admin/temporarily-disabling-and-reenabling-sso-for-admin-node.html 
+sidebar: sidebar 
+keywords: signing in when sso is down, single sign on failure 
+summary: 'Talvez você não consiga fazer login no Grid Manager se o sistema de logon único (SSO) ficar inativo.  Nesse caso, você pode desabilitar temporariamente e reabilitar o SSO para um nó de administração.  Para desabilitar e reabilitar o SSO, você deve acessar o shell de comando do nó.' 
+---
+= Desabilitar temporariamente e reabilitar o logon único para um nó de administração
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Talvez você não consiga fazer login no Grid Manager se o sistema de logon único (SSO) ficar inativo.  Nesse caso, você pode desabilitar temporariamente e reabilitar o SSO para um nó de administração.  Para desabilitar e reabilitar o SSO, você deve acessar o shell de comando do nó.
+
+.Antes de começar
+* Você temlink:admin-group-permissions.html["permissões de acesso específicas"] .
+* Você tem o `Passwords.txt` arquivo.
+* Você sabe a senha do usuário root local.
+
+
+.Sobre esta tarefa
+Depois de desabilitar o SSO para um nó de administração, você pode entrar no Grid Manager como usuário root local.  Para proteger seu sistema StorageGRID , você deve usar o shell de comando do nó para reativar o SSO no nó de administração assim que sair.
+
+
+TIP: Desabilitar o SSO para um nó administrativo não afeta as configurações de SSO para nenhum outro nó administrativo na grade.  A caixa de seleção *Habilitar SSO* na página Login Único no Grid Manager permanece selecionada, e todas as configurações de SSO existentes são mantidas, a menos que você as atualize.
+
+.Passos
+. Efetue login em um nó de administração:
++
+.. Digite o seguinte comando: `ssh admin@Admin_Node_IP`
+.. Digite a senha listada no `Passwords.txt` arquivo.
+.. Digite o seguinte comando para alternar para root: `su -`
+.. Digite a senha listada no `Passwords.txt` arquivo.
++
+Quando você está logado como root, o prompt muda de `$` para `#` .
+
+
+
+. Execute o seguinte comando:``disable-saml``
++
+Uma mensagem indica que o comando se aplica somente a este nó de administração.
+
+. Confirme que você deseja desabilitar o SSO.
++
+Uma mensagem indica que o logon único está desabilitado no nó.
+
+. Em um navegador da Web, acesse o Grid Manager no mesmo nó de administração.
++
+A página de login do Grid Manager agora é exibida porque o SSO foi desabilitado.
+
+. Sign in com o nome de usuário root e a senha do usuário root local.
+. Se você desativou o SSO temporariamente porque precisava corrigir a configuração do SSO:
++
+.. Selecione *CONFIGURAÇÃO* > *Controle de acesso* > *Logon único*.
+.. Altere as configurações de SSO incorretas ou desatualizadas.
+.. Selecione *Salvar*.
++
+Selecionar *Salvar* na página Login Único reativa automaticamente o SSO para toda a grade.
+
+
+
+. Se você desativou o SSO temporariamente porque precisava acessar o Grid Manager por algum outro motivo:
++
+.. Execute qualquer tarefa ou tarefas que você precise executar.
+.. Selecione *Sair* e feche o Grid Manager.
+.. Reative o SSO no nó de administração.  Você pode executar qualquer uma das seguintes etapas:
++
+*** Execute o seguinte comando: `enable-saml`
++
+Uma mensagem indica que o comando se aplica somente a este nó de administração.
+
++
+Confirme que você deseja habilitar o SSO.
+
++
+Uma mensagem indica que o logon único está habilitado no nó.
+
+*** Reinicie o nó da grade: `reboot`
+
+
+
+
+. Em um navegador da web, acesse o Grid Manager no mesmo nó de administração.
+. Confirme se a página de Sign in do StorageGRID aparece e se você deve inserir suas credenciais de SSO para acessar o Grid Manager.
+

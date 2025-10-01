@@ -1,0 +1,162 @@
+---
+permalink: admin/configure-vlan-interfaces.html 
+sidebar: sidebar 
+keywords: how to configure vlan interfaces, vlan interfaces, trunk interface 
+summary: 'Você pode criar interfaces de LAN virtual (VLAN) em nós de administração e nós de gateway e usá-las em grupos de HA e pontos de extremidade do balanceador de carga para isolar e particionar o tráfego para segurança, flexibilidade e desempenho.' 
+---
+= Configurar interfaces VLAN
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Você pode criar interfaces de LAN virtual (VLAN) em nós de administração e nós de gateway e usá-las em grupos de HA e pontos de extremidade do balanceador de carga para isolar e particionar o tráfego para segurança, flexibilidade e desempenho.
+
+
+
+== Considerações para interfaces VLAN
+
+* Você cria uma interface VLAN inserindo uma ID de VLAN e escolhendo uma interface pai em um ou mais nós.
+* Uma interface pai deve ser configurada como uma interface de tronco no switch.
+* Uma interface pai pode ser a Rede de Grade (eth0), a Rede do Cliente (eth2) ou uma interface de tronco adicional para a VM ou host bare-metal (por exemplo, ens256).
+* Para cada interface VLAN, você pode selecionar apenas uma interface pai para um determinado nó.  Por exemplo, você não pode usar a interface de rede de grade e a interface de rede do cliente no mesmo nó de gateway que a interface pai para a mesma VLAN.
+* Se a interface VLAN for para tráfego do nó de administração, o que inclui tráfego relacionado ao Grid Manager e ao Tenant Manager, selecione interfaces somente nos nós de administração.
+* Se a interface VLAN for para tráfego de cliente S3, selecione interfaces em Nós de administração ou Nós de gateway.
+* Se você precisar adicionar interfaces de tronco, veja o seguinte para obter detalhes:
++
+** *VMware (após instalar o nó)*:link:../maintain/vmware-adding-trunk-or-access-interfaces-to-node.html["VMware: Adicionar interfaces de tronco ou acesso a um nó"]
+** *RHEL (antes de instalar o nó)*:link:../rhel/creating-node-configuration-files.html["Criar arquivos de configuração de nó"]
+** *Ubuntu ou Debian (antes de instalar o nó)*:link:../ubuntu/creating-node-configuration-files.html["Criar arquivos de configuração de nó"]
+** *RHEL, Ubuntu ou Debian (após instalar o nó)*:link:../maintain/linux-adding-trunk-or-access-interfaces-to-node.html["Linux: Adicionar interfaces de tronco ou acesso a um nó"]
+
+
+
+
+
+
+== Criar uma interface VLAN
+
+.Antes de começar
+* Você está conectado ao Grid Manager usando umlink:../admin/web-browser-requirements.html["navegador da web compatível"] .
+* Você tem olink:admin-group-permissions.html["Permissão de acesso root"] .
+* Uma interface de tronco foi configurada na rede e anexada à VM ou ao nó Linux.  Você sabe o nome da interface do tronco.
+* Você sabe o ID da VLAN que está configurando.
+
+
+.Sobre esta tarefa
+O administrador da rede pode ter configurado uma ou mais interfaces de tronco e uma ou mais VLANs para segregar o tráfego do cliente ou do administrador pertencente a diferentes aplicativos ou locatários.  Cada VLAN é identificada por um ID numérico ou tag.  Por exemplo, sua rede pode usar a VLAN 100 para tráfego do FabricPool e a VLAN 200 para um aplicativo de arquivamento.
+
+Você pode usar o Grid Manager para criar interfaces de VLAN que permitem que clientes acessem o StorageGRID em uma VLAN específica.  Ao criar interfaces de VLAN, você especifica o ID da VLAN e seleciona interfaces pai (tronco) em um ou mais nós.
+
+
+
+=== Acesse o assistente
+
+.Passos
+. Selecione *CONFIGURAÇÃO* > *Rede* > *Interfaces VLAN*.
+. Selecione *Criar*.
+
+
+
+
+=== Insira detalhes para as interfaces VLAN
+
+.Passos
+. Especifique o ID da VLAN na sua rede.  Você pode inserir qualquer valor entre 1 e 4094.
++
+Os IDs de VLAN não precisam ser exclusivos.  Por exemplo, você pode usar a ID de VLAN 200 para tráfego de administrador em um site e a mesma ID de VLAN para tráfego de cliente em outro site.  Você pode criar interfaces VLAN separadas com diferentes conjuntos de interfaces pai em cada site.  No entanto, duas interfaces VLAN com o mesmo ID não podem compartilhar a mesma interface em um nó.  Se você especificar um ID que já foi usado, uma mensagem será exibida.
+
+. Opcionalmente, insira uma breve descrição para a interface VLAN.
+. Selecione *Continuar*.
+
+
+
+
+=== Escolha as interfaces dos pais
+
+A tabela lista as interfaces disponíveis para todos os nós de administração e nós de gateway em cada site da sua grade.  As interfaces de rede de administração (eth1) não podem ser usadas como interfaces pai e não são exibidas.
+
+.Passos
+. Selecione uma ou mais interfaces pai para anexar esta VLAN.
++
+Por exemplo, você pode querer anexar uma VLAN à interface de rede do cliente (eth2) para um nó de gateway e um nó de administração.
+
++
+image::../media/vlan-create-parent-interfaces.png[Assistente de criação de VLAN para interfaces pai]
+
+. Selecione *Continuar*.
+
+
+
+
+=== Confirme as configurações
+
+.Passos
+. Revise a configuração e faça as alterações necessárias.
++
+** Se precisar alterar o ID ou a descrição da VLAN, selecione *Inserir detalhes da VLAN* na parte superior da página.
+** Se precisar alterar uma interface pai, selecione *Escolher interfaces pai* na parte superior da página ou selecione *Anterior*.
+** Se você precisar remover uma interface pai, selecione a lixeiraimage:../media/icon-trash-can.png["ícone de lixeira"] .
+
+
+. Selecione *Salvar*.
+. Aguarde até 5 minutos para que a nova interface apareça como uma seleção na página Grupos de alta disponibilidade e seja listada na tabela *Interfaces de rede* do nó (*NÓS* > *_nó da interface pai_* > *Rede*).
+
+
+
+
+== Editar uma interface VLAN
+
+Ao editar uma interface VLAN, você pode fazer os seguintes tipos de alterações:
+
+* Altere o ID ou a descrição da VLAN.
+* Adicionar ou remover interfaces pai.
+
+
+Por exemplo, você pode querer remover uma interface pai de uma interface VLAN se planeja desativar o nó associado.
+
+Observe o seguinte:
+
+* Não é possível alterar um ID de VLAN se a interface de VLAN for usada em um grupo HA.
+* Não é possível remover uma interface pai se ela for usada em um grupo HA.
++
+Por exemplo, suponha que a VLAN 200 esteja anexada às interfaces pai nos nós A e B. Se um grupo HA usar a interface VLAN 200 para o nó A e a interface eth2 para o nó B, você poderá remover a interface pai não utilizada para o nó B, mas não poderá remover a interface pai usada para o nó A.
+
+
+
+.Passos
+. Selecione *CONFIGURAÇÃO* > *Rede* > *Interfaces VLAN*.
+. Marque a caixa de seleção da interface VLAN que você deseja editar.  Em seguida, selecione *Ações* > *Editar*.
+. Opcionalmente, atualize o ID da VLAN ou a descrição.  Em seguida, selecione *Continuar*.
++
+Não é possível atualizar uma ID de VLAN se a VLAN for usada em um grupo HA.
+
+. Opcionalmente, marque ou desmarque as caixas de seleção para adicionar interfaces pai ou remover interfaces não utilizadas.  Em seguida, selecione *Continuar*.
+. Revise a configuração e faça as alterações necessárias.
+. Selecione *Salvar*.
+
+
+
+
+== Remover uma interface VLAN
+
+Você pode remover uma ou mais interfaces VLAN.
+
+Não é possível remover uma interface VLAN se ela estiver sendo usada em um grupo HA.  Você deve remover a interface VLAN do grupo HA antes de poder removê-la.
+
+Para evitar interrupções no tráfego de clientes, considere fazer uma das seguintes ações:
+
+* Adicione uma nova interface VLAN ao grupo HA antes de remover esta interface VLAN.
+* Crie um novo grupo HA que não use esta interface VLAN.
+* Se a interface VLAN que você deseja remover for a interface ativa no momento, edite o grupo HA.  Mova a interface VLAN que você deseja remover para o final da lista de prioridades.  Aguarde até que a comunicação seja estabelecida na nova interface primária e, em seguida, remova a interface antiga do grupo HA.  Por fim, exclua a interface VLAN nesse nó.
+
+
+.Passos
+. Selecione *CONFIGURAÇÃO* > *Rede* > *Interfaces VLAN*.
+. Marque a caixa de seleção de cada interface VLAN que você deseja remover.  Em seguida, selecione *Ações* > *Excluir*.
+. Selecione *Sim* para confirmar sua seleção.
++
+Todas as interfaces VLAN selecionadas serão removidas.  Um banner verde de sucesso aparece na página de interfaces de VLAN.
+
+

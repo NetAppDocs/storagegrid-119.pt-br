@@ -1,0 +1,47 @@
+---
+permalink: admin/signing-out-of-grid-manager.html 
+sidebar: sidebar 
+keywords: grid manager, sign on, log out 
+summary: Quando terminar de trabalhar com o Grid Manager, você deve sair para garantir que usuários não autorizados não possam acessar o sistema StorageGRID .  Fechar o navegador pode não desconectar você do sistema, com base nas configurações de cookies do navegador. 
+---
+= Sair do Grid Manager
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Quando terminar de trabalhar com o Grid Manager, você deve sair para garantir que usuários não autorizados não possam acessar o sistema StorageGRID .  Fechar o navegador pode não desconectar você do sistema, com base nas configurações de cookies do navegador.
+
+.Passos
+. Selecione seu nome de usuário no canto superior direito.
++
+image::../media/sign_out.png[Link de saída]
+
+. Selecione *Sair*.
++
+[cols="1a,2a"]
+|===
+| Opção | Descrição 
+
+
+ a| 
+SSO não está em uso
+ a| 
+Você está desconectado do nó de administração.
+
+A página de login do Grid Manager é exibida.
+
+*Observação:* se você tiver entrado em mais de um nó de administração, será necessário sair de cada nó.
+
+
+
+ a| 
+SSO habilitado
+ a| 
+Você está desconectado de todos os nós de administração que estava acessando.  A página de login do StorageGRID é exibida.  *Grid Manager* é listado como padrão no menu suspenso *Contas recentes*, e o campo *ID da conta* mostra 0.
+
+*Observação:* Se o SSO estiver habilitado e você também estiver conectado ao Gerenciador de locatários, você também deverálink:../tenant/signing-out-of-tenant-manager.html["sair da conta do inquilino"] paralink:configuring-sso.html["sair do SSO"] .
+
+|===
+

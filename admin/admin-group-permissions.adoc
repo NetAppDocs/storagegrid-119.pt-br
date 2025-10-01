@@ -1,0 +1,210 @@
+---
+permalink: admin/admin-group-permissions.html 
+sidebar: sidebar 
+keywords: admin group permissions 
+summary: Ao criar grupos de usuários administradores, você seleciona uma ou mais permissões para controlar o acesso a recursos específicos do Grid Manager.  Você pode então atribuir cada usuário a um ou mais desses grupos de administradores para determinar quais tarefas cada usuário pode executar. 
+---
+= Permissões do grupo de administração
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Ao criar grupos de usuários administradores, você seleciona uma ou mais permissões para controlar o acesso a recursos específicos do Grid Manager.  Você pode então atribuir cada usuário a um ou mais desses grupos de administradores para determinar quais tarefas cada usuário pode executar.
+
+Você deve atribuir pelo menos uma permissão a cada grupo; caso contrário, os usuários pertencentes a esse grupo não poderão fazer login no Grid Manager ou na Grid Management API.
+
+Por padrão, qualquer usuário que pertença a um grupo que tenha pelo menos uma permissão pode executar as seguintes tarefas:
+
+* Sign in no Grid Manager
+* Ver o painel
+* Ver as páginas dos nós
+* Ver alertas atuais e resolvidos
+* Alterar sua própria senha (somente usuários locais)
+* Veja certas informações fornecidas nas páginas de Configuração e Manutenção
+
+
+
+
+== Interação entre permissões e modo de acesso
+
+Para todas as permissões, a configuração *Modo de acesso* do grupo determina se os usuários podem alterar as configurações e executar operações ou se eles podem apenas visualizar as configurações e os recursos relacionados.  Se um usuário pertencer a vários grupos e qualquer grupo estiver definido como *Somente leitura*, o usuário terá acesso somente leitura a todas as configurações e recursos selecionados.
+
+As seções a seguir descrevem as permissões que você pode atribuir ao criar ou editar um grupo de administradores.  Qualquer funcionalidade não explicitamente mencionada requer a permissão *Acesso root*.
+
+
+
+== Acesso root
+
+Esta permissão fornece acesso a todos os recursos de administração da grade.
+
+
+
+== Alterar senha raiz do locatário
+
+Esta permissão fornece acesso à opção *Alterar senha root* na página Locatários, permitindo que você controle quem pode alterar a senha do usuário root local do locatário.  Essa permissão também é usada para migrar chaves S3 quando o recurso de importação de chaves S3 está habilitado.  Usuários que não têm essa permissão não podem ver a opção *Alterar senha root*.
+
+
+NOTE: Para conceder acesso à página de locatários, que contém a opção *Alterar senha de root*, atribua também a permissão *Contas de locatários*.
+
+
+
+== Configuração da página de topologia de grade
+
+Esta permissão fornece acesso às guias Configuração na página *SUPORTE* > *Ferramentas* > *Topologia de grade*.
+
+
+NOTE: A página de topologia de grade foi descontinuada e será removida em uma versão futura.
+
+
+
+== ILM
+
+Esta permissão fornece acesso às seguintes opções de menu *ILM*:
+
+* Regras
+* Políticas
+* Tags de política
+* Pools de armazenamento
+* Graus de armazenamento
+* Regiões
+* Pesquisa de metadados de objetos
+
+
+
+NOTE: Os usuários devem ter as permissões *Outra configuração de grade* e *Configuração da página de topologia de grade* para gerenciar níveis de armazenamento.
+
+
+
+== Manutenção
+
+Os usuários devem ter permissão de Manutenção para usar estas opções:
+
+* *CONFIGURAÇÃO* > *Controle de acesso*:
++
+** Senhas de grade
+
+
+* *CONFIGURAÇÃO* > *Rede*:
++
+** Nomes de domínio de endpoint S3
+
+
+* *MANUTENÇÃO* > *Tarefas*:
++
+** Descomissionamento
+** Expansão
+** Verificação de existência de objeto
+** Recuperação
+
+
+* *MANUTENÇÃO* > *Sistema*:
++
+** Pacote de recuperação
+** Atualização de software
+
+
+* *SUPORTE* > *Ferramentas*:
++
+** Registros
+
+
+
+
+Usuários que não têm permissão de Manutenção podem visualizar, mas não editar, estas páginas:
+
+* *MANUTENÇÃO* > *Rede*:
++
+** Servidores DNS
+** Rede de grade
+** Servidores NTP
+
+
+* *MANUTENÇÃO* > *Sistema*:
++
+** Licença
+
+
+* *CONFIGURAÇÃO* > *Rede*:
++
+** Nomes de domínio de endpoint S3
+
+
+* *CONFIGURAÇÃO* > *Segurança*:
++
+** Certificados
+
+
+* *CONFIGURAÇÃO* > *Monitoramento*:
++
+** Servidor de auditoria e syslog
+
+
+
+
+
+
+== Gerenciar alertas
+
+Esta permissão fornece acesso a opções para gerenciar alertas.  Os usuários devem ter essa permissão para gerenciar silêncios, notificações de alerta e regras de alerta.
+
+
+
+== Consulta de métricas
+
+Esta permissão fornece acesso a:
+
+* *SUPORTE* > *Ferramentas* > página *Métricas*
+* Consultas de métricas personalizadas do Prometheus usando a seção *Métricas* da API de gerenciamento de grade
+* Cartões do painel do Grid Manager que contêm métricas
+
+
+
+
+== Pesquisa de metadados de objetos
+
+Esta permissão fornece acesso à página *ILM* > *Consulta de metadados do objeto*.
+
+
+
+== Outra configuração de grade
+
+Esta permissão fornece acesso a opções adicionais de configuração de grade.
+
+
+TIP: Para ver essas opções adicionais, os usuários também devem ter a permissão *Configuração da página de topologia de grade*.
+
+* *ILM*:
++
+** Graus de armazenamento
+
+
+* *CONFIGURAÇÃO* > *Sistema*:
+* *SUPORTE* > *Outros*:
++
+** Custo do link
+
+
+
+
+
+
+== Administrador do dispositivo de armazenamento
+
+Esta permissão fornece:
+
+* Acesso ao E-Series SANtricity System Manager em dispositivos de armazenamento por meio do Grid Manager.
+* A capacidade de executar tarefas de solução de problemas e manutenção na guia Gerenciar unidades para dispositivos que oferecem suporte a essas operações.
+
+
+
+
+== Contas de inquilinos
+
+Esta permissão fornece a capacidade de:
+
+* Acesse a página de inquilinos, onde você pode criar, editar e remover contas de inquilinos
+* Ver políticas de classificação de tráfego existentes
+* Exibir cartões do painel do Grid Manager que contêm detalhes do locatário
+

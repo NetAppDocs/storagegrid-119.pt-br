@@ -1,0 +1,38 @@
+---
+permalink: monitor/viewing-storage-tab.html 
+sidebar: sidebar 
+keywords: storage tab 
+summary: A guia Armazenamento resume a disponibilidade de armazenamento e outras métricas de armazenamento. 
+---
+= Ver a aba Armazenamento
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+A guia Armazenamento resume a disponibilidade de armazenamento e outras métricas de armazenamento.
+
+A guia Armazenamento é exibida para todos os nós, cada site e toda a grade.
+
+
+
+== Gráficos de armazenamento usados
+
+Para nós de armazenamento, cada site e toda a grade, a guia Armazenamento inclui gráficos que mostram quanto armazenamento foi usado por dados de objeto e metadados de objeto ao longo do tempo.
+
+
+NOTE: Quando um nó não está conectado à rede, como durante uma atualização ou em um estado desconectado, certas métricas podem estar indisponíveis ou excluídas dos totais do site e da rede.  Depois que um nó se reconectar à rede, aguarde alguns minutos para que os valores se estabilizem.
+
+image::../media/nodes_storage_node_storage_tab.png[Nós > Nó de armazenamento > guia Armazenamento]
+
+
+
+== Dispositivos de disco, volumes e tabelas de armazenamento de objetos
+
+Para todos os nós, a guia Armazenamento contém detalhes dos dispositivos de disco e volumes no nó.  Para nós de armazenamento, a tabela Object Stores fornece informações sobre cada volume de armazenamento.
+
+image::../media/nodes_page_storage_tables.png[Tabelas de armazenamento de páginas de nós]
+
+.Informações relacionadas
+link:monitoring-storage-capacity.html["Monitorar capacidade de armazenamento"]

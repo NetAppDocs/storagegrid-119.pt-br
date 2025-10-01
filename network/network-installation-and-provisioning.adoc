@@ -1,0 +1,36 @@
+---
+permalink: network/network-installation-and-provisioning.html 
+sidebar: sidebar 
+keywords: network install, network provisioning 
+summary: Você deve entender como a Rede de Grade e as Redes de Administrador e Cliente opcionais são usadas durante a implantação do nó e a configuração da grade. 
+---
+= Instalação e provisionamento de rede
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Você deve entender como a Rede de Grade e as Redes de Administrador e Cliente opcionais são usadas durante a implantação do nó e a configuração da grade.
+
+
+
+== Implantação inicial de um nó
+
+Ao implantar um nó pela primeira vez, você deve anexá-lo à Rede de Grade e garantir que ele tenha acesso ao Nó de Administração principal.  Se a Rede de Grade estiver isolada, você poderá configurar a Rede de Administração no Nó de Administração principal para acesso de configuração e instalação de fora da Rede de Grade.
+
+Uma rede de grade com um gateway configurado se torna o gateway padrão para um nó durante a implantação.  O gateway padrão permite que nós de grade em sub-redes separadas se comuniquem com o nó de administração principal antes que a grade seja configurada.
+
+Se necessário, sub-redes contendo servidores NTP ou que exijam acesso ao Grid Manager ou à API também podem ser configuradas como sub-redes de grade.
+
+
+
+== Registro automático de nó com nó de administração primário
+
+Depois que os nós são implantados, eles se registram no nó de administração principal usando a rede Grid.  Você pode então usar o Grid Manager, o `configure-storagegrid.py` Script Python ou a API de instalação para configurar a grade e aprovar os nós registrados.  Durante a configuração da grade, você pode configurar várias sub-redes da grade.  Rotas estáticas para essas sub-redes por meio do gateway da Grid Network serão criadas em cada nó quando você concluir a configuração da grade.
+
+
+
+== Desabilitando a rede de administração ou a rede do cliente
+
+Se você quiser desabilitar a Rede de Administração ou a Rede de Cliente, você pode remover a configuração delas durante o processo de aprovação do nó, ou você pode usar a ferramenta Alterar IP após a conclusão da instalação (vejalink:../maintain/configuring-ip-addresses.html["Configurar endereços IP"] ).

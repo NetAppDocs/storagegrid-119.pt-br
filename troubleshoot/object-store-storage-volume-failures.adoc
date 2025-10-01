@@ -1,0 +1,28 @@
+---
+permalink: troubleshoot/object-store-storage-volume-failures.html 
+sidebar: sidebar 
+keywords: how to confirm object location, object metadata lookup 
+summary: O armazenamento subjacente em um nó de armazenamento é dividido em armazenamentos de objetos.  Os armazenamentos de objetos também são conhecidos como volumes de armazenamento. 
+---
+= Falhas de armazenamento de objetos (volume de armazenamento)
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+O armazenamento subjacente em um nó de armazenamento é dividido em armazenamentos de objetos.  Os armazenamentos de objetos também são conhecidos como volumes de armazenamento.
+
+Você pode visualizar informações de armazenamento de objetos para cada nó de armazenamento. Os armazenamentos de objetos são mostrados na parte inferior da página *NODES* > *_Storage Node_* > *Storage*.
+
+image::../media/nodes_page_storage_nodes_storage_tables.png[Nós Armazenamento de Páginas Armazenamento de Nós Tabelas]
+
+Para ver maislink:../monitor/viewing-grid-topology-tree.html["detalhes sobre cada nó de armazenamento"] , siga estes passos:
+
+. Selecione *SUPORTE* > *Ferramentas* > *Topologia de grade*.
+. Selecione *_site_* > *_Nó de armazenamento_* > *LDR* > *Armazenamento* > *Visão geral* > *Principal*.
+
+
+image::../media/storage_node_object_stores.png[Armazenamento de objetos do nó de armazenamento]
+
+Dependendo da natureza da falha, falhas em um volume de armazenamento podem ser refletidas emlink:../monitor/alerts-reference.html["alertas de volume de armazenamento"] .  Se um volume de armazenamento falhar, você deverá reparar o volume de armazenamento com falha para restaurar o Nó de Armazenamento à funcionalidade completa o mais rápido possível.  Se necessário, você pode ir até a aba *Configuração* elink:../maintain/checking-storage-state-after-recovering-storage-volumes.html["coloque o nó de armazenamento em um estado somente leitura"] para que o sistema StorageGRID possa usá-lo para recuperação de dados enquanto você se prepara para uma recuperação completa do servidor.

@@ -1,0 +1,39 @@
+---
+permalink: tenant/testing-connection-for-platform-services-endpoint.html 
+sidebar: sidebar 
+keywords: how to test platform services endpoint connection 
+summary: Se a conexão com um serviço de plataforma tiver sido alterada, você poderá testar a conexão do ponto de extremidade para validar se o recurso de destino existe e se pode ser acessado usando as credenciais especificadas. 
+---
+= Teste de conexão para ponto de extremidade de serviços de plataforma
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Se a conexão com um serviço de plataforma tiver sido alterada, você poderá testar a conexão do ponto de extremidade para validar se o recurso de destino existe e se pode ser acessado usando as credenciais especificadas.
+
+.Antes de começar
+* Você está conectado ao Gerenciador de Inquilinos usando umlink:../admin/web-browser-requirements.html["navegador da web compatível"] .
+* Você pertence a um grupo de usuários que tem olink:tenant-management-permissions.html["Gerenciar endpoints ou permissão de acesso root"] .
+
+
+.Sobre esta tarefa
+O StorageGRID não valida se as credenciais têm as permissões corretas.
+
+.Passos
+. Selecione *ARMAZENAMENTO (S3)* > *Pontos de extremidade de serviços de plataforma*.
++
+A página Pontos de extremidade dos serviços da plataforma é exibida e mostra a lista de pontos de extremidade dos serviços da plataforma que já foram configurados.
+
+. Selecione o ponto de extremidade cuja conexão você deseja testar.
++
+A página de detalhes do endpoint é exibida.
+
+. Selecione *Testar conexão*.
++
+** Uma mensagem de sucesso será exibida se o ponto de extremidade puder ser alcançado usando as credenciais especificadas.  A conexão com o ponto de extremidade é validada a partir de um nó em cada site.
+** Uma mensagem de erro será exibida se a validação do endpoint falhar.  Se você precisar modificar o endpoint para corrigir o erro, selecione *Configuração* e atualize as informações.  Em seguida, selecione *Testar e salvar alterações*.
+
+
+

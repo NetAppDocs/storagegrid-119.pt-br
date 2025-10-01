@@ -1,0 +1,38 @@
+---
+permalink: monitor/removing-custom-alert-rules.html 
+sidebar: sidebar 
+keywords: how to disable alert rules, how to remove a custom alert rule 
+summary: Você pode remover uma regra de alerta personalizada se não quiser mais usá-la. 
+---
+= Remover regras de alerta personalizadas
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Você pode remover uma regra de alerta personalizada se não quiser mais usá-la.
+
+.Antes de começar
+* Você está conectado ao Grid Manager usando umlink:../admin/web-browser-requirements.html["navegador da web compatível"] .
+* Você tem olink:../admin/admin-group-permissions.html["Gerenciar alertas ou permissão de acesso root"] .
+
+
+.Passos
+. Selecione *ALERTAS* > *Regras*.
++
+A página Regras de alerta é exibida.
+
+. Selecione o botão de opção da regra de alerta personalizada que você deseja remover.
++
+Você não pode remover uma regra de alerta padrão.
+
+. Selecione *Remover regra personalizada*.
++
+Uma caixa de diálogo de confirmação é exibida.
+
+. Selecione *OK* para remover a regra de alerta.
++
+Quaisquer instâncias ativas do alerta serão resolvidas em 10 minutos.
+
+

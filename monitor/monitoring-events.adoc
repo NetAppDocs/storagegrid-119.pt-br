@@ -1,0 +1,100 @@
+---
+permalink: monitor/monitoring-events.html 
+sidebar: sidebar 
+keywords: monitor, monitoring events, events, storageGRID events 
+summary: Você pode monitorar eventos detectados por um nó de grade, incluindo eventos personalizados que você criou para rastrear eventos registrados no servidor syslog.  A mensagem Último Evento exibida no Grid Manager fornece mais informações sobre o evento mais recente. 
+---
+= Monitorar eventos
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Você pode monitorar eventos detectados por um nó de grade, incluindo eventos personalizados que você criou para rastrear eventos registrados no servidor syslog.  A mensagem Último Evento exibida no Grid Manager fornece mais informações sobre o evento mais recente.
+
+As mensagens de eventos também são listadas no `/var/local/log/bycast-err.log` arquivo de log. Veja olink:logs-files-reference.html["Referência de arquivos de log"] .
+
+O alarme SMTT (Total de eventos) pode ser disparado repetidamente por problemas como problemas de rede, quedas de energia ou atualizações.  Esta seção contém informações sobre como investigar eventos para que você possa entender melhor por que esses alarmes ocorreram.  Se um evento ocorreu devido a um problema conhecido, é seguro redefinir os contadores de eventos.
+
+.Passos
+. Revise os eventos do sistema para cada nó da grade:
++
+.. Selecione *SUPORTE* > *Ferramentas* > *Topologia de grade*.
+.. Selecione *_site_* > *_grid node_* > *SSM* > *Eventos* > *Visão geral* > *Principal*.
+
+
+. Gere uma lista de mensagens de eventos anteriores para ajudar a isolar problemas que ocorreram no passado:
++
+.. Selecione *SUPORTE* > *Ferramentas* > *Topologia de grade*.
+.. Selecione *_site_* > *_grid node_* > *SSM* > *Eventos* > *Relatórios*.
+.. Selecione *Texto*.
++
+O atributo *Último Evento* não é mostrado nolink:using-charts-and-reports.html["visualização de gráficos"] .  Para visualizá-lo:
+
+.. Altere *Atributo* para *Último Evento*.
+.. Opcionalmente, selecione um período de tempo para *Consulta rápida*.
+.. Selecione *Atualizar*.
++
+image::../media/events_report.gif[Página de eventos]
+
+
+
+
+
+
+
+== Criar eventos syslog personalizados
+
+Eventos personalizados permitem que você rastreie todos os eventos de kernel, daemon, erro e nível crítico do usuário registrados no servidor syslog.  Um evento personalizado pode ser útil para monitorar a ocorrência de mensagens de log do sistema (e, portanto, eventos de segurança de rede e falhas de hardware).
+
+.Sobre esta tarefa
+Considere criar eventos personalizados para monitorar problemas recorrentes.  As considerações a seguir se aplicam a eventos personalizados.
+
+* Depois que um evento personalizado é criado, cada ocorrência dele é monitorada.
+* Para criar um evento personalizado com base em palavras-chave no `/var/local/log/messages` arquivos, os logs nesses arquivos devem ser:
++
+** Gerado pelo kernel
+** Gerado pelo daemon ou programa do usuário no nível de erro ou crítico
+
+
+
+
+*Nota:* Nem todas as entradas no `/var/local/log/messages` os arquivos serão correspondidos, a menos que satisfaçam os requisitos declarados acima.
+
+.Passos
+. Selecione *SUPORTE* > *Alarmes (antigo)* > *Eventos personalizados*.
+. Clique em *Editar*image:../media/icon_nms_edit.gif["ícone de lápis"] (ou *Inserir*image:../media/icon_nms_insert.gif["ícone de mais"] se este não for o primeiro evento).
+. Insira uma sequência de eventos personalizada, por exemplo, desligamento
++
+image::../media/custom_events.png[captura de tela mostrando onde inserir a sequência de eventos personalizada]
+
+. Selecione *Aplicar alterações*.
+. Selecione *SUPORTE* > *Ferramentas* > *Topologia de grade*.
+. Selecione *_grid node_* > *SSM* > *Eventos*.
+. Localize a entrada para Eventos personalizados na tabela Eventos e monitore o valor para *Contagem*.
++
+Se a contagem aumentar, um evento personalizado que você está monitorando será acionado naquele nó da grade.
+
++
+image::../media/custom_events_count.png[SSM > Eventos > Página de visão geral]
+
+
+
+
+
+== Redefina a contagem de eventos personalizados para zero
+
+Se você quiser zerar o contador apenas para eventos personalizados, use a página Topologia de grade no menu Suporte.
+
+Redefinir um contador faz com que o alarme seja disparado pelo próximo evento.  Por outro lado, quando você reconhece um alarme, ele só é disparado novamente se o próximo nível limite for atingido.
+
+.Passos
+. Selecione *SUPORTE* > *Ferramentas* > *Topologia de grade*.
+. Selecione *_grid node_* > *SSM* > *Eventos* > *Configuração* > *Principal*.
+. Selecione a caixa de seleção *Redefinir* para Eventos personalizados.
++
+image::../media/custom_events_reset.gif[captura de tela em SSM > Eventos > Configuração > Principal]
+
+. Selecione *Aplicar alterações*.
+

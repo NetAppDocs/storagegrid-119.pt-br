@@ -1,0 +1,108 @@
+---
+permalink: s3/example-group-policies.html 
+sidebar: sidebar 
+keywords: group policy examples 
+summary: Use os exemplos nesta seção para criar políticas de acesso do StorageGRID para grupos. 
+---
+= Exemplo de políticas de grupo
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Use os exemplos nesta seção para criar políticas de acesso do StorageGRID para grupos.
+
+As políticas de grupo especificam as permissões de acesso para o grupo ao qual a política está anexada.  Não há `Principal` elemento na política porque está implícito.  As políticas de grupo são configuradas usando o Gerenciador de Tenants ou a API.
+
+
+
+== Exemplo: definir política de grupo usando o Gerenciador de Tenants
+
+Ao adicionar ou editar um grupo no Gerenciador de Tenants, você pode selecionar uma política de grupo para determinar quais permissões de acesso ao S3 os membros desse grupo terão. Ver link:../tenant/creating-groups-for-s3-tenant.html["Criar grupos para um locatário S3"] .
+
+* *Sem acesso S3*: opção padrão.  Os usuários neste grupo não têm acesso aos recursos do S3, a menos que o acesso seja concedido com uma política de bucket.  Se você selecionar esta opção, somente o usuário root terá acesso aos recursos do S3 por padrão.
+* *Acesso somente leitura*: os usuários neste grupo têm acesso somente leitura aos recursos do S3.  Por exemplo, os usuários neste grupo podem listar objetos e ler dados de objetos, metadados e tags.  Quando você seleciona esta opção, a string JSON para uma política de grupo somente leitura aparece na caixa de texto.  Você não pode editar esta sequência.
+* *Acesso total*: os usuários neste grupo têm acesso total aos recursos do S3, incluindo buckets.  Quando você seleciona esta opção, a string JSON para uma política de grupo de acesso total aparece na caixa de texto.  Você não pode editar esta sequência.
+* *Mitigação de ransomware*: esta política de exemplo se aplica a todos os buckets deste locatário.  Os usuários neste grupo podem executar ações comuns, mas não podem excluir permanentemente objetos de buckets que tenham o controle de versão de objetos habilitado.
++
+Usuários do Tenant Manager que têm a permissão Gerenciar todos os buckets podem substituir esta política de grupo.  Limite a permissão Gerenciar todos os buckets a usuários confiáveis e use a Autenticação Multifator (MFA) quando disponível.
+
+* *Personalizado*: Os usuários do grupo recebem as permissões que você especifica na caixa de texto.
+
+
+
+
+== Exemplo: permitir acesso total do grupo a todos os buckets
+
+Neste exemplo, todos os membros do grupo têm permissão de acesso total a todos os buckets de propriedade da conta do locatário, a menos que seja explicitamente negado pela política de bucket.
+
+[listing]
+----
+{
+  "Statement": [
+    {
+      "Action": "s3:*",
+      "Effect": "Allow",
+      "Resource": "arn:aws:s3:::*"
+    }
+  ]
+}
+----
+
+
+== Exemplo: permitir acesso somente leitura do grupo a todos os buckets
+
+Neste exemplo, todos os membros do grupo têm acesso somente leitura aos recursos do S3, a menos que explicitamente negado pela política de bucket.  Por exemplo, os usuários neste grupo podem listar objetos e ler dados de objetos, metadados e tags.
+
+[listing]
+----
+{
+  "Statement": [
+    {
+      "Sid": "AllowGroupReadOnlyAccess",
+      "Effect": "Allow",
+      "Action": [
+        "s3:ListAllMyBuckets",
+        "s3:ListBucket",
+        "s3:ListBucketVersions",
+        "s3:GetObject",
+        "s3:GetObjectTagging",
+        "s3:GetObjectVersion",
+        "s3:GetObjectVersionTagging"
+      ],
+      "Resource": "arn:aws:s3:::*"
+    }
+  ]
+}
+----
+
+
+== Exemplo: permitir que os membros do grupo tenham acesso total apenas à sua "pasta" em um bucket
+
+Neste exemplo, os membros do grupo só têm permissão para listar e acessar sua pasta específica (prefixo de chave) no bucket especificado.  Observe que as permissões de acesso de outras políticas de grupo e da política de bucket devem ser consideradas ao determinar a privacidade dessas pastas.
+
+[listing]
+----
+{
+  "Statement": [
+    {
+      "Sid": "AllowListBucketOfASpecificUserPrefix",
+      "Effect": "Allow",
+      "Action": "s3:ListBucket",
+      "Resource": "arn:aws:s3:::department-bucket",
+      "Condition": {
+        "StringLike": {
+          "s3:prefix": "${aws:username}/*"
+        }
+      }
+    },
+    {
+      "Sid": "AllowUserSpecificActionsOnlyInTheSpecificUserPrefix",
+      "Effect": "Allow",
+      "Action": "s3:*Object",
+      "Resource": "arn:aws:s3:::department-bucket/${aws:username}/*"
+    }
+  ]
+}
+----

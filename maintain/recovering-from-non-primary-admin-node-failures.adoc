@@ -1,0 +1,24 @@
+---
+permalink: maintain/recovering-from-non-primary-admin-node-failures.html 
+sidebar: sidebar 
+keywords: storagegrid, recover, non-primary admin node failure 
+summary: 'Você deve concluir as seguintes tarefas para se recuperar de uma falha do nó administrativo não primário.  Um nó de administração hospeda o serviço Nó de gerenciamento de configuração (CMN) e é conhecido como nó de administração principal.  Embora você possa ter vários nós de administração, cada sistema StorageGRID inclui apenas um nó de administração principal.  Todos os outros nós administrativos são nós administrativos não primários.' 
+---
+= Recuperar de falhas de nó de administração não primário
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Você deve concluir as seguintes tarefas para se recuperar de uma falha do nó administrativo não primário.  Um nó de administração hospeda o serviço Nó de gerenciamento de configuração (CMN) e é conhecido como o nó de administração principal.  Embora você possa ter vários nós de administração, cada sistema StorageGRID inclui apenas um nó de administração principal.  Todos os outros nós administrativos são nós administrativos não primários.
+
+Siga estas etapas de alto nível para recuperar um nó de administração não primário:
+
+. link:copying-audit-logs-from-failed-non-primary-admin-node.html["Copiar logs de auditoria do nó administrativo não primário com falha"]
+. link:replacing-non-primary-admin-node.html["Substituir o nó de administração não primário"]
+. link:selecting-start-recovery-to-configure-non-primary-admin-node.html["Selecione Iniciar recuperação para configurar o nó de administração não primário"]
+. link:restoring-audit-log-on-recovered-non-primary-admin-node.html["Restaurar o log de auditoria em um nó administrativo não primário recuperado"]
+. link:restoring-admin-node-database-non-primary-admin-node.html["Restaurar o banco de dados do nó de administração ao recuperar um nó de administração não primário"]
+. link:restoring-prometheus-metrics-non-primary-admin-node.html["Restaurar métricas do Prometheus ao recuperar um nó administrativo não primário"]
+

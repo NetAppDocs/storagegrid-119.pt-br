@@ -1,0 +1,26 @@
+---
+permalink: tenant/deleting-group.html 
+sidebar: sidebar 
+keywords: how to delete tenant group 
+summary: Você pode excluir um grupo do sistema.  Qualquer usuário que pertença somente a esse grupo não poderá mais fazer login no Gerenciador de Locatários ou usar a conta do locatário. 
+---
+= Excluir grupo
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Você pode excluir um grupo do sistema.  Qualquer usuário que pertença somente a esse grupo não poderá mais fazer login no Gerenciador de Locatários ou usar a conta do locatário.
+
+.Antes de começar
+* Você está conectado ao Gerenciador de Inquilinos usando umlink:../admin/web-browser-requirements.html["navegador da web compatível"] .
+* Você pertence a um grupo de usuários que tem permissão de acesso Root. Ver link:tenant-management-permissions.html["Permissões de gerenciamento de inquilinos"] .
+
+
+.Passos
+. Selecione *GERENCIAMENTO DE ACESSO* > *Grupos*.
+. Marque a caixa de seleção de cada grupo que você deseja excluir.
+. Selecione *Ações* > *Excluir grupo*.
+. Selecione *Excluir grupo*.
+

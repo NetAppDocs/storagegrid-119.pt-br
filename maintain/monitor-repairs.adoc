@@ -1,0 +1,96 @@
+---
+permalink: maintain/monitor-repairs.html 
+sidebar: sidebar 
+keywords: restore replicated data, restore erasure-coded data, recover appliance storage node, recover storage volume 
+summary: 'Você pode monitorar o status dos trabalhos de reparo usando o `repair-data` script da linha de comando.' 
+---
+= Monitorar trabalhos de reparo de dados
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Você pode monitorar o status dos trabalhos de reparo usando o `repair-data` script da linha de comando.
+
+Isso inclui trabalhos que você iniciou manualmente ou trabalhos que o StorageGRID iniciou automaticamente como parte de um procedimento de desativação.
+
+
+NOTE: Se você estiver executando trabalhos de restauração de volume,link:../maintain/restoring-volume.html["monitorar o progresso e visualizar um histórico desses trabalhos no Grid Manager"] em vez de.
+
+Monitorar o status de `repair-data` trabalhos com base no uso de *dados replicados*, *dados codificados para eliminação (EC)* ou ambos.
+
+[role="tabbed-block"]
+====
+.Dados replicados
+--
+* Para obter uma porcentagem estimada de conclusão do reparo replicado, adicione o `show-replicated-repair-status` opção para o comando repair-data.
++
+`repair-data show-replicated-repair-status`
+
+* Para determinar se os reparos foram concluídos:
++
+.. Selecione *NÓS* > *_Nó de armazenamento sendo reparado_* > *ILM*.
+.. Revise os atributos na seção Avaliação.  Quando os reparos estiverem concluídos, o atributo *Aguardando - Todos* indica 0 objetos.
+
+
+* Para monitorar o reparo com mais detalhes:
++
+.. Selecione *SUPORTE* > *Ferramentas* > *Topologia de grade*.
+.. Selecione *_grid_* > *_Nó de armazenamento sendo reparado_* > *LDR* > *Armazenamento de dados*.
+.. Use uma combinação dos seguintes atributos para determinar, da melhor forma possível, se os reparos replicados estão completos.
++
+
+NOTE: Inconsistências no Cassandra podem estar presentes, e reparos com falha não são rastreados.
+
++
+*** *Reparos Tentados (XRPA)*: Use este atributo para rastrear o progresso de reparos replicados.  Este atributo aumenta cada vez que um nó de armazenamento tenta reparar um objeto de alto risco.  Quando esse atributo não aumenta por um período maior que o período de verificação atual (fornecido pelo atributo *Período de verificação -- Estimado*), significa que a verificação do ILM não encontrou objetos de alto risco que precisem ser reparados em nenhum nó.
++
+
+NOTE: Objetos de alto risco são objetos que correm o risco de serem completamente perdidos.  Isso não inclui objetos que não satisfazem sua configuração de ILM.
+
+*** *Período de verificação — estimado (XSCM)*: use este atributo para estimar quando uma alteração de política será aplicada a objetos ingeridos anteriormente.  Se o atributo *Reparos Tentados* não aumentar por um período maior que o período de verificação atual, é provável que reparos replicados sejam feitos.  Observe que o período de verificação pode mudar.  O atributo *Período de varredura -- Estimado (XSCM)* se aplica a toda a grade e é o máximo de todos os períodos de varredura de nós.  Você pode consultar o histórico do atributo *Período de verificação -- Estimado* da grade para determinar um período de tempo apropriado.
+
+
+
+
+
+
+--
+.Dados codificados por apagamento (EC)
+--
+Para monitorar o reparo de dados codificados para eliminação e tentar novamente quaisquer solicitações que possam ter falhado:
+
+. Determinar o status dos reparos de dados codificados por eliminação:
++
+** Selecione *SUPORTE* > *Ferramentas* > *Métricas* para visualizar o tempo estimado para conclusão e a porcentagem de conclusão do trabalho atual. Em seguida, selecione *Visão geral do EC* na seção Grafana. Veja os painéis *Tempo estimado para conclusão do trabalho do Grid EC* e *Porcentagem concluída do trabalho do Grid EC*.
+** Use este comando para ver o status de um determinado `repair-data` operação:
++
+`repair-data show-ec-repair-status --repair-id repair ID`
+
+** Use este comando para listar todos os reparos:
++
+`repair-data show-ec-repair-status`
+
++
+A saída lista informações, incluindo `repair ID` , para todos os reparos anteriores e atuais.
+
+
+
+. Se a saída mostrar que a operação de reparo falhou, use o `--repair-id` opção de tentar o reparo novamente.
++
+Este comando tenta novamente um reparo de nó com falha, usando o ID de reparo 6949309319275667690:
+
++
+`repair-data start-ec-node-repair --repair-id 6949309319275667690`
+
++
+Este comando tenta novamente um reparo de volume com falha, usando o ID de reparo 6949309319275667690:
+
++
+`repair-data start-ec-volume-repair --repair-id 6949309319275667690`
+
+
+
+--
+====

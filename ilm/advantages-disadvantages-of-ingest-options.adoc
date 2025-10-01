@@ -1,0 +1,98 @@
+---
+permalink: ilm/advantages-disadvantages-of-ingest-options.html 
+sidebar: sidebar 
+keywords: ingest options, balance ingest, strict ingest, dual commit ingest 
+summary: 'Entender as vantagens e desvantagens de cada uma das três opções para proteger dados na ingestão (Balanceado, Estrito ou Confirmação dupla) pode ajudar você a decidir qual selecionar para uma regra de ILM.' 
+---
+= Vantagens, desvantagens e limitações das opções de ingestão
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Entender as vantagens e desvantagens de cada uma das três opções para proteger dados na ingestão (balanceado, estrito ou confirmação dupla) pode ajudar você a decidir qual selecionar para uma regra de ILM.
+
+Para uma visão geral das opções de ingestão, consultelink:data-protection-options-for-ingest.html["Opções de ingestão"] .
+
+
+
+== Vantagens das opções Balanceada e Estrita
+
+Quando comparado ao Dual commit, que cria cópias provisórias durante a ingestão, as duas opções de posicionamento síncrono podem fornecer as seguintes vantagens:
+
+* *Melhor segurança de dados*: os dados do objeto são imediatamente protegidos, conforme especificado nas instruções de posicionamento da regra ILM, que podem ser configuradas para proteger contra uma ampla variedade de condições de falha, incluindo a falha de mais de um local de armazenamento.  O commit duplo só pode proteger contra a perda de uma única cópia local.
+* *Operação de grade mais eficiente*: Cada objeto é processado apenas uma vez, à medida que é ingerido.  Como o sistema StorageGRID não precisa rastrear ou excluir cópias provisórias, há menos carga de processamento e menos espaço no banco de dados é consumido.
+* *(Balanceado) Recomendado*: A opção Balanceada fornece eficiência ideal de ILM.  É recomendável usar a opção Balanceado, a menos que o comportamento de ingestão Estrito seja necessário ou a grade atenda a todos os critérios para usar o Dual commit.
+* *(Estrita) Certeza sobre localizações de objetos*: A opção Estrita garante que os objetos sejam armazenados imediatamente de acordo com as instruções de posicionamento na regra ILM.
+
+
+
+
+== Desvantagens das opções Balanceada e Estrita
+
+Quando comparado ao Dual commit, as opções Balanced e Strict têm algumas desvantagens:
+
+* *Ingestões de clientes mais longas*: As latências de ingestão de clientes podem ser maiores.  Quando você usa as opções Balanceado ou Estrito, uma mensagem de "ingestão bem-sucedida" não é retornada ao cliente até que todos os fragmentos codificados para eliminação ou cópias replicadas sejam criados e armazenados.  No entanto, os dados do objeto provavelmente chegarão ao seu posicionamento final muito mais rápido.
+* *(Rigoroso) Taxas mais altas de falha de ingestão*: Com a opção Rigoroso, a ingestão falha sempre que o StorageGRID não consegue fazer imediatamente todas as cópias especificadas na regra ILM.  Você poderá observar altas taxas de falha de ingestão se um local de armazenamento necessário estiver temporariamente offline ou se problemas de rede causarem atrasos na cópia de objetos entre sites.
+* *(Rigoroso) Os posicionamentos de upload multipartes do S3 podem não ser como esperado em algumas circunstâncias*: Com o Rigoroso, você espera que os objetos sejam posicionados conforme descrito pela regra do ILM ou que a ingestão falhe.  No entanto, com um upload multiparte do S3, o ILM é avaliado para cada parte do objeto à medida que ele é ingerido e para o objeto como um todo quando o upload multiparte é concluído.  Nas seguintes circunstâncias, isso pode resultar em posicionamentos diferentes do esperado:
++
+** *Se o ILM for alterado enquanto um upload multiparte do S3 estiver em andamento*: como cada parte é colocada de acordo com a regra que está ativa quando a parte é ingerida, algumas partes do objeto podem não atender aos requisitos atuais do ILM quando o upload multiparte for concluído.  Nesses casos, a ingestão do objeto não falha.  Em vez disso, qualquer peça que não seja colocada corretamente é colocada na fila para reavaliação do ILM e movida para o local correto posteriormente.
+** *Quando as regras do ILM filtram por tamanho*: Ao avaliar o ILM para uma peça, o StorageGRID filtra pelo tamanho da peça, não pelo tamanho do objeto.  Isso significa que partes de um objeto podem ser armazenadas em locais que não atendem aos requisitos do ILM para o objeto como um todo.  Por exemplo, se uma regra especificar que todos os objetos de 10 GB ou maiores sejam armazenados no DC1, enquanto todos os objetos menores sejam armazenados no DC2, na ingestão, cada parte de 1 GB de um upload multiparte de 10 partes será armazenada no DC2.  Quando o ILM é avaliado para o objeto, todas as partes do objeto são movidas para DC1.
+
+
+* *(Rigoroso) A ingestão não falha quando tags de objeto ou metadados são atualizados e novos posicionamentos obrigatórios não podem ser feitos*: Com o Rigoroso, você espera que os objetos sejam posicionados conforme descrito pela regra ILM ou que a ingestão falhe.  No entanto, quando você atualiza metadados ou tags para um objeto que já está armazenado na grade, o objeto não é reingerido.  Isso significa que quaisquer alterações no posicionamento do objeto acionadas pela atualização não são feitas imediatamente.  Alterações de posicionamento são feitas quando o ILM é reavaliado pelos processos normais de ILM em segundo plano.  Se as alterações de posicionamento necessárias não puderem ser feitas (por exemplo, porque um novo local necessário não está disponível), o objeto atualizado mantém seu posicionamento atual até que as alterações de posicionamento sejam possíveis.
+
+
+
+
+== Limitações no posicionamento de objetos com as opções Balanceado e Estrito
+
+As opções Balanceado ou Estrito não podem ser usadas para regras ILM que tenham qualquer uma destas instruções de posicionamento:
+
+* Colocação em um pool de armazenamento em nuvem no dia 0.
+* Posicionamentos em um pool de armazenamento em nuvem quando a regra tem um horário de criação definido pelo usuário como seu horário de referência.
+
+
+Essas restrições existem porque o StorageGRID não pode fazer cópias sincronizadas para um pool de armazenamento em nuvem, e um horário de criação definido pelo usuário pode ser resolvido para o presente.
+
+
+
+== Como as regras e a consistência do ILM interagem para afetar a proteção de dados
+
+Tanto sua regra ILM quanto sua escolha de consistência afetam como os objetos são protegidos.  Essas configurações podem interagir.
+
+Por exemplo, o comportamento de ingestão selecionado para uma regra ILM afeta o posicionamento inicial de cópias de objetos, enquanto a consistência usada quando um objeto é armazenado afeta o posicionamento inicial de metadados de objetos.  Como o StorageGRID requer acesso aos dados e metadados de um objeto para atender às solicitações do cliente, selecionar níveis correspondentes de proteção para consistência e comportamento de ingestão pode fornecer melhor proteção inicial de dados e respostas mais previsíveis do sistema.
+
+Aqui está um breve resumo dos valores de consistência disponíveis no StorageGRID:
+
+* *Todos*: Todos os nós recebem metadados do objeto imediatamente ou a solicitação falhará.
+* *Strong-global*: Os metadados do objeto são imediatamente distribuídos a todos os sites.  Garante consistência de leitura após gravação para todas as solicitações de clientes em todos os sites.
+* *Strong-site*: Os metadados do objeto são imediatamente distribuídos para outros nós no site.  Garante consistência de leitura após gravação para todas as solicitações de clientes em um site.
+* *Leitura após nova gravação*: fornece consistência de leitura após gravação para novos objetos e consistência eventual para atualizações de objetos.  Oferece alta disponibilidade e garantias de proteção de dados.  Recomendado para a maioria dos casos.
+* *Disponível*: Fornece consistência eventual para novos objetos e atualizações de objetos.  Para buckets S3, use somente quando necessário (por exemplo, para um bucket que contém valores de log que raramente são lidos ou para operações HEAD ou GET em chaves que não existem).  Não suportado para buckets do S3 FabricPool .
+
+
+
+NOTE: Antes de selecionar um valor de consistência,link:../s3/consistency-controls.html["leia a descrição completa de consistência"] . Você deve entender os benefícios e limitações antes de alterar o valor padrão.
+
+
+
+== Exemplo de como a consistência e as regras do ILM podem interagir
+
+Suponha que você tenha uma grade de dois sites com a seguinte regra ILM e a seguinte consistência:
+
+* *Regra do ILM*: Crie duas cópias de objetos, uma no site local e outra em um site remoto. Use o comportamento de ingestão estrito.
+* *consistência*: Forte-global (os metadados do objeto são imediatamente distribuídos para todos os sites).
+
+
+Quando um cliente armazena um objeto na grade, o StorageGRID faz cópias do objeto e distribui metadados para ambos os sites antes de retornar o sucesso ao cliente.
+
+O objeto é totalmente protegido contra perda no momento da ingestão bem-sucedida da mensagem. Por exemplo, se o site local for perdido logo após a ingestão, cópias dos dados do objeto e dos metadados do objeto ainda existirão no site remoto.  O objeto é totalmente recuperável.
+
+Se, em vez disso, você usasse a mesma regra de ILM e a consistência de site forte, o cliente poderia receber uma mensagem de sucesso depois que os dados do objeto fossem replicados para o site remoto, mas antes que os metadados do objeto fossem distribuídos lá. Nesse caso, o nível de proteção dos metadados do objeto não corresponde ao nível de proteção dos dados do objeto. Se o site local for perdido logo após a ingestão, os metadados do objeto serão perdidos. O objeto não pode ser recuperado.
+
+A inter-relação entre consistência e regras de ILM pode ser complexa.  Entre em contato com a NetApp se precisar de assistência.
+
+.Informações relacionadas
+link:example-5-ilm-rules-and-policy-for-strict-ingest-behavior.html["Exemplo 5: regras e política do ILM para comportamento de ingestão estrita"]

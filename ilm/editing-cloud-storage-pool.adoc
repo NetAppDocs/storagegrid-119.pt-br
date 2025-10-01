@@ -1,0 +1,49 @@
+---
+permalink: ilm/editing-cloud-storage-pool.html 
+sidebar: sidebar 
+keywords: edit cloud storage pool 
+summary: Você pode editar um Pool de Armazenamento em Nuvem para alterar seu nome, ponto de extremidade de serviço ou outros detalhes; no entanto, não é possível alterar o bucket S3 ou o contêiner do Azure para um Pool de Armazenamento em Nuvem. 
+---
+= Editar um pool de armazenamento em nuvem
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Você pode editar um Pool de Armazenamento em Nuvem para alterar seu nome, ponto de extremidade de serviço ou outros detalhes; no entanto, não é possível alterar o bucket S3 ou o contêiner do Azure para um Pool de Armazenamento em Nuvem.
+
+.Antes de começar
+* Você está conectado ao Grid Manager usando umlink:../admin/web-browser-requirements.html["navegador da web compatível"] .
+* Você temlink:../admin/admin-group-permissions.html["permissões de acesso específicas"] .
+* Você revisou olink:considerations-for-cloud-storage-pools.html["considerações para pools de armazenamento em nuvem"] .
+
+
+.Passos
+. Selecione *ILM* > *Pools de armazenamento* > *Pools de armazenamento em nuvem*.
++
+A tabela Pools de armazenamento em nuvem lista os pools de armazenamento em nuvem existentes.
+
+. Marque a caixa de seleção do Pool de Armazenamento em Nuvem que você deseja editar e selecione *Ações* > *Editar*.
++
+Como alternativa, selecione o nome do Pool de Armazenamento em Nuvem e selecione *Editar*.
+
+. Conforme necessário, altere o nome do pool de armazenamento em nuvem, o ponto de extremidade do serviço, as credenciais de autenticação ou o método de verificação do certificado.
++
+
+NOTE: Não é possível alterar o tipo de provedor, o bucket S3 ou o contêiner do Azure para um pool de armazenamento em nuvem.
+
++
+Se você já carregou um certificado de servidor ou cliente, pode expandir o acordeão *Detalhes do certificado* para revisar o certificado que está em uso no momento.
+
+. Selecione *Salvar*.
++
+Quando você salva um pool de armazenamento em nuvem, o StorageGRID valida se o bucket ou contêiner e o ponto de extremidade de serviço existem e se podem ser acessados ​​usando as credenciais especificadas.
+
++
+Se a validação do Cloud Storage Pool falhar, uma mensagem de erro será exibida.  Por exemplo, um erro pode ser relatado se houver um erro de certificado.
+
++
+Veja as instruções paralink:troubleshooting-cloud-storage-pools.html["solução de problemas de pools de armazenamento em nuvem"] , resolva o problema e tente salvar o Cloud Storage Pool novamente.
+
+

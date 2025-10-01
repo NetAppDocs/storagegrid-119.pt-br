@@ -1,0 +1,41 @@
+---
+permalink: tenant/viewing-another-users-s3-access-keys.html 
+sidebar: sidebar 
+keywords: how to view other user access key 
+summary: Se você estiver usando um locatário S3 e tiver permissões apropriadas, poderá visualizar as chaves de acesso S3 de outro usuário.  Você pode classificar a lista por tempo de expiração para determinar quais chaves expirarão em breve.  Conforme necessário, você pode criar novas chaves e excluir chaves que não estão mais em uso. 
+---
+= Ver as chaves de acesso S3 de outro usuário
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Se você estiver usando um locatário S3 e tiver permissões apropriadas, poderá visualizar as chaves de acesso S3 de outro usuário.  Você pode classificar a lista por tempo de expiração para determinar quais chaves expirarão em breve.  Conforme necessário, você pode criar novas chaves e excluir chaves que não estão mais em uso.
+
+.Antes de começar
+* Você está conectado ao Gerenciador de Inquilinos usando umlink:../admin/web-browser-requirements.html["navegador da web compatível"] .
+* Você tem olink:tenant-management-permissions.html["Permissão de acesso root"] .
+
+
+
+CAUTION: Os buckets e objetos do S3 pertencentes a um usuário podem ser acessados usando o ID da chave de acesso e a chave de acesso secreta exibidas para esse usuário no Gerenciador de Tenants.  Por esse motivo, proteja as chaves de acesso como faria com uma senha.  Alterne as chaves de acesso regularmente, remova quaisquer chaves não utilizadas da conta e nunca as compartilhe com outros usuários.
+
+.Passos
+. Selecione *GERENCIAMENTO DE ACESSO* > *Usuários*.
+. Na página Usuários, selecione o usuário cujas chaves de acesso S3 você deseja visualizar.
+. Na página Detalhes do usuário, selecione *Chaves de acesso*.
+. Classifique as chaves por *Tempo de expiração* ou *ID da chave de acesso*.
+. Conforme necessário, crie novas chaves e exclua manualmente as chaves que não estão mais em uso.
++
+Se você criar novas chaves antes que as chaves existentes expirem, o usuário poderá começar a usar as novas chaves sem perder temporariamente o acesso aos objetos na conta.
+
++
+Chaves expiradas são removidas automaticamente.
+
+
+
+.Informações relacionadas
+* link:creating-another-users-s3-access-keys.html["Crie chaves de acesso S3 de outro usuário"]
+* link:deleting-another-users-s3-access-keys.html["Excluir chaves de acesso S3 de outro usuário"]
+

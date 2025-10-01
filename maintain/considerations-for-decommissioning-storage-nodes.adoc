@@ -1,0 +1,78 @@
+---
+permalink: maintain/considerations-for-decommissioning-storage-nodes.html 
+sidebar: sidebar 
+keywords: storage node decommission, considerations, appliance node clone 
+summary: Antes de desativar um nó de armazenamento, considere se você pode cloná-lo.  Então, se você decidir desativar o nó, revise como o StorageGRID gerencia objetos e metadados durante o procedimento de desativação. 
+---
+= Considerações para descomissionamento de nós de armazenamento
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Antes de desativar um nó de armazenamento, considere se você pode cloná-lo.  Então, se você decidir desativar o nó, revise como o StorageGRID gerencia objetos e metadados durante o procedimento de desativação.
+
+
+
+== Quando clonar um nó em vez de desativá-lo
+
+Se você quiser substituir um nó de armazenamento de dispositivo mais antigo por um dispositivo mais novo ou maior, considere clonar o nó do dispositivo em vez de adicionar um novo dispositivo em uma expansão e, em seguida, desativar o dispositivo antigo.
+
+A clonagem de nós de dispositivos permite que você substitua facilmente um nó de dispositivo existente por um dispositivo compatível no mesmo site do StorageGRID .  O processo de clonagem transfere todos os dados para o novo dispositivo, coloca o novo dispositivo em serviço e deixa o antigo em um estado de pré-instalação.
+
+Você pode clonar um nó do dispositivo se precisar:
+
+* Substitua um aparelho que esteja chegando ao fim de sua vida útil.
+* Atualize um nó existente para aproveitar a tecnologia aprimorada do dispositivo.
+* Aumente a capacidade de armazenamento da grade sem alterar o número de nós de armazenamento no seu sistema StorageGRID .
+* Melhore a eficiência do armazenamento, alterando, por exemplo, o modo RAID.
+
+
+Ver https://docs.netapp.com/us-en/storagegrid-appliances/commonhardware/how-appliance-node-cloning-works.html["Clonagem de nó de dispositivo"^] para mais detalhes.
+
+
+
+== Considerações para nós de armazenamento conectados
+
+Revise as considerações para descomissionar um nó de armazenamento conectado.
+
+* Você não deve desativar mais de 10 nós de armazenamento em um único procedimento de desativação de nó.
+* O sistema deve, em todos os momentos, incluir Nós de Armazenamento suficientes para satisfazer os requisitos operacionais, incluindo olink:understanding-adc-service-quorum.html["Quórum do ADC"] e o ativolink:reviewing-ilm-policy-and-storage-configuration.html["Política de ILM"] .  Para satisfazer essa restrição, talvez seja necessário adicionar um novo nó de armazenamento em uma operação de expansão antes de desativar um nó de armazenamento existente.
++
+Tenha cuidado ao desativar nós de armazenamento em uma grade contendo nós somente de metadados baseados em software.  Se você desativar todos os nós configurados para armazenar _tanto_ objetos quanto metadados, a capacidade de armazenar objetos será removida da grade.  Verlink:../primer/what-storage-node-is.html#types-of-storage-nodes["Tipos de nós de armazenamento"] para obter mais informações sobre nós de armazenamento somente de metadados.
+
+* Quando você remove um nó de armazenamento, grandes volumes de dados de objetos são transferidos pela rede.  Embora essas transferências não devam afetar as operações normais do sistema, elas podem afetar a quantidade total de largura de banda de rede consumida pelo sistema StorageGRID .
+* As tarefas associadas ao descomissionamento do nó de armazenamento recebem uma prioridade menor do que as tarefas associadas às operações normais do sistema.  Isso significa que o descomissionamento não interfere nas operações normais do sistema StorageGRID e não precisa ser agendado para um período de inatividade do sistema.  Como o descomissionamento é realizado em segundo plano, é difícil estimar quanto tempo o processo levará para ser concluído.  Em geral, o descomissionamento termina mais rapidamente quando o sistema está silencioso ou se apenas um nó de armazenamento estiver sendo removido por vez.
+* Pode levar dias ou semanas para desativar um nó de armazenamento.  Planeje esse procedimento adequadamente.  Embora o processo de descomissionamento seja projetado para não afetar as operações do sistema, ele pode limitar outros procedimentos.  Em geral, você deve executar quaisquer atualizações ou expansões planejadas do sistema antes de remover os nós da grade.
+* Se você precisar executar outro procedimento de manutenção enquanto os nós de armazenamento estiverem sendo removidos, você podelink:pausing-and-resuming-decommission-process-for-storage-nodes.html["suspender o procedimento de descomissionamento"] e retome-o após a conclusão do outro procedimento.
++
+
+NOTE: O botão *Pausar* é habilitado somente quando os estágios de avaliação do ILM ou de descomissionamento de dados codificados por eliminação são atingidos; no entanto, a avaliação do ILM (migração de dados) continuará sendo executada em segundo plano.
+
+* Não é possível executar operações de reparo de dados em nenhum nó de grade quando uma tarefa de desativação estiver em execução.
+* Você não deve fazer nenhuma alteração em uma política de ILM enquanto um nó de armazenamento estiver sendo desativado.
+* Para remover dados de forma permanente e segura, você deve limpar as unidades do nó de armazenamento após a conclusão do procedimento de desativação.
+
+
+
+
+== Considerações para nós de armazenamento desconectados
+
+Revise as considerações para descomissionar um nó de armazenamento desconectado.
+
+* Nunca desative um nó desconectado a menos que tenha certeza de que ele não pode ser colocado on-line ou recuperado.
++
+
+CAUTION: Não execute este procedimento se você acredita que é possível recuperar dados de objeto do nó.  Em vez disso, entre em contato com o suporte técnico para determinar se a recuperação do nó é possível.
+
+* Quando você desativa um nó de armazenamento desconectado, o StorageGRID usa dados de outros nós de armazenamento para reconstruir os dados do objeto e metadados que estavam no nó desconectado.
+* Pode ocorrer perda de dados se você desativar mais de um nó de armazenamento desconectado.  O sistema pode não conseguir reconstruir dados se não houver cópias de objetos, fragmentos codificados por eliminação ou metadados de objetos suficientes disponíveis.  Ao desativar nós de armazenamento em uma grade com nós somente de metadados baseados em software, desativar todos os nós configurados para armazenar objetos e metadados remove todo o armazenamento de objetos da grade.  Verlink:../primer/what-storage-node-is.html#types-of-storage-nodes["Tipos de nós de armazenamento"] para obter mais informações sobre nós de armazenamento somente de metadados.
++
+
+CAUTION: Se você tiver mais de um nó de armazenamento desconectado que não consegue recuperar, entre em contato com o suporte técnico para determinar o melhor curso de ação.
+
+* Quando você desativa um nó de armazenamento desconectado, o StorageGRID inicia trabalhos de reparo de dados no final do processo de desativação.  Esses trabalhos tentam reconstruir os dados e metadados do objeto que foram armazenados no nó desconectado.
+* Quando você descomissiona um nó de armazenamento desconectado, o procedimento de descomissionamento é concluído relativamente rápido.  No entanto, os trabalhos de reparo de dados podem levar dias ou semanas para serem executados e não são monitorados pelo procedimento de desativação.  Você deve monitorar manualmente esses trabalhos e reiniciá-los conforme necessário. Ver link:checking-data-repair-jobs.html["Verifique os trabalhos de reparo de dados"] .
+* Se você desativar um nó de armazenamento desconectado que contém a única cópia de um objeto, o objeto será perdido.  Os trabalhos de reparo de dados só podem reconstruir e recuperar objetos se houver pelo menos uma cópia replicada ou fragmentos codificados para eliminação suficientes nos Nós de Armazenamento que estão conectados no momento.
+

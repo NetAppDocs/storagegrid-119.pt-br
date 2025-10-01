@@ -1,0 +1,154 @@
+---
+permalink: s3/initiate-multipart-upload.html 
+sidebar: sidebar 
+keywords: initiate multipart upload, CreateMultipartUpload, upload ID 
+summary: A operação CreateMultipartUpload inicia um upload multiparte para um objeto e retorna um ID de upload. 
+---
+= CriarMultipartUpload
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+A operação CreateMultipartUpload (anteriormente chamada de Initiate Multipart Upload) inicia um upload multipart para um objeto e retorna um ID de upload.
+
+O `x-amz-storage-class` O cabeçalho da solicitação é suportado.  O valor submetido para `x-amz-storage-class` afeta como o StorageGRID protege os dados do objeto durante a ingestão e não quantas cópias persistentes do objeto são armazenadas no sistema StorageGRID (o que é determinado pelo ILM).
+
+Se a regra ILM correspondente a um objeto ingerido usar o Strictlink:../ilm/data-protection-options-for-ingest.html["opção de ingestão"] , o `x-amz-storage-class` cabeçalho não tem efeito.
+
+Os seguintes valores podem ser usados para `x-amz-storage-class` :
+
+* `STANDARD`(Padrão)
++
+** *Confirmação dupla*: se a regra do ILM especificar a opção de ingestão de confirmação dupla, assim que um objeto for ingerido, uma segunda cópia desse objeto será criada e distribuída para um nó de armazenamento diferente (confirmação dupla).  Quando o ILM é avaliado, o StorageGRID determina se essas cópias provisórias iniciais atendem às instruções de posicionamento na regra.  Caso contrário, talvez seja necessário fazer novas cópias de objetos em locais diferentes e as cópias provisórias iniciais talvez precisem ser excluídas.
+** *Balanceado*: Se a regra do ILM especificar a opção Balanceado e o StorageGRID não puder fazer imediatamente todas as cópias especificadas na regra, o StorageGRID fará duas cópias provisórias em diferentes Nós de Armazenamento.
++
+Se o StorageGRID puder criar imediatamente todas as cópias de objetos especificadas na regra ILM (posicionamento síncrono), o `x-amz-storage-class` cabeçalho não tem efeito.
+
+
+
+* `REDUCED_REDUNDANCY`
++
+** *Confirmação dupla*: se a regra do ILM especificar a opção Confirmação dupla, o StorageGRID criará uma única cópia provisória à medida que o objeto for ingerido (confirmação única).
+** *Balanceado*: Se a regra ILM especificar a opção Balanceado, o StorageGRID fará uma única cópia provisória somente se o sistema não puder fazer imediatamente todas as cópias especificadas na regra.  Se o StorageGRID puder executar o posicionamento síncrono, este cabeçalho não terá efeito.  O `REDUCED_REDUNDANCY` A opção é melhor usada quando a regra ILM que corresponde ao objeto cria uma única cópia replicada.  Neste caso usando `REDUCED_REDUNDANCY` elimina a criação e exclusão desnecessárias de uma cópia extra do objeto para cada operação de ingestão.
+
+
++
+Usando o `REDUCED_REDUNDANCY` opção não é recomendada em outras circunstâncias. `REDUCED_REDUNDANCY` aumenta o risco de perda de dados do objeto durante a ingestão.  Por exemplo, você pode perder dados se a cópia única for armazenada inicialmente em um nó de armazenamento que falhe antes que a avaliação do ILM possa ocorrer.
+
+
+
+
+CAUTION: Ter apenas uma cópia replicada para qualquer período de tempo coloca os dados em risco de perda permanente.  Se existir apenas uma cópia replicada de um objeto, esse objeto será perdido se um nó de armazenamento falhar ou tiver um erro significativo.  Você também perde temporariamente o acesso ao objeto durante procedimentos de manutenção, como atualizações.
+
+Especificando `REDUCED_REDUNDANCY` afeta apenas quantas cópias são criadas quando um objeto é ingerido pela primeira vez.  Isso não afeta quantas cópias do objeto são feitas quando o objeto é avaliado pelas políticas de ILM ativas e não resulta no armazenamento de dados em níveis mais baixos de redundância no sistema StorageGRID .
+
+
+NOTE: Se você estiver ingerindo um objeto em um bucket com o S3 Object Lock habilitado, o `REDUCED_REDUNDANCY` a opção é ignorada.  Se você estiver ingerindo um objeto em um bucket compatível legado, o `REDUCED_REDUNDANCY` opção retorna um erro.  O StorageGRID sempre executará uma ingestão de confirmação dupla para garantir que os requisitos de conformidade sejam atendidos.
+
+
+
+== Cabeçalhos de solicitação suportados
+
+Os seguintes cabeçalhos de solicitação são suportados:
+
+* `Content-Type`
+* `x-amz-checksum-algorithm`
++
+Atualmente, apenas o valor SHA256 para `x-amz-checksum-algorithm` é suportado.
+
+* `x-amz-meta-`, seguido por um par nome-valor contendo metadados definidos pelo usuário
++
+Ao especificar o par nome-valor para metadados definidos pelo usuário, use este formato geral:
+
++
+[listing]
+----
+x-amz-meta-_name_: `value`
+----
++
+Se você quiser usar a opção *Tempo de criação definido pelo usuário* como o Tempo de referência para uma regra ILM, você deve usar `creation-time` como o nome dos metadados que registram quando o objeto foi criado. Por exemplo:
+
++
+[listing]
+----
+x-amz-meta-creation-time: 1443399726
+----
++
+O valor para `creation-time` é avaliado como segundos desde 1º de janeiro de 1970.
+
++
+
+NOTE: Adicionando `creation-time` pois metadados definidos pelo usuário não são permitidos se você estiver adicionando um objeto a um bucket que tenha a Conformidade legada habilitada.  Um erro será retornado.
+
+* Cabeçalhos de solicitação de bloqueio de objeto S3:
++
+** `x-amz-object-lock-mode`
+** `x-amz-object-lock-retain-until-date`
+** `x-amz-object-lock-legal-hold`
++
+Se uma solicitação for feita sem esses cabeçalhos, as configurações de retenção padrão do bucket serão usadas para calcular a versão do objeto retain-until-date.
+
++
+link:../s3/use-s3-api-for-s3-object-lock.html["Use a API REST do S3 para configurar o bloqueio de objeto do S3"]
+
+
+
+* Cabeçalhos de solicitação SSE:
++
+** `x-amz-server-side-encryption`
+** `x-amz-server-side-encryption-customer-key-MD5`
+** `x-amz-server-side-encryption-customer-key`
+** `x-amz-server-side-encryption-customer-algorithm`
++
+<<Cabeçalhos de solicitação para criptografia do lado do servidor>>
+
+
+
++
+
+NOTE: Para obter informações sobre como o StorageGRID lida com caracteres UTF-8, consultelink:put-object.html["ColocarObjeto"] .
+
+
+
+
+
+== Cabeçalhos de solicitação para criptografia do lado do servidor
+
+Você pode usar os seguintes cabeçalhos de solicitação para criptografar um objeto multiparte com criptografia do lado do servidor.  As opções SSE e SSE-C são mutuamente exclusivas.
+
+* *SSE*: Use o seguinte cabeçalho na solicitação CreateMultipartUpload se quiser criptografar o objeto com uma chave exclusiva gerenciada pelo StorageGRID.  Não especifique este cabeçalho em nenhuma das solicitações UploadPart.
++
+** `x-amz-server-side-encryption`
+
+
+* *SSE-C*: Use todos esses três cabeçalhos na solicitação CreateMultipartUpload (e em cada solicitação UploadPart subsequente) se quiser criptografar o objeto com uma chave exclusiva que você fornece e gerencia.
++
+** `x-amz-server-side-encryption-customer-algorithm`: Especifique `AES256` .
+** `x-amz-server-side-encryption-customer-key`: Especifique sua chave de criptografia para o novo objeto.
+** `x-amz-server-side-encryption-customer-key-MD5`: Especifique o resumo MD5 da chave de criptografia do novo objeto.
+
+
+
+
+
+CAUTION: As chaves de criptografia fornecidas nunca são armazenadas.  Se você perder uma chave de criptografia, perderá o objeto correspondente.  Antes de usar chaves fornecidas pelo cliente para proteger dados de objetos, revise as considerações paralink:using-server-side-encryption.html["usando criptografia do lado do servidor"] .
+
+
+
+== Cabeçalhos de solicitação não suportados
+
+O seguinte cabeçalho de solicitação não é suportado:
+
+* `x-amz-website-redirect-location`
++
+O `x-amz-website-redirect-location` retornos de cabeçalho `XNotImplemented` .
+
+
+
+
+
+== Controle de versão
+
+O upload multipartes consiste em operações separadas para iniciar o upload, listar uploads, carregar partes, montar as partes carregadas e concluir o upload.  Os objetos são criados (e versionados, se aplicável) quando a operação CompleteMultipartUpload é executada.

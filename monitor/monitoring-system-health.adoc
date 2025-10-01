@@ -1,0 +1,259 @@
+---
+permalink: monitor/monitoring-system-health.html 
+sidebar: sidebar 
+keywords: how to monitor system health, how to view system health 
+summary: Monitore a saúde geral do seu sistema StorageGRID diariamente. 
+---
+= Monitorar a saúde do sistema
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Monitore a saúde geral do seu sistema StorageGRID diariamente.
+
+.Sobre esta tarefa
+O sistema StorageGRID pode continuar a operar quando partes da rede não estiverem disponíveis.  Possíveis problemas indicados por alertas não são necessariamente problemas com operações do sistema.  Investigue os problemas resumidos no cartão de status de integridade do painel do Grid Manager.
+
+Para ser notificado sobre alertas assim que eles forem acionados, você pode https://docs.netapp.com/us-en/storagegrid-appliances/installconfig/setting-up-email-notifications-for-alerts.html["configurar notificações por e-mail para alertas"^] oulink:using-snmp-monitoring.html["configurar armadilhas SNMP"] .
+
+image::../media/health_status_card.png[Cartão de status de saúde - painel]
+
+Quando há problemas, aparecem links que permitem visualizar detalhes adicionais:
+
+[cols="1a,2a"]
+|===
+| Link | Aparece quando... 
+
+
+ a| 
+Detalhes da grade
+ a| 
+Todos os nós estão desconectados (estado de conexão Desconhecido ou Administrativamente Inativo).
+
+
+
+ a| 
+Alertas atuais (crítico, grave, secundário)
+ a| 
+Os alertas são<<Ver alertas atuais e resolvidos,atualmente ativo>> .
+
+
+
+ a| 
+Alertas resolvidos recentemente
+ a| 
+Alertas acionados na semana passada<<Ver alertas atuais e resolvidos,agora estão resolvidos>> .
+
+
+
+ a| 
+Licença
+ a| 
+Há um problema com a licença de software para este sistema StorageGRID . Você pode link:../admin/updating-storagegrid-license-information.html["atualizar informações de licença conforme necessário"] .
+
+|===
+
+
+== Monitorar estados de conexão de nós
+
+Se um ou mais nós forem desconectados da grade, operações críticas do StorageGRID poderão ser afetadas.  Monitore os estados de conexão dos nós e resolva quaisquer problemas imediatamente.
+
+[cols="1a,3a,3a"]
+|===
+| Ícone | Descrição | Ação necessária 
+
+
+ a| 
+image:../media/icon_alarm_blue_unknown.png["ícone de ponto de interrogação azul"]
+ a| 
+*Não conectado - Desconhecido*
+
+Por um motivo desconhecido, um nó é desconectado ou os serviços no nó ficam inesperadamente inativos.  Por exemplo, um serviço no nó pode ser interrompido, ou o nó pode ter perdido sua conexão de rede devido a uma falha de energia ou interrupção inesperada.
+
+O alerta *Não foi possível comunicar com o nó* também pode ser acionado.  Outros alertas também podem estar ativos.
+ a| 
+Requer atenção imediata. <<Ver alertas atuais e resolvidos,Selecione cada alerta>> e siga as ações recomendadas.
+
+Por exemplo, talvez seja necessário reiniciar um serviço que foi interrompido ou reiniciar o host do nó.
+
+*Observação*: Um nó pode aparecer como Desconhecido durante operações de desligamento gerenciado.  Você pode ignorar o estado Desconhecido nesses casos.
+
+
+
+ a| 
+image:../media/icon_alarm_gray_administratively_down.png["ícone de ponto de interrogação cinza"]
+ a| 
+*Não conectado - Inativo administrativamente*
+
+Por um motivo esperado, o nó não está conectado à rede.
+
+Por exemplo, o nó, ou os serviços no nó, foram desligados corretamente, o nó está sendo reinicializado ou o software está sendo atualizado.  Um ou mais alertas também podem estar ativos.
+
+Com base no problema subjacente, esses nós geralmente voltam a ficar online sem intervenção.
+ a| 
+Determine se algum alerta está afetando este nó.
+
+Se um ou mais alertas estiverem ativos,<<Ver alertas atuais e resolvidos,selecione cada alerta>> e siga as ações recomendadas.
+
+
+
+ a| 
+image:../media/icon_alert_green_checkmark.png["ícone alerta marca de verificação verde"]
+ a| 
+*Conectado*
+
+O nó está conectado à rede.
+ a| 
+Nenhuma ação necessária.
+
+|===
+
+
+== Ver alertas atuais e resolvidos
+
+*Alertas atuais*: Quando um alerta é acionado, um ícone de alerta é exibido no painel.  Um ícone de alerta também é exibido para o nó na página Nós.  Selink:email-alert-notifications.html["notificações de alerta por e-mail são configuradas"] , uma notificação por e-mail também será enviada, a menos que o alerta tenha sido silenciado.
+
+*Alertas resolvidos*: Você pode pesquisar e visualizar um histórico de alertas que foram resolvidos.
+
+Opcionalmente, você assistiu ao vídeo: https://netapp.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=2eea81c5-8323-417f-b0a0-b1ff008506c1["Vídeo: Visão geral dos alertas"^]
+
+[link=https://netapp.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=2eea81c5-8323-417f-b0a0-b1ff008506c1]
+image::../media/video-screenshot-alert-overview-118.png[Vídeo: Visão geral dos alertas]
+
+A tabela a seguir descreve as informações mostradas no Grid Manager para alertas atuais e resolvidos.
+
+[cols="1a,3a"]
+|===
+| Cabeçalho da coluna | Descrição 
+
+
+ a| 
+Nome ou título
+ a| 
+O nome do alerta e sua descrição.
+
+
+
+ a| 
+Gravidade
+ a| 
+A gravidade do alerta.  Para alertas atuais, se vários alertas forem agrupados, a linha de título mostrará quantas instâncias desse alerta estão ocorrendo em cada gravidade.
+
+image:../media/icon_alert_red_critical.png["Ícone Alerta Vermelho Crítico"]*Crítico*: Existe uma condição anormal que interrompeu as operações normais de um nó ou serviço do StorageGRID .  Você deve resolver o problema subjacente imediatamente.  Pode haver interrupção do serviço e perda de dados se o problema não for resolvido.
+
+image:../media/icon_alert_orange_major.png["Ícone Alerta Laranja Maior"]*Principal*: Existe uma condição anormal que está afetando as operações atuais ou se aproximando do limite para um alerta crítico.  Você deve investigar os principais alertas e resolver quaisquer problemas subjacentes para garantir que a condição anormal não interrompa a operação normal de um nó ou serviço do StorageGRID .
+
+image:../media/icon_alert_yellow_minor.png["Ícone Alerta Amarelo Menor"]*Menor*: O sistema está operando normalmente, mas existe uma condição anormal que pode afetar a capacidade do sistema de operar se continuar.  Você deve monitorar e resolver alertas menores que não desaparecem sozinhos para garantir que eles não resultem em um problema mais sério.
+
+
+
+ a| 
+Tempo acionado
+ a| 
+*Alertas atuais*: A data e a hora em que o alerta foi disparado no seu horário local e em UTC.  Se vários alertas forem agrupados, a linha de título mostrará os horários da instância mais recente do alerta (_newest_) e da instância mais antiga do alerta (_oldest_).
+
+*Alertas resolvidos*: Há quanto tempo o alerta foi disparado.
+
+
+
+ a| 
+Site/Nó
+ a| 
+O nome do site e do nó onde o alerta está ocorrendo ou ocorreu.
+
+
+
+ a| 
+Status
+ a| 
+Se o alerta está ativo, silenciado ou resolvido.  Se vários alertas forem agrupados e *Todos os alertas* for selecionado no menu suspenso, a linha de título mostrará quantas instâncias desse alerta estão ativas e quantas instâncias foram silenciadas.
+
+
+
+ a| 
+Tempo resolvido (somente alertas resolvidos)
+ a| 
+Há quanto tempo o alerta foi resolvido.
+
+
+
+ a| 
+Valores atuais ou _valores de dados_
+ a| 
+O valor da métrica que fez com que o alerta fosse acionado.  Para alguns alertas, valores adicionais são mostrados para ajudar você a entender e investigar o alerta.  Por exemplo, os valores mostrados para um alerta de *Armazenamento de dados de objeto baixo* incluem a porcentagem de espaço em disco usado, a quantidade total de espaço em disco e a quantidade de espaço em disco usado.
+
+*Observação:* Se vários alertas atuais forem agrupados, os valores atuais não serão exibidos na linha de título.
+
+
+
+ a| 
+Valores acionados (somente alertas resolvidos)
+ a| 
+O valor da métrica que fez com que o alerta fosse acionado.  Para alguns alertas, valores adicionais são mostrados para ajudar você a entender e investigar o alerta.  Por exemplo, os valores mostrados para um alerta de *Armazenamento de dados de objeto baixo* incluem a porcentagem de espaço em disco usado, a quantidade total de espaço em disco e a quantidade de espaço em disco usado.
+
+|===
+.Passos
+. Selecione o link *Alertas atuais* ou *Alertas resolvidos* para visualizar uma lista de alertas nessas categorias.  Você também pode visualizar os detalhes de um alerta selecionando *Nós* > *_nó_* > *Visão geral* e, em seguida, selecionando o alerta na tabela Alertas.
++
+Por padrão, os alertas atuais são mostrados da seguinte forma:
+
++
+** Os alertas disparados mais recentemente são mostrados primeiro.
+** Vários alertas do mesmo tipo são exibidos como um grupo.
+** Alertas que foram silenciados não são exibidos.
+** Para um alerta específico em um nó específico, se os limites forem atingidos para mais de uma gravidade, somente o alerta mais grave será mostrado.  Ou seja, se os limites de alerta forem atingidos para as gravidades menor, maior e crítica, somente o alerta crítico será exibido.
++
+A página Alertas atuais é atualizada a cada dois minutos.
+
+
+
+. Para expandir grupos de alertas, selecione o cursor para baixoimage:../media/icon_alert_caret_down.png["ícone de acento circunflexo para baixo"] .  Para recolher alertas individuais em um grupo, selecione o cursor para cimaimage:../media/icon_alert_caret_up.png["Ícone de acento circunflexo para cima"] , ou selecione o nome do grupo.
+. Para exibir alertas individuais em vez de grupos de alertas, desmarque a caixa de seleção *Alertas de grupo*.
+. Para classificar alertas atuais ou grupos de alertas, selecione as setas para cima/baixoimage:../media/icon_alert_sort_column.png["Ícone de setas de classificação"] em cada cabeçalho de coluna.
++
+** Quando *Alertas de grupo* é selecionado, tanto os grupos de alertas quanto os alertas individuais dentro de cada grupo são classificados.  Por exemplo, você pode querer classificar os alertas em um grupo por *Tempo de acionamento* para encontrar a instância mais recente de um alerta específico.
+** Quando *Alertas de grupo* é limpo, toda a lista de alertas é classificada.  Por exemplo, você pode querer classificar todos os alertas por *Nó/Site* para ver todos os alertas que afetam um nó específico.
+
+
+. Para filtrar alertas atuais por status (*Todos os alertas*, *Ativos* ou *Silenciados*, use o menu suspenso na parte superior da tabela.
++
+Ver link:silencing-alert-notifications.html["Silenciar notificações de alerta"] .
+
+. Para classificar alertas resolvidos:
++
+** Selecione um período de tempo no menu suspenso *Quando acionado*.
+** Selecione uma ou mais gravidades no menu suspenso *Gravidade*.
+** Selecione uma ou mais regras de alerta padrão ou personalizadas no menu suspenso *Regra de alerta* para filtrar alertas resolvidos relacionados a uma regra de alerta específica.
+** Selecione um ou mais nós no menu suspenso *Nó* para filtrar alertas resolvidos relacionados a um nó específico.
+
+
+. Para visualizar detalhes de um alerta específico, selecione o alerta.  Uma caixa de diálogo fornece detalhes e ações recomendadas para o alerta selecionado.
+. (Opcional) Para um alerta específico, selecione silenciar este alerta para silenciar a regra de alerta que causou o disparo deste alerta.
++
+Você deve ter olink:../admin/admin-group-permissions.html["Gerenciar alertas ou permissão de acesso root"] para silenciar uma regra de alerta.
+
++
+
+CAUTION: Tenha cuidado ao decidir silenciar uma regra de alerta.  Se uma regra de alerta for silenciada, você poderá não detectar um problema subjacente até que ele impeça a conclusão de uma operação crítica.
+
+. Para visualizar as condições atuais da regra de alerta:
++
+.. Nos detalhes do alerta, selecione *Exibir condições*.
++
+Um pop-up aparece, listando a expressão do Prometheus para cada gravidade definida.
+
+.. Para fechar o pop-up, clique em qualquer lugar fora dele.
+
+
+. Opcionalmente, selecione *Editar regra* para editar a regra de alerta que causou o disparo deste alerta.
++
+Você deve ter olink:../admin/admin-group-permissions.html["Gerenciar alertas ou permissão de acesso root"] para editar uma regra de alerta.
+
++
+
+CAUTION: Tenha cuidado ao decidir editar uma regra de alerta.  Se você alterar os valores do gatilho, talvez não seja possível detectar um problema subjacente até que ele impeça a conclusão de uma operação crítica.
+
+. Para fechar os detalhes do alerta, selecione *Fechar*.
+

@@ -1,0 +1,7 @@
+= 
+:allow-uri-read: 
+
+
+Para garantir a operação correta, especifique dois ou três servidores DNS.  Se você especificar mais de três, é possível que apenas três sejam usados devido a limitações conhecidas do sistema operacional em algumas plataformas.  Se você tiver restrições de roteamento em seu ambiente, você podelink:../maintain/modifying-dns-configuration-for-single-grid-node.html["personalizar a lista de servidores DNS"] para nós individuais (normalmente todos os nós em um site) usar um conjunto diferente de até três servidores DNS.
+
+Se possível, use servidores DNS que cada site possa acessar localmente para garantir que um site isolado possa resolver os FQDNs para destinos externos.

@@ -1,0 +1,81 @@
+---
+permalink: vmware/troubleshooting-installation-issues.html 
+sidebar: sidebar 
+keywords: how to troubleshoot installation issues 
+summary: Caso ocorra algum problema durante a instalação do seu sistema StorageGRID , você pode acessar os arquivos de log da instalação. 
+---
+= Solucionar problemas de instalação
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Caso ocorra algum problema durante a instalação do seu sistema StorageGRID , você pode acessar os arquivos de log da instalação.
+
+A seguir estão os principais arquivos de log de instalação, que o suporte técnico pode precisar para resolver problemas.
+
+* `/var/local/log/install.log`(encontrado em todos os nós da grade)
+* `/var/local/log/gdu-server.log`(encontrado no nó de administração principal)
+
+
+.Informações relacionadas
+Para saber como acessar os arquivos de log, consultelink:../monitor/logs-files-reference.html["Referência de arquivos de log"] .
+
+Se precisar de ajuda adicional, entre em contato https://mysupport.netapp.com/site/global/dashboard["Suporte NetApp"^] .
+
+
+
+== A reserva de recursos da máquina virtual requer ajuste
+
+Os arquivos OVF incluem uma reserva de recursos projetada para garantir que cada nó da grade tenha RAM e CPU suficientes para operar com eficiência.  Se você criar máquinas virtuais implantando esses arquivos OVF no VMware e o número predefinido de recursos não estiver disponível, as máquinas virtuais não serão iniciadas.
+
+.Sobre esta tarefa
+Se você tiver certeza de que o host da VM tem recursos suficientes para cada nó da grade, ajuste manualmente os recursos alocados para cada máquina virtual e tente iniciar as máquinas virtuais.
+
+.Passos
+. Na árvore do cliente do VMware vSphere Hypervisor, selecione a máquina virtual que não foi iniciada.
+. Clique com o botão direito do mouse na máquina virtual e selecione *Editar configurações*.
+. Na janela Propriedades de Máquinas Virtuais, selecione a guia *Recursos*.
+. Ajuste os recursos alocados à máquina virtual:
++
+.. Selecione *CPU* e use o controle deslizante Reserva para ajustar os MHz reservados para esta máquina virtual.
+.. Selecione *Memória* e use o controle deslizante Reserva para ajustar os MB reservados para esta máquina virtual.
+
+
+. Clique em *OK*.
+. Repita conforme necessário para outras máquinas virtuais hospedadas no mesmo host de VM.
+
+
+
+
+== A senha de instalação temporária foi desabilitada
+
+Ao implantar um nó VMware, você pode, opcionalmente, especificar uma senha de instalação temporária.  Você precisa ter essa senha para acessar o console da VM ou usar SSH antes que o novo nó entre na grade.
+
+Se você optou por desabilitar a senha de instalação temporária, será necessário executar etapas adicionais para depurar problemas de instalação.
+
+Você pode fazer qualquer um dos seguintes:
+
+* Reimplante a VM, mas especifique uma senha de instalação temporária para que você possa acessar o console ou usar SSH para depurar problemas de instalação.
+* Use o vCenter para definir a senha:
++
+.. Desligue a VM.
+.. Vá para *VM*, selecione a aba *Configurar* e selecione *Opções do vApp*.
+.. Especifique o tipo de senha de instalação temporária a ser definida:
++
+*** Selecione *CUSTOM_TEMPORARY_PASSWORD* para definir uma senha temporária personalizada.
+*** Selecione *TEMPORARY_PASSWORD_TYPE* para usar o nome do nó como senha temporária.
+
+
+.. Selecione *Definir valor*.
+.. Defina a senha temporária:
++
+*** Altere *CUSTOM_TEMPORARY_PASSWORD* para um valor de senha personalizado.
+*** Atualize o *TEMPORARY_PASSWORD_TYPE* com o valor *Usar nome do nó*.
+
+
+.. Reinicie a VM para aplicar a nova senha.
+
+
+

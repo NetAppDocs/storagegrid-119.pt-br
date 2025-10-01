@@ -1,0 +1,166 @@
+---
+permalink: tenant/specifying-urn-for-platform-services-endpoint.html 
+sidebar: sidebar 
+keywords: how to specify platform services urn 
+summary: 'Ao criar um ponto de extremidade de serviços de plataforma, você deve especificar um Nome de Recurso Exclusivo (URN).  Você usará o URN para referenciar o ponto de extremidade ao criar um XML de configuração para o serviço da plataforma.  O URN para cada ponto de extremidade deve ser exclusivo.' 
+---
+= Especifique URN para o ponto de extremidade dos serviços de plataforma
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Ao criar um ponto de extremidade de serviços de plataforma, você deve especificar um Nome de Recurso Exclusivo (URN).  Você usará o URN para referenciar o ponto de extremidade ao criar um XML de configuração para o serviço da plataforma.  O URN para cada ponto de extremidade deve ser exclusivo.
+
+O StorageGRID valida os pontos de extremidade dos serviços da plataforma conforme você os cria.  Antes de criar um ponto de extremidade de serviços de plataforma, confirme se o recurso especificado no ponto de extremidade existe e se pode ser acessado.
+
+
+
+== Elementos URN
+
+O URN para um ponto de extremidade de serviços de plataforma deve começar com `arn:aws` ou `urn:mysite` , do seguinte modo:
+
+* Se o serviço estiver hospedado na Amazon Web Services (AWS), use `arn:aws`
+* Se o serviço estiver hospedado no Google Cloud Platform (GCP), use `arn:aws`
+* Se o serviço estiver hospedado localmente, use `urn:mysite`
+
+
+Por exemplo, se você estiver especificando o URN para um endpoint do CloudMirror hospedado no StorageGRID, o URN pode começar com `urn:sgws` .
+
+O próximo elemento do URN especifica o tipo de serviço de plataforma, da seguinte forma:
+
+[cols="2a,1a"]
+|===
+| Serviço | Tipo 
+
+
+ a| 
+Replicação do CloudMirror
+ a| 
+`s3`
+
+
+
+ a| 
+Notificações
+ a| 
+`sns`ou `kafka`
+
+
+
+ a| 
+Integração de pesquisa
+ a| 
+`es`
+
+|===
+Por exemplo, para continuar especificando o URN para um endpoint do CloudMirror hospedado no StorageGRID, você adicionaria `s3` obter `urn:sgws:s3` .
+
+O elemento final do URN identifica o recurso de destino específico no URI de destino.
+
+[cols="1a,2a"]
+|===
+| Serviço | Recurso específico 
+
+
+ a| 
+Replicação do CloudMirror
+ a| 
+`bucket-name`
+
+
+
+ a| 
+Notificações
+ a| 
+`sns-topic-name`ou `kafka-topic-name`
+
+
+
+ a| 
+Integração de pesquisa
+ a| 
+`domain-name/index-name/type-name`
+
+*Observação:* se o cluster do Elasticsearch *não* estiver configurado para criar índices automaticamente, você deverá criar o índice manualmente antes de criar o endpoint.
+
+|===
+
+
+== URNs para serviços hospedados na AWS e GCP
+
+Para entidades AWS e GCP, o URN completo é um ARN AWS válido. Por exemplo:
+
+* Replicação do CloudMirror:
++
+[listing]
+----
+arn:aws:s3:::bucket-name
+----
+* Notificações:
++
+[listing]
+----
+arn:aws:sns:region:account-id:topic-name
+----
+* Integração de pesquisa:
++
+[listing]
+----
+arn:aws:es:region:account-id:domain/domain-name/index-name/type-name
+----
++
+
+NOTE: Para um ponto de extremidade de integração de pesquisa da AWS, o `domain-name` deve incluir a string literal `domain/` , como mostrado aqui.
+
+
+
+
+
+== URNs para serviços hospedados localmente
+
+Ao usar serviços hospedados localmente em vez de serviços em nuvem, você pode especificar o URN de qualquer maneira que crie um URN válido e exclusivo, desde que o URN inclua os elementos necessários na terceira e última posição.  Você pode deixar os elementos indicados como opcionais em branco ou especificá-los de qualquer forma que ajude a identificar o recurso e tornar a URN única. Por exemplo:
+
+* Replicação do CloudMirror:
++
+[listing]
+----
+urn:mysite:s3:optional:optional:bucket-name
+----
++
+Para um endpoint do CloudMirror hospedado no StorageGRID, você pode especificar um URN válido que comece com `urn:sgws` :
+
++
+[listing]
+----
+urn:sgws:s3:optional:optional:bucket-name
+----
+* Notificações:
++
+Especifique um ponto de extremidade do Amazon Simple Notification Service:
+
++
+[listing]
+----
+urn:mysite:sns:optional:optional:sns-topic-name
+----
++
+Especifique um ponto de extremidade do Kafka:
+
++
+[listing]
+----
+urn:mysite:kafka:optional:optional:kafka-topic-name
+----
+* Integração de pesquisa:
++
+[listing]
+----
+urn:mysite:es:optional:optional:domain-name/index-name/type-name
+----
++
+
+NOTE: Para pontos de extremidade de integração de pesquisa hospedados localmente, o `domain-name` element pode ser qualquer string, desde que o URN do ponto final seja único.
+
+

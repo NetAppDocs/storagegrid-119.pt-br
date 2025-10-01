@@ -1,0 +1,27 @@
+---
+permalink: primer/retrieve-data-flow.html 
+sidebar: sidebar 
+keywords: object data, retrieve 
+summary: Uma operação de recuperação consiste em um fluxo de dados definido entre o sistema StorageGRID e o cliente.  O sistema usa atributos para rastrear a recuperação do objeto de um nó de armazenamento ou, se necessário, de um pool de armazenamento em nuvem. 
+---
+= Recuperar fluxo de dados
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Uma operação de recuperação consiste em um fluxo de dados definido entre o sistema StorageGRID e o cliente.  O sistema usa atributos para rastrear a recuperação do objeto de um nó de armazenamento ou, se necessário, de um pool de armazenamento em nuvem.
+
+O serviço LDR do nó de armazenamento consulta o repositório de metadados para saber a localização dos dados do objeto e os recupera do serviço LDR de origem.  De preferência, a recuperação é feita a partir de um nó de armazenamento.  Se o objeto não estiver disponível em um nó de armazenamento, a solicitação de recuperação será direcionada a um pool de armazenamento em nuvem.
+
+
+NOTE: Se a única cópia do objeto estiver no armazenamento AWS Glacier ou na camada do Azure Archive, o aplicativo cliente deverá emitir uma solicitação S3 RestoreObject para restaurar uma cópia recuperável para o Cloud Storage Pool.
+
+image::../media/retrieve_data_flow.png[Recuperar]
+
+. O serviço LDR recebe uma solicitação de recuperação do aplicativo cliente.
+. O serviço LDR consulta o repositório de metadados para obter a localização dos dados do objeto e os metadados.
+. O serviço LDR encaminha a solicitação de recuperação para o serviço LDR de origem.
+. O serviço LDR de origem retorna os dados do objeto do serviço LDR consultado e o sistema retorna o objeto ao aplicativo cliente.
+

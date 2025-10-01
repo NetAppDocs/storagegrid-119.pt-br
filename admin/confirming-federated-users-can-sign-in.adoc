@@ -1,0 +1,68 @@
+---
+permalink: admin/confirming-federated-users-can-sign-in.html 
+sidebar: sidebar 
+keywords: sso configuration 
+summary: 'Antes de habilitar o logon único (SSO), você deve confirmar se pelo menos um usuário federado pode fazer login no Grid Manager e no Tenant Manager para qualquer conta de locatário existente.' 
+---
+= Confirme se os usuários federados podem fazer login
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Antes de habilitar o logon único (SSO), você deve confirmar se pelo menos um usuário federado pode fazer login no Grid Manager e no Tenant Manager para qualquer conta de locatário existente.
+
+.Antes de começar
+* Você está conectado ao Grid Manager usando umlink:../admin/web-browser-requirements.html["navegador da web compatível"] .
+* Você temlink:admin-group-permissions.html["permissões de acesso específicas"] .
+* Você já configurou a federação de identidade.
+
+
+.Passos
+. Se houver contas de locatários existentes, confirme se nenhum deles está usando sua própria fonte de identidade.
++
+
+TIP: Quando você habilita o SSO, uma fonte de identidade configurada no Tenant Manager é substituída pela fonte de identidade configurada no Grid Manager.  Os usuários pertencentes à fonte de identidade do locatário não poderão mais fazer login, a menos que tenham uma conta com a fonte de identidade do Grid Manager.
+
++
+.. Sign in no Gerenciador de Inquilinos para cada conta de inquilino.
+.. Selecione *GERENCIAMENTO DE ACESSO* > *Federação de identidade*.
+.. Confirme se a caixa de seleção *Ativar federação de identidade* não está marcada.
+.. Se for o caso, confirme se quaisquer grupos federados que possam estar em uso para esta conta de locatário não são mais necessários, desmarque a caixa de seleção e selecione *Salvar*.
+
+
+. Confirme se um usuário federado pode acessar o Grid Manager:
++
+.. No Grid Manager, selecione *CONFIGURAÇÃO* > *Controle de acesso* > *Grupos de administradores*.
+.. Certifique-se de que pelo menos um grupo federado tenha sido importado da fonte de identidade do Active Directory e que tenha recebido a permissão de acesso Root.
+.. Sair.
+.. Confirme se você pode fazer login novamente no Grid Manager como um usuário no grupo federado.
+
+
+. Se houver contas de locatário existentes, confirme se um usuário federado com permissão de acesso Root pode fazer login:
++
+.. No Grid Manager, selecione *LOCATÁRIOS*.
+.. Selecione a conta do locatário e selecione *Ações* > *Editar*.
+.. Na guia Inserir detalhes, selecione *Continuar*.
+.. Se a caixa de seleção *Usar fonte de identidade própria* estiver marcada, desmarque a caixa e selecione *Salvar*.
++
+image::../media/sso_uses_own_identity_source_for_tenant.png[Editar conta de locatário > Usar fonte de identidade própria caixa de seleção não selecionada]
+
++
+A página do inquilino é exibida.
+
+.. Selecione a conta do locatário, selecione * Sign in* e entre na conta do locatário como usuário root local.
+.. No Gerenciador de inquilinos, selecione *GERENCIAMENTO DE ACESSO* > *Grupos*.
+.. Certifique-se de que pelo menos um grupo federado do Grid Manager tenha recebido a permissão de acesso Root para este locatário.
+.. Sair.
+.. Confirme se você pode fazer login novamente no locatário como um usuário no grupo federado.
+
+
+
+
+.Informações relacionadas
+* link:requirements-for-sso.html["Requisitos e considerações para logon único"]
+* link:managing-admin-groups.html["Gerenciar grupos de administradores"]
+* link:../tenant/index.html["Use uma conta de inquilino"]
+

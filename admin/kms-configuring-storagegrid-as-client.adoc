@@ -1,0 +1,61 @@
+---
+permalink: admin/kms-configuring-storagegrid-as-client.html 
+sidebar: sidebar 
+keywords: configure kms, key management server 
+summary: Você deve configurar o StorageGRID como um cliente para cada servidor de gerenciamento de chaves externo ou cluster KMS antes de poder adicionar o KMS ao StorageGRID. 
+---
+= Configurar o StorageGRID como um cliente no KMS
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Você deve configurar o StorageGRID como um cliente para cada servidor de gerenciamento de chaves externo ou cluster KMS antes de poder adicionar o KMS ao StorageGRID.
+
+
+NOTE: Estas instruções se aplicam ao Thales CipherTrust Manager e ao Hashicorp Vault.  Para obter uma lista de produtos e versões suportados, use o https://imt.netapp.com/matrix/#welcome["Ferramenta de Matriz de Interoperabilidade NetApp (IMT)"^] .
+
+.Passos
+. No software KMS, crie um cliente StorageGRID para cada KMS ou cluster KMS que você planeja usar.
++
+Cada KMS gerencia uma única chave de criptografia para os nós dos dispositivos StorageGRID em um único site ou em um grupo de sites.
+
+. [[create-key-with-kms-product]]Crie uma chave usando um dos dois métodos a seguir:
++
+** Use a página de gerenciamento de chaves do seu produto KMS.  Crie uma chave de criptografia AES para cada KMS ou cluster KMS.
++
+A chave de criptografia deve ter 2.048 bits ou mais e deve ser exportável.
+
+** Faça com que o StorageGRID crie a chave.  Você será avisado quando testar e salvar depoislink:kms-adding.html#sg-create-key["carregando certificados de cliente"] .
+
+
+. Registre as seguintes informações para cada KMS ou cluster KMS.
++
+Você precisa dessas informações ao adicionar o KMS ao StorageGRID:
+
++
+** Nome do host ou endereço IP para cada servidor.
+** Porta KMIP usada pelo KMS.
+** Alias de chave para a chave de criptografia no KMS.
+
+
+. Para cada KMS ou cluster KMS, obtenha um certificado de servidor assinado por uma autoridade de certificação (CA) ou um pacote de certificados que contenha cada um dos arquivos de certificado de CA codificados em PEM, concatenados na ordem da cadeia de certificados.
++
+O certificado do servidor permite que o KMS externo se autentique no StorageGRID.
+
++
+** O certificado deve usar o formato X.509 codificado em Base 64 do Privacy Enhanced Mail (PEM).
+** O campo Nome Alternativo do Assunto (SAN) em cada certificado de servidor deve incluir o nome de domínio totalmente qualificado (FQDN) ou endereço IP ao qual o StorageGRID se conectará.
++
+
+NOTE: Ao configurar o KMS no StorageGRID, você deve inserir os mesmos FQDNs ou endereços IP no campo *Nome do host*.
+
+** O certificado do servidor deve corresponder ao certificado usado pela interface KMIP do KMS, que normalmente usa a porta 5696.
+
+
+. Obtenha o certificado de cliente público emitido para o StorageGRID pelo KMS externo e a chave privada para o certificado de cliente.
++
+O certificado do cliente permite que o StorageGRID se autentique no KMS.
+
+

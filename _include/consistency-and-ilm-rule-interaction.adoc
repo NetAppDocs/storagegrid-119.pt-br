@@ -1,0 +1,17 @@
+= 
+:allow-uri-read: 
+
+
+Suponha que você tenha uma grade de dois sites com a seguinte regra ILM e a seguinte consistência:
+
+* *Regra do ILM*: Crie duas cópias de objetos, uma no site local e outra em um site remoto. Use o comportamento de ingestão estrito.
+* *consistência*: Forte-global (os metadados do objeto são imediatamente distribuídos para todos os sites).
+
+
+Quando um cliente armazena um objeto na grade, o StorageGRID faz cópias do objeto e distribui metadados para ambos os sites antes de retornar o sucesso ao cliente.
+
+O objeto é totalmente protegido contra perda no momento da ingestão bem-sucedida da mensagem. Por exemplo, se o site local for perdido logo após a ingestão, cópias dos dados do objeto e dos metadados do objeto ainda existirão no site remoto.  O objeto é totalmente recuperável.
+
+Se, em vez disso, você usasse a mesma regra de ILM e a consistência de site forte, o cliente poderia receber uma mensagem de sucesso depois que os dados do objeto fossem replicados para o site remoto, mas antes que os metadados do objeto fossem distribuídos lá. Nesse caso, o nível de proteção dos metadados do objeto não corresponde ao nível de proteção dos dados do objeto. Se o site local for perdido logo após a ingestão, os metadados do objeto serão perdidos. O objeto não pode ser recuperado.
+
+A inter-relação entre consistência e regras de ILM pode ser complexa.  Entre em contato com a NetApp se precisar de assistência.

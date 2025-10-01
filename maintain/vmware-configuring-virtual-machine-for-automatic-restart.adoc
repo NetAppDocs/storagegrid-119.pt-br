@@ -1,0 +1,22 @@
+---
+permalink: maintain/vmware-configuring-virtual-machine-for-automatic-restart.html 
+sidebar: sidebar 
+keywords: storagegrid, recover, vmware, automatic restart, auto restart, configure automatic restart, configure auto restart 
+summary: Se a máquina virtual não reiniciar após o VMware vSphere Hypervisor ser reiniciado, talvez seja necessário configurar a máquina virtual para reinicialização automática. 
+---
+= VMware: Configurar máquina virtual para reinicialização automática
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Se a máquina virtual não reiniciar após o VMware vSphere Hypervisor ser reiniciado, talvez seja necessário configurar a máquina virtual para reinicialização automática.
+
+Você deve executar este procedimento se notar que uma máquina virtual não reinicia enquanto você estiver recuperando um nó de grade ou executando outro procedimento de manutenção.
+
+.Passos
+. Na árvore do VMware vSphere Client, selecione a máquina virtual que não foi iniciada.
+. Clique com o botão direito do mouse na máquina virtual e selecione *Ligar*.
+. Configure o VMware vSphere Hypervisor para reiniciar a máquina virtual automaticamente no futuro.
+

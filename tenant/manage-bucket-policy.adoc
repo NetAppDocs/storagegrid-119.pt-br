@@ -1,0 +1,37 @@
+---
+permalink: tenant/manage-bucket-policy.html 
+sidebar: sidebar 
+keywords: how to create S3 tenant groups, federated group, local group 
+summary: Você pode controlar o acesso do usuário a um bucket do S3 e aos objetos nesse bucket. 
+---
+= Gerenciar política de bucket
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Você pode controlar o acesso do usuário a um bucket do S3 e aos objetos nesse bucket.
+
+.Antes de começar
+* Você está conectado ao Gerenciador de Inquilinos usando umlink:../admin/web-browser-requirements.html["navegador da web compatível"] .
+* Você pertence a um grupo de usuários que tem olink:tenant-management-permissions.html["Permissão de acesso root"] .  As permissões Exibir todos os buckets e Gerenciar todos os buckets permitem apenas a visualização.
+* Você verificou se o número necessário de nós de armazenamento e sites está disponível.  Se dois ou mais nós de armazenamento não estiverem disponíveis em nenhum site, ou se um site não estiver disponível, as alterações nessas configurações poderão não estar disponíveis.
+
+
+.Passos
+. Selecione *Buckets* e, em seguida, selecione o bucket que você deseja gerenciar.
+. Na página de detalhes do bucket, selecione *Acesso ao bucket* > *Política do bucket*.
+. Faça um dos seguintes:
++
+** Insira uma política de bucket marcando a caixa de seleção *Ativar política*.  Em seguida, insira uma string válida no formato JSON.
++
+Cada política de bucket tem um limite de tamanho de 20.480 bytes.
+
+** Modifique uma política existente editando a sequência de caracteres.
+** Desabilite uma política desmarcando *Habilitar política*.
+
+
+
+
+Para obter informações detalhadas sobre políticas de bucket, incluindo sintaxe de linguagem e exemplos, consultelink:../s3/example-bucket-policies.html["Exemplos de políticas de bucket"] .

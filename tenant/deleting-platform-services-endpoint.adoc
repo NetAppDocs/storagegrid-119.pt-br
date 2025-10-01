@@ -1,0 +1,36 @@
+---
+permalink: tenant/deleting-platform-services-endpoint.html 
+sidebar: sidebar 
+keywords: how to delete tenant platform services endpoint 
+summary: Você pode excluir um ponto de extremidade se não quiser mais usar o serviço de plataforma associado. 
+---
+= Excluir ponto de extremidade de serviços de plataforma
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Você pode excluir um ponto de extremidade se não quiser mais usar o serviço de plataforma associado.
+
+.Antes de começar
+* Você está conectado ao Gerenciador de Inquilinos usando umlink:../admin/web-browser-requirements.html["navegador da web compatível"] .
+* Você pertence a um grupo de usuários que tem olink:tenant-management-permissions.html["Gerenciar endpoints ou permissão de acesso root"] .
+
+
+.Passos
+. Selecione *ARMAZENAMENTO (S3)* > *Pontos de extremidade de serviços de plataforma*.
++
+A página Pontos de extremidade dos serviços da plataforma é exibida e mostra a lista de pontos de extremidade dos serviços da plataforma que já foram configurados.
+
+. Marque a caixa de seleção de cada ponto de extremidade que você deseja excluir.
++
+
+NOTE: Se você excluir um ponto de extremidade de serviços de plataforma que está em uso, o serviço de plataforma associado será desabilitado para todos os buckets que usarem o ponto de extremidade.  Quaisquer solicitações que ainda não tenham sido concluídas serão descartadas.  Quaisquer novas solicitações continuarão a ser geradas até que você altere a configuração do seu bucket para não fazer mais referência ao URN excluído.  O StorageGRID relatará essas solicitações como erros irrecuperáveis.
+
+. Selecione *Ações* > *Excluir ponto de extremidade*.
++
+Uma mensagem de confirmação é exibida.
+
+. Selecione *Excluir ponto de extremidade*.
+

@@ -1,0 +1,581 @@
+---
+permalink: network/external-communications.html 
+sidebar: sidebar 
+keywords: storagegrid, network port, external communications, ports, TCP, UDP, client communications 
+summary: Os clientes precisam se comunicar com os nós da grade para ingerir e recuperar conteúdo.  As portas usadas dependem dos protocolos de armazenamento de objetos escolhidos.  Essas portas precisam ser acessíveis ao cliente. 
+---
+= Comunicações externas
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Os clientes precisam se comunicar com os nós da grade para ingerir e recuperar conteúdo.  As portas usadas dependem dos protocolos de armazenamento de objetos escolhidos.  Essas portas precisam ser acessíveis ao cliente.
+
+
+
+== Acesso restrito aos portos
+
+Se as políticas de rede corporativa restringirem o acesso a qualquer uma das portas, você poderá fazer o seguinte:
+
+* Usarlink:../admin/configuring-load-balancer-endpoints.html["pontos de extremidade do balanceador de carga"] para permitir acesso em portas definidas pelo usuário.
+* Remapeie portas ao implantar nós.  No entanto, você não deve remapear os pontos de extremidade do balanceador de carga.  Veja as informações sobre o remapeamento de portas para seu nó StorageGRID :
++
+** link:../rhel/creating-node-configuration-files.html#port-remap-keys["Chaves de remapeamento de porta para StorageGRID no Red Hat Enterprise Linux"]
+** link:../ubuntu/creating-node-configuration-files.html#port-remap-keys["Chaves de remapeamento de porta para StorageGRID no Ubuntu ou Debian"]
+** link:../vmware/deploying-storagegrid-node-as-virtual-machine.html#vmware-remap-ports["Remapear portas para StorageGRID no VMware"]
+** https://docs.netapp.com/us-en/storagegrid-appliances/installconfig/optional-remapping-network-ports-for-appliance.html["Opcional: Remapear portas de rede para o dispositivo"^]
+
+
+
+
+
+
+== Portas usadas para comunicações externas
+
+A tabela a seguir mostra as portas usadas para tráfego nos nós.
+
+
+NOTE: Esta lista não inclui portas que podem ser configuradas comolink:../admin/configuring-load-balancer-endpoints.html["pontos de extremidade do balanceador de carga"] .
+
+[cols="1a,1a,1a,1a,1a,4a"]
+|===
+| Porta | TCP ou UDP | Protocolo | De | Para | Detalhes 
+
+
+ a| 
+22
+ a| 
+TCP
+ a| 
+SSH
+ a| 
+Laptop de serviço
+ a| 
+Todos os nós
+ a| 
+Acesso SSH ou console é necessário para procedimentos com etapas de console.  Opcionalmente, você pode usar a porta 2022 em vez de 22.
+
+
+
+ a| 
+25
+ a| 
+TCP
+ a| 
+SMTP
+ a| 
+Nós de administração
+ a| 
+Servidor de e-mail
+ a| 
+Usado para alertas e AutoSupport baseado em e-mail.  Você pode substituir a configuração de porta padrão de 25 usando a página Servidores de e-mail.
+
+
+
+ a| 
+53
+ a| 
+TCP/UDP
+ a| 
+DNS
+ a| 
+Todos os nós
+ a| 
+Servidores DNS
+ a| 
+Usado para DNS.
+
+
+
+ a| 
+67
+ a| 
+UDP
+ a| 
+DHCP
+ a| 
+Todos os nós
+ a| 
+Serviço DHCP
+ a| 
+Usado opcionalmente para dar suporte à configuração de rede baseada em DHCP.  O serviço dhclient não é executado para grades configuradas estaticamente.
+
+
+
+ a| 
+68
+ a| 
+UDP
+ a| 
+DHCP
+ a| 
+Serviço DHCP
+ a| 
+Todos os nós
+ a| 
+Usado opcionalmente para dar suporte à configuração de rede baseada em DHCP.  O serviço dhclient não é executado em grades que usam endereços IP estáticos.
+
+
+
+ a| 
+80
+ a| 
+TCP
+ a| 
+HTTP
+ a| 
+Navegador
+ a| 
+Nós de administração
+ a| 
+A porta 80 redireciona para a porta 443 para a interface do usuário do nó de administração.
+
+
+
+ a| 
+80
+ a| 
+TCP
+ a| 
+HTTP
+ a| 
+Navegador
+ a| 
+Eletrodomésticos
+ a| 
+A porta 80 redireciona para a porta 8443 para o instalador do dispositivo StorageGRID .
+
+
+
+ a| 
+80
+ a| 
+TCP
+ a| 
+HTTP
+ a| 
+Nós de armazenamento com ADC
+ a| 
+AWS
+ a| 
+Usado para mensagens de serviços de plataforma enviadas para a AWS ou outros serviços externos que usam HTTP.  Os locatários podem substituir a configuração padrão da porta HTTP de 80 ao criar um ponto de extremidade.
+
+
+
+ a| 
+80
+ a| 
+TCP
+ a| 
+HTTP
+ a| 
+Nós de armazenamento
+ a| 
+AWS
+ a| 
+Solicitações de pools de armazenamento em nuvem enviadas para destinos da AWS que usam HTTP.  Os administradores de grade podem substituir a configuração padrão da porta HTTP de 80 ao configurar um pool de armazenamento em nuvem.
+
+
+
+ a| 
+111
+ a| 
+TCP/UDP
+ a| 
+RPCBind
+ a| 
+Cliente NFS
+ a| 
+Nós de administração
+ a| 
+Usado pela exportação de auditoria baseada em NFS (portmap).
+
+*Observação:* esta porta é necessária somente se a exportação de auditoria baseada em NFS estiver habilitada.
+
+*Observação:* O suporte para NFS foi descontinuado e será removido em uma versão futura.
+
+
+
+ a| 
+123
+ a| 
+UDP
+ a| 
+NTP
+ a| 
+Nós NTP primários
+ a| 
+NTP externo
+ a| 
+Serviço de protocolo de tempo de rede.  Os nós selecionados como fontes primárias de NTP também sincronizam os horários do relógio com as fontes externas de tempo de NTP.
+
+
+
+ a| 
+161
+ a| 
+TCP/UDP
+ a| 
+SNMP
+ a| 
+Cliente SNMP
+ a| 
+Todos os nós
+ a| 
+Usado para pesquisa SNMP.  Todos os nós fornecem informações básicas; os nós administrativos também fornecem dados de alerta.  O padrão é a porta UDP 161 quando configurado.
+
+*Observação:* esta porta só é necessária e só é aberta no firewall do nó se o SNMP estiver configurado.  Se você planeja usar SNMP, pode configurar portas alternativas.
+
+*Observação:* Para obter informações sobre como usar SNMP com StorageGRID, entre em contato com seu representante de conta da NetApp .
+
+
+
+ a| 
+162
+ a| 
+TCP/UDP
+ a| 
+Notificações SNMP
+ a| 
+Todos os nós
+ a| 
+Destinos de notificação
+ a| 
+Notificações SNMP de saída e traps são definidas como padrão para a porta UDP 162.
+
+*Observação:* esta porta só é necessária se o SNMP estiver habilitado e os destinos de notificação estiverem configurados.  Se você planeja usar SNMP, pode configurar portas alternativas.
+
+*Observação:* Para obter informações sobre como usar SNMP com StorageGRID, entre em contato com seu representante de conta da NetApp .
+
+
+
+ a| 
+389
+ a| 
+TCP/UDP
+ a| 
+LDAP
+ a| 
+Nós de armazenamento com ADC
+ a| 
+Diretório Ativo/LDAP
+ a| 
+Usado para conectar a um servidor Active Directory ou LDAP para Federação de Identidade.
+
+
+
+ a| 
+443
+ a| 
+TCP
+ a| 
+HTTPS
+ a| 
+Navegador
+ a| 
+Nós de administração
+ a| 
+Usado por navegadores da web e clientes de API de gerenciamento para acessar o Grid Manager e o Tenant Manager.
+
+*Observação*: se você fechar as portas 443 ou 8443 do Grid Manager, todos os usuários conectados em uma porta bloqueada, incluindo você, perderão o acesso ao Grid Manager, a menos que seus endereços IP tenham sido adicionados à lista de endereços privilegiados.  Verlink:../admin/configure-firewall-controls.html["Configurar controles de firewall"] para configurar endereços IP privilegiados.
+
+
+
+ a| 
+443
+ a| 
+TCP
+ a| 
+HTTPS
+ a| 
+Nós de administração
+ a| 
+Diretório ativo
+ a| 
+Usado por nós de administração que se conectam ao Active Directory se o logon único (SSO) estiver habilitado.
+
+
+
+ a| 
+443
+ a| 
+TCP
+ a| 
+HTTPS
+ a| 
+Nós de armazenamento com ADC
+ a| 
+AWS
+ a| 
+Usado para mensagens de serviços de plataforma enviadas para a AWS ou outros serviços externos que usam HTTPS.  Os locatários podem substituir a configuração de porta HTTP padrão de 443 ao criar um ponto de extremidade.
+
+
+
+ a| 
+443
+ a| 
+TCP
+ a| 
+HTTPS
+ a| 
+Nós de armazenamento
+ a| 
+AWS
+ a| 
+Solicitações de pools de armazenamento em nuvem enviadas para destinos da AWS que usam HTTPS.  Os administradores de grade podem substituir a configuração padrão da porta HTTPS 443 ao configurar um pool de armazenamento em nuvem.
+
+
+
+ a| 
+903
+ a| 
+TCP
+ a| 
+NFS
+ a| 
+Cliente NFS
+ a| 
+Nós de administração
+ a| 
+Usado pela exportação de auditoria baseada em NFS(`rpc.mountd` ).
+
+*Observação:* esta porta é necessária somente se a exportação de auditoria baseada em NFS estiver habilitada.
+
+*Observação:* O suporte para NFS foi descontinuado e será removido em uma versão futura.
+
+
+
+ a| 
+2022
+ a| 
+TCP
+ a| 
+SSH
+ a| 
+Laptop de serviço
+ a| 
+Todos os nós
+ a| 
+Acesso SSH ou console é necessário para procedimentos com etapas de console.  Opcionalmente, você pode usar a porta 22 em vez de 2022.
+
+
+
+ a| 
+2049
+ a| 
+TCP
+ a| 
+NFS
+ a| 
+Cliente NFS
+ a| 
+Nós de administração
+ a| 
+Usado pela exportação de auditoria baseada em NFS (nfs).
+
+*Observação:* esta porta é necessária somente se a exportação de auditoria baseada em NFS estiver habilitada.
+
+*Observação:* O suporte para NFS foi descontinuado e será removido em uma versão futura.
+
+
+
+ a| 
+5353
+ a| 
+UDP
+ a| 
+mDNS
+ a| 
+Todos os nós
+ a| 
+Todos os nós
+ a| 
+Fornece o serviço DNS multicast (mDNS) usado para alterações de IP de grade completa e para descoberta do nó de administração primário durante a instalação, expansão e recuperação.
+
+
+
+ a| 
+5696
+ a| 
+TCP
+ a| 
+KMIP
+ a| 
+Eletrodoméstico
+ a| 
+KMS
+ a| 
+Tráfego externo do Protocolo de Interoperabilidade de Gerenciamento de Chaves (KMIP) de dispositivos configurados para criptografia de nós para o Servidor de Gerenciamento de Chaves (KMS), a menos que uma porta diferente seja especificada na página de configuração do KMS do Instalador do Dispositivo StorageGRID .
+
+
+
+ a| 
+8022
+ a| 
+TCP
+ a| 
+SSH
+ a| 
+Laptop de serviço
+ a| 
+Todos os nós
+ a| 
+O SSH na porta 8022 concede acesso ao sistema operacional base em plataformas de dispositivos e nós virtuais para suporte e solução de problemas.  Esta porta não é usada para nós baseados em Linux (bare metal) e não precisa ser acessível entre nós de grade ou durante operações normais.
+
+
+
+ a| 
+8443
+ a| 
+TCP
+ a| 
+HTTPS
+ a| 
+Navegador
+ a| 
+Nós de administração
+ a| 
+Opcional.  Usado por navegadores da web e clientes de API de gerenciamento para acessar o Grid Manager.  Pode ser usado para separar as comunicações do Grid Manager e do Tenant Manager.
+
+*Observação*: se você fechar as portas 443 ou 8443 do Grid Manager, todos os usuários conectados em uma porta bloqueada, incluindo você, perderão o acesso ao Grid Manager, a menos que seus endereços IP tenham sido adicionados à lista de endereços privilegiados.  Verlink:../admin/configure-firewall-controls.html["Configurar controles de firewall"] para configurar endereços IP privilegiados.
+
+
+
+ a| 
+9022
+ a| 
+TCP
+ a| 
+SSH
+ a| 
+Laptop de serviço
+ a| 
+Eletrodomésticos
+ a| 
+Concede acesso aos dispositivos StorageGRID no modo de pré-configuração para suporte e solução de problemas.  Não é necessário que esta porta esteja acessível entre nós da grade ou durante operações normais.
+
+
+
+ a| 
+9091
+ a| 
+TCP
+ a| 
+HTTPS
+ a| 
+Serviço externo Grafana
+ a| 
+Nós de administração
+ a| 
+Usado por serviços externos do Grafana para acesso seguro ao serviço StorageGRID Prometheus.
+
+*Observação:* esta porta é necessária somente se o acesso ao Prometheus baseado em certificado estiver habilitado.
+
+
+
+ a| 
+9092
+ a| 
+TCP
+ a| 
+Kafka
+ a| 
+Nós de armazenamento com ADC
+ a| 
+Aglomerado de Kafka
+ a| 
+Usado para mensagens de serviços de plataforma enviadas a um cluster Kafka.  Os locatários podem substituir a configuração de porta padrão do Kafka de 9092 ao criar um ponto de extremidade.
+
+
+
+ a| 
+9443
+ a| 
+TCP
+ a| 
+HTTPS
+ a| 
+Navegador
+ a| 
+Nós de administração
+ a| 
+Opcional.  Usado por navegadores da web e clientes de API de gerenciamento para acessar o Tenant Manager.  Pode ser usado para separar as comunicações do Grid Manager e do Tenant Manager.
+
+
+
+ a| 
+18082
+ a| 
+TCP
+ a| 
+HTTPS
+ a| 
+Clientes S3
+ a| 
+Nós de armazenamento
+ a| 
+Tráfego do cliente S3 diretamente para nós de armazenamento (HTTPS).
+
+
+
+ a| 
+18083
+ a| 
+TCP
+ a| 
+HTTPS
+ a| 
+Clientes Swift
+ a| 
+Nós de armazenamento
+ a| 
+Tráfego de clientes Swift diretamente para nós de armazenamento (HTTPS).
+
+
+
+ a| 
+18084
+ a| 
+TCP
+ a| 
+HTTP
+ a| 
+Clientes S3
+ a| 
+Nós de armazenamento
+ a| 
+Tráfego do cliente S3 diretamente para nós de armazenamento (HTTP).
+
+
+
+ a| 
+18085
+ a| 
+TCP
+ a| 
+HTTP
+ a| 
+Clientes Swift
+ a| 
+Nós de armazenamento
+ a| 
+Tráfego de cliente Swift diretamente para nós de armazenamento (HTTP).
+
+
+
+ a| 
+23000-23999
+ a| 
+TCP
+ a| 
+HTTPS
+ a| 
+Todos os nós na grade de origem para replicação entre grades
+ a| 
+Nós de administração e nós de gateway na grade de destino para replicação entre grades
+ a| 
+Este intervalo de portas é reservado para conexões de federação de rede.  Ambas as grades em uma determinada conexão usam a mesma porta.
+
+|===

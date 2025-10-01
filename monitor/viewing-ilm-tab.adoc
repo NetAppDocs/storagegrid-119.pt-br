@@ -1,0 +1,25 @@
+---
+permalink: monitor/viewing-ilm-tab.html 
+sidebar: sidebar 
+keywords: ilm tab 
+summary: 'A guia ILM fornece informações sobre operações de gerenciamento do ciclo de vida das informações (ILM).' 
+---
+= Ver a aba ILM
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+A guia ILM fornece informações sobre operações de gerenciamento do ciclo de vida das informações (ILM).
+
+A guia ILM é exibida para cada nó de armazenamento, cada site e toda a grade.  Para cada site e grade, a guia ILM mostra um gráfico da fila do ILM ao longo do tempo.  Para a grade, esta guia também fornece o tempo estimado para concluir uma varredura ILM completa de todos os objetos.
+
+Para nós de armazenamento, a guia ILM fornece detalhes sobre a avaliação do ILM e a verificação em segundo plano para objetos codificados para eliminação.
+
+image::../media/nodes_page_ilm_tab.png[Guia ILM da página Nós]
+
+.Informações relacionadas
+* link:monitoring-information-lifecycle-management.html["Monitorar o gerenciamento do ciclo de vida das informações"]
+* link:../admin/index.html["Administrar StorageGRID"]
+

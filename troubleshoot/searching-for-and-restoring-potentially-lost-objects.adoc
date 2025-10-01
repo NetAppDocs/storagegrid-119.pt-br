@@ -1,0 +1,250 @@
+---
+permalink: troubleshoot/searching-for-and-restoring-potentially-lost-objects.html 
+sidebar: sidebar 
+keywords: how to search lost object, how to restore lost object, how to find lost object 
+summary: 'Pode ser possível encontrar e restaurar objetos que acionaram um alerta de *Objeto perdido* e um alarme legado de Objetos Perdidos (LOST) e que você identificou como potencialmente perdidos.' 
+---
+= Pesquisar e restaurar objetos potencialmente perdidos
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Pode ser possível encontrar e restaurar objetos que acionaram um alerta de *Objeto perdido* e um alarme legado de Objetos Perdidos (LOST) e que você identificou como potencialmente perdidos.
+
+.Antes de começar
+* Você tem o UUID de qualquer objeto perdido, conforme identificado emlink:../troubleshoot/investigating-lost-objects.html["Investigar objetos perdidos"] .
+* Você tem o `Passwords.txt` arquivo.
+
+
+.Sobre esta tarefa
+Você pode seguir este procedimento para procurar cópias replicadas do objeto perdido em outro lugar na grade.  Na maioria dos casos, o objeto perdido não será encontrado.  No entanto, em alguns casos, você pode encontrar e restaurar um objeto replicado perdido se agir imediatamente.
+
+
+CAUTION: Entre em contato com o suporte técnico para obter assistência com este procedimento.
+
+.Passos
+. Em um nó de administração, pesquise nos logs de auditoria possíveis localizações de objetos:
++
+.. Efetue login no nó da grade:
++
+... Digite o seguinte comando: `ssh admin@grid_node_IP`
+... Digite a senha listada no `Passwords.txt` arquivo.
+... Digite o seguinte comando para alternar para root: `su -`
+... Digite a senha listada no `Passwords.txt` arquivo.  Quando você está logado como root, o prompt muda de `$` para `#` .
+
+
+.. [[substep-1b]]Altere para o diretório onde os logs de auditoria estão localizados.
++
+--
+O diretório do log de auditoria e os nós aplicáveis dependem das configurações de destino da auditoria.
+
+[cols="1a,2a"]
+|===
+| Opção | Destino 
+
+
+ a| 
+Nós locais (padrão)
+ a| 
+`/var/local/log/localaudit.log`
+
+
+
+ a| 
+Nós de administração/nós locais
+ a| 
+*** Nós de administração (primários e não primários): `/var/local/audit/export/audit.log`
+*** Todos os nós: O `/var/local/log/localaudit.log` o arquivo normalmente está vazio ou ausente neste modo.
+
+
+
+
+ a| 
+Servidor syslog externo
+ a| 
+`/var/local/log/localaudit.log`
+
+|===
+Dependendo das configurações de destino da auditoria, insira: `cd /var/local/log` ou `/var/local/audit/export/`
+
+Para saber mais, consultelink:../monitor/configure-audit-messages.html#select-audit-information-destinations["Selecione destinos de informações de auditoria"] .
+
+--
+.. Use grep para extrair olink:../audit/object-ingest-transactions.html["mensagens de auditoria associadas ao objeto potencialmente perdido"] e enviá-los para um arquivo de saída.  Digitar: `grep uuid-value audit_file_name > output_file_name`
++
+Por exemplo:
+
++
+[listing]
+----
+Admin: # grep 926026C4-00A4-449B-AC72-BCCA72DD1311 audit.log > /var/local/tmp/messages_about_lost_object.txt
+----
+.. Use grep para extrair as mensagens de auditoria de Localização Perdida (LLST) deste arquivo de saída.  Digitar: `grep LLST output_file_name`
++
+Por exemplo:
+
++
+[listing]
+----
+Admin: # grep LLST /var/local/tmp/messages_about_lost_objects.txt
+----
++
+Uma mensagem de auditoria LLST se parece com esta mensagem de exemplo.
+
++
+[listing]
+----
+[AUDT:[NOID(UI32):12448208][CBIL(UI64):0x38186FE53E3C49A5]
+[UUID(CSTR):"926026C4-00A4-449B-AC72-BCCA72DD1311"][LTYP(FC32):CLDI]
+[PCLD(CSTR):"/var/local/rangedb/1/p/17/11/00rH0%DkRs&LgA#3tN6"]
+[TSRC(FC32):SYST][RSLT(FC32):NONE][AVER(UI32):10][ATIM(UI64):1581535134379225]
+[ATYP(FC32):LLST][ANID(UI32):12448208][AMID(FC32):CLSM][ATID(UI64):7086871083190743409]]
+----
+.. Localize o campo PCLD e o campo NOID na mensagem LLST.
++
+Se presente, o valor de PCLD é o caminho completo no disco para a cópia do objeto replicado ausente.  O valor de NOID é o ID do nó do LDR onde uma cópia do objeto pode ser encontrada.
+
++
+Se você encontrar a localização de um objeto, poderá restaurá-lo.
+
+.. Encontre o nó de armazenamento associado a este ID de nó LDR.  No Grid Manager, selecione *SUPORTE* > *Ferramentas* > *Topologia de grade*.  Em seguida, selecione *_Data Center_* > *_Storage Node_* > *LDR*.
++
+O ID do nó para o serviço LDR está na tabela Informações do nó.  Revise as informações de cada nó de armazenamento até encontrar aquele que hospeda este LDR.
+
+
+
+. Determine se o objeto existe no nó de armazenamento indicado na mensagem de auditoria:
++
+.. Efetue login no nó da grade:
++
+... Digite o seguinte comando: `ssh admin@grid_node_IP`
+... Digite a senha listada no `Passwords.txt` arquivo.
+... Digite o seguinte comando para alternar para root: `su -`
+... Digite a senha listada no `Passwords.txt` arquivo.
++
+Quando você está logado como root, o prompt muda de `$` para `#` .
+
+
+
+.. Determine se o caminho do arquivo para o objeto existe.
++
+Para o caminho do arquivo do objeto, use o valor de PCLD da mensagem de auditoria LLST.
+
++
+Por exemplo, insira:
+
++
+[listing]
+----
+ls '/var/local/rangedb/1/p/17/11/00rH0%DkRs&LgA%#3tN6'
+----
++
+
+NOTE: Sempre coloque o caminho do arquivo objeto entre aspas simples nos comandos para escapar de quaisquer caracteres especiais.
+
++
+*** Se o caminho do objeto não for encontrado, o objeto será perdido e não poderá ser restaurado usando este procedimento. Entre em contato com o suporte técnico.
+*** Se o caminho do objeto for encontrado, continue com a próxima etapa.  Você pode tentar restaurar o objeto encontrado de volta para StorageGRID.
+
+
+
+
+. Se o caminho do objeto foi encontrado, tente restaurar o objeto para StorageGRID:
++
+.. No mesmo nó de armazenamento, altere a propriedade do arquivo de objeto para que ele possa ser gerenciado pelo StorageGRID.  Digitar: `chown ldr-user:bycast 'file_path_of_object'`
+.. Faça telnet para o host local 1402 para acessar o console LDR.  Digitar: `telnet 0 1402`
+.. Digitar: `cd /proc/STOR`
+.. Digitar: `Object_Found 'file_path_of_object'`
++
+Por exemplo, insira:
+
++
+[listing]
+----
+Object_Found '/var/local/rangedb/1/p/17/11/00rH0%DkRs&LgA%#3tN6'
+----
++
+Emitindo o `Object_Found` O comando notifica a grade sobre a localização do objeto.  Ele também aciona as políticas ILM ativas, que fazem cópias adicionais conforme especificado em cada política.
+
++
+
+NOTE: Se o nó de armazenamento onde você encontrou o objeto estiver offline, você poderá copiar o objeto para qualquer nó de armazenamento que esteja online.  Coloque o objeto em qualquer diretório /var/local/rangedb do nó de armazenamento online.  Em seguida, emita o `Object_Found` comando usando esse caminho de arquivo para o objeto.
+
++
+*** Se o objeto não puder ser restaurado, o `Object_Found` o comando falha. Entre em contato com o suporte técnico.
+*** Se o objeto foi restaurado com sucesso para StorageGRID, uma mensagem de sucesso será exibida. Por exemplo:
++
+[listing]
+----
+ade 12448208: /proc/STOR > Object_Found '/var/local/rangedb/1/p/17/11/00rH0%DkRs&LgA%#3tN6'
+
+ade 12448208: /proc/STOR > Object found succeeded.
+First packet of file was valid. Extracted key: 38186FE53E3C49A5
+Renamed '/var/local/rangedb/1/p/17/11/00rH0%DkRs&LgA%#3tN6' to '/var/local/rangedb/1/p/17/11/00rH0%DkRt78Ila#3udu'
+----
++
+Continue com o próximo passo.
+
+
+
+
+
+. Se o objeto foi restaurado com sucesso para StorageGRID, verifique se os novos locais foram criados:
++
+.. Sign in no Grid Manager usando umlink:../admin/web-browser-requirements.html["navegador da web compatível"] .
+.. Selecione *ILM* > *Consulta de metadados do objeto*.
+.. Digite o UUID e selecione *Procurar*.
+.. Revise os metadados e verifique os novos locais.
+
+
+. Em um nó de administração, pesquise nos logs de auditoria a mensagem de auditoria ORLM para este objeto para confirmar se o gerenciamento do ciclo de vida das informações (ILM) colocou cópias conforme necessário.
++
+.. Efetue login no nó da grade:
++
+... Digite o seguinte comando: `ssh admin@grid_node_IP`
+... Digite a senha listada no `Passwords.txt` arquivo.
+... Digite o seguinte comando para alternar para root: `su -`
+... Digite a senha listada no `Passwords.txt` arquivo.  Quando você está logado como root, o prompt muda de `$` para `#` .
+
+
+.. Mude para o diretório onde os logs de auditoria estão localizados.  Consulte<<substep-1b,subetapa 1. b>> .
+.. Use grep para extrair as mensagens de auditoria associadas ao objeto para um arquivo de saída.  Digitar: `grep uuid-value audit_file_name > output_file_name`
++
+Por exemplo:
+
++
+[listing]
+----
+Admin: # grep 926026C4-00A4-449B-AC72-BCCA72DD1311 audit.log > /var/local/tmp/messages_about_restored_object.txt
+----
+.. Use grep para extrair as mensagens de auditoria do Object Rules Met (ORLM) deste arquivo de saída.  Digitar: `grep ORLM output_file_name`
++
+Por exemplo:
+
++
+[listing]
+----
+Admin: # grep ORLM /var/local/tmp/messages_about_restored_object.txt
+----
++
+Uma mensagem de auditoria ORLM se parece com esta mensagem de exemplo.
+
++
+[listing]
+----
+[AUDT:[CBID(UI64):0x38186FE53E3C49A5][RULE(CSTR):"Make 2 Copies"]
+[STAT(FC32):DONE][CSIZ(UI64):0][UUID(CSTR):"926026C4-00A4-449B-AC72-BCCA72DD1311"]
+[LOCS(CSTR):"**CLDI 12828634 2148730112**, CLDI 12745543 2147552014"]
+[RSLT(FC32):SUCS][AVER(UI32):10][ATYP(FC32):ORLM][ATIM(UI64):1563398230669]
+[ATID(UI64):15494889725796157557][ANID(UI32):13100453][AMID(FC32):BCMS]]
+----
+.. Encontre o campo LOCS na mensagem de auditoria.
++
+Se presente, o valor de CLDI em LOCS é o ID do nó e o ID do volume onde uma cópia do objeto foi criada.  Esta mensagem mostra que o ILM foi aplicado e que duas cópias de objeto foram criadas em dois locais na grade.
+
+
+
+. link:resetting-lost-and-missing-object-counts.html["Redefinir a contagem de objetos perdidos e desaparecidos"]no Gerenciador de Grade.
+

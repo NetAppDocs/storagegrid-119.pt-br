@@ -1,0 +1,142 @@
+---
+permalink: admin/troubleshooting-platform-services.html 
+sidebar: sidebar 
+keywords: troubleshoot platform services, platform services endpoint error 
+summary: Os pontos de extremidade usados nos serviços da plataforma são criados e mantidos pelos usuários locatários no Gerenciador de Locatários; no entanto, se um locatário tiver problemas para configurar ou usar os serviços da plataforma, você poderá usar o Gerenciador de Grade para ajudar a resolver o problema. 
+---
+= Solucionar problemas de serviços de plataforma
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Os pontos de extremidade usados nos serviços da plataforma são criados e mantidos pelos usuários locatários no Gerenciador de Locatários; no entanto, se um locatário tiver problemas para configurar ou usar os serviços da plataforma, você poderá usar o Gerenciador de Grade para ajudar a resolver o problema.
+
+
+
+== Problemas com novos endpoints
+
+Antes que um locatário possa usar os serviços da plataforma, ele deve criar um ou mais pontos de extremidade usando o Gerenciador de Locatários.  Cada ponto de extremidade representa um destino externo para um serviço de plataforma, como um bucket StorageGRID S3, um bucket Amazon Web Services, um tópico Amazon Simple Notification Service, um tópico Kafka ou um cluster Elasticsearch hospedado localmente ou na AWS.  Cada ponto de extremidade inclui a localização do recurso externo e as credenciais necessárias para acessar esse recurso.
+
+Quando um locatário cria um ponto de extremidade, o sistema StorageGRID valida que o ponto de extremidade existe e que pode ser acessado usando as credenciais especificadas.  A conexão com o ponto de extremidade é validada a partir de um nó em cada site.
+
+Se a validação do ponto de extremidade falhar, uma mensagem de erro explicará o motivo da falha.  O usuário locatário deve resolver o problema e tentar criar o endpoint novamente.
+
+
+NOTE: A criação do endpoint falhará se os serviços da plataforma não estiverem habilitados para a conta do locatário.
+
+
+
+== Problemas com endpoints existentes
+
+Se ocorrer um erro quando o StorageGRID tentar acessar um ponto de extremidade existente, uma mensagem será exibida no painel do Gerenciador de Tenants.
+
+image::../media/tenant_dashboard_endpoint_error.png[mensagem de erro de ponto de extremidade no painel]
+
+Os usuários locatários podem acessar a página Endpoints para revisar a mensagem de erro mais recente para cada endpoint e determinar há quanto tempo o erro ocorreu.  A coluna *Último erro* exibe a mensagem de erro mais recente para cada ponto de extremidade e indica há quanto tempo o erro ocorreu.  Erros que incluem oimage:../media/icon_alert_red_critical.png["Ícone X vermelho"] ícone ocorreu nos últimos 7 dias.
+
+image::../media/endpoints_last_error.png[captura de tela da página Endpoints mostrando a coluna Último erro]
+
+
+NOTE: Algumas mensagens de erro na coluna *Último erro* podem incluir um logID entre parênteses.  Um administrador de grade ou suporte técnico pode usar esse ID para localizar informações mais detalhadas sobre o erro no bycast.log.
+
+
+
+== Problemas relacionados a servidores proxy
+
+Se você configurou umlink:configuring-storage-proxy-settings.html["proxy de armazenamento"] entre os nós de armazenamento e os pontos de extremidade do serviço de plataforma, podem ocorrer erros se o serviço de proxy não permitir mensagens do StorageGRID. Para resolver esses problemas, verifique as configurações do seu servidor proxy para garantir que as mensagens relacionadas ao serviço da plataforma não estejam bloqueadas.
+
+
+
+== Determinar se ocorreu um erro
+
+Se algum erro de endpoint tiver ocorrido nos últimos 7 dias, o painel no Gerenciador de Tenants exibirá uma mensagem de alerta.  Você pode acessar a página Endpoints para ver mais detalhes sobre o erro.
+
+
+
+== As operações do cliente falham
+
+Alguns problemas de serviços de plataforma podem causar falhas nas operações do cliente no bucket S3.  Por exemplo, as operações do cliente S3 falharão se o serviço interno da Máquina de Estado Replicado (RSM) parar ou se houver muitas mensagens de serviços de plataforma enfileiradas para entrega.
+
+Para verificar o status dos serviços:
+
+. Selecione *SUPORTE* > *Ferramentas* > *Topologia de grade*.
+. Selecione *_site_* > *_Nó de Armazenamento_* > *SSM* > *Serviços*.
+
+
+
+
+== Erros de endpoint recuperáveis e irrecuperáveis
+
+Após a criação dos endpoints, erros de solicitação de serviço de plataforma podem ocorrer por vários motivos.  Alguns erros podem ser recuperados com intervenção do usuário.  Por exemplo, erros recuperáveis podem ocorrer pelos seguintes motivos:
+
+* As credenciais do usuário foram excluídas ou expiraram.
+* O bucket de destino não existe.
+* A notificação não pode ser entregue.
+
+
+Se o StorageGRID encontrar um erro recuperável, a solicitação de serviço da plataforma será repetida até ser bem-sucedida.
+
+Outros erros são irrecuperáveis. Por exemplo, um erro irrecuperável ocorre se o ponto de extremidade for excluído.
+
+Se o StorageGRID encontrar um erro de endpoint irrecuperável:
+
+* No Grid Manager, acesse *Suporte* > *Ferramentas* > *Métricas* > *Grafana* > *Visão geral dos serviços de plataforma* para visualizar detalhes do erro.
+* No Gerenciador de Tenants, acesse *ARMAZENAMENTO (S3)* > *Pontos de extremidade dos serviços de plataforma* para visualizar os detalhes do erro.
+* Verifique o `/var/local/log/bycast-err.log` para erros relacionados.  Os nós de armazenamento que têm o serviço ADC contêm este arquivo de log.
+
+
+
+
+== As mensagens dos serviços da plataforma não podem ser entregues
+
+Se o destino encontrar um problema que o impeça de aceitar mensagens de serviços de plataforma, a operação do cliente no bucket será bem-sucedida, mas a mensagem de serviços de plataforma não será entregue. Por exemplo, esse erro pode ocorrer se as credenciais forem atualizadas no destino de forma que o StorageGRID não consiga mais se autenticar no serviço de destino.
+
+Verifique se há alertas relacionados.
+
+
+
+== Desempenho mais lento para solicitações de serviço de plataforma
+
+O software StorageGRID pode limitar as solicitações S3 recebidas para um bucket se a taxa na qual as solicitações estão sendo enviadas exceder a taxa na qual o ponto de extremidade de destino pode receber as solicitações.  A limitação só ocorre quando há um acúmulo de solicitações aguardando para serem enviadas ao ponto de extremidade de destino.
+
+O único efeito visível é que as solicitações S3 recebidas levarão mais tempo para serem executadas.  Se você começar a detectar um desempenho significativamente mais lento, reduza a taxa de ingestão ou use um ponto de extremidade com maior capacidade.  Se o acúmulo de solicitações continuar a crescer, as operações do cliente S3 (como solicitações PUT) acabarão falhando.
+
+As solicitações do CloudMirror têm maior probabilidade de serem afetadas pelo desempenho do ponto de extremidade de destino porque essas solicitações geralmente envolvem mais transferência de dados do que as solicitações de integração de pesquisa ou notificação de eventos.
+
+
+
+== Falha nas solicitações de serviço da plataforma
+
+Para visualizar a taxa de falha de solicitação para serviços de plataforma:
+
+. Selecione *NODES*.
+. Selecione *_site_* > *Serviços de plataforma*.
+. Veja o gráfico de taxas de erros de solicitação.
++
+image::../media/nodes_page_site_level_platform_services.gif[Serviços de plataforma de nível de site de página de nós]
+
+
+
+
+
+== Alerta de serviços de plataforma indisponíveis
+
+O alerta *Serviços de plataforma indisponíveis* indica que nenhuma operação de serviço de plataforma pode ser executada em um site porque poucos nós de armazenamento com o serviço RSM estão em execução ou disponíveis.
+
+O serviço RSM garante que as solicitações de serviço da plataforma sejam enviadas aos seus respectivos terminais.
+
+Para resolver esse alerta, determine quais nós de armazenamento no site incluem o serviço RSM.  (O serviço RSM está presente em nós de armazenamento que também incluem o serviço ADC.)  Em seguida, certifique-se de que a maioria simples desses nós de armazenamento esteja em execução e disponível.
+
+
+NOTE: Se mais de um nó de armazenamento que contém o serviço RSM falhar em um site, você perderá todas as solicitações de serviço de plataforma pendentes para esse site.
+
+
+
+== Orientações adicionais para solução de problemas de endpoints de serviços de plataforma
+
+Para obter informações adicionais, consultelink:../tenant/troubleshooting-platform-services-endpoint-errors.html["Use uma conta de locatário > Solucionar problemas de endpoints de serviços de plataforma"] .
+
+.Informações relacionadas
+link:../troubleshoot/index.html["Solucionar problemas do sistema StorageGRID"]

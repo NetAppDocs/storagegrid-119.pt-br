@@ -1,0 +1,63 @@
+---
+permalink: maintain/selecting-start-recovery-to-configure-storage-node.html 
+sidebar: sidebar 
+keywords: storagegrid, recover, storage node 
+summary: Após substituir um nó de armazenamento, você deve selecionar Iniciar recuperação no Grid Manager para configurar o novo nó como um substituto para o nó com falha. 
+---
+= Selecione Iniciar recuperação para configurar o nó de armazenamento
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Após substituir um nó de armazenamento, você deve selecionar Iniciar recuperação no Grid Manager para configurar o novo nó como um substituto para o nó com falha.
+
+.Antes de começar
+* Você está conectado ao Grid Manager usando umlink:../admin/web-browser-requirements.html["navegador da web compatível"] .
+* Você tem olink:../admin/admin-group-permissions.html["Permissão de acesso de manutenção ou root"] .
+* Você tem a senha de provisionamento.
+* Você implantou e configurou o nó de substituição.
+* Você tem a data de início de quaisquer trabalhos de reparo para dados codificados para eliminação.
+* Você verificou que o nó de armazenamento não foi reconstruído nos últimos 15 dias.
+
+
+.Sobre esta tarefa
+Se o nó de armazenamento estiver instalado como um contêiner em um host Linux, você deverá executar esta etapa somente se uma destas condições for verdadeira:
+
+* Você teve que usar o `--force` sinalizador para importar o nó ou você emitiu `storagegrid node force-recovery _node-name_`
+* Você teve que fazer uma reinstalação completa do nó ou precisou restaurar /var/local.
+
+
+.Passos
+. No Grid Manager, selecione *MANUTENÇÃO* > *Tarefas* > *Recuperação*.
+. Selecione o nó da grade que você deseja recuperar na lista Nós Pendentes.
++
+Os nós aparecem na lista depois de falharem, mas você não pode selecionar um nó até que ele tenha sido reinstalado e esteja pronto para recuperação.
+
+. Digite a *senha de provisionamento*.
+. Clique em *Iniciar recuperação*.
++
+image::../media/4b_select_recovery_node.png[captura de tela mostrando a página Manutenção > Recuperação]
+
+. Monitore o progresso da recuperação na tabela Nó da grade em recuperação.
++
+
+NOTE: Enquanto o procedimento de recuperação estiver em execução, você pode clicar em *Redefinir* para iniciar uma nova recuperação.  Uma caixa de diálogo aparece, indicando que o nó ficará em um estado indeterminado se você redefinir o procedimento.
+
++
+image::../media/recovery_reset_warning.gif[captura de tela mostrando a caixa de diálogo de aviso de recuperação de reinicialização]
+
++
+Se você quiser tentar a recuperação novamente após redefinir o procedimento, deverá restaurar o nó para um estado pré-instalado, da seguinte maneira:
+
++
+** *VMware*: Exclua o nó de grade virtual implantado.  Então, quando estiver pronto para reiniciar a recuperação, reimplante o nó.
+** *Linux*: Reinicie o nó executando este comando no host Linux: `storagegrid node force-recovery _node-name_`
+
+
+. Quando o nó de armazenamento atingir o estágio "Aguardando etapas manuais", vá paralink:remounting-and-reformatting-storage-volumes-manual-steps.html["Remontar e reformatar volumes de armazenamento (etapas manuais)"] .
++
+image::../media/recovery_reset_button.gif[captura de tela mostrando o estágio "aguardando etapas manuais"]
+
+

@@ -1,0 +1,154 @@
+---
+permalink: fabricpool/using-storagegrid-ilm-with-fabricpool-data.html 
+sidebar: sidebar 
+keywords: FabricPool, requirements, ILM, information lifecycle management, ILM rule, ILM rules, ILM policy, erasure coding, replication, cloud storage pool, glacier 
+summary: Você pode usar este exemplo simples de política como ponto de partida para suas próprias regras e políticas de ILM. 
+---
+= Configurar ILM para dados do FabricPool
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Você pode usar este exemplo simples de política como ponto de partida para suas próprias regras e políticas de ILM.
+
+Este exemplo pressupõe que você esteja projetando as regras do ILM e uma política do ILM para um sistema StorageGRID que tem quatro nós de armazenamento em um único data center em Denver, Colorado.  Os dados do FabricPool neste exemplo usam um bucket chamado `fabricpool-bucket` .
+
+
+CAUTION: As seguintes regras e políticas do ILM são apenas exemplos.  Há muitas maneiras de configurar regras de ILM.  Antes de ativar uma nova política, simule-a para confirmar se ela funcionará conforme o esperado para proteger o conteúdo contra perdas.  Para saber mais, consultelink:../ilm/index.html["Gerenciar objetos com ILM"] .
+
+
+CAUTION: Para evitar perda de dados, não use uma regra de ILM que irá expirar ou excluir dados da camada de nuvem do FabricPool .  Defina o período de retenção como *para sempre* para garantir que os objetos do FabricPool não sejam excluídos pelo StorageGRID ILM.
+
+.Antes de começar
+* Você revisou olink:best-practices-ilm.html["melhores práticas para usar ILM com dados do FabricPool"] .
+* Você está conectado ao Grid Manager usando umlink:../admin/web-browser-requirements.html["navegador da web compatível"] .
+* Você tem olink:../admin/admin-group-permissions.html["Permissão de acesso ILM ou Root"] .
+* Se você atualizou para o StorageGRID 11.9 de uma versão anterior do StorageGRID , você configurou o pool de armazenamento que usará. Em geral, você deve criar um pool de armazenamento para cada site StorageGRID que usará para armazenar dados.
++
+
+NOTE: Este pré-requisito não se aplica se você instalou inicialmente o StorageGRID 11.7 ou 11.8.  Quando você instala inicialmente qualquer uma dessas versões, os pools de armazenamento são criados automaticamente para cada site.
+
+
+
+.Passos
+. Crie uma regra ILM que se aplique somente aos dados em `fabricpool-bucket` . Esta regra de exemplo cria cópias codificadas para eliminação.
++
+[cols="1a,2a"]
+|===
+| Definição de regra | Valor de exemplo 
+
+
+ a| 
+Nome da regra
+ a| 
+Codificação de eliminação 2 + 1 para dados do FabricPool
+
+
+
+ a| 
+Nome do balde
+ a| 
+`fabricpool-bucket`
+
+Você também pode filtrar pela conta de locatário do FabricPool .
+
+
+
+ a| 
+Filtros avançados
+ a| 
+Tamanho do objeto maior que 0,2 MB.
+
+*Observação:* O FabricPool grava apenas objetos de 4 MB, mas você deve adicionar um filtro de tamanho de objeto porque esta regra usa codificação de eliminação.
+
+
+
+ a| 
+Tempo de referência
+ a| 
+Tempo de ingestão
+
+
+
+ a| 
+Período de tempo e colocações
+ a| 
+Desde o dia 0, guarde para sempre
+
+Armazene objetos por meio de codificação de eliminação usando o esquema EC 2+1 em Denver e retenha esses objetos no StorageGRID para sempre.
+
+
+CAUTION: Para evitar perda de dados, não use uma regra de ILM que irá expirar ou excluir dados da camada de nuvem do FabricPool .
+
+
+
+ a| 
+Comportamento de ingestão
+ a| 
+Equilibrado
+
+|===
+. Crie uma regra ILM padrão que criará duas cópias replicadas de quaisquer objetos não correspondidos pela primeira regra.  Não selecione um filtro básico (conta de locatário ou nome do bucket) ou nenhum filtro avançado.
++
+[cols="1a,2a"]
+|===
+| Definição de regra | Valor de exemplo 
+
+
+ a| 
+Nome da regra
+ a| 
+Duas cópias replicadas
+
+
+
+ a| 
+Nome do balde
+ a| 
+_nenhum_
+
+
+
+ a| 
+Filtros avançados
+ a| 
+_nenhum_
+
+
+
+ a| 
+Tempo de referência
+ a| 
+Tempo de ingestão
+
+
+
+ a| 
+Período de tempo e colocações
+ a| 
+Desde o dia 0, guarde para sempre
+
+Armazene objetos replicando 2 cópias em Denver.
+
+
+
+ a| 
+Comportamento de ingestão
+ a| 
+Equilibrado
+
+|===
+. Crie uma política de ILM e selecione as duas regras.  Como a regra de replicação não usa nenhum filtro, ela pode ser a regra padrão (última) para a política.
+. Ingerir objetos de teste na grade.
+. Simule a política com os objetos de teste para verificar o comportamento.
+. Ative a política.
+
+
+Quando esta política é ativada, o StorageGRID coloca os dados do objeto da seguinte maneira:
+
+* Os dados hierarquizados do FabricPool em `fabricpool-bucket` será codificado por eliminação usando o esquema de codificação de eliminação 2+1.  Dois fragmentos de dados e um fragmento de paridade serão colocados em três nós de armazenamento diferentes.
+* Todos os objetos em todos os outros buckets serão replicados.  Duas cópias serão criadas e colocadas em dois nós de armazenamento diferentes.
+* As cópias serão mantidas no StorageGRID para sempre.  O StorageGRID ILM não excluirá esses objetos.
+

@@ -1,0 +1,35 @@
+---
+permalink: maintain/replacing-failed-node-with-services-appliance.html 
+sidebar: sidebar 
+keywords: storagegrid, recover, replace failed node, services appliance 
+summary: Você pode usar um dispositivo de serviços para recuperar um nó de gateway com falha, um nó de administração não primário com falha ou um nó de administração primário com falha que estava hospedado no VMware, em um host Linux ou em um dispositivo de serviços.  Este procedimento é uma etapa do procedimento de recuperação do nó da grade. 
+---
+= Substituir nó com falha por dispositivo de serviços
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Você pode usar um dispositivo de serviços para recuperar um nó de gateway com falha, um nó de administração não primário com falha ou um nó de administração primário com falha que estava hospedado no VMware, em um host Linux ou em um dispositivo de serviços.  Este procedimento é uma etapa do procedimento de recuperação do nó da grade.
+
+.Antes de começar
+* Você determinou que uma das seguintes situações é verdadeira:
++
+** A máquina virtual que hospeda o nó não pode ser restaurada.
+** O host Linux físico ou virtual para o nó da grade falhou e deve ser substituído.
+** O dispositivo de serviços que hospeda o nó da rede deve ser substituído.
+
+
+* Você confirmou que a versão do instalador do StorageGRID Appliance no appliance de serviços corresponde à versão do software do seu sistema StorageGRID . Ver https://docs.netapp.com/us-en/storagegrid-appliances/installconfig/verifying-and-upgrading-storagegrid-appliance-installer-version.html["Verifique e atualize a versão do instalador do StorageGRID Appliance"^] .
+
+
+
+NOTE: Não implante um dispositivo de serviços SG110 e um SG1100 ou um dispositivo de serviços SG100 e um SG1000 no mesmo site.  Pode resultar em desempenho imprevisível.
+
+.Sobre esta tarefa
+Você pode usar um dispositivo de serviços para recuperar um nó de grade com falha nos seguintes casos:
+
+* O nó com falha foi hospedado no VMware ou Linux (link:installing-services-appliance-platform-change-only.html["mudança de plataforma"] )
+* O nó com falha foi hospedado em um dispositivo de serviços (link:preparing-appliance-for-reinstallation-platform-replacement-only.html["substituição de plataforma"] )
+

@@ -1,0 +1,140 @@
+---
+permalink: admin/grid-federation-compare-cgr-to-cloudmirror.html 
+sidebar: sidebar 
+keywords: cross-grid replication, cloudmirror replication 
+summary: Ao começar a usar a federação de grade, revise as semelhanças e diferenças entre a replicação entre grades e o serviço de replicação do StorageGRID CloudMirror. 
+---
+= Comparar a replicação entre grades e a replicação do CloudMirror
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Ao começar a usar a federação de grade, revise as semelhanças e diferenças entrelink:grid-federation-what-is-cross-grid-replication.html["replicação entre grades"] e olink:../tenant/understanding-cloudmirror-replication-service.html["Serviço de replicação StorageGRID CloudMirror"] .
+
+[cols="1a,3a,3a"]
+|===
+|  | Replicação entre grades | Serviço de replicação CloudMirror 
+
+
+ a| 
+Qual é o objetivo principal?
+ a| 
+Um sistema StorageGRID atua como um sistema de recuperação de desastres.  Objetos em um bucket podem ser replicados entre as grades em uma ou ambas as direções.
+ a| 
+Permite que um locatário replique automaticamente objetos de um bucket no StorageGRID (origem) para um bucket S3 externo (destino).
+
+A replicação do CloudMirror cria uma cópia independente de um objeto em uma infraestrutura S3 independente. Essa cópia independente não é usada como backup, mas geralmente é processada na nuvem.
+
+
+
+ a| 
+Como é configurado?
+ a| 
+. Configure uma conexão de federação de grade entre duas grades.
+. Adicione novas contas de locatários, que são clonadas automaticamente para a outra grade.
+. Adicione novos grupos de locatários e usuários, que também são clonados.
+. Crie buckets correspondentes em cada grade e permita que a replicação entre grades ocorra em uma ou ambas as direções.
+
+ a| 
+. Um usuário locatário configura a replicação do CloudMirror definindo um ponto de extremidade do CloudMirror (endereço IP, credenciais e assim por diante) usando o Gerenciador de Locatários ou a API do S3.
+. Qualquer bucket pertencente a essa conta de locatário pode ser configurado para apontar para o ponto de extremidade do CloudMirror.
+
+
+
+
+ a| 
+Quem é responsável por configurá-lo?
+ a| 
+* Um administrador de grade configura a conexão e os inquilinos.
+* Os usuários locatários configuram os grupos, usuários, chaves e buckets.
+
+ a| 
+Normalmente, um usuário locatário.
+
+
+
+ a| 
+Qual é o destino?
+ a| 
+Um bucket S3 correspondente e idêntico no outro sistema StorageGRID na conexão de federação de grade.
+ a| 
+* Qualquer infraestrutura S3 compatível (incluindo Amazon S3).
+* Plataforma de nuvem do Google (GCP)
+
+
+
+
+ a| 
+O controle de versão do objeto é necessário?
+ a| 
+Sim, tanto o bucket de origem quanto o de destino devem ter o controle de versão de objetos habilitado.
+ a| 
+Não, a replicação do CloudMirror oferece suporte a qualquer combinação de buckets versionados e não versionados na origem e no destino.
+
+
+
+ a| 
+O que faz com que os objetos sejam movidos para o destino?
+ a| 
+Os objetos são replicados automaticamente quando são adicionados a um bucket que tem a replicação entre grades habilitada.
+ a| 
+Os objetos são replicados automaticamente quando são adicionados a um bucket que foi configurado com um endpoint do CloudMirror.  Objetos que existiam no bucket de origem antes do bucket ser configurado com o endpoint do CloudMirror não são replicados, a menos que sejam modificados.
+
+
+
+ a| 
+Como os objetos são replicados?
+ a| 
+A replicação entre grades cria objetos versionados e replica o ID da versão do bucket de origem para o bucket de destino.  Isso permite que a ordem das versões seja mantida em ambas as grades.
+ a| 
+A replicação do CloudMirror não requer buckets habilitados para controle de versão, portanto, o CloudMirror só pode manter a ordenação de uma chave dentro de um site.  Não há garantias de que a ordem será mantida para solicitações de um objeto em um site diferente.
+
+
+
+ a| 
+E se um objeto não puder ser replicado?
+ a| 
+O objeto é enfileirado para replicação, sujeito aos limites de armazenamento de metadados.
+ a| 
+O objeto é enfileirado para replicação, sujeito aos limites dos serviços da plataforma (consultelink:manage-platform-services-for-tenants.html["Recomendações para uso de serviços de plataforma"] ).
+
+
+
+ a| 
+Os metadados do sistema do objeto são replicados?
+ a| 
+Sim, quando um objeto é replicado para outra grade, seus metadados do sistema também são replicados.  Os metadados serão idênticos em ambas as grades.
+ a| 
+Não, quando um objeto é replicado para o bucket externo, seus metadados do sistema são atualizados.  Os metadados serão diferentes entre os locais, dependendo do horário de ingestão e do comportamento da infraestrutura independente do S3.
+
+
+
+ a| 
+Como os objetos são recuperados?
+ a| 
+Os aplicativos podem recuperar ou ler objetos fazendo uma solicitação ao bucket em qualquer grade.
+ a| 
+Os aplicativos podem recuperar ou ler objetos fazendo uma solicitação ao StorageGRID ou ao destino S3.  Por exemplo, suponha que você use a replicação do CloudMirror para espelhar objetos para uma organização parceira.  O parceiro pode usar seus próprios aplicativos para ler ou atualizar objetos diretamente do destino S3.  Não é necessário usar o StorageGRID .
+
+
+
+ a| 
+O que acontece se um objeto for excluído?
+ a| 
+* Solicitações de exclusão que incluem um ID de versão nunca são replicadas para a grade de destino.
+* Solicitações de exclusão que não incluem um ID de versão adicionam um marcador de exclusão ao bucket de origem, que pode ser replicado opcionalmente para a grade de destino.
+* Se a replicação entre grades for configurada para apenas uma direção, os objetos no bucket de destino poderão ser excluídos sem afetar a origem.
+
+ a| 
+Os resultados variam de acordo com o estado de versão dos buckets de origem e destino (que não precisam ser os mesmos):
+
+* Se ambos os buckets forem versionados, uma solicitação de exclusão adicionará um marcador de exclusão em ambos os locais.
+* Se apenas o bucket de origem for versionado, uma solicitação de exclusão adicionará um marcador de exclusão à origem, mas não ao destino.
+* Se nenhum dos buckets tiver versão, uma solicitação de exclusão excluirá o objeto da origem, mas não do destino.
+
+
+Da mesma forma, objetos no bucket de destino podem ser excluídos sem afetar a origem.
+
+|===

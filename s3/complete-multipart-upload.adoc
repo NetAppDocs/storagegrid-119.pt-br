@@ -1,0 +1,87 @@
+---
+permalink: s3/complete-multipart-upload.html 
+sidebar: sidebar 
+keywords: multipart upload, object, object size 
+summary: A operação CompleteMultipartUpload conclui um upload multiparte de um objeto reunindo as partes carregadas anteriormente. 
+---
+= Upload completo de várias partes
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+A operação CompleteMultipartUpload conclui um upload multiparte de um objeto reunindo as partes carregadas anteriormente.
+
+
+NOTE: O StorageGRID suporta valores não consecutivos em ordem crescente para `partNumber` parâmetro de solicitação com CompleteMultipartUpload.  O parâmetro pode começar com qualquer valor.
+
+
+
+== Resolver conflitos
+
+Solicitações de clientes conflitantes, como dois clientes gravando na mesma chave, são resolvidas com base no princípio de "últimos ganhos".  O tempo para a avaliação de "últimas vitórias" é baseado em quando o sistema StorageGRID conclui uma determinada solicitação, e não em quando os clientes S3 iniciam uma operação.
+
+
+
+== Cabeçalhos de solicitação suportados
+
+Os seguintes cabeçalhos de solicitação são suportados:
+
+* `x-amz-checksum-sha256`
+* `x-amz-storage-class`
++
+O `x-amz-storage-class` cabeçalho afeta quantas cópias de objeto o StorageGRID cria se a regra ILM correspondente especificar olink:../ilm/data-protection-options-for-ingest.html["Opção de confirmação dupla ou ingestão balanceada"] .
+
+* `STANDARD`
++
+(Padrão) Especifica uma operação de ingestão de confirmação dupla quando a regra ILM usa a opção Confirmação dupla ou quando a opção Balanceada retorna para a criação de cópias provisórias.
+
+* `REDUCED_REDUNDANCY`
++
+Especifica uma operação de ingestão de confirmação única quando a regra ILM usa a opção Confirmação dupla ou quando a opção Balanceada retorna para a criação de cópias provisórias.
+
++
+
+NOTE: Se você estiver ingerindo um objeto em um bucket com o S3 Object Lock habilitado, o `REDUCED_REDUNDANCY` a opção é ignorada.  Se você estiver ingerindo um objeto em um bucket compatível legado, o `REDUCED_REDUNDANCY` opção retorna um erro.  O StorageGRID sempre executará uma ingestão de confirmação dupla para garantir que os requisitos de conformidade sejam atendidos.
+
+
+
+
+CAUTION: Se um upload multiparte não for concluído em 15 dias, a operação será marcada como inativa e todos os dados associados serão excluídos do sistema.
+
+
+NOTE: O `ETag` o valor retornado não é uma soma MD5 dos dados, mas segue a implementação da API do Amazon S3 `ETag` valor para objetos multipartes.
+
+
+
+== Cabeçalhos de solicitação não suportados
+
+Os seguintes cabeçalhos de solicitação não são suportados:
+
+* `x-amz-sdk-checksum-algorithm`
+* `x-amz-trailer`
+
+
+
+
+== Controle de versão
+
+Esta operação conclui um upload multiparte.  Se o controle de versão estiver habilitado para um bucket, a versão do objeto será criada após a conclusão do upload multiparte.
+
+Se o controle de versão estiver habilitado para um bucket, um único `versionId` é gerado automaticamente para a versão do objeto que está sendo armazenado.  Esse `versionId` também é retornado na resposta usando o `x-amz-version-id` cabeçalho de resposta.
+
+Se o controle de versão for suspenso, a versão do objeto será armazenada com um valor nulo `versionId` e se uma versão nula já existir, ela será substituída.
+
+
+NOTE: Quando o controle de versão está habilitado para um bucket, a conclusão de um upload multiparte sempre cria uma nova versão, mesmo que haja uploads multiparte simultâneos concluídos na mesma chave de objeto.  Quando o controle de versão não está habilitado para um bucket, é possível iniciar um upload multiparte e, em seguida, fazer com que outro upload multiparte seja iniciado e concluído primeiro na mesma chave de objeto.  Em buckets não versionados, o upload multiparte concluído por último tem precedência.
+
+
+
+== Falha na replicação, notificação ou notificação de metadados
+
+Se o bucket onde o upload multiparte ocorre estiver configurado para um serviço de plataforma, o upload multiparte será bem-sucedido mesmo se a ação de replicação ou notificação associada falhar.
+
+Um locatário pode acionar a replicação com falha ou a notificação atualizando os metadados ou as tags do objeto.  Um locatário pode reenviar os valores existentes para evitar fazer alterações indesejadas.
+
+Consulte link:../admin/troubleshooting-platform-services.html["Solucionar problemas de serviços de plataforma"] .

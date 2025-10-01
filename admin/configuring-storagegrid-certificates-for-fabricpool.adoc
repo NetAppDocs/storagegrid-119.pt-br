@@ -1,0 +1,40 @@
+---
+permalink: admin/configuring-storagegrid-certificates-for-fabricpool.html 
+sidebar: sidebar 
+keywords: fabricpool, ONTAP certificates 
+summary: Para clientes S3 que realizam validação estrita de nome de host e não oferecem suporte à desabilitação da validação estrita de nome de host, como clientes ONTAP que usam FabricPool, você pode gerar ou carregar um certificado de servidor ao configurar o ponto de extremidade do balanceador de carga. 
+---
+= Configurar certificados StorageGRID para FabricPool
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Para clientes S3 que realizam validação estrita de nome de host e não oferecem suporte à desabilitação da validação estrita de nome de host, como clientes ONTAP que usam FabricPool, você pode gerar ou carregar um certificado de servidor ao configurar o ponto de extremidade do balanceador de carga.
+
+.Antes de começar
+* Você temlink:admin-group-permissions.html["permissões de acesso específicas"] .
+* Você está conectado ao Grid Manager usando umlink:../admin/web-browser-requirements.html["navegador da web compatível"] .
+
+
+.Sobre esta tarefa
+Ao criar um ponto de extremidade do balanceador de carga, você pode gerar um certificado de servidor autoassinado ou carregar um certificado assinado por uma autoridade de certificação (CA) conhecida.  Em ambientes de produção, você deve usar um certificado assinado por uma CA conhecida.  Certificados assinados por uma CA podem ser rotacionados sem interrupções.  Eles também são mais seguros porque oferecem melhor proteção contra ataques do tipo man-in-the-middle.
+
+As etapas a seguir fornecem diretrizes gerais para clientes S3 que usam o FabricPool.  Para obter informações e procedimentos mais detalhados, consultelink:../fabricpool/index.html["Configurar StorageGRID para FabricPool"] .
+
+.Passos
+. Opcionalmente, configure um grupo de alta disponibilidade (HA) para uso pelo FabricPool .
+. Crie um ponto de extremidade do balanceador de carga S3 para o FabricPool usar.
++
+Ao criar um ponto de extremidade do balanceador de carga HTTPS, você será solicitado a carregar seu certificado de servidor, a chave privada do certificado e o pacote de CA opcional.
+
+. Anexe o StorageGRID como uma camada de nuvem no ONTAP.
++
+Especifique a porta do ponto de extremidade do balanceador de carga e o nome de domínio totalmente qualificado usado no certificado da CA que você carregou.  Em seguida, forneça o certificado da CA.
+
++
+
+NOTE: Se uma CA intermediária emitiu o certificado StorageGRID , você deverá fornecer o certificado da CA intermediária.  Se o certificado StorageGRID foi emitido diretamente pela CA raiz, você deve fornecer o certificado da CA raiz.
+
+

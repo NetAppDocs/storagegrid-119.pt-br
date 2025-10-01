@@ -1,0 +1,26 @@
+---
+permalink: troubleshoot/troubleshooting-lost-and-missing-object-data.html 
+sidebar: sidebar 
+keywords: how to troubleshoot lost object data, how to troubleshoot missing object data 
+summary: Os objetos podem ser recuperados por vários motivos, incluindo solicitações de leitura de um aplicativo cliente, verificações em segundo plano de dados de objetos replicados, reavaliações de ILM e restauração de dados de objetos durante a recuperação de um nó de armazenamento. 
+---
+= Solucionar problemas de dados de objetos perdidos e ausentes
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Os objetos podem ser recuperados por vários motivos, incluindo solicitações de leitura de um aplicativo cliente, verificações em segundo plano de dados de objetos replicados, reavaliações de ILM e restauração de dados de objetos durante a recuperação de um nó de armazenamento.
+
+O sistema StorageGRID usa informações de localização nos metadados de um objeto para determinar de qual local recuperar o objeto. Se uma cópia do objeto não for encontrada no local esperado, o sistema tentará recuperar outra cópia do objeto de outro lugar no sistema, supondo que a política do ILM contenha uma regra para fazer duas ou mais cópias do objeto.
+
+Se essa recuperação for bem-sucedida, o sistema StorageGRID substituirá a cópia ausente do objeto. Caso contrário, o alerta *Objetos perdidos* é acionado, da seguinte forma:
+
+* Para cópias replicadas, se outra cópia não puder ser recuperada, o objeto será considerado perdido e o alerta será acionado.
+* Para cópias codificadas para eliminação, se uma cópia não puder ser recuperada do local esperado, o atributo Cópias Corrompidas Detectadas (ECOR) será incrementado em um antes de uma tentativa de recuperar uma cópia de outro local.  Se nenhuma outra cópia for encontrada, o alerta será disparado.
+
+
+Você deve investigar todos os alertas de *Objetos perdidos* imediatamente para determinar a causa raiz da perda e para determinar se o objeto ainda pode existir em um Nós de Armazenamento offline ou indisponível no momento. Ver link:../troubleshoot/investigating-lost-objects.html["Investigar objetos perdidos"] .
+
+No caso de dados de objetos sem cópias serem perdidos, não há solução de recuperação. No entanto, você deve zerar o contador de objetos perdidos para evitar que objetos perdidos conhecidos mascarem quaisquer novos objetos perdidos. Ver link:resetting-lost-and-missing-object-counts.html["Redefinir contagens de objetos perdidos e desaparecidos"] .

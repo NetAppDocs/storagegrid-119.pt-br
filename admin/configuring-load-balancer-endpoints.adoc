@@ -1,0 +1,553 @@
+---
+permalink: admin/configuring-load-balancer-endpoints.html 
+sidebar: sidebar 
+keywords: how to configure load balancer endpoint, how to attach certificate to load balancer endpoint 
+summary: Os pontos de extremidade do balanceador de carga determinam as portas e os protocolos de rede que os clientes S3 podem usar ao se conectar ao balanceador de carga StorageGRID nos nós de gateway e de administração.  Você também pode usar endpoints para acessar o Grid Manager, o Tenant Manager ou ambos. 
+---
+= Configurar pontos de extremidade do balanceador de carga
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Os pontos de extremidade do balanceador de carga determinam as portas e os protocolos de rede que os clientes S3 podem usar ao se conectar ao balanceador de carga StorageGRID nos nós de gateway e de administração.  Você também pode usar endpoints para acessar o Grid Manager, o Tenant Manager ou ambos.
+
+
+TIP: Os detalhes do Swift foram removidos desta versão do site de documentação. Ver https://docs.netapp.com/us-en/storagegrid-118/admin/configuring-client-connections.html["Configurar conexões de cliente S3 e Swift"^] .
+
+.Antes de começar
+* Você está conectado ao Grid Manager usando umlink:../admin/web-browser-requirements.html["navegador da web compatível"] .
+* Você tem olink:admin-group-permissions.html["Permissão de acesso root"] .
+* Você revisou olink:managing-load-balancing.html["considerações para balanceamento de carga"] .
+* Se você remapeou anteriormente uma porta que pretende usar para o ponto de extremidade do balanceador de carga, você temlink:../maintain/removing-port-remaps.html["removeu o remapeamento da porta"] .
+* Você criou todos os grupos de alta disponibilidade (HA) que planeja usar.  Grupos HA são recomendados, mas não obrigatórios. Ver link:managing-high-availability-groups.html["Gerenciar grupos de alta disponibilidade"] .
+* Se o ponto de extremidade do balanceador de carga for usado porlink:../admin/manage-s3-select-for-tenant-accounts.html["Inquilinos S3 para S3 Select"] , ele não deve usar os endereços IP ou FQDNs de nenhum nó bare-metal.  Somente dispositivos de serviços e nós de software baseados em VMware são permitidos para os pontos de extremidade do balanceador de carga usados para o S3 Select.
+* Você configurou todas as interfaces VLAN que planeja usar. Ver link:configure-vlan-interfaces.html["Configurar interfaces VLAN"] .
+* Se estiver criando um ponto de extremidade HTTPS (recomendado), você terá as informações para o certificado do servidor.
++
+
+NOTE: Alterações em um certificado de ponto de extremidade podem levar até 15 minutos para serem aplicadas a todos os nós.
+
++
+** Para carregar um certificado, você precisa do certificado do servidor, da chave privada do certificado e, opcionalmente, de um pacote de CA.
+** Para gerar um certificado, você precisa de todos os nomes de domínio e endereços IP que os clientes S3 usarão para acessar o ponto de extremidade.  Você também deve conhecer o assunto (Nome Distinto).
+** Se você quiser usar o certificado StorageGRID S3 API (que também pode ser usado para conexões diretas com nós de armazenamento), você já substituiu o certificado padrão por um certificado personalizado assinado por uma autoridade de certificação externa. Ver link:../admin/configuring-custom-server-certificate-for-storage-node.html["Configurar certificados da API S3"] .
+
+
+
+
+
+
+== Criar um ponto de extremidade do balanceador de carga
+
+Cada ponto de extremidade do balanceador de carga do cliente S3 especifica uma porta, um tipo de cliente (S3) e um protocolo de rede (HTTP ou HTTPS). Os pontos de extremidade do balanceador de carga da interface de gerenciamento especificam uma porta, um tipo de interface e uma rede de cliente não confiável.
+
+
+
+=== Acesse o assistente
+
+.Passos
+. Selecione *CONFIGURAÇÃO* > *Rede* > *Pontos de extremidade do balanceador de carga*.
+. Para criar um ponto de extremidade para um cliente S3 ou Swift, selecione a guia *Cliente S3 ou Swift*.
+. Para criar um ponto de extremidade para acesso ao Grid Manager, ao Tenant Manager ou a ambos, selecione a guia *Interface de gerenciamento*.
+. Selecione *Criar*.
+
+
+
+
+=== Insira os detalhes do ponto de extremidade
+
+.Passos
+. Selecione as instruções apropriadas para inserir detalhes sobre o tipo de ponto de extremidade que você deseja criar.
+
+
+[role="tabbed-block"]
+====
+.Cliente S3 ou Swift
+--
+[cols="1a,3a"]
+|===
+| Campo | Descrição 
+
+
+ a| 
+Nome
+ a| 
+Um nome descritivo para o endpoint, que aparecerá na tabela na página Endpoints do balanceador de carga.
+
+
+
+ a| 
+Porta
+ a| 
+A porta StorageGRID que você deseja usar para balanceamento de carga.  Este campo assume como padrão 10433 para o primeiro ponto de extremidade criado, mas você pode inserir qualquer porta externa não utilizada de 1 a 65535.
+
+Se você digitar *80* ou *8443*, o ponto de extremidade será configurado somente em nós de gateway, a menos que você tenha liberado a porta 8443.  Em seguida, você pode usar a porta 8443 como um ponto de extremidade S3, e a porta será configurada nos nós de gateway e de administração.
+
+
+
+ a| 
+Tipo de cliente
+ a| 
+O tipo de aplicativo cliente que usará este ponto de extremidade, *S3* ou *Swift*.
+
+
+
+ a| 
+Protocolo de rede
+ a| 
+O protocolo de rede que os clientes usarão ao se conectar a este ponto de extremidade.
+
+* Selecione *HTTPS* para comunicação segura e criptografada por TLS (recomendado).  Você deve anexar um certificado de segurança antes de salvar o endpoint.
+* Selecione *HTTP* para comunicação menos segura e não criptografada.  Use HTTP somente para uma grade não produtiva.
+
+
+|===
+--
+.Interface de gerenciamento
+--
+[cols="1a,3a"]
+|===
+| Campo | Descrição 
+
+
+ a| 
+Nome
+ a| 
+Um nome descritivo para o endpoint, que aparecerá na tabela na página Endpoints do balanceador de carga.
+
+
+
+ a| 
+Porta
+ a| 
+A porta StorageGRID que você deseja usar para acessar o Grid Manager, o Tenant Manager ou ambos.
+
+* Gerente de grade: *8443*
+* Gerente de inquilinos: *9443*
+* Gerente de Rede e Gerente de Inquilino: *443*
+
+
+*Observação*: Você pode usar essas portas predefinidas ou outras portas disponíveis.
+
+
+
+ a| 
+Tipo de interface
+ a| 
+Selecione o botão de opção para a interface StorageGRID que você acessará usando este ponto de extremidade.
+
+
+
+ a| 
+Rede de clientes não confiáveis
+ a| 
+Selecione *Sim* se este ponto de extremidade deve ser acessível a redes de clientes não confiáveis.  Caso contrário, selecione *Não*.
+
+Quando você seleciona *Sim*, a porta é aberta em todas as redes de clientes não confiáveis.
+
+*Observação*: você só pode configurar uma porta para ser aberta ou fechada para redes de clientes não confiáveis ao criar o ponto de extremidade do balanceador de carga.
+
+|===
+--
+====
+. Selecione *Continuar*.
+
+
+
+
+=== Selecione um modo de encadernação
+
+.Passos
+. Selecione um modo de vinculação para o ponto de extremidade para controlar como o ponto de extremidade é acessado usando qualquer endereço IP ou usando endereços IP e interfaces de rede específicos.
++
+Alguns modos de vinculação estão disponíveis para terminais de cliente ou terminais de interface de gerenciamento.  Todos os modos para ambos os tipos de endpoint estão listados aqui.
+
++
+[cols="1a,3a"]
+|===
+| Modo | Descrição 
+
+
+ a| 
+Global (padrão para endpoints do cliente)
+ a| 
+Os clientes podem acessar o ponto de extremidade usando o endereço IP de qualquer nó de gateway ou nó de administração, o endereço IP virtual (VIP) de qualquer grupo de HA em qualquer rede ou um FQDN correspondente.
+
+Use a configuração *Global*, a menos que você precise restringir a acessibilidade deste ponto de extremidade.
+
+
+
+ a| 
+IPs virtuais de grupos HA
+ a| 
+Os clientes devem usar um endereço IP virtual (ou FQDN correspondente) de um grupo HA para acessar este ponto de extremidade.
+
+Os endpoints com esse modo de vinculação podem usar o mesmo número de porta, desde que os grupos de HA selecionados para os endpoints não se sobreponham.
+
+
+
+ a| 
+Interfaces de nó
+ a| 
+Os clientes devem usar os endereços IP (ou FQDNs correspondentes) das interfaces de nó selecionadas para acessar este ponto de extremidade.
+
+
+
+ a| 
+Tipo de nó (somente terminais do cliente)
+ a| 
+Com base no tipo de nó selecionado, os clientes devem usar o endereço IP (ou FQDN correspondente) de qualquer nó de administração ou o endereço IP (ou FQDN correspondente) de qualquer nó de gateway para acessar esse ponto de extremidade.
+
+
+
+ a| 
+Todos os nós de administração (padrão para terminais de interface de gerenciamento)
+ a| 
+Os clientes devem usar o endereço IP (ou FQDN correspondente) de qualquer nó de administração para acessar este ponto de extremidade.
+
+|===
++
+Se mais de um ponto de extremidade usar a mesma porta, o StorageGRID usará esta ordem de prioridade para decidir qual ponto de extremidade usar: *IPs virtuais de grupos de HA* > *Interfaces de nó* > *Tipo de nó* > *Global*.
+
++
+Se você estiver criando pontos de extremidade de interface de gerenciamento, somente nós de administração serão permitidos.
+
+. Se você selecionou *IPs virtuais de grupos HA*, selecione um ou mais grupos HA.
++
+Se você estiver criando endpoints de interface de gerenciamento, selecione VIPs associados somente a nós de administração.
+
+. Se você selecionou *Interfaces de nó*, selecione uma ou mais interfaces de nó para cada nó de administração ou nó de gateway que deseja associar a este ponto de extremidade.
+. Se você selecionou *Tipo de nó*, selecione Nós de administração, que inclui o Nó de administração primário e quaisquer Nós de administração não primários, ou Nós de gateway.
+
+
+
+
+=== Controlar o acesso do inquilino
+
+
+NOTE: Um ponto de extremidade da interface de gerenciamento pode controlar o acesso do locatário somente quando o ponto de extremidade tem o<<enter-endpoint-details,tipo de interface do Gerenciador de Inquilinos>> .
+
+.Passos
+. Para a etapa *Acesso do locatário*, selecione uma das seguintes opções:
++
+[cols="1a,2a"]
+|===
+| Campo | Descrição 
+
+
+ a| 
+Permitir todos os inquilinos (padrão)
+ a| 
+Todas as contas de locatários podem usar esse endpoint para acessar seus buckets.
+
+Você deve selecionar esta opção se ainda não tiver criado nenhuma conta de locatário.  Depois de adicionar contas de locatário, você pode editar o ponto de extremidade do balanceador de carga para permitir ou bloquear contas específicas.
+
+
+
+ a| 
+Permitir inquilinos selecionados
+ a| 
+Somente as contas de locatários selecionadas podem usar este ponto de extremidade para acessar seus buckets.
+
+
+
+ a| 
+Bloquear inquilinos selecionados
+ a| 
+As contas de locatários selecionadas não podem usar este ponto de extremidade para acessar seus buckets.  Todos os outros inquilinos podem usar este ponto de extremidade.
+
+|===
+. Se você estiver criando um ponto de extremidade *HTTP*, não precisará anexar um certificado.  Selecione *Criar* para adicionar o novo ponto de extremidade do balanceador de carga.  Então vá para<<after-you-finish,Depois que você terminar>> .  Caso contrário, selecione *Continuar* para anexar o certificado.
+
+
+
+
+=== Anexar certificado
+
+.Passos
+. Se você estiver criando um ponto de extremidade *HTTPS*, selecione o tipo de certificado de segurança que deseja anexar ao ponto de extremidade.
++
+O certificado protege as conexões entre clientes S3 e o serviço Load Balancer no nó de administração ou nos nós de gateway.
+
++
+** *Carregar certificado*.  Selecione esta opção se você tiver certificados personalizados para carregar.
+** *Gerar certificado*.  Selecione esta opção se você tiver os valores necessários para gerar um certificado personalizado.
+** *Use o certificado StorageGRID S3*.  Selecione esta opção se quiser usar o certificado global da API S3, que também pode ser usado para conexões diretas com nós de armazenamento.
++
+Você não pode selecionar esta opção a menos que tenha substituído o certificado padrão da API S3, que é assinado pela CA da grade, por um certificado personalizado assinado por uma autoridade de certificação externa. Ver link:../admin/configuring-custom-server-certificate-for-storage-node.html["Configurar certificados da API S3"] .
+
+** *Usar certificado de interface de gerenciamento*.  Selecione esta opção se quiser usar o certificado da interface de gerenciamento global, que também pode ser usado para conexões diretas com nós de administração.
+
+
+. Se você não estiver usando o certificado StorageGRID S3, carregue ou gere o certificado.
++
+[role="tabbed-block"]
+====
+.Carregar certificado
+--
+.. Selecione *Carregar certificado*.
+.. Carregue os arquivos de certificado do servidor necessários:
++
+*** *Certificado do servidor*: O arquivo de certificado do servidor personalizado na codificação PEM.
+*** *Chave privada do certificado*: O arquivo de chave privada do certificado do servidor personalizado(`.key` ).
++
+
+NOTE: As chaves privadas da EC devem ter 224 bits ou mais.  As chaves privadas RSA devem ter 2048 bits ou mais.
+
+*** *Pacote CA*: Um único arquivo opcional contendo os certificados de cada autoridade certificadora intermediária emissora (CA).  O arquivo deve conter cada um dos arquivos de certificado CA codificados em PEM, concatenados na ordem da cadeia de certificados.
+
+
+.. Expanda *Detalhes do certificado* para ver os metadados de cada certificado que você carregou.  Se você carregou um pacote de CA opcional, cada certificado será exibido em sua própria guia.
++
+*** Selecione *Baixar certificado* para salvar o arquivo de certificado ou selecione *Baixar pacote de CA* para salvar o pacote de certificados.
++
+Especifique o nome do arquivo do certificado e o local do download.  Salve o arquivo com a extensão `.pem` .
+
++
+Por exemplo:  `storagegrid_certificate.pem`
+
+*** Selecione *Copiar certificado PEM* ou *Copiar pacote CA PEM* para copiar o conteúdo do certificado e colá-lo em outro lugar.
+
+
+.. Selecione *Criar*. + O ponto de extremidade do balanceador de carga é criado.  O certificado personalizado é usado para todas as novas conexões subsequentes entre clientes S3 ou a interface de gerenciamento e o ponto de extremidade.
+
+
+--
+.Gerar certificado
+--
+.. Selecione *Gerar certificado*.
+.. Especifique as informações do certificado:
++
+[cols="1a,3a"]
+|===
+| Campo | Descrição 
+
+
+ a| 
+Nome de domínio
+ a| 
+Um ou mais nomes de domínio totalmente qualificados a serem incluídos no certificado.  Use um * como curinga para representar vários nomes de domínio.
+
+
+
+ a| 
+IP
+ a| 
+Um ou mais endereços IP a serem incluídos no certificado.
+
+
+
+ a| 
+Assunto (opcional)
+ a| 
+Assunto X.509 ou nome distinto (DN) do proprietário do certificado.
+
+Se nenhum valor for inserido neste campo, o certificado gerado usará o primeiro nome de domínio ou endereço IP como o nome comum do assunto (CN).
+
+
+
+ a| 
+Dias válidos
+ a| 
+Número de dias após a criação em que o certificado expira.
+
+
+
+ a| 
+Adicionar extensões de uso de chave
+ a| 
+Se selecionado (padrão e recomendado), as extensões de uso de chave e uso de chave estendido são adicionadas ao certificado gerado.
+
+Essas extensões definem a finalidade da chave contida no certificado.
+
+*Observação*: deixe esta caixa de seleção marcada, a menos que você tenha problemas de conexão com clientes mais antigos quando os certificados incluem essas extensões.
+
+|===
+.. Selecione *Gerar*.
+.. Selecione *Detalhes do certificado* para ver os metadados do certificado gerado.
++
+*** Selecione *Baixar certificado* para salvar o arquivo de certificado.
++
+Especifique o nome do arquivo do certificado e o local do download.  Salve o arquivo com a extensão `.pem` .
+
++
+Por exemplo:  `storagegrid_certificate.pem`
+
+*** Selecione *Copiar certificado PEM* para copiar o conteúdo do certificado e colá-lo em outro lugar.
+
+
+.. Selecione *Criar*.
++
+O ponto de extremidade do balanceador de carga é criado.  O certificado personalizado é usado para todas as novas conexões subsequentes entre clientes S3 ou a interface de gerenciamento e este ponto de extremidade.
+
+
+
+--
+====
+
+
+
+
+=== Depois que você terminar
+
+.Passos
+. Se você usar um DNS, certifique-se de que o DNS inclua um registro para associar o nome de domínio totalmente qualificado (FQDN) do StorageGRID a cada endereço IP que os clientes usarão para fazer conexões.
++
+O endereço IP inserido no registro DNS depende se você está usando um grupo HA de nós de balanceamento de carga:
+
++
+** Se você tiver configurado um grupo HA, os clientes se conectarão aos endereços IP virtuais desse grupo HA.
+** Se você não estiver usando um grupo HA, os clientes se conectarão ao serviço StorageGRID Load Balancer usando o endereço IP de um nó de gateway ou nó de administrador.
++
+Você também deve garantir que o registro DNS faça referência a todos os nomes de domínio de endpoint necessários, incluindo quaisquer nomes curinga.
+
+
+
+. Forneça aos clientes S3 as informações necessárias para se conectar ao ponto de extremidade:
++
+** Número da porta
+** Nome de domínio totalmente qualificado ou endereço IP
+** Quaisquer detalhes do certificado necessários
+
+
+
+
+
+
+== Visualizar e editar pontos de extremidade do balanceador de carga
+
+Você pode visualizar detalhes dos pontos de extremidade do balanceador de carga existentes, incluindo os metadados do certificado para um ponto de extremidade protegido.  Você pode alterar determinadas configurações de um ponto de extremidade.
+
+* Para visualizar informações básicas de todos os pontos de extremidade do balanceador de carga, revise as tabelas na página Pontos de extremidade do balanceador de carga.
+* Para visualizar todos os detalhes sobre um ponto de extremidade específico, incluindo metadados do certificado, selecione o nome do ponto de extremidade na tabela.  As informações mostradas variam dependendo do tipo de endpoint e de como ele está configurado.
++
+image::../media/load_balancer_endpoint_details.png[Detalhes do ponto de extremidade do balanceador de carga]
+
+* Para editar um endpoint, use o menu *Ações* na página Endpoints do balanceador de carga.
++
+
+NOTE: Se você perder o acesso ao Grid Manager ao editar a porta de um ponto de extremidade da interface de gerenciamento, atualize o URL e a porta para recuperar o acesso.
+
++
+
+TIP: Depois de editar um ponto de extremidade, pode ser necessário esperar até 15 minutos para que suas alterações sejam aplicadas a todos os nós.
+
++
+[cols="1a, 2a,2a"]
+|===
+| Tarefa | Menu de ações | Página de detalhes 
+
+
+ a| 
+Editar nome do ponto de extremidade
+ a| 
+.. Marque a caixa de seleção do ponto de extremidade.
+.. Selecione *Ações* > *Editar nome do ponto de extremidade*.
+.. Digite o novo nome.
+.. Selecione *Salvar*.
+
+ a| 
+.. Selecione o nome do ponto de extremidade para exibir os detalhes.
+.. Selecione o ícone de ediçãoimage:../media/icon_edit_tm.png["Ícone de edição"] .
+.. Digite o novo nome.
+.. Selecione *Salvar*.
+
+
+
+
+ a| 
+Editar porta do ponto de extremidade
+ a| 
+.. Marque a caixa de seleção do ponto de extremidade.
+.. Selecione *Ações* > *Editar porta do ponto de extremidade*
+.. Digite um número de porta válido.
+.. Selecione *Salvar*.
+
+ a| 
+_n / D_
+
+
+
+ a| 
+Editar modo de vinculação de ponto de extremidade
+ a| 
+.. Marque a caixa de seleção do ponto de extremidade.
+.. Selecione *Ações* > *Editar modo de vinculação de ponto de extremidade*.
+.. Atualize o modo de vinculação conforme necessário.
+.. Selecione *Salvar alterações*.
+
+ a| 
+.. Selecione o nome do ponto de extremidade para exibir os detalhes.
+.. Selecione *Editar modo de vinculação*.
+.. Atualize o modo de vinculação conforme necessário.
+.. Selecione *Salvar alterações*.
+
+
+
+
+ a| 
+Editar certificado de ponto de extremidade
+ a| 
+.. Marque a caixa de seleção do ponto de extremidade.
+.. Selecione *Ações* > *Editar certificado de ponto de extremidade*.
+.. Carregue ou gere um novo certificado personalizado ou comece a usar o certificado global S3, conforme necessário.
+.. Selecione *Salvar alterações*.
+
+ a| 
+.. Selecione o nome do ponto de extremidade para exibir os detalhes.
+.. Selecione a aba *Certificado*.
+.. Selecione *Editar certificado*.
+.. Carregue ou gere um novo certificado personalizado ou comece a usar o certificado global S3, conforme necessário.
+.. Selecione *Salvar alterações*.
+
+
+
+
+ a| 
+Editar acesso do locatário
+ a| 
+.. Marque a caixa de seleção do ponto de extremidade.
+.. Selecione *Ações* > *Editar acesso do locatário*.
+.. Escolha uma opção de acesso diferente, selecione ou remova inquilinos da lista ou faça as duas coisas.
+.. Selecione *Salvar alterações*.
+
+ a| 
+.. Selecione o nome do ponto de extremidade para exibir os detalhes.
+.. Selecione a aba *Acesso do locatário*.
+.. Selecione *Editar acesso do locatário*.
+.. Escolha uma opção de acesso diferente, selecione ou remova inquilinos da lista ou faça as duas coisas.
+.. Selecione *Salvar alterações*.
+
+
+|===
+
+
+
+
+== Remover pontos de extremidade do balanceador de carga
+
+Você pode remover um ou mais endpoints usando o menu *Ações* ou pode remover um único endpoint da página de detalhes.
+
+
+CAUTION: Para evitar interrupções no cliente, atualize todos os aplicativos cliente S3 afetados antes de remover um ponto de extremidade do balanceador de carga.  Atualize cada cliente para se conectar usando uma porta atribuída a outro ponto de extremidade do balanceador de carga.  Não se esqueça de atualizar também todas as informações necessárias do certificado.
+
+
+NOTE: Se você perder o acesso ao Grid Manager ao remover um ponto de extremidade da interface de gerenciamento, atualize o URL.
+
+* Para remover um ou mais pontos de extremidade:
++
+.. Na página Balanceador de carga, marque a caixa de seleção de cada endpoint que deseja remover.
+.. Selecione *Ações* > *Remover*.
+.. Selecione *OK*.
+
+
+* Para remover um ponto de extremidade da página de detalhes:
++
+.. Na página Balanceador de carga, selecione o nome do endpoint.
+.. Selecione *Remover* na página de detalhes.
+.. Selecione *OK*.
+
+
+

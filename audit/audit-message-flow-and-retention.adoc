@@ -1,0 +1,74 @@
+---
+permalink: audit/audit-message-flow-and-retention.html 
+sidebar: sidebar 
+keywords: storagegrid, audit, message, flow, retention 
+summary: Todos os serviços do StorageGRID geram mensagens de auditoria durante a operação normal do sistema.  Você deve entender como essas mensagens de auditoria passam pelo sistema StorageGRID até o arquivo audit.log. 
+---
+= Fluxo e retenção de mensagens de auditoria
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Todos os serviços do StorageGRID geram mensagens de auditoria durante a operação normal do sistema.  Você deve entender como essas mensagens de auditoria se movem pelo sistema StorageGRID para o `audit.log` arquivo.
+
+
+
+== Fluxo de mensagens de auditoria
+
+As mensagens de auditoria são processadas pelos nós de administração e pelos nós de armazenamento que têm um serviço de controlador de domínio administrativo (ADC).
+
+Conforme mostrado no diagrama de fluxo de mensagens de auditoria, cada nó StorageGRID envia suas mensagens de auditoria para um dos serviços do ADC no site do data center.  O serviço ADC é habilitado automaticamente para os três primeiros nós de armazenamento instalados em cada site.
+
+Por sua vez, cada serviço ADC atua como um retransmissor e envia sua coleção de mensagens de auditoria para cada nó administrativo no sistema StorageGRID , o que fornece a cada nó administrativo um registro completo da atividade do sistema.
+
+Cada nó de administração armazena mensagens de auditoria em arquivos de log de texto; o arquivo de log ativo é denominado `audit.log` .
+
+image::../media/audit_message_flow.gif[Diagrama que resume o fluxo de mensagens de auditoria por meio de relés]
+
+
+
+=== Retenção de mensagens de auditoria
+
+O StorageGRID usa um processo de copiar e excluir para garantir que nenhuma mensagem de auditoria seja perdida antes de ser gravada no log de auditoria.
+
+Quando um nó gera ou retransmite uma mensagem de auditoria, a mensagem é armazenada em uma fila de mensagens de auditoria no disco do sistema do nó da grade. Uma cópia da mensagem é sempre mantida em uma fila de mensagens de auditoria até que a mensagem seja gravada no arquivo de log de auditoria no nó de administração. `/var/local/log` diretório. Isso ajuda a evitar a perda de uma mensagem de auditoria durante o transporte.
+
+image::../media/audit_message_retention.gif[diagrama que resume o recebimento de mensagens de auditoria no AMS]
+
+A fila de mensagens de auditoria pode aumentar temporariamente devido a problemas de conectividade de rede ou capacidade de auditoria insuficiente. À medida que as filas aumentam, elas consomem mais espaço disponível em cada nó `/var/local/` diretório. Se o problema persistir e o diretório de mensagens de auditoria de um nó ficar muito cheio, os nós individuais priorizarão o processamento de seu backlog e ficarão temporariamente indisponíveis para novas mensagens.
+
+Especificamente, você pode ver os seguintes comportamentos:
+
+* Se o `/var/local/log` o diretório usado por um nó de administração ficar cheio, o nó de administração será sinalizado como indisponível para novas mensagens de auditoria até que o diretório não esteja mais cheio. As solicitações do cliente S3 não são afetadas. O alarme XAMS (Repositórios de auditoria inacessíveis) é acionado quando um repositório de auditoria fica inacessível.
+* Se o `/var/local/` o diretório usado por um nó de armazenamento com o serviço ADC ficar 92% cheio, o nó será sinalizado como indisponível para mensagens de auditoria até que o diretório esteja apenas 87% cheio. As solicitações do cliente S3 para outros nós não são afetadas. O alarme NRLY (Relés de auditoria disponíveis) é acionado quando os relés de auditoria estão inacessíveis.
++
+
+NOTE: Se não houver nós de armazenamento disponíveis com o serviço ADC, os nós de armazenamento armazenam as mensagens de auditoria localmente no `/var/local/log/localaudit.log` arquivo.
+
+* Se o `/var/local/` diretório usado por um nó de armazenamento ficar 85% cheio, o nó começará a recusar solicitações de cliente S3 com `503 Service Unavailable` .
+
+
+Os seguintes tipos de problemas podem fazer com que as filas de mensagens de auditoria fiquem muito grandes:
+
+* A interrupção de um nó de administração ou de um nó de armazenamento com o serviço ADC.  Se um dos nós do sistema estiver inativo, os nós restantes poderão ficar acumulados.
+* Uma taxa de atividade sustentada que excede a capacidade de auditoria do sistema.
+* O `/var/local/` espaço em um nó de armazenamento ADC ficando cheio por motivos não relacionados a mensagens de auditoria.  Quando isso acontece, o nó para de aceitar novas mensagens de auditoria e prioriza seu backlog atual, o que pode causar backlogs em outros nós.
+
+
+
+
+=== Alerta de fila de auditoria grande e alarme de mensagens de auditoria na fila (AMQS)
+
+Para ajudar você a monitorar o tamanho das filas de mensagens de auditoria ao longo do tempo, o alerta *Fila de auditoria grande* e o alarme AMQS legado são acionados quando o número de mensagens em uma fila de nó de armazenamento ou fila de nó de administração atinge determinados limites.
+
+Se o alerta *Grande fila de auditoria* ou o alarme AMQS legado for acionado, comece verificando a carga no sistema. Se houver um número significativo de transações recentes, o alerta e o alarme deverão ser resolvidos com o tempo e poderão ser ignorados.
+
+Se o alerta ou alarme persistir e aumentar em gravidade, visualize um gráfico do tamanho da fila. Se o número estiver aumentando constantemente ao longo de horas ou dias, a carga de auditoria provavelmente excedeu a capacidade de auditoria do sistema. Reduza a taxa de operação do cliente ou diminua o número de mensagens de auditoria registradas alterando o nível de auditoria para Gravações do Cliente e Leituras do Cliente para Erro ou Desligado. Ver link:../monitor/configure-audit-messages.html["Configurar mensagens de auditoria e destinos de log"] .
+
+
+
+=== Mensagens duplicadas
+
+O sistema StorageGRID adota uma abordagem conservadora caso ocorra uma falha de rede ou nó.  Por esse motivo, podem existir mensagens duplicadas no log de auditoria.

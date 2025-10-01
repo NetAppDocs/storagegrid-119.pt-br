@@ -1,0 +1,26 @@
+---
+permalink: rhel/post-installation-guidelines.html 
+sidebar: sidebar 
+keywords: post-installation guidelines red hat linux 
+summary: Após concluir a implantação e a configuração do nó de grade, siga estas diretrizes para endereçamento DHCP e alterações na configuração de rede. 
+---
+= Diretrizes pós-instalação
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Após concluir a implantação e a configuração do nó de grade, siga estas diretrizes para endereçamento DHCP e alterações na configuração de rede.
+
+* Se o DHCP foi usado para atribuir endereços IP, configure uma reserva DHCP para cada endereço IP nas redes que estão sendo usadas.
++
+Você só pode configurar o DHCP durante a fase de implantação.  Não é possível configurar o DHCP durante a configuração.
+
++
+
+NOTE: Os nós são reinicializados quando a configuração da rede de grade é alterada pelo DHCP, o que pode causar interrupções se uma alteração de DHCP afetar vários nós ao mesmo tempo.
+
+* Você deve usar os procedimentos Alterar IP se quiser alterar endereços IP, máscaras de sub-rede e gateways padrão para um nó de grade. Ver link:../maintain/configuring-ip-addresses.html["Configurar endereços IP"] .
+* Se você fizer alterações na configuração de rede, incluindo alterações de roteamento e gateway, a conectividade do cliente com o nó de administração principal e outros nós da grade poderá ser perdida.  Dependendo das alterações de rede aplicadas, pode ser necessário restabelecer essas conexões.
+

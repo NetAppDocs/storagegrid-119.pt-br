@@ -1,0 +1,328 @@
+---
+permalink: admin/creating-tenant-account.html 
+sidebar: sidebar 
+keywords: create tenant, tenant account 
+summary: Você deve criar pelo menos uma conta de locatário para controlar o acesso ao armazenamento no seu sistema StorageGRID . 
+---
+= Criar uma conta de inquilino
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Você deve criar pelo menos uma conta de locatário para controlar o acesso ao armazenamento no seu sistema StorageGRID .
+
+As etapas para criar uma conta de locatário variam dependendo selink:using-identity-federation.html["federação de identidade"] elink:configuring-sso.html["login único"] estão configurados e se a conta do Grid Manager que você usa para criar a conta do locatário pertence a um grupo de administradores com permissão de acesso Root.
+
+.Antes de começar
+* Você está conectado ao Grid Manager usando umlink:../admin/web-browser-requirements.html["navegador da web compatível"] .
+* Você tem olink:admin-group-permissions.html["Permissão de acesso root ou contas de locatário"] .
+* Se a conta do locatário usar a fonte de identidade configurada para o Grid Manager e você quiser conceder permissão de acesso Root para a conta do locatário a um grupo federado, você terá importado esse grupo federado para o Grid Manager.  Você não precisa atribuir nenhuma permissão do Grid Manager a este grupo de administradores. Ver link:managing-admin-groups.html["Gerenciar grupos de administradores"] .
+* Se você quiser permitir que um locatário do S3 clone dados da conta e replique objetos de bucket para outra grade usando uma conexão de federação de grade:
++
+** Você temlink:grid-federation-create-connection.html["configurou a conexão da federação de grade"] .
+** O status da conexão é *Conectado*.
+** Você tem permissão de acesso Root.
+** Você revisou as considerações paralink:grid-federation-manage-tenants.html["gerenciamento de inquilinos permitidos para federação de rede"] .
+** Se a conta do locatário usar a fonte de identidade configurada para o Grid Manager, você importou o mesmo grupo federado para o Grid Manager em ambas as grades.
++
+Ao criar o locatário, você selecionará esse grupo para ter a permissão de acesso Root inicial para as contas do locatário de origem e de destino.
+
++
+
+TIP: Se esse grupo de administradores não existir em ambas as grades antes de você criar o locatário, o locatário não será replicado para o destino.
+
+
+
+
+
+
+
+== Acesse o assistente
+
+.Passos
+. Selecione *LOCATÁRIOS*.
+. Selecione *Criar*.
+
+
+
+
+== Insira os detalhes
+
+.Passos
+. Insira os detalhes do inquilino.
++
+[cols="1a,3a"]
+|===
+| Campo | Descrição 
+
+
+ a| 
+Nome
+ a| 
+Um nome para a conta do locatário.  Os nomes dos inquilinos não precisam ser exclusivos.  Quando a conta do locatário é criada, ela recebe um ID de conta exclusivo de 20 dígitos.
+
+
+
+ a| 
+Descrição (opcional)
+ a| 
+Uma descrição para ajudar a identificar o inquilino.
+
+Se você estiver criando um locatário que usará uma conexão de federação de grade, opcionalmente, use este campo para ajudar a identificar qual é o locatário de origem e qual é o locatário de destino.  Por exemplo, esta descrição para um locatário criado na Grade 1 também aparecerá para o locatário replicado na Grade 2: "Este locatário foi criado na Grade 1".
+
+
+
+ a| 
+Tipo de cliente
+ a| 
+O tipo de protocolo de cliente que este locatário usará, *S3* ou *Swift*.
+
+*Observação*: O suporte para aplicativos cliente Swift foi descontinuado e será removido em uma versão futura.
+
+
+
+ a| 
+Cota de armazenamento (opcional)
+ a| 
+Se você quiser que este locatário tenha uma cota de armazenamento, um valor numérico para a cota e as unidades.
+
+|===
+. Selecione *Continuar*.
+
+
+
+
+== [[admin-tenant-select-permissions]]Selecionar permissões
+
+.Passos
+. Opcionalmente, selecione as permissões básicas que você deseja que este locatário tenha.
++
+
+NOTE: Algumas dessas permissões têm requisitos adicionais.  Para obter detalhes, selecione o ícone de ajuda para cada permissão.
+
++
+[cols="1a,3a"]
+|===
+| Permissão | Se selecionado... 
+
+
+ a| 
+Permitir serviços de plataforma
+ a| 
+O locatário pode usar serviços da plataforma S3, como o CloudMirror. Ver link:../admin/manage-platform-services-for-tenants.html["Gerenciar serviços de plataforma para contas de locatários do S3"] .
+
+
+
+ a| 
+Use sua própria fonte de identidade
+ a| 
+O locatário pode configurar e gerenciar sua própria fonte de identidade para grupos e usuários federados. Esta opção estará desabilitada se você tiverlink:../admin/configuring-sso.html["SSO configurado"] para seu sistema StorageGRID .
+
+
+
+ a| 
+Permitir seleção S3
+ a| 
+O locatário pode emitir solicitações da API S3 SelectObjectContent para filtrar e recuperar dados do objeto. Ver link:../admin/manage-s3-select-for-tenant-accounts.html["Gerenciar S3 Select para contas de locatários"] .
+
+*Importante*: solicitações SelectObjectContent podem diminuir o desempenho do balanceador de carga para todos os clientes S3 e todos os locatários.  Habilite esse recurso somente quando necessário e somente para locatários confiáveis.
+
+|===
+. Opcionalmente, selecione as permissões avançadas que você deseja que este locatário tenha.
++
+[cols="1a,3a"]
+|===
+| Permissão | Se selecionado... 
+
+
+ a| 
+Conexão de federação de rede
+ a| 
+O inquilino pode usar uma conexão de federação de rede, que:
+
+** Faz com que este locatário e todos os grupos de locatários e usuários adicionados à conta sejam clonados desta grade (a _grade de origem_) para a outra grade na conexão selecionada (a _grade de destino_).
+** Permite que este locatário configure a replicação entre grades entre buckets correspondentes em cada grade.
+
+
+Ver link:../admin/grid-federation-manage-tenants.html["Gerenciar os inquilinos permitidos para federação de rede"] .
+
+
+
+ a| 
+Bloqueio de Objeto S3
+ a| 
+Permitir que o locatário use recursos específicos do S3 Object Lock:
+
+** *Definir período máximo de retenção* define por quanto tempo novos objetos adicionados a este bucket devem ser retidos, a partir do momento em que são ingeridos.
+** *Permitir modo de conformidade* impede que os usuários substituam ou excluam versões de objetos protegidos durante o período de retenção.
+
+
+|===
+. Selecione *Continuar*.
+
+
+
+
+== Definir acesso root e criar locatário
+
+.Passos
+. Defina o acesso root para a conta do locatário, com base no uso de federação de identidades pelo seu sistema StorageGRID , logon único (SSO) ou ambos.
++
+[cols="1a,2a"]
+|===
+| Opção | Faça isso 
+
+
+ a| 
+Se a federação de identidade não estiver habilitada
+ a| 
+Especifique a senha a ser usada ao fazer login no locatário como usuário root local.
+
+
+
+ a| 
+Se a federação de identidade estiver habilitada
+ a| 
+.. Selecione um grupo federado existente para ter permissão de acesso Root para o locatário.
+.. Opcionalmente, especifique a senha a ser usada ao fazer login no locatário como usuário root local.
+
+
+
+
+ a| 
+Se a federação de identidade e o logon único (SSO) estiverem habilitados
+ a| 
+Selecione um grupo federado existente para ter permissão de acesso Root para o locatário.  Nenhum usuário local pode fazer login.
+
+|===
+. Selecione *Criar inquilino*.
++
+Uma mensagem de sucesso é exibida e o novo inquilino é listado na página Inquilinos.  Para saber como visualizar detalhes do locatário e monitorar a atividade do locatário, consultelink:../monitor/monitoring-tenant-activity.html["Monitorar a atividade do inquilino"] .
+
++
+
+NOTE: A aplicação das configurações do locatário na grade pode levar 15 minutos ou mais, dependendo da conectividade da rede, do status do nó e das operações do Cassandra.
+
+. Se você selecionou a permissão *Usar conexão de federação de grade* para o locatário:
++
+.. Confirme se um inquilino idêntico foi replicado para a outra grade na conexão.  Os inquilinos em ambas as grades terão o mesmo ID de conta de 20 dígitos, nome, descrição, cota e permissões.
++
+
+NOTE: Se você vir a mensagem de erro "Locatário criado sem um clone", consulte as instruções emlink:grid-federation-troubleshoot.html["Solucionar erros de federação de grade"] .
+
+.. Se você forneceu uma senha de usuário root local ao definir o acesso root,link:changing-password-for-tenant-local-root-user.html["alterar a senha do usuário root local"] para o inquilino replicado.
++
+
+TIP: Um usuário root local não pode fazer login no Tenant Manager na grade de destino até que a senha seja alterada.
+
+
+
+
+
+
+
+== Sign in como inquilino (opcional)
+
+Conforme necessário, você pode entrar no novo locatário agora para concluir a configuração ou pode entrar no locatário mais tarde.  As etapas de login dependem se você está conectado ao Grid Manager usando a porta padrão (443) ou uma porta restrita. Ver link:controlling-access-through-firewalls.html["Controle de acesso em firewall externo"] .
+
+
+
+=== Sign in agora
+
+[cols="1a,3a"]
+|===
+| Se você estiver usando... | Faça isso... 
+
+
+ a| 
+Porta 443 e você define uma senha para o usuário root local
+ a| 
+. Selecione * Sign in como root*.
++
+Ao fazer login, aparecem links para configurar buckets, federação de identidades, grupos e usuários.
+
+. Selecione os links para configurar a conta do locatário.
++
+Cada link abre a página correspondente no Gerenciador de Inquilinos.  Para completar a página, veja alink:../tenant/index.html["instruções para usar contas de inquilinos"] .
+
+
+
+
+
+ a| 
+Porta 443 e você não definiu uma senha para o usuário root local
+ a| 
+Selecione * Sign in* e insira as credenciais de um usuário no grupo federado de acesso Root.
+
+
+
+ a| 
+Uma porta restrita
+ a| 
+. Selecione *Concluir*
+. Selecione *Restrito* na tabela Locatário para saber mais sobre como acessar esta conta de locatário.
++
+A URL do Gerenciador de Inquilinos tem este formato:
+
++
+`https://_FQDN_or_Admin_Node_IP:port_/?accountId=_20-digit-account-id_/`
+
++
+** `_FQDN_or_Admin_Node_IP_`é um nome de domínio totalmente qualificado ou o endereço IP de um nó de administração
+** `_port_`é a porta somente para inquilinos
+** `_20-digit-account-id_`é o ID de conta exclusivo do inquilino
+
+
+
+
+|===
+
+
+=== Sign in mais tarde
+
+[cols="1a,3a"]
+|===
+| Se você estiver usando... | Faça uma dessas... 
+
+
+ a| 
+Porta 443
+ a| 
+* No Grid Manager, selecione *LOCATÁRIOS* e selecione * Sign in* à direita do nome do locatário.
+* Digite a URL do locatário em um navegador da web:
++
+`https://_FQDN_or_Admin_Node_IP_/?accountId=_20-digit-account-id_/`
+
++
+** `_FQDN_or_Admin_Node_IP_`é um nome de domínio totalmente qualificado ou o endereço IP de um nó de administração
+** `_20-digit-account-id_`é o ID de conta exclusivo do inquilino
+
+
+
+
+
+
+ a| 
+Uma porta restrita
+ a| 
+* No Grid Manager, selecione *LOCATÁRIOS* e selecione *Restrito*.
+* Digite a URL do locatário em um navegador da web:
++
+`https://_FQDN_or_Admin_Node_IP:port_/?accountId=_20-digit-account-id_`
+
++
+** `_FQDN_or_Admin_Node_IP_`é um nome de domínio totalmente qualificado ou o endereço IP de um nó de administração
+** `_port_`é a porta restrita somente para inquilinos
+** `_20-digit-account-id_`é o ID de conta exclusivo do inquilino
+
+
+
+
+|===
+
+
+== Configurar o locatário
+
+Siga as instruções emlink:../tenant/index.html["Use uma conta de inquilino"] para gerenciar grupos de locatários e usuários, chaves de acesso S3, buckets, serviços de plataforma, clone de conta e replicação entre redes.

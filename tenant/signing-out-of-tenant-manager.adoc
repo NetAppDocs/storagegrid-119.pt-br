@@ -1,0 +1,41 @@
+---
+permalink: tenant/signing-out-of-tenant-manager.html 
+sidebar: sidebar 
+keywords: how to sign out of tenant manager 
+summary: Quando terminar de trabalhar com o Tenant Manager, você deverá sair para garantir que usuários não autorizados não possam acessar o sistema StorageGRID .  Fechar o navegador pode não desconectar você do sistema, com base nas configurações de cookies do navegador. 
+---
+= Sair do Gerenciador de Inquilinos
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Quando terminar de trabalhar com o Tenant Manager, você deverá sair para garantir que usuários não autorizados não possam acessar o sistema StorageGRID .  Fechar o navegador pode não desconectar você do sistema, com base nas configurações de cookies do navegador.
+
+.Passos
+. Localize o menu suspenso de nome de usuário no canto superior direito da interface do usuário.
++
+image::../media/tenant_user_sign_out.png[Link de saída]
+
+. Selecione o nome de usuário e depois selecione *Sair*.
++
+** Se o SSO não estiver em uso:
++
+Você está desconectado do nó de administração.  A página de login do Gerenciador de inquilinos é exibida.
+
++
+
+NOTE: Se você tiver entrado em mais de um nó de administração, será necessário sair de cada nó.
+
+** Se o SSO estiver habilitado:
++
+Você está desconectado de todos os nós de administração que estava acessando.  A página de Sign in do StorageGRID é exibida.  O nome da conta do locatário que você acabou de acessar é listado como padrão no menu suspenso *Contas recentes*, e o *ID da conta* do locatário é exibido.
+
++
+
+NOTE: Se o SSO estiver habilitado e você também estiver conectado ao Grid Manager, você também deverá sair do Grid Manager para sair do SSO.
+
+
+
+

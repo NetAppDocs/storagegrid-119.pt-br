@@ -1,0 +1,237 @@
+---
+permalink: tenant/using-identity-federation.html 
+sidebar: sidebar 
+keywords: how to use identity federation, how to use federated groups with Tenant Manager 
+summary: O uso da federação de identidades agiliza a configuração de grupos de locatários e usuários e permite que usuários locatários efetuem login na conta do locatário usando credenciais conhecidas. 
+---
+= Usar federação de identidade
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+O uso da federação de identidades agiliza a configuração de grupos de locatários e usuários e permite que usuários locatários efetuem login na conta do locatário usando credenciais conhecidas.
+
+
+
+== Configurar federação de identidade para o Tenant Manager
+
+Você pode configurar a federação de identidade para o Gerenciador de Locatários se quiser que grupos de locatários e usuários sejam gerenciados em outro sistema, como Active Directory, Azure Active Directory (Azure AD), OpenLDAP ou Oracle Directory Server.
+
+.Antes de começar
+* Você está conectado ao Gerenciador de Inquilinos usando umlink:../admin/web-browser-requirements.html["navegador da web compatível"] .
+* Você pertence a um grupo de usuários que tem olink:tenant-management-permissions.html["Permissão de acesso root"] .
+* Você está usando o Active Directory, o Azure AD, o OpenLDAP ou o Oracle Directory Server como provedor de identidade.
++
+
+NOTE: Se você quiser usar um serviço LDAP v3 que não esteja listado, entre em contato com o suporte técnico.
+
+* Se você planeja usar o OpenLDAP, deverá configurar o servidor OpenLDAP. Ver <<Diretrizes para configurar o servidor OpenLDAP>> .
+* Se você planeja usar o Transport Layer Security (TLS) para comunicações com o servidor LDAP, o provedor de identidade deve usar o TLS 1.2 ou 1.3. Ver link:../admin/supported-ciphers-for-outgoing-tls-connections.html["Cifras suportadas para conexões TLS de saída"] .
+
+
+.Sobre esta tarefa
+A possibilidade de configurar um serviço de federação de identidade para seu locatário depende de como sua conta de locatário foi configurada.  Seu locatário pode compartilhar o serviço de federação de identidade que foi configurado para o Grid Manager.  Se você vir esta mensagem ao acessar a página Federação de Identidade, não será possível configurar uma fonte de identidade federada separada para este locatário.
+
+image::../media/tenant_shares_identity_federation.png[Federação de Identidade de Compartilhamento de Inquilinos]
+
+
+
+=== Insira a configuração
+
+Ao configurar a federação de identidade, você fornece os valores que o StorageGRID precisa para se conectar a um serviço LDAP.
+
+.Passos
+. Selecione *GERENCIAMENTO DE ACESSO* > *Federação de identidade*.
+. Selecione *Ativar federação de identidade*.
+. Na seção Tipo de serviço LDAP, selecione o tipo de serviço LDAP que você deseja configurar.
++
+image::../media/ldap_service_type.png[Página de Federação de Identidade mostrando opções de tipo de serviço LDAP]
+
++
+Selecione *Outro* para configurar valores para um servidor LDAP que usa o Oracle Directory Server.
+
+. Se você selecionou *Outro*, preencha os campos na seção Atributos LDAP. Caso contrário, vá para a próxima etapa.
++
+** *Nome exclusivo do usuário*: O nome do atributo que contém o identificador exclusivo de um usuário LDAP. Este atributo é equivalente a `sAMAccountName` para o Active Directory e `uid` para OpenLDAP. Se você estiver configurando o Oracle Directory Server, insira `uid` .
+** *UUID do usuário*: O nome do atributo que contém o identificador exclusivo permanente de um usuário LDAP. Este atributo é equivalente a `objectGUID` para o Active Directory e `entryUUID` para OpenLDAP. Se você estiver configurando o Oracle Directory Server, insira `nsuniqueid` . O valor de cada usuário para o atributo especificado deve ser um número hexadecimal de 32 dígitos em formato de 16 bytes ou string, onde hifens são ignorados.
+** *Nome exclusivo do grupo*: O nome do atributo que contém o identificador exclusivo de um grupo LDAP. Este atributo é equivalente a `sAMAccountName` para o Active Directory e `cn` para OpenLDAP. Se você estiver configurando o Oracle Directory Server, insira `cn` .
+** *UUID do grupo*: O nome do atributo que contém o identificador exclusivo permanente de um grupo LDAP. Este atributo é equivalente a `objectGUID` para o Active Directory e `entryUUID` para OpenLDAP. Se você estiver configurando o Oracle Directory Server, insira `nsuniqueid` . O valor de cada grupo para o atributo especificado deve ser um número hexadecimal de 32 dígitos em formato de 16 bytes ou string, onde hifens são ignorados.
+
+
+. Para todos os tipos de serviço LDAP, insira as informações necessárias do servidor LDAP e da conexão de rede na seção Configurar servidor LDAP.
++
+** *Nome do host*: O nome de domínio totalmente qualificado (FQDN) ou endereço IP do servidor LDAP.
+** *Porta*: A porta usada para conectar ao servidor LDAP.
++
+
+NOTE: A porta padrão para STARTTLS é 389, e a porta padrão para LDAPS é 636.  No entanto, você pode usar qualquer porta, desde que seu firewall esteja configurado corretamente.
+
+** *Nome de usuário*: O caminho completo do nome distinto (DN) do usuário que se conectará ao servidor LDAP.
++
+Para o Active Directory, você também pode especificar o Nome de logon de nível inferior ou o Nome principal do usuário.
+
++
+O usuário especificado deve ter permissão para listar grupos e usuários e acessar os seguintes atributos:
+
++
+*** `sAMAccountName`ou `uid`
+*** `objectGUID`, `entryUUID` , ou `nsuniqueid`
+*** `cn`
+*** `memberOf`ou `isMemberOf`
+*** *Active Directory*: `objectSid` , `primaryGroupID` , `userAccountControl` , e `userPrincipalName`
+*** *Azul*: `accountEnabled` e `userPrincipalName`
+
+
+** *Senha*: A senha associada ao nome de usuário.
++
+
+NOTE: Se você alterar a senha no futuro, deverá atualizá-la nesta página.
+
+** *DN base do grupo*: O caminho completo do nome distinto (DN) para uma subárvore LDAP na qual você deseja pesquisar grupos.  No exemplo do Active Directory (abaixo), todos os grupos cujo Nome Distinto é relativo ao DN base (DC=storagegrid,DC=example,DC=com) podem ser usados como grupos federados.
++
+
+NOTE: Os valores de *Nome exclusivo do grupo* devem ser exclusivos dentro do *DN base do grupo* ao qual pertencem.
+
+** *DN base do usuário*: O caminho completo do nome distinto (DN) de uma subárvore LDAP na qual você deseja pesquisar usuários.
++
+
+NOTE: Os valores de *Nome exclusivo do usuário* devem ser exclusivos dentro do *DN base do usuário* ao qual pertencem.
+
+** *Formato de nome de usuário vinculado* (opcional): O padrão de nome de usuário padrão que o StorageGRID deve usar se o padrão não puder ser determinado automaticamente.
++
+É recomendável fornecer o *formato de nome de usuário de associação* porque ele pode permitir que os usuários efetuem login caso o StorageGRID não consiga se associar à conta de serviço.
+
++
+Insira um destes padrões:
+
++
+*** *Padrão UserPrincipalName (Active Directory e Azure)*: `[USERNAME]@_example_.com`
+*** *Padrão de nome de logon de nível inferior (Active Directory e Azure)*: `_example_\[USERNAME]`
+*** *Padrão de nome distinto*: `CN=[USERNAME],CN=Users,DC=_example_,DC=com`
++
+Inclua *[USERNAME]* exatamente como escrito.
+
+
+
+
+
+. Na seção Segurança da Camada de Transporte (TLS), selecione uma configuração de segurança.
++
+** *Use STARTTLS*: Use STARTTLS para proteger as comunicações com o servidor LDAP. Esta é a opção recomendada para Active Directory, OpenLDAP ou Outros, mas esta opção não é suportada pelo Azure.
+** *Usar LDAPS*: A opção LDAPS (LDAP sobre SSL) usa TLS para estabelecer uma conexão com o servidor LDAP. Você deve selecionar esta opção para o Azure.
+** *Não use TLS*: O tráfego de rede entre o sistema StorageGRID e o servidor LDAP não será protegido.  Esta opção não é suportada pelo Azure.
++
+
+NOTE: O uso da opção *Não usar TLS* não é suportado se o seu servidor Active Directory impõe assinatura LDAP. Você deve usar STARTTLS ou LDAPS.
+
+
+
+. Se você selecionou STARTTLS ou LDAPS, escolha o certificado usado para proteger a conexão.
++
+** *Usar certificado CA do sistema operacional*: Use o certificado CA padrão do Grid instalado no sistema operacional para proteger conexões.
+** *Usar certificado CA personalizado*: Use um certificado de segurança personalizado.
++
+Se você selecionar esta configuração, copie e cole o certificado de segurança personalizado na caixa de texto Certificado de CA.
+
+
+
+
+
+
+
+=== Teste a conexão e salve a configuração
+
+Depois de inserir todos os valores, você deve testar a conexão antes de salvar a configuração.  O StorageGRID verifica as configurações de conexão do servidor LDAP e o formato do nome de usuário de vinculação, se você forneceu um.
+
+.Passos
+. Selecione *Testar conexão*.
+. Se você não forneceu um formato de nome de usuário de vinculação:
++
+** A mensagem "Teste de conexão bem-sucedido" será exibida se as configurações de conexão forem válidas.  Selecione *Salvar* para salvar a configuração.
+** A mensagem "não foi possível estabelecer a conexão de teste" aparece se as configurações de conexão forem inválidas.  Selecione *Fechar*.  Em seguida, resolva quaisquer problemas e teste a conexão novamente.
+
+
+. Se você forneceu um formato de nome de usuário vinculado, insira o nome de usuário e a senha de um usuário federado válido.
++
+Por exemplo, digite seu próprio nome de usuário e senha.  Não inclua nenhum caractere especial no nome de usuário, como @ ou /.
+
++
+image::../media/identity_federation_test_connection.png[Prompt de federação de identidade para validar o formato de nome de usuário de vinculação]
+
++
+** A mensagem "Teste de conexão bem-sucedido" será exibida se as configurações de conexão forem válidas.  Selecione *Salvar* para salvar a configuração.
+** Uma mensagem de erro será exibida se as configurações de conexão, o formato do nome de usuário de vinculação ou o nome de usuário e a senha de teste forem inválidos.  Resolva quaisquer problemas e teste a conexão novamente.
+
+
+
+
+
+
+== Forçar sincronização com a fonte de identidade
+
+O sistema StorageGRID sincroniza periodicamente grupos federados e usuários da fonte de identidade.  Você pode forçar o início da sincronização se quiser habilitar ou restringir as permissões do usuário o mais rápido possível.
+
+.Passos
+. Acesse a página da Federação de Identidade.
+. Selecione *Servidor de sincronização* no topo da página.
++
+O processo de sincronização pode levar algum tempo dependendo do seu ambiente.
+
++
+
+NOTE: O alerta *Falha na sincronização da federação de identidade* é acionado se houver um problema na sincronização de grupos federados e usuários da fonte de identidade.
+
+
+
+
+
+== Desabilitar federação de identidade
+
+Você pode desabilitar temporária ou permanentemente a federação de identidade para grupos e usuários. Quando a federação de identidade está desabilitada, não há comunicação entre o StorageGRID e a origem da identidade. No entanto, todas as configurações que você definiu serão mantidas, permitindo que você reative facilmente a federação de identidades no futuro.
+
+.Sobre esta tarefa
+Antes de desabilitar a federação de identidades, você deve estar ciente do seguinte:
+
+* Usuários federados não poderão fazer login.
+* Usuários federados que estão conectados no momento manterão acesso ao sistema StorageGRID até que sua sessão expire, mas não poderão fazer login depois que sua sessão expirar.
+* A sincronização entre o sistema StorageGRID e a fonte de identidade não ocorrerá, e alertas não serão gerados para contas que não foram sincronizadas.
+* A caixa de seleção *Habilitar federação de identidade* será desabilitada se o logon único (SSO) estiver definido como *Habilitado* ou *Modo Sandbox*. O status do SSO na página de logon único deve ser *Desativado* antes que você possa desabilitar a federação de identidades. Ver link:../admin/disabling-single-sign-on.html["Desativar logon único"] .
+
+
+.Passos
+. Acesse a página da Federação de Identidade.
+. Desmarque a caixa de seleção *Ativar federação de identidade*.
+
+
+
+
+== Diretrizes para configurar o servidor OpenLDAP
+
+Se você quiser usar um servidor OpenLDAP para federação de identidade, deverá configurar definições específicas no servidor OpenLDAP.
+
+
+CAUTION: Para fontes de identidade que não sejam ActiveDirectory ou Azure, o StorageGRID não bloqueará automaticamente o acesso ao S3 para usuários desabilitados externamente. Para bloquear o acesso ao S3, exclua todas as chaves S3 do usuário ou remova o usuário de todos os grupos.
+
+
+
+=== Sobreposições de membro e reintegração
+
+As sobreposições memberof e refint devem ser habilitadas.  Para obter mais informações, consulte as instruções para manutenção de associação de grupo reverso nohttp://www.openldap.org/doc/admin24/index.html["Documentação do OpenLDAP: Guia do Administrador da Versão 2.4"^] .
+
+
+
+=== Indexação
+
+Você deve configurar os seguintes atributos OpenLDAP com as palavras-chave de índice especificadas:
+
+* `olcDbIndex: objectClass eq`
+* `olcDbIndex: uid eq,pres,sub`
+* `olcDbIndex: cn eq,pres,sub`
+* `olcDbIndex: entryUUID eq`
+
+
+Além disso, certifique-se de que os campos mencionados na ajuda para Nome de usuário sejam indexados para desempenho ideal.
+
+Veja as informações sobre manutenção de associação de grupo reverso nohttp://www.openldap.org/doc/admin24/index.html["Documentação do OpenLDAP: Guia do Administrador da Versão 2.4"^] .

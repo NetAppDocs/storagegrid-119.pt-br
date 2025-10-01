@@ -1,0 +1,65 @@
+---
+permalink: expand/guidelines-for-adding-object-capacity.html 
+sidebar: sidebar 
+keywords: adding storage capacity, guidelines, storage volumes, expansion 
+summary: 'Você pode expandir a capacidade de armazenamento de objetos do seu sistema StorageGRID adicionando volumes de armazenamento aos nós de armazenamento existentes ou adicionando novos nós de armazenamento aos sites existentes.  Você deve adicionar capacidade de armazenamento de uma forma que atenda aos requisitos da sua política de gerenciamento do ciclo de vida das informações (ILM).' 
+---
+= Diretrizes para adicionar capacidade de objeto
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Você pode expandir a capacidade de armazenamento de objetos do seu sistema StorageGRID adicionando volumes de armazenamento aos nós de armazenamento existentes ou adicionando novos nós de armazenamento aos sites existentes.  Você deve adicionar capacidade de armazenamento de uma forma que atenda aos requisitos da sua política de gerenciamento do ciclo de vida das informações (ILM).
+
+
+
+== Diretrizes para adicionar volumes de armazenamento
+
+Antes de adicionar volumes de armazenamento aos nós de armazenamento existentes, revise as seguintes diretrizes e limitações:
+
+* Você deve examinar suas regras atuais de ILM para determinar onde e quandolink:../expand/adding-storage-volumes-to-storage-nodes.html["adicionar volumes de armazenamento"] para aumentar o armazenamento disponível paralink:../ilm/what-replication-is.html["objetos replicados"] oulink:../ilm/what-erasure-coding-schemes-are.html["objetos codificados por apagamento"] .
+* Você não pode aumentar a capacidade de metadados do seu sistema adicionando volumes de armazenamento porque os metadados do objeto são armazenados somente no volume 0.
+* Cada nó de armazenamento baseado em software pode suportar no máximo 48 volumes de armazenamento.  Se precisar adicionar capacidade além disso, você deverá adicionar novos Nós de Armazenamento.
+* Você pode adicionar uma ou duas prateleiras de expansão a cada aparelho SG6060.  Cada prateleira de expansão adiciona 16 volumes de armazenamento.  Com ambas as prateleiras de expansão instaladas, o SG6060 pode suportar um total de 48 volumes de armazenamento.
+* Você pode adicionar uma ou duas prateleiras de expansão a cada aparelho SG6160.  Cada prateleira de expansão adiciona 60 volumes de armazenamento.  Com ambas as prateleiras de expansão instaladas, o SG6160 pode suportar um total de 180 volumes de armazenamento.
+* Não é possível adicionar volumes de armazenamento a nenhum outro dispositivo de armazenamento.
+* Não é possível aumentar o tamanho de um volume de armazenamento existente.
+* Não é possível adicionar volumes de armazenamento a um nó de armazenamento ao mesmo tempo em que você executa uma atualização do sistema, uma operação de recuperação ou outra expansão.
+
+
+Depois de decidir adicionar volumes de armazenamento e determinar quais nós de armazenamento você deve expandir para atender à sua política de ILM, siga as instruções para seu tipo de nó de armazenamento:
+
+* Para adicionar uma ou duas prateleiras de expansão a um dispositivo de armazenamento SG6060, acesse https://docs.netapp.com/us-en/storagegrid-appliances/sg6000/adding-expansion-shelf-to-deployed-sg6060.html["Adicionar prateleira de expansão ao SG6060 implantado"^] .
+* Para adicionar uma ou duas prateleiras de expansão a um dispositivo de armazenamento SG6160, acesse https://docs.netapp.com/us-en/storagegrid-appliances/sg6100/adding-expansion-shelf-to-deployed-sg6160.html["Adicionar prateleira de expansão ao SG6160 implantado"^]
+* Para um nó baseado em software, siga as instruções paralink:adding-storage-volumes-to-storage-nodes.html["adicionando volumes de armazenamento aos nós de armazenamento"] .
+
+
+
+
+== Diretrizes para adicionar nós de armazenamento
+
+Antes de adicionar nós de armazenamento a sites existentes, revise as seguintes diretrizes e limitações:
+
+* Você deve examinar suas regras atuais de ILM para determinar onde e quando adicionar nós de armazenamento para aumentar o armazenamento disponível paralink:../ilm/what-replication-is.html["objetos replicados"] oulink:../ilm/what-erasure-coding-schemes-are.html["objetos codificados por apagamento"] .
+* Você não deve adicionar mais de 10 nós de armazenamento em um único procedimento de expansão.
+* Você pode adicionar nós de armazenamento a mais de um site em um único procedimento de expansão.
+* Você pode adicionar nós de armazenamento e outros tipos de nós em um único procedimento de expansão.
+* Antes de iniciar o procedimento de expansão, você deve confirmar se todas as operações de reparo de dados executadas como parte de uma recuperação foram concluídas. Ver link:../maintain/checking-data-repair-jobs.html["Verifique os trabalhos de reparo de dados"] .
+* Se você precisar remover nós de armazenamento antes ou depois de executar uma expansão, não descomissione mais de 10 nós de armazenamento em um único procedimento de descomissionamento de nó.
+
+
+
+
+== Diretrizes para serviço ADC em nós de armazenamento
+
+Ao configurar a expansão, você deve escolher se deseja incluir o serviço Controlador de Domínio Administrativo (ADC) em cada novo Nó de Armazenamento. O serviço ADC monitora a localização e a disponibilidade dos serviços de rede.
+
+* O sistema StorageGRID requer umlink:../maintain/understanding-adc-service-quorum.html["quórum de serviços ADC"] estar disponível em cada local e em todos os momentos.
+* Pelo menos três nós de armazenamento em cada site devem incluir o serviço ADC.
+* Não é recomendado adicionar o serviço ADC a cada nó de armazenamento.  Incluir muitos serviços ADC pode causar lentidão devido ao aumento da quantidade de comunicação entre os nós.
+* Uma única grade não deve ter mais de 48 nós de armazenamento com o serviço ADC.  Isso equivale a 16 locais com três serviços ADC em cada local.
+* Em geral, ao selecionar a configuração *Serviço ADC* para um novo nó, você deve selecionar *Automático*. Selecione *Sim* somente se o novo nó substituir outro nó de armazenamento que inclua o serviço ADC. Como não é possível desativar um nó de armazenamento se houver poucos serviços ADC restantes, isso garante que um novo serviço ADC esteja disponível antes que o serviço antigo seja removido.
+* Não é possível adicionar o serviço ADC a um nó depois que ele for implantado.
+

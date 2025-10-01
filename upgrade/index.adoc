@@ -1,0 +1,28 @@
+---
+permalink: upgrade/index.html 
+sidebar: sidebar 
+keywords: storagegrid software upgrade 
+summary: Use estas instruções para atualizar um sistema StorageGRID para uma nova versão. 
+---
+= Atualizar o software StorageGRID
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Use estas instruções para atualizar um sistema StorageGRID para uma nova versão.
+
+Quando você executa a atualização, todos os nós no seu sistema StorageGRID são atualizados.
+
+
+
+== Antes de começar
+
+Revise estes tópicos para saber mais sobre os novos recursos e aprimoramentos do StorageGRID 11.9, determinar se algum recurso foi descontinuado ou removido e descobrir mais sobre as alterações nas APIs do StorageGRID .
+
+* link:whats-new.html["Novidades no StorageGRID 11.9"]
+* link:removed-or-deprecated-features.html["Recursos removidos ou obsoletos"]
+* link:changes-to-grid-management-api.html["Alterações na API de gerenciamento de grade"]
+* link:changes-to-tenant-management-api.html["Alterações na API de gerenciamento de locatários"]
+

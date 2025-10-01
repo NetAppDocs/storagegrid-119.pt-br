@@ -1,0 +1,30 @@
+---
+permalink: maintain/recovering-from-primary-admin-node-failures.html 
+sidebar: sidebar 
+keywords: storagegrid, recover, primary admin node failure 
+summary: 'Você deve concluir um conjunto específico de tarefas para se recuperar de uma falha do nó de administração primário.  O nó de administração principal hospeda o serviço Nó de gerenciamento de configuração (CMN) para a grade.' 
+---
+= Recuperar de falhas do nó de administração primário
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Você deve concluir um conjunto específico de tarefas para se recuperar de uma falha do nó de administração primário.  O nó de administração principal hospeda o serviço do nó de gerenciamento de configuração (CMN) para a grade.
+
+
+CAUTION: Você deve reparar ou substituir um nó administrativo primário com falha imediatamente ou a grade poderá perder a capacidade de ingerir novos objetos.  O período exato depende da sua taxa de ingestão de objetos: se precisar de uma avaliação mais precisa do período da sua grade, entre em contato com o suporte técnico.
+
+O serviço Nó de Gerenciamento de Configuração (CMN) no Nó de Administração primário é responsável por emitir blocos de identificadores de objetos para a grade.  Esses identificadores são atribuídos aos objetos à medida que são ingeridos.  Novos objetos não podem ser ingeridos a menos que haja identificadores disponíveis.  A ingestão de objetos pode continuar enquanto o CMN estiver indisponível porque aproximadamente um mês de fornecimento de identificadores é armazenado em cache na grade.  Entretanto, depois que os identificadores armazenados em cache forem esgotados, nenhum novo objeto poderá ser adicionado.
+
+Siga estas etapas de alto nível para recuperar um nó de administração primário:
+
+. link:copying-audit-logs-from-failed-primary-admin-node.html["Copiar logs de auditoria do nó de administração primário com falha"]
+. link:replacing-primary-admin-node.html["Substituir o nó de administração primário"]
+. link:configuring-replacement-primary-admin-node.html["Configurar o nó de administração primário de substituição"]
+. link:assess-hotfix-requirement-during-primary-admin-node-recovery.html["Determinar se há um requisito de hotfix para o nó de administração primário recuperado"]
+. link:restoring-audit-log-on-recovered-primary-admin-node.html["Restaurar o log de auditoria no nó de administração primário recuperado"]
+. link:restoring-admin-node-database-primary-admin-node.html["Restaurar o banco de dados do nó de administração ao recuperar um nó de administração primário"]
+. link:restoring-prometheus-metrics-primary-admin-node.html["Restaurar métricas do Prometheus ao recuperar um nó de administração primário"]
+

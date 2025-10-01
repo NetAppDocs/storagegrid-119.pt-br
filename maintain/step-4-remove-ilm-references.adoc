@@ -1,0 +1,44 @@
+---
+permalink: maintain/step-4-remove-ilm-references.html 
+sidebar: sidebar 
+keywords: storagegrid, recover, remove ilm reference 
+summary: 'Na Etapa 4 \(Remover referências de ILM\) do assistente de descomissionamento do site, você deve excluir ou editar quaisquer regras de ILM não utilizadas que façam referência ao site, mesmo que as regras não sejam usadas em nenhuma política de ILM.' 
+---
+= Etapa 4: Remover referências ILM
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Na Etapa 4 (Remover referências de ILM) do assistente de descomissionamento do site, você deve excluir ou editar quaisquer regras de ILM não utilizadas que façam referência ao site, mesmo que as regras não sejam usadas em nenhuma política de ILM.
+
+.Passos
+. Determine se alguma regra ILM não utilizada se refere ao site.
++
+Se alguma regra do ILM for listada, ela ainda se refere ao site, mas não é usada em nenhuma política.
+
++
+
+NOTE: Quando o StorageGRID desativa o site, ele desativa automaticamente todos os perfis de codificação de eliminação não utilizados que fazem referência ao site e exclui automaticamente todos os pools de armazenamento não utilizados que fazem referência ao site.  O pool de armazenamento All Storage Nodes (StorageGRID 11.6 e anteriores) foi removido porque usa o site All Sites.
+
+. Edite ou exclua cada regra não utilizada:
++
+** Para editar uma regra, acesse a página de regras do ILM e atualize todos os posicionamentos que usam um perfil de codificação de eliminação ou pool de armazenamento que se refere ao site.  Em seguida, retorne para a *Etapa 4 (Remover referências ILM)*.
+** Para excluir uma regra, selecione o ícone da lixeiraimage:../media/icon_trash_can.png["Ícone Lixeira"] e selecione *OK*.
++
+
+NOTE: Você deve excluir a regra *Fazer 2 cópias* antes de poder desativar um site.
+
+
+
+. Confirme se nenhuma regra ILM não utilizada faz referência ao site e se o botão *Avançar* está habilitado.
+. Selecione *Avançar*.
++
+
+NOTE: Todos os pools de armazenamento restantes e perfis de codificação de eliminação que se referem ao site se tornarão inválidos quando o site for removido.  Quando o StorageGRID desativa o site, ele desativa automaticamente todos os perfis de codificação de eliminação não utilizados que fazem referência ao site e exclui automaticamente todos os pools de armazenamento não utilizados que fazem referência ao site.  O pool de armazenamento All Storage Nodes (StorageGRID 11.6 e anteriores) foi removido porque usa o site All Sites.
+
++
+A etapa 5 (Resolver conflitos de nós) é exibida.
+
+

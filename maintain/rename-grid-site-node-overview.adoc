@@ -1,0 +1,212 @@
+---
+permalink: maintain/rename-grid-site-node-overview.html 
+sidebar: sidebar 
+keywords: rename grid, rename site, rename node, display name, system name 
+summary: Conforme necessário, você pode alterar os nomes de exibição mostrados no Grid Manager para toda a sua grade, cada site e cada nó.  Você pode atualizar os nomes de exibição com segurança e sempre que precisar. 
+---
+= Use o procedimento de renomeação
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Conforme necessário, você pode alterar os nomes de exibição mostrados no Grid Manager para toda a grade, cada site e cada nó.  Você pode atualizar os nomes de exibição com segurança e sempre que precisar.
+
+
+
+== Qual é o procedimento de renomeação?
+
+Ao instalar o StorageGRID inicialmente, você especifica um nome para a grade, cada site e cada nó.  Esses nomes iniciais são conhecidos como _nomes de sistema_ e são os nomes mostrados inicialmente em StorageGRID.
+
+Os nomes do sistema são necessários para operações internas do StorageGRID e não podem ser alterados. No entanto, você pode usar o procedimento de renomeação para definir novos _nomes de exibição_ para a grade, cada site e cada nó.  Esses nomes de exibição aparecem em vários locais do StorageGRID em vez de (ou, em alguns casos, além de) os nomes do sistema subjacente.
+
+Use o procedimento de renomeação para corrigir erros de digitação, implementar uma convenção de nomenclatura diferente ou indicar que um site e todos os seus nós foram realocados.  Ao contrário dos nomes do sistema, os nomes de exibição podem ser atualizados sempre que necessário e sem afetar as operações do StorageGRID .
+
+
+
+== Onde os nomes do sistema e de exibição aparecem?
+
+A tabela a seguir resume onde os nomes do sistema e os nomes de exibição são mostrados na interface do usuário do StorageGRID e nos arquivos do StorageGRID .
+
+[cols="2a,2a,3a"]
+|===
+| Localização | Nome do sistema | Nome de exibição 
+
+
+ a| 
+Páginas do Grid Manager
+ a| 
+Exibido a menos que o item seja renomeado
+ a| 
+Se um item for renomeado, será exibido em vez do nome do sistema nestes locais:
+
+* Painel
+* Página de nós
+* Páginas de configuração para grupos de alta disponibilidade, pontos de extremidade do balanceador de carga, interfaces VLAN, servidores de gerenciamento de chaves, senhas de grade e controle de firewall
+* Alertas
+* Definições de pool de armazenamento
+* Página de consulta de metadados do objeto
+* Páginas relacionadas a procedimentos de manutenção, incluindo atualização, hotfix, atualização do sistema operacional SANtricity , descomissionamento, expansão, recuperação e verificação de existência de objetos
+* Páginas de suporte (registros e diagnósticos)
+* Página de login único, ao lado do nome do host do nó de administração na tabela de detalhes do nó de administração
+
+
+
+
+ a| 
+*NÓS* > guia *Visão geral* para um nó
+ a| 
+Sempre mostrado
+ a| 
+Exibido somente se o item for renomeado
+
+
+
+ a| 
+Páginas legadas no Grid Manager (por exemplo, *SUPPORT* > *Grid Topology*)
+ a| 
+Mostrado
+ a| 
+Não mostrado
+
+
+
+ a| 
+API *node-health*
+ a| 
+Sempre retornado
+ a| 
+Retornado somente se o item for renomeado
+
+
+
+ a| 
+Prompt ao usar SSH para acessar um nó
+ a| 
+Exibido como nome principal, a menos que o item tenha sido renomeado:
+
+`admin@SYSTEM-NAME: ~ $`
+
+Incluído entre parênteses quando o item é renomeado:
+
+`admin@DISPLAY-NAME(SYSTEM-NAME):~ $`
+ a| 
+Exibido como nome principal quando o item é renomeado:
+
+`admin@DISPLAY-NAME(SYSTEM-NAME):~ $`
+
+
+
+ a| 
+`Passwords.txt`arquivo no Pacote de Recuperação
+ a| 
+Mostrado como `Server Name`
+ a| 
+Mostrado como `Display Name`
+
+
+
+ a| 
+`/etc/hosts`arquivo em todos os nós
+
+Por exemplo:
+
+`10.96.99.128 SYSTEM-NAME 28989c59-a2c3-4d30-bb09-6879adf2437f DISPLAY-NAME localhost-grid # storagegrid-gen-host`
+ a| 
+Sempre mostrado na segunda coluna
+ a| 
+Quando o item é renomeado, mostrado na quarta coluna
+
+
+
+ a| 
+`topology-display-names.json`, incluído com dados do AutoSupport
+ a| 
+Não incluído
+ a| 
+Vazio, a menos que os itens tenham sido renomeados; caso contrário, mapeia os IDs de grade, site e nó para seus nomes de exibição.
+
+|===
+
+
+== Requisitos de nome de exibição
+
+Antes de usar este procedimento, revise os requisitos para nomes de exibição.
+
+
+
+=== Nomes de exibição para nós
+
+Os nomes de exibição dos nós devem seguir estas regras:
+
+* Deve ser exclusivo em seu sistema StorageGRID .
+* Não pode ser o mesmo que o nome do sistema de nenhum outro item no seu sistema StorageGRID .
+* Deve conter no mínimo 1 e no máximo 32 caracteres.
+* Pode conter números, hifens (-) e letras maiúsculas e minúsculas.
+* Pode começar ou terminar com uma letra ou número, mas não pode começar ou terminar com um hífen.
+* Não podem ser todos números.
+* Não diferenciam maiúsculas de minúsculas.  Por exemplo, `DC1-ADM` e `dc1-adm` são considerados duplicados.
+
+
+Você pode renomear um nó com um nome de exibição que foi usado anteriormente por um nó diferente, desde que a renomeação não resulte em um nome de exibição ou nome do sistema duplicado.
+
+
+
+=== Nomes de exibição para grade e sites
+
+Os nomes de exibição da grade e dos sites seguem as mesmas regras, com estas exceções:
+
+* Pode incluir espaços.
+* Pode incluir estes caracteres especiais: `= - _ : , . @ !`
+* Pode começar e terminar com caracteres especiais, incluindo hifens.
+* Podem ser todos números ou caracteres especiais.
+
+
+
+
+== Melhores práticas para exibir nomes
+
+Se você planeja renomear vários itens, documente seu esquema geral de nomenclatura antes de usar este procedimento.  Crie um sistema que garanta que os nomes sejam únicos, consistentes e fáceis de entender rapidamente.
+
+Você pode usar qualquer convenção de nomenclatura que atenda aos requisitos da sua organização.  Considere estas sugestões básicas sobre o que incluir:
+
+* *Indicador de site*: Se você tiver vários sites, adicione um código de site ao nome de cada nó.
+* *Tipo de nó*: Os nomes dos nós geralmente indicam o tipo do nó.  Você pode usar abreviações como `s` , `adm` , e `gw` (Nó de armazenamento, nó de administração e nó de gateway).
+* *Número do nó*: Se um site contiver mais de um nó de um tipo específico, adicione um número exclusivo ao nome de cada nó.
+
+
+Pense duas vezes antes de adicionar detalhes específicos aos nomes que provavelmente mudarão ao longo do tempo.  Por exemplo, não inclua endereços IP em nomes de nós porque esses endereços podem ser alterados.  Da mesma forma, os locais dos racks ou os números dos modelos dos aparelhos podem mudar se você mover o equipamento ou atualizar o hardware.
+
+
+
+=== Exemplos de nomes de exibição
+
+Suponha que seu sistema StorageGRID tenha três data centers e nós de tipos diferentes em cada data center.  Seus nomes de exibição podem ser tão simples quanto estes:
+
+* *Grade*: `StorageGRID Deployment`
+* *Primeiro site*: `Data Center 1`
++
+** `dc1-adm1`
+** `dc1-s1`
+** `dc1-s2`
+** `dc1-s3`
+** `dc1-gw1`
+
+
+* *Segundo local*: `Data Center 2`
++
+** `dc2-adm2`
+** `dc2-s1`
+** `dc2-s2`
+** `dc2-s3`
+
+
+* *Terceiro site*: `Data Center 3`
++
+** `dc3-s1`
+** `dc3-s2`
+** `dc3-s3`
+
+
+

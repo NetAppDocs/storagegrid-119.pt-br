@@ -1,0 +1,93 @@
+---
+permalink: audit/ovwr-object-overwrite.html 
+sidebar: sidebar 
+keywords: storagegrid, audit, message, OVWR, Object Overwrite 
+summary: 'Esta mensagem é gerada quando uma operação externa \(solicitada pelo cliente\) faz com que um objeto seja substituído por outro objeto.' 
+---
+= OVWR: Substituição de Objeto
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Esta mensagem é gerada quando uma operação externa (solicitada pelo cliente) faz com que um objeto seja substituído por outro objeto.
+
+[cols="1a,1a,4a"]
+|===
+| Código | Campo | Descrição 
+
+
+ a| 
+CBDI
+ a| 
+Identificador de bloco de conteúdo (novo)
+ a| 
+O CBDID para o novo objeto.
+
+
+
+ a| 
+CSIZ
+ a| 
+Tamanho do objeto anterior
+ a| 
+O tamanho, em bytes, do objeto que está sendo substituído.
+
+
+
+ a| 
+TOCB
+ a| 
+Identificador de bloco de conteúdo (anterior)
+ a| 
+O CBDID do objeto anterior.
+
+
+
+ a| 
+UUID
+ a| 
+ID universalmente exclusivo (novo)
+ a| 
+O identificador do novo objeto dentro do sistema StorageGRID .
+
+
+
+ a| 
+OUID
+ a| 
+ID universalmente exclusivo (anterior)
+ a| 
+O identificador do objeto anterior dentro do sistema StorageGRID .
+
+
+
+ a| 
+CAMINHO
+ a| 
+Caminho do objeto S3
+ a| 
+O caminho do objeto S3 usado para o objeto anterior e o novo
+
+
+
+ a| 
+RSLT
+ a| 
+Código de resultado
+ a| 
+Resultado da transação de substituição de objeto.  O resultado é sempre:
+
+SUCS: Bem-sucedido
+
+
+
+ a| 
+SGRP
+ a| 
+Site (Grupo)
+ a| 
+Se presente, o objeto substituído foi excluído no site especificado, que não é o site onde o objeto substituído foi ingerido.
+
+|===

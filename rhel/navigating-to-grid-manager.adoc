@@ -1,0 +1,51 @@
+---
+permalink: rhel/navigating-to-grid-manager.html 
+sidebar: sidebar 
+keywords: how to navigate to grid manager 
+summary: Use o Grid Manager para definir todas as informações necessárias para configurar seu sistema StorageGRID . 
+---
+= Navegue até o Gerenciador de Grade
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Use o Grid Manager para definir todas as informações necessárias para configurar seu sistema StorageGRID .
+
+.Antes de começar
+O nó de administração principal deve ser implantado e ter concluído a sequência de inicialização inicial.
+
+.Passos
+. Abra seu navegador e navegue até:
++
+`https://_primary_admin_node_ip_`
+
++
+Alternativamente, você pode acessar o Grid Manager na porta 8443:
+
++
+`https://_primary_admin_node_ip_:8443`
+
++
+Você pode usar o endereço IP do nó de administração primário na rede Grid ou na rede de administração, conforme apropriado para sua configuração de rede.
+
+. Gerencie uma senha temporária do instalador conforme necessário:
++
+** Se uma senha já tiver sido definida usando um desses métodos, digite a senha para prosseguir.
++
+*** Um usuário definiu a senha ao acessar o instalador anteriormente
+*** A senha foi importada automaticamente do arquivo de configuração do nó em `/etc/storagegrid/nodes/_<node_name>_.conf`
+
+
+** Se uma senha não tiver sido definida, opcionalmente defina uma senha para proteger o instalador do StorageGRID .
+
+
+. Selecione *Instalar um sistema StorageGRID *.
++
+A página usada para configurar um sistema StorageGRID é exibida.
+
++
+image::../media/gmi_installer_first_screen.gif[Primeira tela do instalador do StorageGRID]
+
+

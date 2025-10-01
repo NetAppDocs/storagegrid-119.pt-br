@@ -1,0 +1,28 @@
+---
+permalink: harden/index.html 
+sidebar: sidebar 
+keywords: Hardening guidelines, system, security 
+summary: O reforço do sistema é o processo de eliminar o máximo possível de riscos de segurança de um sistema StorageGRID . 
+---
+= Considerações gerais para o reforço do sistema
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+O reforço do sistema é o processo de eliminar o máximo possível de riscos de segurança de um sistema StorageGRID .
+
+Ao instalar e configurar o StorageGRID, use estas diretrizes para ajudar a atender a quaisquer objetivos de segurança prescritos para confidencialidade, integridade e disponibilidade.
+
+Você já deve estar usando as melhores práticas padrão do setor para reforço do sistema. Por exemplo, você usa senhas fortes para StorageGRID, usa HTTPS em vez de HTTP e habilita a autenticação baseada em certificado quando disponível.
+
+O StorageGRID segue o https://security.netapp.com/policy/["Política de tratamento de vulnerabilidades da NetApp"^] .  As vulnerabilidades relatadas são verificadas e tratadas de acordo com o processo de resposta a incidentes de segurança do produto.
+
+Ao fortalecer um sistema StorageGRID , considere o seguinte:
+
+* *Qual das três redes StorageGRID * você implementou?  Todos os sistemas StorageGRID devem usar a Rede Grid, mas você também pode usar a Rede de administração, a Rede de cliente ou ambas.  Cada rede tem diferentes considerações de segurança.
+* *O tipo de plataforma* que você usa para os nós individuais no seu sistema StorageGRID .  Os nós do StorageGRID podem ser implantados em máquinas virtuais VMware, dentro de um mecanismo de contêiner em hosts Linux ou como dispositivos de hardware dedicados.  Cada tipo de plataforma tem seu próprio conjunto de práticas recomendadas de proteção.
+* *Quão confiáveis são as contas dos inquilinos*.  Se você for um provedor de serviços com contas de locatários não confiáveis, terá preocupações de segurança diferentes do que se usasse apenas locatários internos confiáveis.
+* *Quais requisitos e convenções de segurança* sua organização segue.  Talvez seja necessário cumprir requisitos regulatórios ou corporativos específicos.
+

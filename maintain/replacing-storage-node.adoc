@@ -1,0 +1,47 @@
+---
+permalink: maintain/replacing-storage-node.html 
+sidebar: sidebar 
+keywords: storagegrid, recover, replace storage node, replacing storage node 
+summary: Se a unidade do sistema falhar, você deverá primeiro substituir o nó de armazenamento. 
+---
+= Substituir o nó de armazenamento
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Se a unidade do sistema falhar, você deverá primeiro substituir o nó de armazenamento.
+
+Você deve selecionar o procedimento de substituição de nó para sua plataforma.  As etapas para substituir um nó são as mesmas para todos os tipos de nós de grade.
+
+
+NOTE: Este procedimento se aplica somente a nós de armazenamento baseados em software.  Você deve seguir um procedimento diferente paralink:recovering-storagegrid-appliance-storage-node.html["recuperar um nó de armazenamento do aparelho"] .
+
+*Linux:* Se você não tiver certeza se a unidade do sistema falhou, siga as instruções para substituir o nó e determinar quais etapas de recuperação são necessárias.
+
+[cols="1a,2a"]
+|===
+| Plataforma | Procedimento 
+
+
+ a| 
+VMware
+ a| 
+link:all-node-types-replacing-vmware-node.html["Substituir um nó VMware"]
+
+
+
+ a| 
+Linux
+ a| 
+link:all-node-types-replacing-linux-node.html["Substituir um nó Linux"]
+
+
+
+ a| 
+OpenStack
+ a| 
+Os arquivos de disco de máquina virtual e scripts fornecidos pela NetApp para OpenStack não são mais suportados para operações de recuperação.  Se você precisar recuperar um nó em execução em uma implantação do OpenStack, baixe os arquivos para seu sistema operacional Linux.  Em seguida, siga o procedimento paralink:all-node-types-replacing-linux-node.html["substituindo um nó Linux"] .
+
+|===

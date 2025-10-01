@@ -1,0 +1,99 @@
+---
+permalink: admin/grid-federation-overview.html 
+sidebar: sidebar 
+keywords: grid federation, cross-grid replication, account clone, cgr, disaster recovery 
+summary: Você pode usar a federação de grade para clonar locatários e replicar seus objetos entre dois sistemas StorageGRID para recuperação de desastres. 
+---
+= O que é federação de grade?
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Você pode usar a federação de grade para clonar locatários e replicar seus objetos entre dois sistemas StorageGRID para recuperação de desastres.
+
+
+
+== O que é uma conexão de federação de rede?
+
+Uma conexão de federação de grade é uma conexão bidirecional, confiável e segura entre nós de administração e gateway em dois sistemas StorageGRID .
+
+
+
+== Fluxo de trabalho para federação de grade
+
+O diagrama de fluxo de trabalho resume as etapas para configurar uma conexão de federação de grade entre duas grades.
+
+image::../media/grid-federation-workflow.png[Fluxo de trabalho de conexão da federação de grade]
+
+
+
+== Considerações e requisitos para conexões de federação de rede
+
+* As grades usadas para federação de grade devem executar versões do StorageGRID que sejam idênticas ou não tenham mais de uma diferença de versão principal entre elas.
++
+Para obter detalhes sobre os requisitos de versão, consulte olink:../release-notes/index.html["Notas de lançamento"] .
+
+* Uma grade pode ter uma ou mais conexões de federação de grade com outras grades.  Cada conexão de federação de rede é independente de quaisquer outras conexões.  Por exemplo, se a Grade 1 tiver uma conexão com a Grade 2 e uma segunda conexão com a Grade 3, não há conexão implícita entre a Grade 2 e a Grade 3.
+* As conexões de federação de rede são bidirecionais.  Depois que a conexão for estabelecida, você pode monitorar e gerenciar a conexão de qualquer uma das redes.
+* Pelo menos uma conexão de federação de grade deve existir antes que você possa usarlink:grid-federation-what-is-account-clone.html["clone de conta"] oulink:grid-federation-what-is-cross-grid-replication.html["replicação entre grades"] .
+
+
+
+
+=== Requisitos de rede e endereço IP
+
+* As conexões de federação de grade podem ocorrer na Rede de grade, na Rede de administração ou na Rede de cliente.
+* Uma conexão de federação de rede conecta uma rede a outra.  A configuração de cada grade especifica um ponto de extremidade de federação de grade na outra grade que consiste em nós de administração, nós de gateway ou ambos.
+* A melhor prática é conectarlink:managing-high-availability-groups.html["grupos de alta disponibilidade (HA)"] de nós de gateway e de administração em cada grade.  O uso de grupos HA ajuda a garantir que as conexões da federação de grade permanecerão online caso os nós fiquem indisponíveis.  Se a interface ativa em qualquer grupo HA falhar, a conexão poderá usar uma interface de backup.
+* Não é recomendado criar uma conexão de federação de grade que use o endereço IP de um único nó de administração ou nó de gateway.  Se o nó ficar indisponível, a conexão da federação de rede também ficará indisponível.
+* link:grid-federation-what-is-cross-grid-replication.html["Replicação entre grades"]de objetos requer que os nós de armazenamento em cada grade sejam capazes de acessar os nós de administração e gateway configurados na outra grade.  Para cada grade, confirme se todos os nós de armazenamento têm uma rota de alta largura de banda como nós de administração ou nós de gateway usados para a conexão.
+
+
+
+
+=== Use FQDNs para balancear a carga da conexão
+
+Para um ambiente de produção, use nomes de domínio totalmente qualificados (FQDNs) para identificar cada grade na conexão.  Em seguida, crie as entradas DNS apropriadas, da seguinte forma:
+
+* O FQDN para Grid 1 mapeado para um ou mais endereços IP virtuais (VIP) para grupos HA no Grid 1 ou para o endereço IP de um ou mais nós de administração ou gateway no Grid 1.
+* O FQDN para Grid 2 mapeado para um ou mais endereços VIP para Grid 2 ou para o endereço IP de um ou mais nós de administração ou gateway no Grid 2.
+
+
+Quando você usa várias entradas de DNS, as solicitações para usar a conexão são balanceadas de carga, da seguinte maneira:
+
+* As entradas de DNS mapeadas para os endereços VIP de vários grupos HA são balanceadas de carga entre os nós ativos nos grupos HA.
+* As entradas de DNS que mapeiam os endereços IP de vários nós de administração ou nós de gateway são balanceadas de carga entre os nós mapeados.
+
+
+
+
+=== Requisitos portuários
+
+Ao criar uma conexão de federação de grade, você pode especificar qualquer número de porta não utilizado de 23000 a 23999.  Ambas as grades nesta conexão usarão a mesma porta.
+
+Você deve garantir que nenhum nó em nenhuma das grades use esta porta para outras conexões.
+
+
+
+=== Requisitos do certificado
+
+Ao configurar uma conexão de federação de grade, o StorageGRID gera automaticamente quatro certificados SSL:
+
+* Certificados de servidor e cliente para autenticar e criptografar informações enviadas da grade 1 para a grade 2
+* Certificados de servidor e cliente para autenticar e criptografar informações enviadas da grade 2 para a grade 1
+
+
+image::../media/grid-federation-certificates.png[Certificados de federação de rede]
+
+Por padrão, os certificados são válidos por 730 dias (2 anos).  Quando esses certificados estiverem próximos da data de expiração, o alerta *Expiração do certificado de federação de grade* lembrará você de rotacionar os certificados, o que pode ser feito usando o Grid Manager.
+
+
+CAUTION: Se os certificados em qualquer extremidade da conexão expirarem, a conexão deixará de funcionar.  A replicação de dados ficará pendente até que os certificados sejam atualizados.
+
+.Saber mais
+* link:grid-federation-create-connection.html["Criar conexões de federação de grade"]
+* link:grid-federation-manage-connection.html["Gerenciar conexões de federação de grade"]
+* link:grid-federation-troubleshoot.html["Solucionar erros de federação de grade"]
+

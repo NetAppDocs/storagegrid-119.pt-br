@@ -1,0 +1,78 @@
+---
+permalink: maintain/whats-next-performing-additional-recovery-steps-if-required.html 
+sidebar: sidebar 
+keywords: storagegrid, recover, corrective action, additional recovery 
+summary: Dependendo das ações específicas que você tomou para colocar os nós do StorageGRID em execução no host de substituição, pode ser necessário executar etapas de recuperação adicionais para cada nó. 
+---
+= Próximo passo: execute etapas adicionais de recuperação, se necessário
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Dependendo das ações específicas que você tomou para colocar os nós do StorageGRID em execução no host de substituição, pode ser necessário executar etapas de recuperação adicionais para cada nó.
+
+A recuperação do nó estará concluída se você não precisar tomar nenhuma ação corretiva enquanto substitui o host Linux ou restaura o nó de grade com falha no novo host.
+
+
+
+== Ações corretivas e próximos passos
+
+Durante a substituição do nó, pode ser necessário tomar uma destas ações corretivas:
+
+* Você teve que usar o `--force` sinalizador para importar o nó.
+* Para qualquer `<PURPOSE>` , o valor do `BLOCK_DEVICE_<PURPOSE>` A variável do arquivo de configuração se refere a um dispositivo de bloco que não contém os mesmos dados que continha antes da falha do host.
+* Você emitiu `storagegrid node force-recovery _node-name_` para o nó.
+* Você adicionou um novo dispositivo de bloco.
+
+
+Se você tomou *qualquer* dessas ações corretivas, você deve executar etapas adicionais de recuperação.
+
+[cols="2a,1a"]
+|===
+| Tipo de recuperação | Próximo passo 
+
+
+ a| 
+Nó de administração primário
+ a| 
+link:configuring-replacement-primary-admin-node.html["Configurar nó de administração primário de substituição"]
+
+
+
+ a| 
+Nó de administração não primário
+ a| 
+link:selecting-start-recovery-to-configure-non-primary-admin-node.html["Selecione Iniciar recuperação para configurar o nó de administração não primário"]
+
+
+
+ a| 
+Nó de gateway
+ a| 
+link:selecting-start-recovery-to-configure-gateway-node.html["Selecione Iniciar recuperação para configurar o nó do gateway"]
+
+
+
+ a| 
+Nó de armazenamento (baseado em software):
+
+* Se você tivesse que usar o `--force` sinalizador para importar o nó ou você emitiu `storagegrid node force-recovery _node-name_`
+* Se você tivesse que fazer uma reinstalação completa do nó ou precisasse restaurar /var/local
+
+ a| 
+link:selecting-start-recovery-to-configure-storage-node.html["Selecione Iniciar recuperação para configurar o nó de armazenamento"]
+
+
+
+ a| 
+Nó de armazenamento (baseado em software):
+
+* Se você adicionou um novo dispositivo de bloco.
+* Se, por qualquer `<PURPOSE>` , o valor do `BLOCK_DEVICE_<PURPOSE>` A variável do arquivo de configuração se refere a um dispositivo de bloco que não contém os mesmos dados que continha antes da falha do host.
+
+ a| 
+link:recovering-from-storage-volume-failure-where-system-drive-is-intact.html["Recuperar de falha de volume de armazenamento onde a unidade do sistema está intacta"]
+
+|===

@@ -1,0 +1,60 @@
+---
+permalink: expand/contacting-technical-support.html 
+sidebar: sidebar 
+keywords: troubleshoot expansion, contact technical support 
+summary: Se você encontrar erros durante o processo de expansão da grade que não consiga resolver, ou se uma tarefa da grade falhar, colete os arquivos de log e entre em contato com o suporte técnico. 
+---
+= Solucionar problemas de expansão
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Se você encontrar erros durante o processo de expansão da grade que não consiga resolver, ou se uma tarefa da grade falhar, colete os arquivos de log e entre em contato com o suporte técnico.
+
+Antes de entrar em contato com o suporte técnico, colete os arquivos de log necessários para ajudar na solução de problemas.
+
+.Passos
+. Conecte-se ao nó de expansão que apresentou falhas:
++
+.. Digite o seguinte comando:``ssh -p 8022 admin@_grid_node_IP_``
++
+
+NOTE: A porta 8022 é a porta SSH do sistema operacional base, enquanto a porta 22 é a porta SSH do mecanismo de contêiner que executa o StorageGRID.
+
+.. Digite a senha listada no `Passwords.txt` arquivo.
+.. Digite o seguinte comando para alternar para root: `su -`
+.. Digite a senha listada no `Passwords.txt` arquivo.
+
+
++
+Depois de efetuar login como root, o prompt muda de `$` para `#` .
+
+. Dependendo do estágio em que a instalação chegou, recupere qualquer um dos seguintes logs que estão disponíveis no nó da grade:
++
+[cols="1a,2a"]
+|===
+| Plataforma | Registros 
+
+
+ a| 
+VMware
+ a| 
+** `/var/log/daemon.log`
+** `/var/log/storagegrid/daemon.log`
+** `/var/log/storagegrid/nodes/<node-name>.log`
+
+
+
+
+ a| 
+Linux
+ a| 
+** `/var/log/storagegrid/daemon.log`
+** `/etc/storagegrid/nodes/<node-name>.conf`(para cada nó com falha)
+** `/var/log/storagegrid/nodes/<node-name>.log`(para cada nó com falha; pode não existir)
+
+
+|===
+

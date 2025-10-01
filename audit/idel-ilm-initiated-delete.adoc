@@ -1,0 +1,161 @@
+---
+permalink: audit/idel-ilm-initiated-delete.html 
+sidebar: sidebar 
+keywords: storagegrid, audit, message, IDEL, ILM Initiated Delete 
+summary: Esta mensagem é gerada quando o ILM inicia o processo de exclusão de um objeto. 
+---
+= IDEL: Exclusão iniciada pelo ILM
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Esta mensagem é gerada quando o ILM inicia o processo de exclusão de um objeto.
+
+A mensagem IDEL é gerada em qualquer uma destas situações:
+
+* *Para objetos em buckets S3 compatíveis*: Esta mensagem é gerada quando o ILM inicia o processo de exclusão automática de um objeto porque seu período de retenção expirou (assumindo que a configuração de exclusão automática esteja ativada e a retenção legal esteja desativada).
+* *Para objetos em buckets S3 não compatíveis*.  Esta mensagem é gerada quando o ILM inicia o processo de exclusão de um objeto porque nenhuma instrução de posicionamento nas políticas ativas do ILM se aplica atualmente ao objeto.
+
+
+[cols="1a,1a,4a"]
+|===
+| Código | Campo | Descrição 
+
+
+ a| 
+CBDI
+ a| 
+Identificador de bloco de conteúdo
+ a| 
+O CBDID do objeto.
+
+
+
+ a| 
+APLV
+ a| 
+Conformidade: Exclusão automática
+ a| 
+Somente para objetos em buckets S3 compatíveis.  0 (falso) ou 1 (verdadeiro), indicando se um objeto compatível deve ser excluído automaticamente quando seu período de retenção terminar, a menos que o bucket esteja sob retenção legal.
+
+
+
+ a| 
+CMPL
+ a| 
+Conformidade: retenção legal
+ a| 
+Somente para objetos em buckets S3 compatíveis.  0 (falso) ou 1 (verdadeiro), indicando se o bucket está atualmente sob retenção legal.
+
+
+
+ a| 
+CMPR
+ a| 
+Conformidade: Período de retenção
+ a| 
+Somente para objetos em buckets S3 compatíveis.  A duração do período de retenção do objeto em minutos.
+
+
+
+ a| 
+CTME
+ a| 
+Conformidade: Tempo de ingestão
+ a| 
+Somente para objetos em buckets S3 compatíveis.  Tempo de ingestão do objeto.  Você pode adicionar o período de retenção em minutos a esse valor para determinar quando o objeto pode ser excluído do bucket.
+
+
+
+ a| 
+DMRK
+ a| 
+Excluir ID da versão do marcador
+ a| 
+O ID da versão do marcador de exclusão criado ao excluir um objeto de um bucket versionado.  Operações em buckets não incluem este campo.
+
+
+
+ a| 
+CSIZ
+ a| 
+Tamanho do conteúdo
+ a| 
+O tamanho do objeto em bytes.
+
+
+
+ a| 
+LOCS
+ a| 
+Locais
+ a| 
+O local de armazenamento de dados de objetos dentro do sistema StorageGRID .  O valor para LOCS é "" se o objeto não tiver localizações (por exemplo, ele foi excluído).
+
+CLEC: para objetos codificados por eliminação, o ID do perfil de codificação por eliminação e o ID do grupo de codificação por eliminação que são aplicados aos dados do objeto.
+
+CLDI: para objetos replicados, o ID do nó LDR e o ID do volume do local do objeto.
+
+CLNL: ID do nó ARC da localização do objeto se os dados do objeto estiverem arquivados.
+
+
+
+ a| 
+CAMINHO
+ a| 
+Balde/Chave S3
+ a| 
+O nome do bucket S3 e o nome da chave S3.
+
+
+
+ a| 
+RSLT
+ a| 
+Resultado
+ a| 
+O resultado da operação ILM.
+
+SUCS: A operação ILM foi bem-sucedida.
+
+
+
+ a| 
+REGRA
+ a| 
+Etiqueta de regras
+ a| 
+* Se um objeto em um bucket S3 compatível estiver sendo excluído automaticamente porque seu período de retenção expirou, este campo ficará em branco.
+* Se o objeto estiver sendo excluído porque não há mais instruções de posicionamento que se apliquem atualmente ao objeto, este campo mostrará o rótulo legível da última regra do ILM aplicada ao objeto.
+
+
+
+
+ a| 
+SGRP
+ a| 
+Site (Grupo)
+ a| 
+Se presente, o objeto foi excluído no site especificado, que não é o site onde o objeto foi ingerido.
+
+
+
+ a| 
+UUID
+ a| 
+Identificador Universalmente Único
+ a| 
+O identificador do objeto dentro do sistema StorageGRID .
+
+
+
+ a| 
+VSID
+ a| 
+ID da versão
+ a| 
+O ID da versão específica de um objeto que foi excluído.  Operações em buckets e objetos em buckets não versionados não incluem este campo.
+
+|===

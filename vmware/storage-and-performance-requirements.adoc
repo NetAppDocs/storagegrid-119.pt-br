@@ -1,0 +1,154 @@
+---
+permalink: vmware/storage-and-performance-requirements.html 
+sidebar: sidebar 
+keywords: storage requirements, performance requirements, netapp ontap, fabricpool 
+summary: Você deve entender os requisitos de armazenamento e desempenho para nós StorageGRID hospedados por máquinas virtuais, para que possa fornecer espaço suficiente para dar suporte à configuração inicial e à futura expansão de armazenamento. 
+---
+= Requisitos de armazenamento e desempenho
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Você deve entender os requisitos de armazenamento e desempenho para nós StorageGRID hospedados por máquinas virtuais, para que possa fornecer espaço suficiente para dar suporte à configuração inicial e à futura expansão de armazenamento.
+
+
+
+== Requisitos de desempenho
+
+O desempenho do volume do sistema operacional e do primeiro volume de armazenamento impacta significativamente o desempenho geral do sistema.  Certifique-se de que eles forneçam desempenho de disco adequado em termos de latência, operações de entrada/saída por segundo (IOPS) e taxa de transferência.
+
+Todos os nós do StorageGRID exigem que a unidade do sistema operacional e todos os volumes de armazenamento tenham o cache de write-back habilitado.  O cache deve estar em uma mídia protegida ou persistente.
+
+
+
+== Requisitos para máquinas virtuais que usam armazenamento NetApp ONTAP
+
+Se você estiver implantando um nó StorageGRID como uma máquina virtual com armazenamento atribuído de um sistema NetApp ONTAP , terá confirmado que o volume não tem uma política de camadas FabricPool habilitada.  Por exemplo, se um nó StorageGRID estiver sendo executado como uma máquina virtual em um host VMware, certifique-se de que o volume que faz o backup do armazenamento de dados para o nó não tenha uma política de camadas FabricPool habilitada.  Desabilitar a hierarquização do FabricPool para volumes usados ​​com nós StorageGRID simplifica a solução de problemas e as operações de armazenamento.
+
+
+NOTE: Nunca use o FabricPool para hierarquizar quaisquer dados relacionados ao StorageGRID de volta ao próprio StorageGRID .  A hierarquização dos dados do StorageGRID de volta ao StorageGRID aumenta a complexidade operacional e de solução de problemas.
+
+
+
+== Número de máquinas virtuais necessárias
+
+Cada site StorageGRID requer no mínimo três nós de armazenamento.
+
+
+
+== Requisitos de armazenamento por tipo de nó
+
+Em um ambiente de produção, as máquinas virtuais para nós StorageGRID devem atender a requisitos diferentes, dependendo dos tipos de nós.
+
+
+NOTE: Snapshots de disco não podem ser usados para restaurar nós de grade.  Em vez disso, consulte olink:../maintain/warnings-and-considerations-for-grid-node-recovery.html["recuperação de nós de grade"] procedimentos para cada tipo de nó.
+
+[cols="1a,2a"]
+|===
+| Tipo de nó | Armazenar 
+
+
+ a| 
+Nó de administração
+ a| 
+100 GB LUN para SO
+
+LUN de 200 GB para tabelas de nó de administração
+
+LUN de 200 GB para log de auditoria do nó de administração
+
+
+
+ a| 
+Nó de armazenamento
+ a| 
+100 GB LUN para SO
+
+3 LUNs para cada nó de armazenamento neste host
+
+*Observação*: Um nó de armazenamento pode ter de 1 a 16 LUNs de armazenamento; pelo menos 3 LUNs de armazenamento são recomendados.
+
+Tamanho mínimo por LUN: 4 TB
+
+Tamanho máximo do LUN testado: 39 TB.
+
+
+
+ a| 
+Nó de armazenamento (somente metadados)
+ a| 
+100 GB LUN para SO
+
+1 LUN
+
+Tamanho mínimo por LUN: 4 TB
+
+Tamanho máximo do LUN testado: 39 TB.
+
+*Observação*: somente um rangedb é necessário para nós de armazenamento somente de metadados.
+
+
+
+ a| 
+Nó de gateway
+ a| 
+100 GB LUN para SO
+
+|===
+
+NOTE: Dependendo do nível de auditoria configurado, do tamanho das entradas do usuário, como o nome da chave do objeto S3, e da quantidade de dados de log de auditoria que você precisa preservar, pode ser necessário aumentar o tamanho do LUN do log de auditoria em cada nó de administração. Geralmente, uma grade gera aproximadamente 1 KB de dados de auditoria por operação S3, o que significa que um LUN de 200 GB suportaria 70 milhões de operações por dia ou 800 operações por segundo durante dois a três dias.
+
+
+
+== Requisitos de armazenamento para nós de armazenamento
+
+Um nó de armazenamento baseado em software pode ter de 1 a 16 volumes de armazenamento; 3 ou mais volumes de armazenamento são recomendados. Cada volume de armazenamento deve ter 4 TB ou mais.
+
+
+NOTE: Um nó de armazenamento de dispositivo também pode ter até 48 volumes de armazenamento.
+
+Conforme mostrado na figura, o StorageGRID reserva espaço para metadados de objetos no volume de armazenamento 0 de cada nó de armazenamento.  Qualquer espaço restante no volume de armazenamento 0 e quaisquer outros volumes de armazenamento no Nó de Armazenamento são usados ​​exclusivamente para dados de objeto.
+
+image::../media/metadata_space_storage_node.png[Nó de armazenamento de espaço de metadados]
+
+Para fornecer redundância e proteger os metadados do objeto contra perdas, o StorageGRID armazena três cópias dos metadados para todos os objetos no sistema em cada site.  As três cópias dos metadados do objeto são distribuídas uniformemente entre todos os nós de armazenamento em cada site.
+
+Ao instalar uma grade com nós de armazenamento somente de metadados, a grade também deve conter um número mínimo de nós para armazenamento de objetos.  Verlink:../primer/what-storage-node-is.html#types-of-storage-nodes["Tipos de nós de armazenamento"] para obter mais informações sobre nós de armazenamento somente de metadados.
+
+* Para uma grade de site único, pelo menos dois nós de armazenamento são configurados para objetos e metadados.
+* Para uma grade de vários sites, pelo menos um nó de armazenamento por site é configurado para objetos e metadados.
+
+
+Ao atribuir espaço ao volume 0 de um novo Nó de Armazenamento, você deve garantir que haja espaço adequado para a parte desse nó de todos os metadados do objeto.
+
+* No mínimo, você deve atribuir pelo menos 4 TB ao volume 0.
++
+
+NOTE: Se você usar apenas um volume de armazenamento para um Nó de Armazenamento e atribuir 4 TB ou menos ao volume, o Nó de Armazenamento poderá entrar no estado somente leitura de armazenamento na inicialização e armazenar apenas metadados de objetos.
+
++
+
+NOTE: Se você atribuir menos de 500 GB ao volume 0 (somente para uso não produtivo), 10% da capacidade do volume de armazenamento será reservada para metadados.
+
+* Os recursos de nós somente de metadados baseados em software devem corresponder aos recursos de nós de armazenamento existentes. Por exemplo:
++
+** Se o site StorageGRID existente estiver usando dispositivos SG6000 ou SG6100, os nós somente de metadados baseados em software deverão atender aos seguintes requisitos mínimos:
++
+*** 128 GB de RAM
+*** CPU de 8 núcleos
+*** 8 TB SSD ou armazenamento equivalente para o banco de dados Cassandra (rangedb/0)
+
+
+** Se o site StorageGRID existente estiver usando nós de armazenamento virtuais com 24 GB de RAM, CPU de 8 núcleos e 3 TB ou 4 TB de armazenamento de metadados, os nós somente de metadados baseados em software deverão usar recursos semelhantes (24 GB de RAM, CPU de 8 núcleos e 4 TB de armazenamento de metadados (rangedb/0).
++
+Ao adicionar um novo site StorageGRID , a capacidade total de metadados do novo site deve, no mínimo, corresponder aos sites StorageGRID existentes e os novos recursos do site devem corresponder aos nós de armazenamento nos sites StorageGRID existentes.
+
+
+
+* Se você estiver instalando um novo sistema (StorageGRID 11.6 ou superior) e cada nó de armazenamento tiver 128 GB ou mais de RAM, atribua 8 TB ou mais ao volume 0.  Usar um valor maior para o volume 0 pode aumentar o espaço permitido para metadados em cada nó de armazenamento.
+* Ao configurar diferentes nós de armazenamento para um site, use a mesma configuração para o volume 0, se possível.  Se um site contiver nós de armazenamento de tamanhos diferentes, o nó de armazenamento com o menor volume 0 determinará a capacidade de metadados desse site.
+
+
+Para mais detalhes, acesselink:../admin/managing-object-metadata-storage.html["Gerenciar armazenamento de metadados de objetos"] .

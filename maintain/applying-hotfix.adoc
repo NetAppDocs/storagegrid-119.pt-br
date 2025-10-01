@@ -1,0 +1,123 @@
+---
+permalink: maintain/applying-hotfix.html 
+sidebar: sidebar 
+keywords: storagegrid, hotfix, software update 
+summary: O hotfix é aplicado primeiro automaticamente ao nó de administração principal.  Em seguida, você deve aprovar a aplicação do hotfix em outros nós da grade até que todos os nós estejam executando a mesma versão do software.  Você pode personalizar a sequência de aprovação selecionando aprovar nós de grade individuais, grupos de nós de grade ou todos os nós de grade. 
+---
+= Aplicar hotfix
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+O hotfix é aplicado primeiro automaticamente ao nó de administração principal.  Em seguida, você deve aprovar a aplicação do hotfix em outros nós da grade até que todos os nós estejam executando a mesma versão do software.  Você pode personalizar a sequência de aprovação selecionando aprovar nós de grade individuais, grupos de nós de grade ou todos os nós de grade.
+
+.Antes de começar
+* Você revisou olink:storagegrid-hotfix-procedure.html["considerações para aplicar um hotfix"] .
+* Você tem a senha de provisionamento.
+* Você tem acesso Root ou permissão de Manutenção.
+
+
+.Sobre esta tarefa
+* Você pode atrasar a aplicação de um hotfix em um nó, mas o processo de hotfix não estará concluído até que você aplique o hotfix em todos os nós.
+* Você não pode executar uma atualização de software do StorageGRID ou uma atualização do sistema operacional SANtricity até concluir o processo de hotfix.
+
+
+.Passos
+. Sign in no Grid Manager usando umlink:../admin/web-browser-requirements.html["navegador da web compatível"] .
+. Selecione *MANUTENÇÃO* > *Sistema* > *Atualização de software*.
++
+A página Atualização de software é exibida.
+
++
+image::../media/software_update_landing.png[Página de destino de atualização de software]
+
+. Selecione *Aplicar hotfix*.
++
+A página StorageGRID Hotfix é exibida.
+
++
+image::../media/hotfix_choose_file.png[Hotfix Escolha o arquivo]
+
+. Selecione o arquivo de hotfix que você baixou do site de suporte da NetApp .
++
+.. Selecione *Navegar*.
+.. Localize e selecione o arquivo.
++
+`hotfix-install-_version_`
+
+.. Selecione *Abrir*.
++
+O arquivo foi carregado.  Quando o upload estiver concluído, o nome do arquivo será exibido no campo Detalhes.
+
++
+
+NOTE: Não altere o nome do arquivo, pois isso faz parte do processo de verificação.
+
+
+
+. Digite a senha de provisionamento na caixa de texto.
++
+O botão *Iniciar* fica habilitado.
+
+. Selecione *Iniciar*.
++
+Um aviso aparece informando que a conexão do seu navegador pode ser perdida temporariamente, pois os serviços no nó de administração principal são reiniciados.
+
+. Selecione *OK* para começar a aplicar o hotfix ao nó de administração principal.
++
+Quando o hotfix começa:
+
++
+.. As validações de hotfix são executadas.
++
+
+NOTE: Se algum erro for relatado, resolva-o, carregue novamente o arquivo de hotfix e selecione *Iniciar* novamente.
+
+.. A tabela de progresso da instalação do hotfix é exibida.
++
+Esta tabela mostra todos os nós na sua grade e o estágio atual da instalação do hotfix para cada nó.  Os nós na tabela são agrupados por tipo (nós de administração, nós de gateway e nós de armazenamento).
+
+.. A barra de progresso chega à conclusão e, em seguida, o nó de administração principal é exibido como "Concluído".
++
+image::../media/hotfix_progress_table.png[Tabela de progresso do hotfix]
+
+
+
+. Opcionalmente, classifique as listas de nós em cada agrupamento em ordem crescente ou decrescente por *Site*, *Nome*, *Progresso*, *Estágio* ou *Detalhes*.  Ou insira um termo na caixa *Pesquisar* para pesquisar nós específicos.
+. Aprovar os nós da grade que estão prontos para serem atualizados.  Os nós aprovados do mesmo tipo são atualizados um de cada vez.
++
+
+CAUTION: Não aprove o hotfix para um nó a menos que tenha certeza de que o nó está pronto para ser atualizado.  Quando o hotfix é aplicado a um nó de grade, alguns serviços nesse nó podem ser reiniciados.  Essas operações podem causar interrupções de serviço para clientes que estão se comunicando com o nó.
+
++
+** Selecione um ou mais botões *Aprovar* para adicionar um ou mais nós individuais à fila de hotfixes.
+** Selecione o botão *Aprovar tudo* dentro de cada agrupamento para adicionar todos os nós do mesmo tipo à fila de hotfixes.  Se você inseriu critérios de pesquisa na caixa *Pesquisar*, o botão *Aprovar tudo* será aplicado a todos os nós selecionados pelos critérios de pesquisa.
++
+
+NOTE: O botão *Aprovar tudo* no topo da página aprova todos os nós listados na página, enquanto o botão *Aprovar tudo* no topo de um agrupamento de tabelas aprova apenas todos os nós naquele grupo.  Se a ordem em que os nós são atualizados for importante, aprove os nós ou grupos de nós um de cada vez e aguarde até que a atualização seja concluída em cada nó antes de aprovar o(s) próximo(s) nó(s).
+
+** Selecione o botão de nível superior *Aprovar tudo* na parte superior da página para adicionar todos os nós na grade à fila de hotfixes.
++
+
+NOTE: Você deve concluir o hotfix do StorageGRID antes de iniciar uma atualização de software diferente.  Se você não conseguir concluir o hotfix, entre em contato com o suporte técnico.
+
+** Selecione *Remover* ou *Remover tudo* para remover um nó ou todos os nós da fila de hotfixes.
++
+Quando o estágio avança além de "Na fila", o botão *Remover* fica oculto e você não pode mais remover o nó do processo de hotfix.
+
++
+image::../media/approve_all_progresstable.png[Progresso do hotfix com botão remover]
+
+
+
+. Aguarde enquanto o hotfix é aplicado a cada nó de grade aprovado.
++
+Quando o hotfix for instalado com sucesso em todos os nós, a tabela Progresso da instalação do hotfix será fechada.  Um banner verde mostra a data e a hora em que o hotfix foi concluído.
+
+. Se o hotfix não puder ser aplicado a nenhum nó, revise o erro de cada nó, resolva o problema e repita essas etapas.
++
+O procedimento não estará concluído até que o hotfix seja aplicado com sucesso a todos os nós.  Você pode tentar novamente o processo de hotfix quantas vezes forem necessárias até que ele seja concluído.
+
+

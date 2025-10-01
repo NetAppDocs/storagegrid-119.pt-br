@@ -1,0 +1,94 @@
+---
+permalink: primer/exploring-tenant-manager.html 
+sidebar: sidebar 
+keywords: what is the tenant manager, tenant manager dashboard 
+summary: O Tenant Manager é a interface gráfica baseada em navegador que os usuários locatários acessam para configurar, gerenciar e monitorar suas contas de armazenamento. 
+---
+= Explore o Gerenciador de Inquilinos
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Olink:../tenant/index.html["Gerente de inquilinos"] é a interface gráfica baseada em navegador que os usuários locatários acessam para configurar, gerenciar e monitorar suas contas de armazenamento.
+
+
+NOTE: O Tenant Manager é atualizado a cada versão e pode não corresponder às capturas de tela de exemplo nesta página.
+
+Quando usuários locatários efetuam login no Gerenciador de Locatários, eles estão se conectando a um Nó de Administração.
+
+
+
+== Painel do gerente de inquilinos
+
+Depois que um administrador de grade cria uma conta de locatário usando o Grid Manager ou a Grid Management API, os usuários locatários podem fazer login no Tenant Manager.
+
+O painel do Tenant Manager permite que os usuários do tenant monitorem o uso do armazenamento rapidamente. O painel Uso de armazenamento contém uma lista dos maiores buckets (S3) ou contêineres (Swift) para o locatário. O valor do espaço usado é a quantidade total de dados do objeto no bucket ou contêiner. O gráfico de barras representa os tamanhos relativos desses baldes ou contêineres.
+
+O valor mostrado acima do gráfico de barras é a soma do espaço usado para todos os buckets ou contêineres do locatário.  Se o número máximo de gigabytes, terabytes ou petabytes disponíveis para o locatário foi especificado quando a conta foi criada, a quantidade de cota usada e restante também será exibida.
+
+image::../media/tenant_dashboard_with_buckets.png[Painel do gerente de inquilinos]
+
+
+
+== Menu de armazenamento (S3)
+
+O menu Armazenamento é fornecido somente para contas de locatários do S3.  Este menu permite que os usuários do S3 gerenciem chaves de acesso; criem, gerenciem e excluam buckets; gerenciem pontos de extremidade de serviços de plataforma; e visualizem quaisquer conexões de federação de grade que eles têm permissão para usar.
+
+
+
+=== Minhas chaves de acesso
+
+Os usuários do tenant do S3 podem gerenciar chaves de acesso da seguinte maneira:
+
+* Usuários que têm a permissão Gerenciar suas próprias credenciais do S3 podem criar ou remover suas próprias chaves de acesso do S3.
+* Usuários que têm permissão de acesso Root podem gerenciar as chaves de acesso para a conta root do S3, sua própria conta e todos os outros usuários.  As chaves de acesso root também fornecem acesso total aos buckets e objetos do locatário, a menos que sejam explicitamente desabilitadas por uma política de bucket.
++
+
+NOTE: O gerenciamento das chaves de acesso para outros usuários ocorre no menu Gerenciamento de Acesso.
+
+
+
+
+
+=== Baldes
+
+Usuários locatários do S3 com as permissões apropriadas podem executar as seguintes tarefas para seus buckets:
+
+* Criar baldes
+* Habilitar o bloqueio de objeto S3 para um novo bucket (supõe que o bloqueio de objeto S3 esteja habilitado para o sistema StorageGRID )
+* Atualizar valores de consistência
+* Habilitar e desabilitar atualizações do último horário de acesso
+* Habilitar ou suspender o controle de versão do objeto
+* Atualizar retenção padrão do bloqueio de objeto S3
+* Configurar compartilhamento de recursos de origem cruzada (CORS)
+* Excluir todos os objetos em um bucket
+* Excluir baldes vazios
+* Use olink:../tenant/use-s3-console.html["Console S3"] para gerenciar objetos de bucket
+
+
+Se um administrador de grade tiver habilitado o uso de serviços de plataforma para a conta do locatário, um usuário locatário do S3 com as permissões apropriadas também poderá executar estas tarefas:
+
+* Configure notificações de eventos do S3, que podem ser enviadas para um serviço de destino compatível com o Amazon Simple Notification Service.
+* Configure a replicação do CloudMirror, que permite ao locatário replicar objetos automaticamente para um bucket S3 externo.
+* Configure a integração de pesquisa, que envia metadados de objetos para um índice de pesquisa de destino sempre que um objeto é criado, excluído ou seus metadados ou tags são atualizados.
+
+
+
+
+=== Pontos de extremidade de serviços de plataforma
+
+Se um administrador de grade tiver habilitado o uso de serviços de plataforma para a conta do locatário, um usuário locatário do S3 com a permissão Gerenciar endpoints poderá configurar um endpoint de destino para cada serviço de plataforma.
+
+
+
+=== Conexões de federação de rede
+
+Se um administrador de grade tiver habilitado o uso de uma conexão de federação de grade para a conta do locatário, um usuário locatário do S3 que tenha permissão de acesso Root poderá visualizar o nome da conexão, acessar a página de detalhes do bucket para cada bucket que tenha replicação entre grades habilitada e visualizar o erro mais recente que ocorreu quando os dados do bucket estavam sendo replicados para a outra grade na conexão. Ver link:../tenant/grid-federation-view-connections-tenant.html["Ver conexões de federação de grade"] .
+
+
+
+== Menu de gerenciamento de acesso
+
+O menu Gerenciamento de acesso permite que os locatários do StorageGRID importem grupos de usuários de uma fonte de identidade federada e atribuam permissões de gerenciamento.  Os locatários também podem gerenciar grupos de locatários e usuários locais, a menos que o logon único (SSO) esteja em vigor para todo o sistema StorageGRID .

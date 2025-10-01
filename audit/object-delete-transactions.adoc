@@ -1,0 +1,78 @@
+---
+permalink: audit/object-delete-transactions.html 
+sidebar: sidebar 
+keywords: object delete transaction, S3 delete, SDEL, WDEL 
+summary: Você pode identificar transações de exclusão de objetos no log de auditoria localizando mensagens de auditoria específicas da API do S3. 
+---
+= Transações de exclusão de objetos
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Você pode identificar transações de exclusão de objetos no log de auditoria localizando mensagens de auditoria específicas da API do S3.
+
+Nem todas as mensagens de auditoria geradas durante uma transação de exclusão estão listadas nas tabelas a seguir.  Somente mensagens necessárias para rastrear a transação de exclusão são incluídas.
+
+
+
+== Mensagens de auditoria de exclusão do S3
+
+[cols="1a,1a,2a,1a,2a"]
+|===
+| Código | Nome | Descrição | Rastro | Ver 
+
+
+ a| 
+SDEL
+ a| 
+S3 Excluir
+ a| 
+Solicitação feita para excluir o objeto de um bucket.
+ a| 
+CBDI, S3KY
+ a| 
+link:sdel-s3-delete.html["SDEL: S3 EXCLUIR"]
+
+|===
+
+
+== Mensagens de auditoria de exclusão rápida
+
+[cols="1a,1a,2a,1a,2a"]
+|===
+| Código | Nome | Descrição | Rastro | Ver 
+
+
+ a| 
+WDEL
+ a| 
+Exclusão rápida
+ a| 
+Solicitação feita para excluir o objeto de um contêiner, ou o contêiner.
+ a| 
+CBDI, WOBJ
+ a| 
+link:wdel-swift-delete.html["WDEL: Swift EXCLUIR"]
+
+|===
+
+
+== Exemplo: exclusão de objeto S3
+
+Quando um cliente S3 exclui um objeto de um nó de armazenamento (serviço LDR), uma mensagem de auditoria é gerada e salva no log de auditoria.
+
+
+NOTE: Nem todas as mensagens de auditoria geradas durante uma transação de exclusão estão listadas no exemplo abaixo.  Somente aqueles relacionados à transação de exclusão do S3 (SDEL) são listados.
+
+
+
+=== SDEL: S3 Excluir
+
+A exclusão de objetos começa quando o cliente envia uma solicitação DeleteObject para um serviço LDR.  A mensagem contém o bucket do qual o objeto deve ser excluído e a chave S3 do objeto, que é usada para identificá-lo.
+
+[listing, subs="specialcharacters,quotes"]
+----
+2017-07-17T21:17:58.959669[AUDT:[RSLT(FC32):SUCS][TIME(UI64):14316][SAIP(IPAD):"10.96.112.29"][S3AI(CSTR):"70899244468554783528"][SACC(CSTR):"test"][S3AK(CSTR):"SGKHyalRU_5cLflqajtaFmxJn946lAWRJfBF33gAOg=="][SUSR(CSTR):"urn:sgws:identity::70899244468554783528:root"][SBAI(CSTR):"70899244468554783528"][SBAC(CSTR):"test"]\[S3BK\(CSTR\):"example"\]\[S3KY\(CSTR\):"testobject-0-7"\][CBID\(UI64\):0x339F21C5A6964D89][CSIZ(UI64):30720][AVER(UI32):10][ATIM(UI64):150032627859669][ATYP\(FC32\):SDEL][ANID(UI32):12086324][AMID(FC32):S3RQ][ATID(UI64):4727861330952970593]]
+----

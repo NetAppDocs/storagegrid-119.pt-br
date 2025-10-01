@@ -1,0 +1,79 @@
+---
+permalink: ilm/using-multiple-storage-pools-for-cross-site-replication.html 
+sidebar: sidebar 
+keywords: site-loss protection, cross-site replication, storage pools 
+summary: Se a sua implantação do StorageGRID incluir mais de um site, você poderá usar a replicação e a codificação de eliminação com pools de armazenamento configurados adequadamente para habilitar a proteção contra perda de site. 
+---
+= Habilitar proteção contra perda de site
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Se a sua implantação do StorageGRID incluir mais de um site, você poderá usar a replicação e a codificação de eliminação com pools de armazenamento configurados adequadamente para habilitar a proteção contra perda de site.
+
+A replicação e a codificação de eliminação exigem diferentes configurações de pool de armazenamento:
+
+* Para usar a replicação para proteção contra perda de site, use os pools de armazenamento específicos do site que são criados automaticamente durante a instalação do StorageGRID .  Em seguida, crie regras ILM comlink:create-ilm-rule-define-placements.html["instruções de posicionamento"] que especificam vários pools de armazenamento para que uma cópia de cada objeto seja colocada em cada site.
+* Para usar a codificação de eliminação para proteção contra perda de site,link:guidelines-for-creating-storage-pools.html#guidelines-for-storage-pools-used-for-erasure-coded-copies["criar pools de armazenamento que consistem em vários sites"] .  Em seguida, crie regras de ILM que usem um pool de armazenamento composto por vários sites e qualquer esquema de codificação de eliminação disponível.
+
+
+
+CAUTION: Ao configurar sua implantação do StorageGRID para proteção contra perda de site, você também deve levar em consideração os efeitos delink:data-protection-options-for-ingest.html["opções de ingestão"] elink:../s3/consistency-controls.html["consistência"] .
+
+
+
+== Exemplo de replicação
+
+Por padrão, um pool de armazenamento é criado para cada site durante a instalação do StorageGRID .  Ter pools de armazenamento que consistem em apenas um site permite que você configure regras de ILM que usam replicação para proteção contra perda de site. Neste exemplo:
+
+* O pool de armazenamento 1 contém o Site 1
+* O pool de armazenamento 2 contém o Site 2
+* A regra ILM contém dois posicionamentos:
++
+** Armazene objetos replicando 1 cópia no Site 1
+** Armazene objetos replicando 1 cópia no Site 2
+
+
+
+
+Posicionamentos de regras do ILM:
+
+image::../media/ilm_replication_at_2_sites.png[Replicando 1 cópia em 2 locais cada]
+
+image::../media/ilm_replication_make_2_copies_2_pools_2_sites.png[Faça 1 cópia em cada um dos 2 locais - pool de armazenamento específico do local]
+
+Se um site for perdido, cópias dos objetos estarão disponíveis no outro site.
+
+
+
+== Exemplo de codificação de apagamento
+
+Ter pools de armazenamento que consistem em mais de um site por pool de armazenamento permite que você configure regras de ILM que usam codificação de eliminação para proteção contra perda de site. Neste exemplo:
+
+* O pool de armazenamento 1 contém os sites 1 a 3
+* A regra ILM contém um posicionamento: Armazenar objetos por codificação de eliminação usando um esquema EC 4+2 no pool de armazenamento 1, que contém três sites
+
+
+Posicionamentos de regras do ILM:
+
+image::../media/ilm_erasure_coding_site_loss_protection_4+2.png[EC 1 pool de armazenamento 9 nós de armazenamento 3 sites]
+
+Neste exemplo:
+
+* A regra ILM usa um esquema de codificação de apagamento 4+2.
+* Cada objeto é dividido em quatro fragmentos de dados iguais, e dois fragmentos de paridade são computados a partir dos dados do objeto.
+* Cada um dos seis fragmentos é armazenado em um nó diferente em três locais do data center para fornecer proteção de dados em caso de falhas de nó ou perda de local.
+
+
+
+NOTE: A codificação de eliminação é permitida em pools de armazenamento que contêm qualquer número de sites _exceto_ dois sites.
+
+Regra ILM usando esquema de codificação de apagamento 4+2:
+
+image::../media/ec_three_sites_4_plus_2_site_loss_example_template.png[Armazene objetos por codificação de eliminação usando um esquema EC 4+2 em 3 sites]
+
+Se um site for perdido, os dados ainda poderão ser recuperados:
+
+image::../media/ec_three_sites_4_plus_2_site_loss_example.png[Esquema de codificação de apagamento 4+2 EC 1 site perdido]

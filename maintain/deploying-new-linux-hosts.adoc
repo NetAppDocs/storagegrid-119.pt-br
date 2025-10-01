@@ -1,0 +1,44 @@
+---
+permalink: maintain/deploying-new-linux-hosts.html 
+sidebar: sidebar 
+keywords: storagegrid, deploy linux host, new host, new linux host 
+summary: Com algumas exceções, você prepara os novos hosts como fez durante o processo de instalação inicial. 
+---
+= Implantar novos hosts Linux
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Com algumas exceções, você prepara os novos hosts como fez durante o processo de instalação inicial.
+
+Para implantar hosts Linux físicos ou virtuais novos ou reinstalados, siga o procedimento para preparar os hosts nas instruções de instalação do StorageGRID para seu sistema operacional Linux:
+
+* link:../rhel/installing-linux.html["Instalar Linux (Red Hat Enterprise Linux)"]
+* link:../ubuntu/installing-linux.html["Instalar Linux (Ubuntu ou Debian)"]
+
+
+Este procedimento inclui etapas para realizar as seguintes tarefas:
+
+. Instale o Linux.
+. Configurar a rede do host.
+. Configurar armazenamento do host.
+. Instale o mecanismo do contêiner.
+. Instale o serviço de host StorageGRID .
++
+
+CAUTION: Pare após concluir a tarefa "Instalar serviço de host StorageGRID " nas instruções de instalação.  Não inicie a tarefa "Implantando nós de grade".
+
+
+
+Ao executar essas etapas, observe as seguintes diretrizes importantes:
+
+* Certifique-se de usar os mesmos nomes de interface de host que você usou no host original.
+* Se você usar armazenamento compartilhado para dar suporte aos seus nós StorageGRID ou tiver movido algumas ou todas as unidades ou SSDs dos nós com falha para os nós de substituição, será necessário restabelecer os mesmos mapeamentos de armazenamento que estavam presentes no host original.  Por exemplo, se você usou WWIDs e aliases em `/etc/multipath.conf` conforme recomendado nas instruções de instalação, certifique-se de usar os mesmos pares de alias/WWID em `/etc/multipath.conf` no host de substituição.
+* Se o nó StorageGRID usar armazenamento atribuído de um sistema NetApp ONTAP , confirme se o volume não tem uma política de camadas FabricPool habilitada.  Desabilitar a hierarquização do FabricPool para volumes usados ​​com nós StorageGRID simplifica a solução de problemas e as operações de armazenamento.
++
+
+CAUTION: Nunca use o FabricPool para hierarquizar quaisquer dados relacionados ao StorageGRID de volta ao próprio StorageGRID .  A hierarquização dos dados do StorageGRID de volta ao StorageGRID aumenta a complexidade operacional e de solução de problemas.
+
+

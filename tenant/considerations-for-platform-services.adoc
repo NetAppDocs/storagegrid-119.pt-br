@@ -1,0 +1,215 @@
+---
+permalink: tenant/considerations-for-platform-services.html 
+sidebar: sidebar 
+keywords: considerations for using platform services 
+summary: Antes de implementar serviços de plataforma, revise a visão geral e as considerações para usar esses serviços. 
+---
+= Visão geral e considerações sobre serviços de plataforma
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Antes de implementar serviços de plataforma, revise a visão geral e as considerações para usar esses serviços.
+
+Para obter informações sobre o S3, consultelink:../s3/index.html["Usar API REST do S3"] .
+
+
+
+== Visão geral dos serviços da plataforma
+
+Os serviços da plataforma StorageGRID podem ajudar você a implementar uma estratégia de nuvem híbrida, permitindo que você envie notificações de eventos e cópias de objetos S3 e metadados de objetos para destinos externos.
+
+Como o local de destino dos serviços de plataforma geralmente é externo à sua implantação do StorageGRID , os serviços de plataforma oferecem o poder e a flexibilidade que vêm do uso de recursos de armazenamento externo, serviços de notificação e serviços de pesquisa ou análise para seus dados.
+
+Qualquer combinação de serviços de plataforma pode ser configurada para um único bucket S3.  Por exemplo, você pode configurar amboslink:../tenant/understanding-cloudmirror-replication-service.html["Serviço CloudMirror"] elink:../tenant/understanding-notifications-for-buckets.html["notificações"] em um bucket StorageGRID S3 para que você possa espelhar objetos específicos no Amazon Simple Storage Service (S3), enquanto envia uma notificação sobre cada objeto para um aplicativo de monitoramento de terceiros para ajudar você a rastrear suas despesas com a AWS.
+
+
+TIP: O uso dos serviços da plataforma deve ser habilitado para cada conta de locatário por um administrador do StorageGRID usando o Grid Manager ou a API de gerenciamento de grade.
+
+
+
+== Como os serviços da plataforma são configurados
+
+Os serviços de plataforma se comunicam com endpoints externos que você configura usando olink:configuring-platform-services-endpoints.html["Gerente de inquilinos"] ou olink:understanding-tenant-management-api.html["API de gerenciamento de inquilinos"] . Cada ponto de extremidade representa um destino externo, como um bucket do StorageGRID S3, um bucket do Amazon Web Services, um tópico do Amazon SNS ou um cluster do Elasticsearch hospedado localmente, na AWS ou em outro lugar.
+
+Depois de criar um ponto de extremidade externo, você pode habilitar um serviço de plataforma para um bucket adicionando configuração XML ao bucket.  A configuração XML identifica os objetos nos quais o bucket deve atuar, a ação que o bucket deve executar e o ponto de extremidade que o bucket deve usar para o serviço.
+
+Você deve adicionar configurações XML separadas para cada serviço de plataforma que deseja configurar. Por exemplo:
+
+* Se você quiser todos os objetos cujas chaves começam com `/images` para ser replicado em um bucket do Amazon S3, você deve adicionar uma configuração de replicação ao bucket de origem.
+* Se você também quiser enviar notificações quando esses objetos forem armazenados no bucket, adicione uma configuração de notificações.
+* Se quiser indexar os metadados desses objetos, você deve adicionar a configuração de notificação de metadados usada para implementar a integração de pesquisa.
+
+
+O formato do XML de configuração é regido pelas APIs REST do S3 usadas para implementar os serviços da plataforma StorageGRID :
+
+[cols="1a,2a,1a"]
+|===
+| Serviço de plataforma | API REST S3 | Consulte 
+
+
+ a| 
+Replicação do CloudMirror
+ a| 
+* Obter replicação do Bucket
+* PutBucketReplicação
+
+ a| 
+* link:configuring-cloudmirror-replication.html["Replicação do CloudMirror"]
+* link:../s3/operations-on-buckets.html["Operações em baldes"]
+
+
+
+
+ a| 
+Notificações
+ a| 
+* Obter configuração de notificação de bucket
+* Configuração de notificação PutBucket
+
+ a| 
+* link:configuring-event-notifications.html["Notificações"]
+* link:../s3/operations-on-buckets.html["Operações em baldes"]
+
+
+
+
+ a| 
+Integração de pesquisa
+ a| 
+* Configuração de notificação de metadados do GET Bucket
+* Configuração de notificação de metadados do PUT Bucket
+
+ a| 
+* link:configuring-search-integration-service.html["Integração de pesquisa"]
+* link:../s3/custom-operations-on-buckets.html["Operações personalizadas do StorageGRID"]
+
+
+|===
+
+
+== Considerações sobre o uso de serviços de plataforma
+
+[cols="1a,3a"]
+|===
+| Consideração | Detalhes 
+
+
+ a| 
+Monitoramento de endpoint de destino
+ a| 
+Você deve monitorar a disponibilidade de cada ponto de extremidade de destino.  Se a conectividade com o ponto de extremidade de destino for perdida por um longo período de tempo e houver um grande acúmulo de solicitações, solicitações adicionais de clientes (como solicitações PUT) para o StorageGRID falharão.  Você deve tentar novamente essas solicitações com falha quando o ponto de extremidade estiver acessível.
+
+
+
+ a| 
+Limitação do ponto de extremidade de destino
+ a| 
+O software StorageGRID pode limitar as solicitações S3 recebidas para um bucket se a taxa na qual as solicitações estão sendo enviadas exceder a taxa na qual o ponto de extremidade de destino pode receber as solicitações.  A limitação só ocorre quando há um acúmulo de solicitações aguardando para serem enviadas ao ponto de extremidade de destino.
+
+O único efeito visível é que as solicitações S3 recebidas levarão mais tempo para serem executadas.  Se você começar a detectar um desempenho significativamente mais lento, reduza a taxa de ingestão ou use um ponto de extremidade com maior capacidade.  Se o acúmulo de solicitações continuar a crescer, as operações do cliente S3 (como solicitações PUT) acabarão falhando.
+
+As solicitações do CloudMirror têm maior probabilidade de serem afetadas pelo desempenho do ponto de extremidade de destino porque essas solicitações geralmente envolvem mais transferência de dados do que as solicitações de integração de pesquisa ou notificação de eventos.
+
+
+
+ a| 
+Garantias de encomenda
+ a| 
+O StorageGRID garante a ordenação das operações em um objeto dentro de um site.  Desde que todas as operações em um objeto estejam no mesmo site, o estado final do objeto (para replicação) sempre será igual ao estado em StorageGRID.
+
+O StorageGRID faz o melhor esforço possível para ordenar solicitações quando operações são feitas em sites do StorageGRID .  Por exemplo, se você gravar um objeto inicialmente no site A e depois substituir o mesmo objeto no site B, não há garantia de que o objeto final replicado pelo CloudMirror para o bucket de destino seja o objeto mais recente.
+
+
+
+ a| 
+Exclusões de objetos controladas por ILM
+ a| 
+Para corresponder ao comportamento de exclusão do AWS CRR e do Amazon Simple Notification Service, as solicitações de notificação de eventos e do CloudMirror não são enviadas quando um objeto no bucket de origem é excluído devido às regras do StorageGRID ILM.  Por exemplo, nenhuma solicitação de notificação de eventos ou do CloudMirror será enviada se uma regra do ILM excluir um objeto após 14 dias.
+
+Em contraste, solicitações de integração de pesquisa são enviadas quando objetos são excluídos devido ao ILM.
+
+
+
+ a| 
+Usando endpoints do Kafka
+ a| 
+Para endpoints do Kafka, o TLS mútuo não é suportado. Como resultado, se você tiver `ssl.client.auth` definido para `required` na configuração do seu broker Kafka, isso pode causar problemas de configuração do endpoint Kafka.
+
+A autenticação de endpoints do Kafka usa os seguintes tipos de autenticação.  Esses tipos são diferentes daqueles usados para autenticação de outros endpoints, como o Amazon SNS, e exigem credenciais de nome de usuário e senha.
+
+* SASL/SIM
+* SASL/SCRAM-SHA-256
+* SASL/SCRAM-SHA-512
+
+
+*Observação:* As configurações de proxy de armazenamento configuradas não se aplicam aos pontos de extremidade dos serviços da plataforma Kafka.
+
+|===
+
+
+== Considerações sobre o uso do serviço de replicação CloudMirror
+
+[cols="1a,3a"]
+|===
+| Consideração | Detalhes 
+
+
+ a| 
+Status de replicação
+ a| 
+O StorageGRID não oferece suporte a `x-amz-replication-status` cabeçalho.
+
+
+
+ a| 
+Tamanho do objeto
+ a| 
+O tamanho máximo para objetos que podem ser replicados para um bucket de destino pelo serviço de replicação do CloudMirror é 5 TiB, que é o mesmo que o tamanho máximo de objeto _compatível_.
+
+*Observação*: O tamanho máximo _recomendado_ para uma única operação PutObject é 5 GiB (5.368.709.120 bytes).  Se você tiver objetos maiores que 5 GiB, use o upload multiparte.
+
+
+
+ a| 
+Controle de versão de bucket e IDs de versão
+ a| 
+Se o bucket S3 de origem no StorageGRID tiver o versionamento habilitado, você também deverá habilitar o versionamento para o bucket de destino.
+
+Ao usar o controle de versão, observe que a ordenação das versões de objetos no bucket de destino é de melhor esforço e não é garantida pelo serviço CloudMirror, devido a limitações no protocolo S3.
+
+*Observação*: Os IDs de versão do bucket de origem no StorageGRID não estão relacionados aos IDs de versão do bucket de destino.
+
+
+
+ a| 
+Marcação para versões de objetos
+ a| 
+O serviço CloudMirror não replica nenhuma solicitação PutObjectTagging ou DeleteObjectTagging que forneça um ID de versão, devido a limitações no protocolo S3.  Como os IDs de versão para a origem e o destino não estão relacionados, não há como garantir que uma atualização de tag para um ID de versão específico será replicada.
+
+Em contraste, o serviço CloudMirror replica solicitações PutObjectTagging ou DeleteObjectTagging que não especificam um ID de versão.  Essas solicitações atualizam as tags para a chave mais recente (ou a versão mais recente, se o bucket tiver versão).  Ingestões normais com tags (não atualizações de marcação) também são replicadas.
+
+
+
+ a| 
+Uploads multipartes e `ETag` valores
+ a| 
+Ao espelhar objetos que foram carregados usando um upload multiparte, o serviço CloudMirror não preserva as partes.  Como resultado, o `ETag` o valor para o objeto espelhado será diferente do `ETag` valor do objeto original.
+
+
+
+ a| 
+Objetos criptografados com SSE-C (criptografia do lado do servidor com chaves fornecidas pelo cliente)
+ a| 
+O serviço CloudMirror não oferece suporte a objetos criptografados com SSE-C. Se você tentar ingerir um objeto no bucket de origem para replicação do CloudMirror e a solicitação incluir os cabeçalhos de solicitação SSE-C, a operação falhará.
+
+
+
+ a| 
+Bucket com bloqueio de objeto S3 habilitado
+ a| 
+A replicação não é suportada para buckets de origem ou destino com o S3 Object Lock habilitado.
+
+|===

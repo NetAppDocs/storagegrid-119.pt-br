@@ -1,0 +1,25 @@
+---
+permalink: network/topology-for-all-three-networks.html 
+sidebar: sidebar 
+keywords: network topology for storagegrid 
+summary: Você pode configurar todas as três redes em uma topologia de rede que consiste em uma rede de grade privada, redes de administração específicas do site e redes de clientes abertas.  Usar endpoints do balanceador de carga e redes de clientes não confiáveis pode fornecer segurança adicional, se necessário. 
+---
+= Topologia para todas as três redes
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Você pode configurar todas as três redes em uma topologia de rede que consiste em uma rede de grade privada, redes de administração específicas do site e redes de clientes abertas.  Usar endpoints do balanceador de carga e redes de clientes não confiáveis pode fornecer segurança adicional, se necessário.
+
+Neste exemplo:
+
+* A Grid Network é usada para tráfego de rede relacionado a operações internas de gerenciamento de objetos.
+* A Rede de Administração é usada para tráfego relacionado a funções administrativas.
+* A Rede do Cliente é usada para tráfego relacionado a solicitações de clientes S3.
+
+
+*Exemplo de topologia: Redes de grade, administração e clientes*
+
+image::../media/grid_admin_client_networks.png[Redes de clientes de administração de grade]

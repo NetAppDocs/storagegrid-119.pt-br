@@ -1,0 +1,185 @@
+---
+permalink: s3/put-object-copy.html 
+sidebar: sidebar 
+keywords: put object copy, CopyObject 
+summary: Você pode usar a solicitação S3 CopyObject para criar uma cópia de um objeto que já está armazenado no S3.  Uma operação CopyObject é o mesmo que executar um GET e depois um PUT. 
+---
+= CopiarObjeto
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Você pode usar a solicitação S3 CopyObject para criar uma cópia de um objeto que já está armazenado no S3.  Uma operação CopyObject é o mesmo que executar GetObject seguido de PutObject.
+
+
+
+== Resolver conflitos
+
+Solicitações de clientes conflitantes, como dois clientes gravando na mesma chave, são resolvidas com base no princípio de "últimos ganhos".  O tempo para a avaliação de "últimas vitórias" é baseado em quando o sistema StorageGRID conclui uma determinada solicitação, e não em quando os clientes S3 iniciam uma operação.
+
+
+
+== Tamanho do objeto
+
+O tamanho máximo _recomendado_ para uma única operação PutObject é 5 GiB (5.368.709.120 bytes).  Se você tiver objetos maiores que 5 GiB, uselink:operations-for-multipart-uploads.html["upload multiparte"] em vez de.
+
+O tamanho máximo _compatível_ para uma única operação PutObject é 5 TiB (5.497.558.138.880 bytes).
+
+
+NOTE: Se você atualizou do StorageGRID 11.6 ou anterior, o alerta de tamanho de objeto S3 PUT muito grande será acionado se você tentar carregar um objeto que exceda 5 GiB.  Se você tiver uma nova instalação do StorageGRID 11.7 ou 11.8, o alerta não será acionado neste caso.  No entanto, para se alinhar ao padrão AWS S3, versões futuras do StorageGRID não suportarão uploads de objetos maiores que 5 GiB.
+
+
+
+== Caracteres UTF-8 em metadados do usuário
+
+Se uma solicitação incluir valores UTF-8 (sem escape) no nome da chave ou no valor dos metadados definidos pelo usuário, o comportamento do StorageGRID será indefinido.
+
+O StorageGRID não analisa nem interpreta caracteres UTF-8 de escape incluídos no nome da chave ou no valor dos metadados definidos pelo usuário.  Caracteres UTF-8 escapados são tratados como caracteres ASCII:
+
+* As solicitações serão bem-sucedidas se os metadados definidos pelo usuário incluírem caracteres UTF-8 de escape.
+* O StorageGRID não retorna o `x-amz-missing-meta` cabeçalho se o valor interpretado do nome da chave ou valor incluir caracteres não imprimíveis.
+
+
+
+
+== Cabeçalhos de solicitação suportados
+
+Os seguintes cabeçalhos de solicitação são suportados:
+
+* `Content-Type`
+* `x-amz-copy-source`
+* `x-amz-copy-source-if-match`
+* `x-amz-copy-source-if-none-match`
+* `x-amz-copy-source-if-unmodified-since`
+* `x-amz-copy-source-if-modified-since`
+* `x-amz-meta-`, seguido por um par nome-valor contendo metadados definidos pelo usuário
+* `x-amz-metadata-directive`: O valor padrão é `COPY` , que permite copiar o objeto e os metadados associados.
++
+Você pode especificar `REPLACE` para substituir os metadados existentes ao copiar o objeto ou para atualizar os metadados do objeto.
+
+* `x-amz-storage-class`
+* `x-amz-tagging-directive`: O valor padrão é `COPY` , que permite copiar o objeto e todas as tags.
++
+Você pode especificar `REPLACE` para substituir as tags existentes ao copiar o objeto ou para atualizar as tags.
+
+* Cabeçalhos de solicitação de bloqueio de objeto S3:
++
+** `x-amz-object-lock-mode`
+** `x-amz-object-lock-retain-until-date`
+** `x-amz-object-lock-legal-hold`
++
+Se uma solicitação for feita sem esses cabeçalhos, as configurações de retenção padrão do bucket serão usadas para calcular o modo de versão do objeto e reter até a data. Ver link:use-s3-api-for-s3-object-lock.html["Use a API REST do S3 para configurar o bloqueio de objeto do S3"] .
+
+
+
+* Cabeçalhos de solicitação SSE:
++
+** `x-amz-copy-source​-server-side​-encryption​-customer-algorithm`
+** `x-amz-copy-source​-server-side-encryption-customer-key`
+** `x-amz-copy-source​-server-side-encryption-customer-key-MD5`
+** `x-amz-server-side-encryption`
+** `x-amz-server-side-encryption-customer-key-MD5`
+** `x-amz-server-side-encryption-customer-key`
+** `x-amz-server-side-encryption-customer-algorithm`
++
+Ver<<Cabeçalhos de solicitação para criptografia do lado do servidor>>
+
+
+
+
+
+
+
+== Cabeçalhos de solicitação não suportados
+
+Os seguintes cabeçalhos de solicitação não são suportados:
+
+* `Cache-Control`
+* `Content-Disposition`
+* `Content-Encoding`
+* `Content-Language`
+* `Expires`
+* `x-amz-checksum-algorithm`
++
+Quando você copia um objeto, se o objeto de origem tiver uma soma de verificação, o StorageGRID não copia esse valor de soma de verificação para o novo objeto.  Este comportamento se aplica independentemente de você tentar usar ou não `x-amz-checksum-algorithm` na solicitação do objeto.
+
+* `x-amz-website-redirect-location`
+
+
+
+
+== Opções de classe de armazenamento
+
+O `x-amz-storage-class` O cabeçalho de solicitação é suportado e afeta quantas cópias de objeto o StorageGRID cria se a regra ILM correspondente usa o Dual commit ou Balancedlink:../ilm/data-protection-options-for-ingest.html["opção de ingestão"] .
+
+* `STANDARD`
++
+(Padrão) Especifica uma operação de ingestão de confirmação dupla quando a regra ILM usa a opção Confirmação dupla ou quando a opção Balanceada retorna para a criação de cópias provisórias.
+
+* `REDUCED_REDUNDANCY`
++
+Especifica uma operação de ingestão de confirmação única quando a regra ILM usa a opção Confirmação dupla ou quando a opção Balanceada retorna para a criação de cópias provisórias.
+
++
+
+NOTE: Se você estiver ingerindo um objeto em um bucket com o S3 Object Lock habilitado, o `REDUCED_REDUNDANCY` a opção é ignorada.  Se você estiver ingerindo um objeto em um bucket compatível legado, o `REDUCED_REDUNDANCY` opção retorna um erro.  O StorageGRID sempre executará uma ingestão de confirmação dupla para garantir que os requisitos de conformidade sejam atendidos.
+
+
+
+
+
+== Usando x-amz-copy-source em CopyObject
+
+Se o bucket de origem e a chave, especificados no `x-amz-copy-source` cabeçalho, são diferentes do bucket de destino e da chave, uma cópia dos dados do objeto de origem é gravada no destino.
+
+Se a origem e o destino corresponderem, e o `x-amz-metadata-directive` cabeçalho é especificado como `REPLACE` , os metadados do objeto são atualizados com os valores de metadados fornecidos na solicitação.  Nesse caso, o StorageGRID não ingere novamente o objeto.  Isto tem duas consequências importantes:
+
+* Você não pode usar CopyObject para criptografar um objeto existente no local ou para alterar a criptografia de um objeto existente no local.  Se você fornecer o `x-amz-server-side-encryption` cabeçalho ou o `x-amz-server-side-encryption-customer-algorithm` cabeçalho, StorageGRID rejeita a solicitação e retorna `XNotImplemented` .
+* A opção para Comportamento de ingestão especificada na regra ILM correspondente não é usada.  Quaisquer alterações no posicionamento do objeto que sejam acionadas pela atualização são feitas quando o ILM é reavaliado pelos processos normais de ILM em segundo plano.
++
+Isso significa que, se a regra ILM usar a opção Estrita para comportamento de ingestão, nenhuma ação será tomada se os posicionamentos de objetos necessários não puderem ser feitos (por exemplo, porque um local recém-necessário não está disponível).  O objeto atualizado mantém seu posicionamento atual até que o posicionamento necessário seja possível.
+
+
+
+
+
+== Cabeçalhos de solicitação para criptografia do lado do servidor
+
+Se vocêlink:using-server-side-encryption.html["usar criptografia do lado do servidor"] , os cabeçalhos de solicitação que você fornece dependem se o objeto de origem está criptografado e se você planeja criptografar o objeto de destino.
+
+* Se o objeto de origem for criptografado usando uma chave fornecida pelo cliente (SSE-C), você deverá incluir os três cabeçalhos a seguir na solicitação CopyObject para que o objeto possa ser descriptografado e copiado:
++
+** `x-amz-copy-source​-server-side​-encryption​-customer-algorithm`: Especifique `AES256` .
+** `x-amz-copy-source​-server-side-encryption-customer-key`: Especifique a chave de criptografia que você forneceu quando criou o objeto de origem.
+** `x-amz-copy-source​-server-side-encryption-customer-key-MD5`: Especifique o resumo MD5 que você forneceu quando criou o objeto de origem.
+
+
+* Se você quiser criptografar o objeto de destino (a cópia) com uma chave exclusiva que você fornece e gerencia, inclua os três cabeçalhos a seguir:
++
+** `x-amz-server-side-encryption-customer-algorithm`: Especifique `AES256` .
+** `x-amz-server-side-encryption-customer-key`: Especifique uma nova chave de criptografia para o objeto de destino.
+** `x-amz-server-side-encryption-customer-key-MD5`: Especifique o resumo MD5 da nova chave de criptografia.
+
+
++
+
+CAUTION: As chaves de criptografia fornecidas nunca são armazenadas.  Se você perder uma chave de criptografia, perderá o objeto correspondente.  Antes de usar chaves fornecidas pelo cliente para proteger dados de objetos, revise as considerações paralink:using-server-side-encryption.html["usando criptografia do lado do servidor"] .
+
+* Se você quiser criptografar o objeto de destino (a cópia) com uma chave exclusiva gerenciada pelo StorageGRID (SSE), inclua este cabeçalho na solicitação CopyObject:
++
+** `x-amz-server-side-encryption`
++
+
+NOTE: O `server-side-encryption` o valor do objeto não pode ser atualizado.  Em vez disso, faça uma cópia com um novo `server-side-encryption` valor usando `x-amz-metadata-directive` : `REPLACE` .
+
+
+
+
+
+
+
+== Controle de versão
+
+Se o bucket de origem for versionado, você pode usar o `x-amz-copy-source` cabeçalho para copiar a versão mais recente de um objeto.  Para copiar uma versão específica de um objeto, você deve especificar explicitamente a versão a ser copiada usando o `versionId` sub-recurso.  Se o bucket de destino for versionado, a versão gerada será retornada no `x-amz-version-id` cabeçalho de resposta.  Se o controle de versão for suspenso para o bucket de destino, então `x-amz-version-id` retorna um valor "nulo".

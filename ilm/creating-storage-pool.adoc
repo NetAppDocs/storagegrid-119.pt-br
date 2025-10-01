@@ -1,0 +1,73 @@
+---
+permalink: ilm/creating-storage-pool.html 
+sidebar: sidebar 
+keywords: create storage pool 
+summary: Crie pools de armazenamento para determinar onde o sistema StorageGRID armazena dados de objetos e o tipo de armazenamento usado.  Cada pool de armazenamento inclui um ou mais sites e um ou mais níveis de armazenamento. 
+---
+= Criar um pool de armazenamento
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Crie pools de armazenamento para determinar onde o sistema StorageGRID armazena dados de objetos e o tipo de armazenamento usado.  Cada pool de armazenamento inclui um ou mais sites e um ou mais níveis de armazenamento.
+
+
+NOTE: Quando você instala o StorageGRID 11.9 em uma nova grade, pools de armazenamento são criados automaticamente para cada site. No entanto, se você instalou inicialmente o StorageGRID 11.6 ou anterior, os pools de armazenamento não serão criados automaticamente para cada site.
+
+Se você deseja criar pools de armazenamento em nuvem para armazenar dados de objetos fora do seu sistema StorageGRID , consulte olink:what-cloud-storage-pool-is.html["informações sobre o uso de pools de armazenamento em nuvem"] .
+
+.Antes de começar
+* Você está conectado ao Grid Manager usando umlink:../admin/web-browser-requirements.html["navegador da web compatível"] .
+* Você temlink:../admin/admin-group-permissions.html["permissões de acesso específicas"] .
+* Você revisou as diretrizes para criar pools de armazenamento.
+
+
+.Sobre esta tarefa
+Os pools de armazenamento determinam onde os dados do objeto são armazenados.  O número de pools de armazenamento necessários depende do número de sites na sua grade e dos tipos de cópias que você deseja: replicadas ou codificadas para eliminação.
+
+* Para replicação e codificação de eliminação de site único, crie um pool de armazenamento para cada site.  Por exemplo, se você quiser armazenar cópias de objetos replicadas em três sites, crie três pools de armazenamento.
+* Para codificação de eliminação em três ou mais sites, crie um pool de armazenamento que inclua uma entrada para cada site.  Por exemplo, se você quiser apagar objetos de código em três sites, crie um pool de armazenamento.
++
+
+NOTE: Não inclua o site Todos os sites em um pool de armazenamento que será usado em um perfil de codificação de eliminação.  Em vez disso, adicione uma entrada separada ao pool de armazenamento para cada site que armazenará dados codificados para eliminação.  Ver<<entries,esta etapa>> por exemplo.
+
+* Se você tiver mais de um nível de armazenamento, não crie um pool de armazenamento que inclua diferentes níveis de armazenamento em um único local. Veja olink:guidelines-for-creating-storage-pools.html["Diretrizes para criação de pools de armazenamento"] .
+
+
+.Passos
+. Selecione *ILM* > *Pools de armazenamento*.
++
+A guia Pools de armazenamento lista todos os pools de armazenamento definidos.
+
++
+
+NOTE: Para novas instalações do StorageGRID 11.6 ou anterior, o pool de armazenamento Todos os nós de armazenamento é atualizado automaticamente sempre que você adiciona novos sites de data center.  Não use esse pool em regras de ILM.
+
+. Para criar um novo pool de armazenamento, selecione *Criar*.
+. Insira um nome exclusivo para o pool de armazenamento.  Use um nome que seja fácil de identificar ao configurar perfis de codificação de eliminação e regras de ILM.
+. Na lista suspensa *Site*, selecione um site para este pool de armazenamento.
++
+Quando você seleciona um site, o número de nós de armazenamento na tabela é atualizado automaticamente.
+
++
+Em geral, não use o site Todos os Sites em nenhum pool de armazenamento.  As regras do ILM que usam um pool de armazenamento Todos os Sites colocam objetos em qualquer site disponível, dando a você menos controle sobre o posicionamento dos objetos.  Além disso, um pool de armazenamento de Todos os Sites usa os Nós de Armazenamento em um novo site imediatamente, o que pode não ser o comportamento esperado.
+
+. Na lista suspensa *Grau de armazenamento*, selecione o tipo de armazenamento que será usado se uma regra de ILM usar esse pool de armazenamento.
++
+O grau de armazenamento, _inclui todos os graus de armazenamento_, inclui todos os nós de armazenamento no local selecionado.  Se você criou níveis de armazenamento adicionais para os Nós de Armazenamento na sua grade, eles serão listados no menu suspenso.
+
+. [[entradas]]Se você quiser usar o pool de armazenamento em um perfil de codificação de eliminação de vários sites, selecione *Adicionar mais nós* para adicionar uma entrada para cada site ao pool de armazenamento.
++
+
+NOTE: Você será avisado se adicionar mais de uma entrada com diferentes níveis de armazenamento para um site.
+
++
+Para remover uma entrada, selecione o ícone de exclusãoimage:../media/icon-x-to-remove.png["ícone de exclusão"] .
+
+. Quando estiver satisfeito com suas seleções, selecione *Salvar*.
++
+O novo pool de armazenamento é adicionado à lista.
+
+

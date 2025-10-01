@@ -1,0 +1,76 @@
+---
+permalink: expand/copying-admin-node-database.html 
+sidebar: sidebar 
+keywords: copy Admin Node database, alert history, Admin Node expansion 
+summary: Ao adicionar nós de administração por meio de um procedimento de expansão, você pode, opcionalmente, copiar o banco de dados do nó de administração principal para o novo nó de administração.  Copiar o banco de dados permite que você retenha informações históricas sobre atributos, alertas e alertas. 
+---
+= Copiar banco de dados do nó de administração
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Ao adicionar nós de administração por meio de um procedimento de expansão, você pode, opcionalmente, copiar o banco de dados do nó de administração principal para o novo nó de administração.  Copiar o banco de dados permite que você retenha informações históricas sobre atributos, alertas e alertas.
+
+.Antes de começar
+* Você concluiu as etapas de expansão necessárias para adicionar um nó de administração.
+* Você tem o `Passwords.txt` arquivo.
+* Você tem a senha de provisionamento.
+
+
+.Sobre esta tarefa
+O processo de ativação do software StorageGRID cria um banco de dados vazio para o serviço NMS no nó de administração de expansão.  Quando o serviço NMS é iniciado no nó de administração de expansão, ele registra informações de servidores e serviços que atualmente fazem parte do sistema ou foram adicionados posteriormente.  Este banco de dados do nó de administração inclui as seguintes informações:
+
+* Histórico de alertas
+* Dados de atributos históricos, que são usados em gráficos de estilo legado na página Nós
+
+
+Para garantir que o banco de dados do Nó de Administração seja consistente entre os nós, você pode copiar o banco de dados do Nó de Administração principal para o Nó de Administração de expansão.
+
+
+NOTE: A cópia do banco de dados do nó administrativo principal (o nó administrativo de origem) para um nó administrativo de expansão pode levar várias horas para ser concluída.  Durante esse período, o Grid Manager fica inacessível.
+
+Use estas etapas para interromper o serviço MI e o serviço da API de gerenciamento no nó de administração principal e no nó de administração de expansão antes de copiar o banco de dados.
+
+.Passos
+. Conclua as seguintes etapas no nó de administração principal:
++
+.. Efetue login no nó de administração:
++
+... Digite o seguinte comando: `ssh admin@_grid_node_IP_`
+... Digite a senha listada no `Passwords.txt` arquivo.
+... Digite o seguinte comando para alternar para root: `su -`
+... Digite a senha listada no `Passwords.txt` arquivo.
+
+
+.. Execute o seguinte comando: `recover-access-points`
+.. Digite a senha de provisionamento.
+.. Pare o serviço MI: `service mi stop`
+.. Pare o serviço Management Application Program Interface (mgmt-api): `service mgmt-api stop`
+
+
+. Conclua as seguintes etapas no nó de administração de expansão:
++
+.. Efetue login no nó de administração de expansão:
++
+... Digite o seguinte comando: `ssh admin@_grid_node_IP_`
+... Digite a senha listada no `Passwords.txt` arquivo.
+... Digite o seguinte comando para alternar para root: `su -`
+... Digite a senha listada no `Passwords.txt` arquivo.
+
+
+.. Pare o serviço MI: `service mi stop`
+.. Pare o serviço mgmt-api: `service mgmt-api stop`
+.. Adicione a chave privada SSH ao agente SSH.  Digitar:``ssh-add``
+.. Digite a senha de acesso SSH listada no `Passwords.txt` arquivo.
+.. Copie o banco de dados do nó de administração de origem para o nó de administração de expansão: `/usr/local/mi/bin/mi-clone-db.sh _Source_Admin_Node_IP_`
+.. Quando solicitado, confirme que deseja substituir o banco de dados MI no nó de administração de expansão.
++
+O banco de dados e seus dados históricos são copiados para o nó de administração de expansão.  Quando a operação de cópia é concluída, o script inicia o nó de administração de expansão.
+
+.. Quando você não precisar mais de acesso sem senha a outros servidores, remova a chave privada do agente SSH.  Digitar:``ssh-add -D``
+
+
+. Reinicie os serviços no nó de administração principal: `service servermanager start`
+

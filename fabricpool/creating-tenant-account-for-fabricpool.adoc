@@ -1,0 +1,106 @@
+---
+permalink: fabricpool/creating-tenant-account-for-fabricpool.html 
+sidebar: sidebar 
+keywords: fabricPool, tenant, SSO 
+summary: Você deve criar uma conta de locatário no Grid Manager para uso do FabricPool . 
+---
+= Crie uma conta de locatário para o FabricPool
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Você deve criar uma conta de locatário no Grid Manager para uso do FabricPool .
+
+Contas de locatário permitem que aplicativos clientes armazenem e recuperem objetos no StorageGRID.  Cada conta de locatário tem seu próprio ID de conta, grupos e usuários autorizados, buckets e objetos.
+
+Para obter detalhes sobre esta tarefa, consultelink:../admin/creating-tenant-account.html["Criar conta de inquilino"] .  Para usar o assistente de configuração do FabricPool para concluir esta tarefa, vá paralink:use-fabricpool-setup-wizard-steps.html["Acesse e conclua o assistente de configuração do FabricPool"] .
+
+.Antes de começar
+* Você está conectado ao Grid Manager usando umlink:../admin/web-browser-requirements.html["navegador da web compatível"] .
+* Você temlink:../admin/admin-group-permissions.html["permissões de acesso específicas"] .
+
+
+.Passos
+. Selecione *LOCATÁRIOS*.
+. Selecione *Criar*.
+. Para as etapas de Inserir detalhes, insira as seguintes informações.
++
+[cols="1a,3a"]
+|===
+| Campo | Descrição 
+
+
+ a| 
+Nome
+ a| 
+Um nome para a conta do locatário.  Os nomes dos inquilinos não precisam ser exclusivos.  Quando a conta do locatário é criada, ela recebe um ID de conta numérico exclusivo.
+
+
+
+ a| 
+Descrição (opcional)
+ a| 
+Uma descrição para ajudar a identificar o inquilino.
+
+
+
+ a| 
+Tipo de cliente
+ a| 
+Deve ser *S3* para FabricPool.
+
+
+
+ a| 
+Cota de armazenamento (opcional)
+ a| 
+Deixe este campo em branco para FabricPool.
+
+|===
+. Para a etapa Selecionar permissões:
++
+.. Não selecione *Permitir serviços de plataforma*.
++
+Os locatários do FabricPool normalmente não precisam usar serviços de plataforma, como a replicação do CloudMirror.
+
+.. Opcionalmente, selecione *Usar fonte de identidade própria*.
+.. Não selecione *Permitir seleção S3*.
++
+Os locatários do FabricPool normalmente não precisam usar o S3 Select.
+
+.. Opcionalmente, selecione *Usar conexão de federação de grade* para permitir que o locatário use umalink:../admin/grid-federation-overview.html["conexão de federação de rede"] para clonagem de conta e replicação entre grades.  Em seguida, selecione a conexão de federação de rede a ser usada.
+
+
+. Para a etapa Definir acesso root, especifique qual usuário terá a permissão de acesso root inicial para a conta do locatário, com base no uso do sistema StorageGRIDlink:../admin/using-identity-federation.html["federação de identidade"] ,link:../admin/configuring-sso.html["logon único (SSO)"] , ou ambos.
++
+[cols="1a,2a"]
+|===
+| Opção | Faça isso 
+
+
+ a| 
+Se a federação de identidade não estiver habilitada
+ a| 
+Especifique a senha a ser usada ao fazer login no locatário como usuário root local.
+
+
+
+ a| 
+Se a federação de identidade estiver habilitada
+ a| 
+.. Selecione um grupo federado existente para ter permissão de acesso Root para o locatário.
+.. Opcionalmente, especifique a senha a ser usada ao fazer login no locatário como usuário root local.
+
+
+
+
+ a| 
+Se a federação de identidade e o logon único (SSO) estiverem habilitados
+ a| 
+Selecione um grupo federado existente para ter permissão de acesso Root para o locatário.  Nenhum usuário local pode fazer login.
+
+|===
+. Selecione *Criar inquilino*.
+

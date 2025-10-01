@@ -1,0 +1,43 @@
+---
+section: troubleshoot
+title: Solucionar problemas do sistema StorageGRID
+entries:
+- title: Diretrizes para solução de problemas
+  pdf-filename: Solucionar problemas do sistema StorageGRID
+  url: "/troubleshoot/index.html"
+- title: Solucionar problemas de objetos e armazenamento
+  entries:
+  - title: Confirmar a localização dos dados do objeto
+    url: "/troubleshoot/confirming-object-data-locations.html"
+  - title: Falhas no armazenamento de objetos
+    url: "/troubleshoot/object-store-storage-volume-failures.html"
+  - title: Verificar integridade do objeto
+    url: "/troubleshoot/verifying-object-integrity.html"
+  - title: Solucionar problemas de alerta de tamanho de objeto S3 PUT muito grande
+    url: "/troubleshoot/troubleshoot-s3-put-object-size-too-large-alert.html"
+  - title: Solucionar problemas de dados de objetos perdidos e ausentes
+    entries:
+    - title: Métodos para recuperar objetos
+      pdf-filename: Solucionar problemas de dados de objetos perdidos e ausentes
+      url: "/troubleshoot/troubleshooting-lost-and-missing-object-data.html"
+    - title: Investigar objetos perdidos
+      url: "/troubleshoot/investigating-lost-objects.html"
+    - title: Pesquisar e restaurar objetos potencialmente perdidos
+      url: "/troubleshoot/searching-for-and-restoring-potentially-lost-objects.html"
+    - title: Redefinir contagens de objetos perdidos e desaparecidos
+      url: "/troubleshoot/resetting-lost-and-missing-object-counts.html"
+  - title: Solucionar problemas do alerta de armazenamento de dados de objeto baixo
+    url: "/troubleshoot/troubleshooting-low-object-data-storage-alert.html"
+  - title: Solucionar problemas de alertas de substituição de marca d'água somente
+      leitura
+    url: "/troubleshoot/troubleshoot-low-watermark-alert.html"
+- title: Solucionar problemas de metadados
+  url: "/troubleshoot/troubleshooting-metadata-issues.html"
+- title: Solucionar erros de certificado
+  url: "/troubleshoot/troubleshooting-certificate-errors.html"
+- title: Solucionar problemas do nó de administração e da interface do usuário
+  url: "/troubleshoot/troubleshooting-admin-node-and-user-interface-issues.html"
+- title: Solucionar problemas de rede, hardware e plataforma
+  url: "/troubleshoot/troubleshooting-network-hardware-and-platform-issues.html"
+- title: Solucionar problemas do servidor syslog externo
+  url: "/troubleshoot/troubleshooting-syslog-server.html"

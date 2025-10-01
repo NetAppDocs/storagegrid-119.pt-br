@@ -1,0 +1,31 @@
+---
+permalink: ilm/what-replication-is.html 
+sidebar: sidebar 
+keywords: replication, object copies 
+summary: A replicação é um dos dois métodos que o StorageGRID usa para armazenar dados de objetos.  Quando os objetos correspondem a uma regra do ILM que usa replicação, o sistema cria cópias exatas dos dados do objeto e armazena as cópias nos nós de armazenamento. 
+---
+= O que é replicação?
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+A replicação é um dos dois métodos usados ​​pelo StorageGRID para armazenar dados de objetos (a codificação de eliminação é o outro método).  Quando os objetos correspondem a uma regra do ILM que usa replicação, o sistema cria cópias exatas dos dados do objeto e armazena as cópias nos nós de armazenamento.
+
+Ao configurar uma regra do ILM para criar cópias replicadas, você especifica quantas cópias devem ser criadas, onde elas devem ser colocadas e por quanto tempo elas devem ser armazenadas em cada local.
+
+No exemplo a seguir, a regra ILM especifica que duas cópias replicadas de cada objeto sejam colocadas em um pool de armazenamento que contém três nós de armazenamento.
+
+image::../media/ilm_replication_make_2_copies.png[Regra de fazer 2 cópias]
+
+Quando o StorageGRID corresponde objetos a essa regra, ele cria duas cópias do objeto, colocando cada cópia em um nó de armazenamento diferente no pool de armazenamento.  As duas cópias podem ser colocadas em quaisquer dois dos três nós de armazenamento disponíveis.  Neste caso, a regra colocou cópias de objetos nos Nós de Armazenamento 2 e 3.  Como há duas cópias, o objeto pode ser recuperado se algum dos nós no pool de armazenamento falhar.
+
+
+NOTE: O StorageGRID pode armazenar apenas uma cópia replicada de um objeto em qualquer nó de armazenamento.  Se sua grade incluir três nós de armazenamento e você criar uma regra ILM de 4 cópias, apenas três cópias serão feitas — uma cópia para cada nó de armazenamento.  O alerta *ILM placement unachievable* é acionado para indicar que a regra ILM não pôde ser aplicada completamente.
+
+.Informações relacionadas
+* link:what-erasure-coding-is.html["O que é codificação de apagamento"]
+* link:what-storage-pool-is.html["O que é um pool de armazenamento"]
+* link:using-multiple-storage-pools-for-cross-site-replication.html["Habilitar proteção contra perda de site usando replicação e codificação de eliminação"]
+

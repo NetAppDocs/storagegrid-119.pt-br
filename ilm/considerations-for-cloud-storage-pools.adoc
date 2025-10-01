@@ -1,0 +1,128 @@
+---
+permalink: ilm/considerations-for-cloud-storage-pools.html 
+sidebar: sidebar 
+keywords: what is a cloud storage pool, considerations for a cloud storage pool 
+summary: Se você planeja usar um Cloud Storage Pool para mover objetos para fora do sistema StorageGRID , revise as considerações para configurar e usar Cloud Storage Pools. 
+---
+= Considerações sobre pools de armazenamento em nuvem
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Se você planeja usar um Cloud Storage Pool para mover objetos para fora do sistema StorageGRID , revise as considerações para configurar e usar Cloud Storage Pools.
+
+
+
+== Considerações gerais
+
+* Em geral, o armazenamento de arquivo em nuvem, como o Amazon S3 Glacier ou o armazenamento de Blobs do Azure, é um local barato para armazenar dados de objetos.  No entanto, os custos para recuperar dados do armazenamento de arquivos em nuvem são relativamente altos.  Para atingir o menor custo geral, você deve considerar quando e com que frequência acessará os objetos no Cloud Storage Pool.  O uso de um pool de armazenamento em nuvem é recomendado apenas para conteúdo que você espera acessar com pouca frequência.
+* O uso de Cloud Storage Pools com FabricPool não é suportado devido à latência adicional para recuperar um objeto do destino do Cloud Storage Pool.
+* Objetos com o S3 Object Lock ativado não podem ser colocados em pools de armazenamento em nuvem.
+* Se o bucket S3 de destino para um pool de armazenamento em nuvem tiver o bloqueio de objeto S3 habilitado, a tentativa de configurar a replicação do bucket (PutBucketReplication) falhará com um erro AccessDenied.
+* As seguintes combinações de plataforma, autenticação e protocolo com bloqueio de objeto S3 não são suportadas para pools de armazenamento em nuvem:
++
+** *Plataformas*: Google Cloud Platform e Azure
+** *Tipos de autenticação*: Funções do IAM em qualquer lugar e acesso anônimo
+** *Protocolo*: HTTP
+
+
+
+
+
+
+== Considerações sobre as portas usadas para pools de armazenamento em nuvem
+
+Para garantir que as regras do ILM possam mover objetos de e para o Pool de Armazenamento em Nuvem especificado, você deve configurar a rede ou redes que contêm os Nós de Armazenamento do seu sistema.  Você deve garantir que as seguintes portas possam se comunicar com o Cloud Storage Pool.
+
+Por padrão, os pools de armazenamento em nuvem usam as seguintes portas:
+
+* *80*: Para URIs de endpoint que começam com http
+* *443*: Para URIs de endpoint que começam com https
+
+
+Você pode especificar uma porta diferente ao criar ou editar um pool de armazenamento em nuvem.
+
+Se você usar um servidor proxy não transparente, você também develink:../admin/configuring-storage-proxy-settings.html["configurar um proxy de armazenamento"] para permitir que mensagens sejam enviadas para terminais externos, como um terminal na Internet.
+
+
+
+== Considerações sobre custos
+
+O acesso ao armazenamento na nuvem usando um Cloud Storage Pool requer conectividade de rede com a nuvem.  Você deve considerar o custo da infraestrutura de rede que usará para acessar a nuvem e provisioná-la adequadamente, com base na quantidade de dados que você espera mover entre o StorageGRID e a nuvem usando o Cloud Storage Pool.
+
+Quando o StorageGRID se conecta ao ponto de extremidade externo do Cloud Storage Pool, ele emite várias solicitações para monitorar a conectividade e garantir que possa executar as operações necessárias.  Embora alguns custos adicionais sejam associados a essas solicitações, o custo de monitoramento de um pool de armazenamento em nuvem deve ser apenas uma pequena fração do custo geral de armazenamento de objetos no S3 ou no Azure.
+
+Custos mais significativos podem ser incorridos se você precisar mover objetos de um ponto de extremidade externo do Cloud Storage Pool de volta para o StorageGRID.  Os objetos podem ser movidos de volta para o StorageGRID em qualquer um destes casos:
+
+* A única cópia do objeto está em um pool de armazenamento em nuvem e você decide armazená-lo no StorageGRID .  Nesse caso, você reconfigura suas regras e políticas de ILM.  Quando ocorre a avaliação do ILM, o StorageGRID emite várias solicitações para recuperar o objeto do Cloud Storage Pool.  O StorageGRID então cria o número especificado de cópias replicadas ou codificadas para eliminação localmente.  Depois que o objeto é movido de volta para StorageGRID, a cópia no Cloud Storage Pool é excluída.
+* Objetos são perdidos devido à falha do nó de armazenamento.  Se a única cópia restante de um objeto estiver em um pool de armazenamento em nuvem, o StorageGRID restaurará temporariamente o objeto e criará uma nova cópia no nó de armazenamento recuperado.
+
+
+
+NOTE: Quando objetos são movidos de volta para o StorageGRID de um Cloud Storage Pool, o StorageGRID emite várias solicitações ao ponto de extremidade do Cloud Storage Pool para cada objeto.  Antes de mover grandes quantidades de objetos, entre em contato com o suporte técnico para obter ajuda na estimativa do prazo e dos custos associados.
+
+
+
+== S3: Permissões necessárias para o bucket do Cloud Storage Pool
+
+As políticas para o bucket S3 externo usado para um Cloud Storage Pool devem conceder permissão ao StorageGRID para mover um objeto para o bucket, obter o status de um objeto, restaurar um objeto do armazenamento Glacier quando necessário e muito mais.  O ideal é que o StorageGRID tenha acesso de controle total ao bucket(`s3:*` ); no entanto, se isso não for possível, a política de bucket deve conceder as seguintes permissões S3 ao StorageGRID:
+
+* `s3:AbortMultipartUpload`
+* `s3:DeleteObject`
+* `s3:GetObject`
+* `s3:ListBucket`
+* `s3:ListBucketMultipartUploads`
+* `s3:ListMultipartUploadParts`
+* `s3:PutObject`
+* `s3:RestoreObject`
+
+
+
+
+== S3: Considerações sobre o ciclo de vida do bucket externo
+
+A movimentação de objetos entre o StorageGRID e o bucket S3 externo especificado no Cloud Storage Pool é controlada pelas regras do ILM e pelas políticas ativas do ILM no StorageGRID.  Em contraste, a transição de objetos do bucket S3 externo especificado no Cloud Storage Pool para o Amazon S3 Glacier ou S3 Glacier Deep Archive (ou para uma solução de armazenamento que implementa a classe de armazenamento Glacier) é controlada pela configuração do ciclo de vida desse bucket.
+
+Se você quiser fazer a transição de objetos do Cloud Storage Pool, crie a configuração de ciclo de vida apropriada no bucket externo do S3 e use uma solução de armazenamento que implemente a classe de armazenamento Glacier e ofereça suporte à API RestoreObject do S3.
+
+Por exemplo, suponha que você queira que todos os objetos movidos do StorageGRID para o Cloud Storage Pool sejam transferidos para o armazenamento Amazon S3 Glacier imediatamente.  Você criaria uma configuração de ciclo de vida no bucket S3 externo que especifica uma única ação (*Transição*) da seguinte maneira:
+
+[listing]
+----
+<LifecycleConfiguration>
+  <Rule>
+    <ID>Transition Rule</ID>
+    <Filter>
+       <Prefix></Prefix>
+    </Filter>
+    <Status>Enabled</Status>
+    <Transition>
+      <Days>0</Days>
+      <StorageClass>GLACIER</StorageClass>
+    </Transition>
+  </Rule>
+</LifecycleConfiguration>
+----
+Essa regra faria a transição de todos os objetos de bucket para o Amazon S3 Glacier no dia em que eles foram criados (ou seja, no dia em que foram movidos do StorageGRID para o Cloud Storage Pool).
+
+
+CAUTION: Ao configurar o ciclo de vida do bucket externo, nunca use ações de *Expiração* para definir quando os objetos expiram.  Ações de expiração fazem com que o sistema de armazenamento externo exclua objetos expirados.  Se você tentar acessar um objeto expirado do StorageGRID posteriormente, o objeto excluído não será encontrado.
+
+Se você deseja transferir objetos no Cloud Storage Pool para o S3 Glacier Deep Archive (em vez do Amazon S3 Glacier), especifique `<StorageClass>DEEP_ARCHIVE</StorageClass>` no ciclo de vida do bucket.  No entanto, esteja ciente de que você não pode usar o `Expedited` nível para restaurar objetos do S3 Glacier Deep Archive.
+
+
+
+== Azure: Considerações sobre a camada de acesso
+
+Ao configurar uma conta de armazenamento do Azure, você pode definir o nível de acesso padrão como Quente ou Frio.  Ao criar uma conta de armazenamento para uso com um pool de armazenamento em nuvem, você deve usar o nível Hot como nível padrão.  Embora o StorageGRID defina imediatamente o nível como Arquivar ao mover objetos para o Cloud Storage Pool, usar uma configuração padrão de Quente garante que você não será cobrado por uma taxa de exclusão antecipada para objetos removidos do nível Frio antes do mínimo de 30 dias.
+
+
+
+== Azure: Gerenciamento de ciclo de vida não suportado
+
+Não use o gerenciamento do ciclo de vida do armazenamento de Blobs do Azure para o contêiner usado com um Pool de Armazenamento em Nuvem.  As operações do ciclo de vida podem interferir nas operações do Cloud Storage Pool.
+
+.Informações relacionadas
+link:creating-cloud-storage-pool.html["Criar um pool de armazenamento em nuvem"]

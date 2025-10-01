@@ -1,0 +1,232 @@
+---
+permalink: monitor/logs-files-reference.html 
+sidebar: sidebar 
+keywords: log, logs, log files 
+summary: O StorageGRID fornece logs que são usados ​​para capturar eventos, mensagens de diagnóstico e condições de erro.  Você pode ser solicitado a coletar arquivos de log e encaminhá-los ao suporte técnico para ajudar na solução de problemas. 
+---
+= Referência de arquivos de log
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+O StorageGRID fornece logs que são usados ​​para capturar eventos, mensagens de diagnóstico e condições de erro.  Você pode ser solicitado a coletar arquivos de log e encaminhá-los ao suporte técnico para ajudar na solução de problemas.
+
+Os logs são categorizados da seguinte forma:
+
+* link:storagegrid-software-logs.html["Registros do software StorageGRID"]
+* link:deployment-and-maintenance-logs.html["Registros de implantação e manutenção"]
+* link:about-bycast-log.html["Sobre o bycast.log"]
+
+
+
+NOTE: Os detalhes fornecidos para cada tipo de log são apenas para referência.  Os logs são destinados à solução de problemas avançada pelo suporte técnico.  Técnicas avançadas que envolvem a reconstrução do histórico de problemas usando os logs de auditoria e os arquivos de log do aplicativo estão além do escopo destas instruções.
+
+
+
+== Acessar os logs
+
+Para acessar os logs, você podelink:collecting-log-files-and-system-data.html["coletar arquivos de log e dados do sistema"] de um ou mais nós como um único arquivo de log. Ou, se o nó de administração principal não estiver disponível ou não conseguir acessar um nó específico, você poderá acessar arquivos de log individuais para cada nó de grade da seguinte maneira:
+
+. Digite o seguinte comando: `ssh admin@grid_node_IP`
+. Digite a senha listada no `Passwords.txt` arquivo.
+. Digite o seguinte comando para alternar para root: `su -`
+. Digite a senha listada no `Passwords.txt` arquivo.
+
+
+
+
+== Exportar logs para o servidor syslog
+
+Exportar os logs para o servidor syslog fornece estes recursos:
+
+* Receba uma lista de todas as solicitações do Grid Manager e do Tenant Manager, além das solicitações do S3 e do Swift.
+* Melhor visibilidade das solicitações do S3 que retornam erros, sem o impacto no desempenho causado pelos métodos de registro de auditoria.
+* Acesso a solicitações de camada HTTP e códigos de erro fáceis de analisar.
+* Melhor visibilidade das solicitações que foram bloqueadas pelos classificadores de tráfego no balanceador de carga.
+
+
+Para exportar os logs, consultelink:../monitor/configure-audit-messages.html["Configurar mensagens de auditoria e destinos de log"] .
+
+
+
+== Categorias de arquivos de log
+
+O arquivo de log do StorageGRID contém os logs descritos para cada categoria e arquivos adicionais que contêm métricas e saída de comando de depuração.
+
+[cols="1a,3a"]
+|===
+| Localização do arquivo | Descrição 
+
+
+| auditoria  a| 
+Mensagens de auditoria geradas durante a operação normal do sistema.
+
+
+
+| base-os-logs  a| 
+Informações básicas do sistema operacional, incluindo versões de imagem do StorageGRID .
+
+
+
+| pacotes  a| 
+Informações de configuração global (pacotes).
+
+
+
+| Cassandra  a| 
+Informações do banco de dados Cassandra e logs de reparo do Reaper.
+
+
+
+| CE  a| 
+Informações do VCS sobre o nó atual e informações do grupo EC por ID de perfil.
+
+
+
+| grade  a| 
+Registros gerais da grade, incluindo depuração(`bycast.log` ) e `servermanager` registros.
+
+
+
+| grade.json  a| 
+Arquivo de configuração de grade compartilhado entre todos os nós.  Adicionalmente, `node.json` é específico para o nó atual.
+
+
+
+| hagrupos  a| 
+Métricas e logs de grupos de alta disponibilidade.
+
+
+
+| instalar  a| 
+`Gdu-server`e instalar logs.
+
+
+
+| Lambda-árbitro  a| 
+Logs relacionados à solicitação de proxy do S3 Select.
+
+
+
+| lenhador.log  a| 
+Mensagens de depuração relacionadas à coleta de logs.
+
+
+
+| Métricas  a| 
+Logs de serviço para Grafana, Jaeger, exportador de nós e Prometheus.
+
+
+
+| miscd  a| 
+Acessos e logs de erros diversos.
+
+
+
+| MySQL  a| 
+A configuração do banco de dados mariaDB e logs relacionados.
+
+
+
+| líquido  a| 
+Logs gerados por scripts relacionados à rede e pelo serviço Dynip.
+
+
+
+| nginx  a| 
+Arquivos de configuração e logs do balanceador de carga e da federação de grade.  Inclui também registros de tráfego do Grid Manager e do Tenant Manager.
+
+
+
+| nginx-gw  a| 
+* `access.log`: Mensagens de log de solicitações do Grid Manager e do Tenant Manager.
++
+** Essas mensagens são prefixadas com `mgmt:` quando exportado usando syslog.
+** O formato dessas mensagens de log é `[$time_iso8601] $remote_addr $status $bytes_sent $request_length $request_time "$endpointId" "$request" "$http_host" "$http_user_agent" "$http_referer"`
+
+
+* `cgr-access.log.gz`: Solicitações de replicação entre grades de entrada.
++
+** Essas mensagens são prefixadas com `cgr:` quando exportado usando syslog.
+** O formato dessas mensagens de log é `[$time_iso8601] $remote_addr $status $bytes_sent $request_length $request_time "$endpointId" "$upstream_addr" "$request" "$http_host"`
+
+
+* `endpoint-access.log.gz`: Solicitações S3 e Swift para endpoints do balanceador de carga.
++
+** Essas mensagens são prefixadas com `endpoint:` quando exportado usando syslog.
+** O formato dessas mensagens de log é `[$time_iso8601] $remote_addr $status $bytes_sent $request_length $request_time "$endpointId" "$upstream_addr" "$request" "$http_host"`
+
+
+* `nginx-gw-dns-check.log`: Relacionado ao novo alerta de verificação de DNS.
+
+
+
+
+| ntp  a| 
+Arquivo de configuração e logs do NTP.
+
+
+
+ a| 
+Objetos órfãos
+ a| 
+Registros referentes a objetos órfãos.
+
+
+
+| sistema operacional  a| 
+Arquivo de estado de nó e grade, incluindo serviços `pid` .
+
+
+
+| outro  a| 
+Arquivos de log em `/var/local/log` que não são coletados em outras pastas.
+
+
+
+| desempenho  a| 
+Informações de desempenho para CPU, rede e E/S de disco.
+
+
+
+| prometheus-data  a| 
+Métricas atuais do Prometheus, se a coleção de logs incluir dados do Prometheus.
+
+
+
+| provisionamento  a| 
+Logs relacionados ao processo de provisionamento da rede.
+
+
+
+| jangada  a| 
+Logs do cluster Raft usados em serviços de plataforma.
+
+
+
+| ssh  a| 
+Logs relacionados à configuração e serviço SSH.
+
+
+
+| snmp  a| 
+Configuração do agente SNMP usada para enviar notificações SNMP.
+
+
+
+| soquetes-dados  a| 
+Dados de soquetes para depuração de rede.
+
+
+
+| comandos-do-sistema.txt  a| 
+Saída dos comandos do contêiner StorageGRID .  Contém informações do sistema, como rede e uso de disco.
+
+
+
+| pacote de recuperação de sincronização  a| 
+Relacionado à manutenção da consistência do Pacote de Recuperação mais recente em todos os Nós de Administração e Nós de Armazenamento que hospedam o serviço ADC.
+
+|===

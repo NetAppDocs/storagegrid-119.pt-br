@@ -1,0 +1,236 @@
+---
+permalink: maintain/rename-grid-site-node.html 
+sidebar: sidebar 
+keywords: rename grid, rename sites, rename node, change display name, bulk rename tool 
+summary: Você pode usar este procedimento para adicionar ou atualizar os nomes de exibição usados ​​para sua grade, sites e nós.  Você pode renomear um único item, vários nomes ou até mesmo todos os itens ao mesmo tempo.  Definir ou atualizar um nome de exibição não afeta as operações do StorageGRID de forma alguma. 
+---
+= Adicionar ou atualizar nomes de exibição
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Você pode usar este procedimento para adicionar ou atualizar os nomes de exibição usados ​​para sua grade, sites e nós.  Você pode renomear um único item, vários itens ou até mesmo todos os itens ao mesmo tempo.  Definir ou atualizar um nome de exibição não afeta as operações do StorageGRID de forma alguma.
+
+.Antes de começar
+* A partir do *Nó de Administração principal*, você é conectado ao Grid Manager usando umlink:../admin/web-browser-requirements.html["navegador da web compatível"] .
++
+
+NOTE: Você pode adicionar ou atualizar nomes de exibição de um nó de administração não primário, mas precisa estar conectado ao nó de administração primário para baixar um pacote de recuperação.
+
+* Você tem olink:../admin/admin-group-permissions.html["Permissão de acesso de manutenção ou root"] .
+* Você tem a senha de provisionamento.
+* Você entende os requisitos e as práticas recomendadas para nomes de exibição. Ver link:../maintain/rename-grid-site-node-overview.html["Renomear grade, sites e nós"] .
+
+
+
+
+== Como renomear grade, sites ou nós
+
+Você pode renomear seu sistema StorageGRID , um ou mais sites ou um ou mais nós.
+
+Você pode usar um nome de exibição que foi usado anteriormente por um nó diferente, desde que a renomeação não resulte em um nome de exibição ou nome do sistema duplicado.
+
+
+
+=== Selecione os itens para renomear
+
+Para começar, selecione os itens que você deseja renomear.
+
+.Passos
+. Selecione *MANUTENÇÃO* > *Tarefas* > *Renomear grade, sites e nós*.
+. Para a etapa *Selecionar nomes*, selecione os itens que deseja renomear.
++
+[cols="1a,2a"]
+|===
+| Item a ser alterado | Instrução 
+
+
+ a| 
+Nomes de tudo (ou quase tudo) no seu sistema
+ a| 
+.. Selecione *Selecionar tudo*.
+.. Opcionalmente, limpe todos os itens que você não deseja renomear.
+
+
+
+
+ a| 
+Nome da grade
+ a| 
+Selecione a caixa de seleção da grade.
+
+
+
+ a| 
+Nome de um site e alguns ou todos os seus nós
+ a| 
+.. Marque a caixa de seleção no cabeçalho da tabela do site.
+.. Opcionalmente, limpe todos os nós que você não deseja renomear.
+
+
+
+
+ a| 
+Nome de um site
+ a| 
+Selecione a caixa de seleção do site.
+
+
+
+ a| 
+Nome de um nó
+ a| 
+Selecione a caixa de seleção do nó.
+
+|===
+. Selecione *Continuar*.
+. Revise a tabela, que inclui os itens que você selecionou.
++
+** A coluna *Nome de exibição* mostra o nome atual de cada item.  Se o item nunca tiver sido renomeado, seu nome de exibição será o mesmo que seu nome do sistema.
+** A coluna *Nome do sistema* mostra o nome que você inseriu para cada item durante a instalação.  Os nomes do sistema são usados ​​para operações internas do StorageGRID e não podem ser alterados.  Por exemplo, o nome do sistema de um nó pode ser seu nome de host.
+** A coluna *Tipo* indica o tipo do item: Grade, Site ou o tipo específico de nó.
+
+
+
+
+
+
+=== Proponha novos nomes
+
+Para a etapa *Propor novos nomes*, você pode inserir um nome de exibição para cada item individualmente ou pode renomear os itens em massa.
+
+[role="tabbed-block"]
+====
+.Renomear itens individualmente
+--
+Siga estas etapas para inserir um nome de exibição para cada item que você deseja renomear.
+
+.Passos
+. No campo *Nome de exibição*, insira um nome de exibição proposto para cada item na lista.
++
+Verlink:../maintain/rename-grid-site-node-overview.html["Renomear grade, sites e nós"] para aprender os requisitos de nomenclatura.
+
+. Para remover quaisquer itens que você não deseja renomear, selecioneimage:../media/icon-x-to-remove.png["Ícone X"] na coluna *Remover da lista*.
++
+Se você não for propor um novo nome para um item, deverá removê-lo da tabela.
+
+. Quando você tiver proposto novos nomes para todos os itens na tabela, selecione *Renomear*.
++
+Uma mensagem de sucesso é exibida.  Os novos nomes de exibição agora são usados em todo o Grid Manager.
+
+
+
+--
+.Renomear itens em massa
+--
+Use a ferramenta de renomeação em massa se os nomes dos itens compartilharem uma sequência de caracteres comum que você deseja substituir por uma sequência de caracteres diferente.
+
+.Passos
+. Para a etapa *Propor novos nomes*, selecione *Usar ferramenta de renomeação em massa*.
++
+A *Visualização de renomeação* inclui todos os itens que foram exibidos na etapa *Propor novos nomes*.  Você pode usar a visualização para ver como os nomes de exibição ficarão depois de substituir uma string compartilhada.
+
+. No campo *String existente*, insira a string compartilhada que você deseja substituir.  Por exemplo, se a string que você deseja substituir for `Data-Center-1` , digite *Data-Center-1*.
++
+Conforme você digita, seu texto é destacado onde quer que ele seja encontrado nos nomes à esquerda.
+
+. Selecioneimage:../media/icon-x-to-remove.png["Ícone X"] para remover quaisquer itens que você não deseja renomear com esta ferramenta.
++
+Por exemplo, suponha que você queira renomear todos os nós que contêm a string `Data-Center-1` , mas você não quer renomear o `Data-Center-1` site em si.  Selecioneimage:../media/icon-x-to-remove.png["Ícone X"] para remover o site da visualização de renomeação.
+
++
+image::../media/rename-bulk-rename-tool.png[Ferramenta de renomeação em massa antes]
+
+. No campo *Nova string*, insira a string de substituição que você deseja usar.  Por exemplo, digite *DC1*.
++
+Verlink:../maintain/rename-grid-site-node-overview.html["Renomear grade, sites e nós"] para aprender os requisitos de nomenclatura.
+
++
+Conforme você insere a sequência de substituição, os nomes à esquerda são atualizados, para que você possa verificar se os novos nomes estarão corretos.
+
++
+image::../media/rename-bulk-rename-tool-after.png[Ferramenta de renomeação em massa após]
+
+. Quando estiver satisfeito com os nomes mostrados na pré-visualização, selecione *Adicionar nomes* para adicionar os nomes à tabela para a etapa *Propor novos nomes*.
+. Faça quaisquer alterações adicionais necessárias ou selecioneimage:../media/icon-x-to-remove.png["Ícone X"] para remover quaisquer itens que você não deseja renomear.
+. Quando estiver pronto para renomear todos os itens na tabela, selecione *Renomear*.
++
+Uma mensagem de sucesso é exibida.  Os novos nomes de exibição agora são usados em todo o Grid Manager.
+
+
+
+--
+====
+
+
+=== [[download-recovery-package]]Baixe o pacote de recuperação
+
+Quando terminar de renomear os itens, baixe e salve um novo Pacote de Recuperação. Os novos nomes de exibição para os itens que você renomeou estão incluídos no `Passwords.txt` arquivo.
+
+.Passos
+. Digite a senha de provisionamento.
+. Selecione *Baixar pacote de recuperação*.
++
+O download começa imediatamente.
+
+. Quando o download for concluído, abra o `Passwords.txt` arquivo para ver o nome do servidor para todos os nós e os nomes de exibição para quaisquer nós renomeados.
+. Copie o `sgws-recovery-package-_id-revision_.zip` arquive em dois locais seguros, protegidos e separados.
++
+
+CAUTION: O arquivo do pacote de recuperação deve ser protegido porque contém chaves de criptografia e senhas que podem ser usadas para obter dados do sistema StorageGRID .
+
+. Selecione *Concluir* para retornar ao primeiro passo.
+
+
+
+
+== Reverter nomes de exibição para nomes de sistema
+
+Você pode reverter uma grade, site ou nó renomeado de volta ao seu nome original do sistema.  Quando você reverte um item para seu nome de sistema, as páginas do Grid Manager e outros locais do StorageGRID não mostram mais um *Nome de exibição* para esse item.  Somente o nome do sistema do item é mostrado.
+
+.Passos
+. Selecione *MANUTENÇÃO* > *Tarefas* > *Renomear grade, sites e nós*.
+. Para a etapa *Selecionar nomes*, selecione todos os itens que você deseja reverter para nomes de sistema.
+. Selecione *Continuar*.
+. Para a etapa *Propor novos nomes*, reverta os nomes de exibição para nomes do sistema individualmente ou em massa.
++
+[role="tabbed-block"]
+====
+.Reverter para nomes de sistema individualmente
+--
+.. Copie o nome original do sistema de cada item e cole-o no campo *Nome de exibição* ou selecioneimage:../media/icon-x-to-remove.png["Ícone X"] para remover quaisquer itens que você não deseja reverter.
++
+Para reverter um nome de exibição, o nome do sistema deve aparecer no campo *Nome de exibição*, mas o nome não diferencia maiúsculas de minúsculas.
+
+.. Selecione *Renomear*.
++
+Uma mensagem de sucesso é exibida.  Os nomes de exibição desses itens não são mais usados.
+
+
+
+--
+.Reverter para nomes de sistema em massa
+--
+.. Para a etapa *Propor novos nomes*, selecione *Usar ferramenta de renomeação em massa*.
+.. No campo *String existente*, insira a string do nome de exibição que você deseja substituir.
+.. No campo *Nova string*, insira a string do nome do sistema que você deseja usar.
+.. Selecione *Adicionar nomes* para adicionar os nomes à tabela para a etapa *Propor novos nomes*.
+.. Confirme se cada entrada no campo *Nome de exibição* corresponde ao nome no campo *Nome do sistema*.  Faça quaisquer alterações ou selecioneimage:../media/icon-x-to-remove.png["Ícone X"] para remover quaisquer itens que você não deseja reverter.
++
+Para reverter um nome de exibição, o nome do sistema deve aparecer no campo *Nome de exibição*, mas o nome não diferencia maiúsculas de minúsculas.
+
+.. Selecione *Renomear*.
++
+Uma mensagem de sucesso é exibida.  Os nomes de exibição desses itens não são mais usados.
+
+
+
+--
+====
+. <<download-recovery-package,Baixe e salve um novo pacote de recuperação>> .
++
+Os nomes de exibição dos itens que você reverteu não estão mais incluídos no `Passwords.txt` arquivo.
+
+

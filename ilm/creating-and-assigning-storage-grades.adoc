@@ -1,0 +1,65 @@
+---
+permalink: ilm/creating-and-assigning-storage-grades.html 
+sidebar: sidebar 
+keywords: what is a storage grade, create storage grade 
+summary: Os níveis de armazenamento identificam o tipo de armazenamento usado por um nó de armazenamento.  Você pode criar níveis de armazenamento se quiser que as regras do ILM coloquem determinados objetos em determinados nós de armazenamento. 
+---
+= Criar e atribuir níveis de armazenamento
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Os níveis de armazenamento identificam o tipo de armazenamento usado por um nó de armazenamento.  Você pode criar níveis de armazenamento se quiser que as regras do ILM coloquem determinados objetos em determinados nós de armazenamento.
+
+.Antes de começar
+* Você está conectado ao Grid Manager usando umlink:../admin/web-browser-requirements.html["navegador da web compatível"] .
+* Você temlink:../admin/admin-group-permissions.html["permissões de acesso específicas"] .
+
+
+.Sobre esta tarefa
+Quando você instala o StorageGRID pela primeira vez, o nível de armazenamento *Padrão* é atribuído automaticamente a cada Nó de Armazenamento no seu sistema.  Conforme necessário, você pode definir opcionalmente níveis de armazenamento personalizados e atribuí-los a diferentes nós de armazenamento.
+
+O uso de níveis de armazenamento personalizados permite que você crie pools de armazenamento ILM que contêm apenas um tipo específico de nó de armazenamento.  Por exemplo, você pode querer que determinados objetos sejam armazenados em seus nós de armazenamento mais rápidos, como os dispositivos de armazenamento all-flash StorageGRID .
+
+
+NOTE: Os nós de armazenamento podem ser configurados durante a instalação para conter apenas metadados de objetos e não dados de objetos. Nós de armazenamento somente de metadados não podem receber uma classificação de armazenamento. Para obter mais informações, consulte link:../primer/what-storage-node-is.html#types-of-storage-nodes["Tipos de nós de armazenamento"] .
+
+Se o grau de armazenamento não for uma preocupação (por exemplo, todos os nós de armazenamento forem idênticos), você pode pular este procedimento e usar a seleção *inclui todos os graus de armazenamento* para o grau de armazenamento quando vocêlink:creating-storage-pool.html["criar pools de armazenamento"] .  Usar essa seleção garante que o pool de armazenamento incluirá todos os nós de armazenamento no site, independentemente do seu nível de armazenamento.
+
+
+NOTE: Não crie mais níveis de armazenamento do que o necessário.  Por exemplo, não crie um nível de armazenamento para cada nó de armazenamento.  Em vez disso, atribua cada grau de armazenamento a dois ou mais nós.  Os níveis de armazenamento atribuídos a apenas um nó podem causar atrasos no ILM se esse nó ficar indisponível.
+
+.Passos
+. Selecione *ILM* > *Níveis de armazenamento*.
+. Defina níveis de armazenamento personalizados:
++
+.. Para cada nível de armazenamento personalizado que você deseja adicionar, selecione *Inserir*image:../media/icon_nms_insert.gif["ícone de inserção"] para adicionar uma linha.
+.. Insira um rótulo descritivo.
++
+image::../media/editing_storage_grades.gif[Página de notas de armazenamento]
+
+.. Selecione *Aplicar alterações*.
+.. Opcionalmente, se você precisar modificar um rótulo salvo, selecione *Editar*image:../media/icon_nms_edit.gif["ícone de edição"] e selecione *Aplicar alterações*.
++
+
+NOTE: Você não pode excluir notas de armazenamento.
+
+
+
+. Atribuir novos níveis de armazenamento aos nós de armazenamento:
++
+.. Localize o nó de armazenamento na lista LDR e selecione seu ícone *Editar*image:../media/icon_nms_edit.gif["ícone de edição"] .
+.. Selecione o nível de armazenamento apropriado na lista.
++
+image::../media/assigning_storage_grades_to_storage_nodes.gif[Página de notas de armazenamento]
+
++
+
+NOTE: Atribua uma classificação de armazenamento a um determinado nó de armazenamento apenas uma vez.  Um nó de armazenamento recuperado de uma falha mantém o grau de armazenamento atribuído anteriormente.  Não altere esta atribuição depois que a política ILM for ativada.  Se a atribuição for alterada, os dados serão armazenados com base no novo grau de armazenamento.
+
+.. Selecione *Aplicar alterações*.
+
+
+

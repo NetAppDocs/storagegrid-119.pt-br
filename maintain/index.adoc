@@ -1,0 +1,33 @@
+---
+permalink: maintain/index.html 
+sidebar: sidebar 
+keywords: maintain overview, maintenance overview, about maintain, about maintenance 
+summary: As tarefas de manutenção da rede incluem o descomissionamento de um nó ou local, a renomeação de uma rede, nó ou local e a manutenção da rede.  Você também pode executar procedimentos de host e middleware, bem como procedimentos de nó de grade. 
+---
+= Manutenção da rede
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+As tarefas de manutenção da rede incluem o descomissionamento de um nó ou local, a renomeação de uma rede, nó ou local e a manutenção de redes.  Você também pode executar procedimentos de host e middleware, bem como procedimentos de nó de grade.
+
+
+NOTE: Nestas instruções, "Linux" refere-se a uma implantação do Red Hat® Enterprise Linux®, Ubuntu® ou Debian®. Para obter uma lista de versões suportadas, consulte o https://imt.netapp.com/matrix/#welcome["Ferramenta de Matriz de Interoperabilidade da NetApp"^] .
+
+
+
+== Antes de começar
+
+* Você tem um amplo conhecimento do sistema StorageGRID .
+* Você revisou a topologia do seu sistema StorageGRID e entende a configuração da grade.
+* Você entende que deve seguir todas as instruções exatamente e prestar atenção a todos os avisos.
+* Você entende que procedimentos de manutenção não descritos não são suportados ou exigem uma contratação de serviços.
+
+
+
+
+== Procedimentos de manutenção para aparelhos
+
+Para procedimentos de hardware, consulte o https://docs.netapp.com/us-en/storagegrid-appliances/commonhardware/index.html["instruções de manutenção para seu dispositivo StorageGRID"^] .

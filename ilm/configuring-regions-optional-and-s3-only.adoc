@@ -1,0 +1,70 @@
+---
+permalink: ilm/configuring-regions-optional-and-s3-only.html 
+sidebar: sidebar 
+keywords: S3 regions, region, ilm rules 
+summary: As regras do ILM podem filtrar objetos com base nas regiões onde os buckets do S3 são criados, permitindo que você armazene objetos de diferentes regiões em diferentes locais de armazenamento. 
+---
+= Configurar regiões (opcional e somente S3)
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+As regras do ILM podem filtrar objetos com base nas regiões onde os buckets do S3 são criados, permitindo que você armazene objetos de diferentes regiões em diferentes locais de armazenamento.
+
+Se você quiser usar uma região de bucket do S3 como um filtro em uma regra, primeiro crie as regiões que podem ser usadas pelos buckets no seu sistema.
+
+
+NOTE: Não é possível alterar a região de um bucket depois que ele foi criado.
+
+.Antes de começar
+* Você está conectado ao Grid Manager usando umlink:../admin/web-browser-requirements.html["navegador da web compatível"] .
+* Você temlink:../admin/admin-group-permissions.html["permissões de acesso específicas"] .
+
+
+.Sobre esta tarefa
+Ao criar um bucket S3, você pode especificar que o bucket seja criado em uma região específica.  Especificar uma região permite que o bucket fique geograficamente próximo de seus usuários, o que pode ajudar a otimizar a latência, minimizar custos e atender aos requisitos regulatórios.
+
+Ao criar uma regra de ILM, você pode querer usar a região associada a um bucket do S3 como um filtro avançado.  Por exemplo, você pode criar uma regra que se aplique somente a objetos em buckets S3 criados no `us-west-2` região.  Você pode então especificar que cópias desses objetos sejam colocadas em nós de armazenamento em um site de data center dentro dessa região para otimizar a latência.
+
+Ao configurar regiões, siga estas diretrizes:
+
+* Por padrão, todos os buckets são considerados pertencentes ao `us-east-1` região.
+* Você deve criar as regiões usando o Grid Manager antes de poder especificar uma região não padrão ao criar buckets usando o Tenant Manager ou a Tenant Management API ou com o elemento de solicitação LocationConstraint para solicitações da S3 PUT Bucket API.  Ocorrerá um erro se uma solicitação PUT Bucket usar uma região que não foi definida em StorageGRID.
+* Você deve usar o nome exato da região ao criar o bucket S3.  Os nomes de regiões diferenciam maiúsculas de minúsculas.  Caracteres válidos são números, letras e hifens.
++
+
+NOTE: UE não é considerado um alias para eu-west-1. Se você quiser usar a região UE ou eu-west-1, deverá usar o nome exato.
+
+* Você não pode excluir ou modificar uma região se ela for usada em uma regra atribuída a qualquer política (ativa ou inativa).
+* Se você usar uma região inválida como filtro avançado em uma regra de ILM, não poderá adicionar essa regra a uma política.
++
+Uma região inválida pode ocorrer se você usar uma região como um filtro avançado em uma regra ILM, mas depois excluir essa região, ou se usar a API de gerenciamento de grade para criar uma regra e especificar uma região que você não definiu.
+
+* Se você excluir uma região após usá-la para criar um bucket do S3, será necessário adicioná-la novamente se quiser usar o filtro avançado Restrição de Localização para encontrar objetos nesse bucket.
+
+
+.Passos
+. Selecione *ILM* > *Regiões*.
++
+A página Regiões é exibida, com as regiões definidas atualmente listadas.  *Região 1* mostra a região padrão, `us-east-1` , que não pode ser modificado ou removido.
+
+. Para adicionar uma região:
++
+.. Selecione *Adicionar outra região*.
+.. Insira o nome de uma região que você deseja usar ao criar buckets do S3.
++
+Você deve usar esse nome de região exato como o elemento de solicitação LocationConstraint ao criar o bucket S3 correspondente.
+
+
+
+. Para remover uma região não utilizada, selecione o ícone de exclusãoimage:../media/icon-x-to-remove.png["Remover ícone"] .
++
+Uma mensagem de erro aparece se você tentar remover uma região que está sendo usada atualmente em qualquer política (ativa ou inativa).
+
+. Quando terminar de fazer as alterações, selecione *Salvar*.
++
+Agora você pode selecionar essas regiões na seção Filtros avançados na etapa 1 do assistente Criar regra ILM. Ver link:create-ilm-rule-enter-details.html#use-advanced-filters-in-ilm-rules["Usar filtros avançados em regras de ILM"] .
+
+

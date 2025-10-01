@@ -1,0 +1,103 @@
+---
+permalink: maintain/updating-subnets-for-grid-network.html 
+sidebar: sidebar 
+keywords: storagegrid, recover, subnet, grid network, update subnets 
+summary: 'O StorageGRID mantém uma lista das sub-redes de rede usadas para comunicação entre nós de grade na Rede de Grade \(eth0\).  Essas entradas incluem as sub-redes usadas para a Grid Network por cada site no seu sistema StorageGRID , bem como quaisquer sub-redes usadas para NTP, DNS, LDAP ou outros servidores externos acessados ​​por meio do gateway da Grid Network.  Ao adicionar nós de grade ou um novo site em uma expansão, pode ser necessário atualizar ou adicionar sub-redes à Rede de Grade.' 
+---
+= Atualizar sub-redes para a rede Grid
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+O StorageGRID mantém uma lista das sub-redes de rede usadas para comunicação entre nós de grade na Rede de Grade (eth0).  Essas entradas incluem as sub-redes usadas para a Grid Network por cada site no seu sistema StorageGRID , bem como quaisquer sub-redes usadas para NTP, DNS, LDAP ou outros servidores externos acessados ​​por meio do gateway da Grid Network.  Ao adicionar nós de grade ou um novo site em uma expansão, pode ser necessário atualizar ou adicionar sub-redes à Rede de Grade.
+
+.Antes de começar
+* Você está conectado ao Grid Manager usando umlink:../admin/web-browser-requirements.html["navegador da web compatível"] .
+* Você tem olink:../admin/admin-group-permissions.html["Permissão de acesso de manutenção ou root"] .
+* Você tem a senha de provisionamento.
+* Você tem os endereços de rede, em notação CIDR, das sub-redes que deseja configurar.
+
+
+.Sobre esta tarefa
+Se você estiver executando uma atividade de expansão que inclua a adição de uma nova sub-rede, adicione uma nova sub-rede à lista de sub-redes da Rede de Grade antes de iniciar o procedimento de expansão.  Caso contrário, você terá que cancelar a expansão, adicionar a nova sub-rede e iniciar a expansão novamente.
+
+[NOTE]
+====
+Não use sub-redes que contenham os seguintes endereços IPv4 para a Rede de Grade, Rede de Administração ou Rede de Cliente de qualquer nó:
+
+* 192.168.130.101
+* 192.168.131.101
+* 192.168.130.102
+* 192.168.131.102
+* 198.51.100.2
+* 198.51.100.4
+
+
+Por exemplo, não use os seguintes intervalos de sub-rede para a Rede de Grade, Rede de Administração ou Rede de Cliente de nenhum nó:
+
+* 192.168.130.0/24 porque este intervalo de sub-rede contém os endereços IP 192.168.130.101 e 192.168.130.102
+* 192.168.131.0/24 porque este intervalo de sub-rede contém os endereços IP 192.168.131.101 e 192.168.131.102
+* 198.51.100.0/24 porque este intervalo de sub-rede contém os endereços IP 198.51.100.2 e 198.51.100.4
+
+
+====
+
+
+== Adicionar uma sub-rede
+
+.Passos
+. Selecione *MANUTENÇÃO* > *Rede* > *Rede de grade*.
+. Selecione *Adicionar outra sub-rede* para adicionar uma nova sub-rede na notação CIDR.
++
+Por exemplo, insira `10.96.104.0/22` .
+
+. Digite a senha de provisionamento e selecione *Salvar*.
+. Aguarde até que as alterações sejam aplicadas e, em seguida, baixe um novo Pacote de Recuperação.
++
+.. Selecione *MANUTENÇÃO* > *Sistema* > *Pacote de recuperação*.
+.. Digite a *senha de provisionamento*.
++
+
+CAUTION: O arquivo do pacote de recuperação deve ser protegido porque contém chaves de criptografia e senhas que podem ser usadas para obter dados do sistema StorageGRID . Ele também é usado para recuperar o nó de administração primário.
+
+
+
+
+
+As sub-redes que você especificou são configuradas automaticamente para seu sistema StorageGRID .
+
+
+
+== Editar uma sub-rede
+
+.Passos
+. Selecione *MANUTENÇÃO* > *Rede* > *Rede de grade*.
+. Selecione a sub-rede que deseja editar e faça as alterações necessárias.
+. Digite a senha de provisionamento e selecione *Salvar*.
+. Selecione *Sim* na caixa de diálogo de confirmação.
+. Aguarde até que as alterações sejam aplicadas e, em seguida, baixe um novo Pacote de Recuperação.
++
+.. Selecione *MANUTENÇÃO* > *Sistema* > *Pacote de recuperação*.
+.. Digite a *senha de provisionamento*.
+
+
+
+
+
+
+== Excluir uma sub-rede
+
+.Passos
+. Selecione *MANUTENÇÃO* > *Rede* > *Rede de grade*.
+. Selecione o ícone de exclusãoimage:../media/icon-x-to-remove.png["ícone de exclusão"] ao lado da sub-rede.
+. Digite a senha de provisionamento e selecione *Salvar*.
+. Selecione *Sim* na caixa de diálogo de confirmação.
+. Aguarde até que as alterações sejam aplicadas e, em seguida, baixe um novo Pacote de Recuperação.
++
+.. Selecione *MANUTENÇÃO* > *Sistema* > *Pacote de recuperação*.
+.. Digite a *senha de provisionamento*.
+
+
+

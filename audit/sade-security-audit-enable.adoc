@@ -1,0 +1,47 @@
+---
+permalink: audit/sade-security-audit-enable.html 
+sidebar: sidebar 
+keywords: storagegrid, audit, message, SADE, Security Audit Enable 
+summary: 'Esta mensagem indica que o serviço de origem \(ID do nó\) restaurou o registro de mensagens de auditoria; as mensagens de auditoria estão sendo coletadas e entregues novamente.' 
+---
+= SADE: Habilitar Auditoria de Segurança
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Esta mensagem indica que o serviço de origem (ID do nó) restaurou o registro de mensagens de auditoria; as mensagens de auditoria estão sendo coletadas e entregues novamente.
+
+[cols="1a,1a,4a"]
+|===
+| Código | Campo | Descrição 
+
+
+ a| 
+AETM
+ a| 
+Método de ativação
+ a| 
+O método usado para permitir a auditoria.
+
+
+
+ a| 
+AEUN
+ a| 
+Nome de usuário
+ a| 
+O nome de usuário que executou o comando para habilitar o registro de auditoria.
+
+
+
+ a| 
+RSLT
+ a| 
+Resultado
+ a| 
+Este campo tem o valor NENHUM.  RSLT é um campo de mensagem obrigatório, mas não é relevante para esta mensagem.  NONE é usado em vez de SUCS para que esta mensagem não seja filtrada.
+
+|===
+A mensagem indica que o registro foi desabilitado anteriormente (SADD), mas agora foi restaurado.  Isso normalmente é usado apenas durante ingestão em massa para melhorar o desempenho do sistema.  Após a atividade em massa, a auditoria é restaurada e a capacidade de desabilitar a auditoria é bloqueada permanentemente.

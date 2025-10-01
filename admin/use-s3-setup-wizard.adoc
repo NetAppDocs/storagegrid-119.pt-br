@@ -1,0 +1,58 @@
+---
+permalink: admin/use-s3-setup-wizard.html 
+sidebar: sidebar 
+keywords: S3, S3 setup wizard 
+summary: Você pode usar o assistente de configuração do S3 para configurar o StorageGRID como o sistema de armazenamento de objetos para um aplicativo S3. 
+---
+= Usar o assistente de configuração do S3: considerações e requisitos
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Você pode usar o assistente de configuração do S3 para configurar o StorageGRID como o sistema de armazenamento de objetos para um aplicativo S3.
+
+
+
+== Quando usar o assistente de configuração do S3
+
+O assistente de configuração do S3 orienta você em cada etapa da configuração do StorageGRID para uso com um aplicativo S3.  Como parte da conclusão do assistente, você baixa arquivos que podem ser usados ​​para inserir valores no aplicativo S3.  Use o assistente para configurar seu sistema mais rapidamente e garantir que suas configurações estejam em conformidade com as práticas recomendadas do StorageGRID .
+
+Se você tem olink:admin-group-permissions.html["Permissão de acesso root"] , você pode concluir o assistente de configuração do S3 ao começar a usar o StorageGRID Grid Manager ou pode acessar e concluir o assistente posteriormente.  Dependendo dos seus requisitos, você também pode configurar alguns ou todos os itens necessários manualmente e, em seguida, usar o assistente para reunir os valores que um aplicativo S3 precisa.
+
+
+
+== Antes de usar o assistente
+
+Antes de usar o assistente, confirme se você concluiu estes pré-requisitos.
+
+Obter endereços IP e configurar interfaces VLAN:: Se você configurar um grupo de alta disponibilidade (HA), saberá a quais nós o aplicativo S3 se conectará e qual rede StorageGRID será usada.  Você também sabe quais valores inserir para o CIDR de sub-rede, endereço IP do gateway e endereços IP virtuais (VIP).
++
+--
+Se você planeja usar uma LAN virtual para segregar o tráfego do aplicativo S3, você já configurou a interface VLAN. Ver link:../admin/configure-vlan-interfaces.html["Configurar interfaces VLAN"] .
+
+--
+Configurar federação de identidade e SSO:: Se você planeja usar federação de identidade ou logon único (SSO) para seu sistema StorageGRID , você habilitou esses recursos. Você também sabe qual grupo federado deve ter acesso root para a conta de locatário que o aplicativo S3 usará. Verlink:../admin/using-identity-federation.html["Usar federação de identidade"] elink:../admin/configuring-sso.html["Configurar logon único"] .
+Obter e configurar nomes de domínio:: Você sabe qual nome de domínio totalmente qualificado (FQDN) usar para StorageGRID.  As entradas do servidor de nomes de domínio (DNS) mapearão esse FQDN para os endereços IP virtuais (VIP) do grupo HA que você criar usando o assistente.
++
+--
+Se você planeja usar solicitações de estilo de hospedagem virtual S3, você deve terlink:../admin/configuring-s3-api-endpoint-domain-names.html["nomes de domínio de endpoint S3 configurados"] .  É recomendável usar solicitações de estilo de hospedagem virtual.
+
+--
+Revisar os requisitos do balanceador de carga e do certificado de segurança:: Se você planeja usar o balanceador de carga StorageGRID , revise as considerações gerais para balanceamento de carga.  Você tem os certificados que irá enviar ou os valores necessários para gerar um certificado.
++
+--
+Se você planeja usar um ponto de extremidade de balanceador de carga externo (de terceiros), você tem o nome de domínio totalmente qualificado (FQDN), a porta e o certificado para esse balanceador de carga.
+
+--
+Configurar quaisquer conexões de federação de grade:: Se você quiser permitir que o locatário do S3 clone dados da conta e replique objetos de bucket para outra grade usando uma conexão de federação de grade, confirme o seguinte antes de iniciar o assistente:
++
+--
+* Você temlink:grid-federation-manage-connection.html["configurou a conexão da federação de grade"] .
+* O status da conexão é *Conectado*.
+* Você tem permissão de acesso Root.
+
+
+--
+

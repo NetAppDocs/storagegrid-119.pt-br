@@ -1,0 +1,71 @@
+---
+permalink: audit/etaf-security-authentication-failed.html 
+sidebar: sidebar 
+keywords: storagegrid, audit, message, ETAF, Security Authentication Failed 
+summary: 'Esta mensagem é gerada quando uma tentativa de conexão usando o Transport Layer Security (TLS) falha.' 
+---
+= ETAF: Falha na autenticação de segurança
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Esta mensagem é gerada quando uma tentativa de conexão usando o Transport Layer Security (TLS) falha.
+
+[cols="1a,1a,4a"]
+|===
+| Código | Campo | Descrição 
+
+
+ a| 
+CNID
+ a| 
+Identificador de conexão
+ a| 
+O identificador exclusivo do sistema para a conexão TCP/IP na qual a autenticação falhou.
+
+
+
+ a| 
+RUID
+ a| 
+Identidade do usuário
+ a| 
+Um identificador dependente de serviço que representa a identidade do usuário remoto.
+
+
+
+ a| 
+RSLT
+ a| 
+Código de Razão
+ a| 
+O motivo da falha:
+
+SCNI: Falha no estabelecimento da conexão segura.
+
+CERM: O certificado estava faltando.
+
+CERT: O certificado era inválido.
+
+CERE: O certificado expirou.
+
+CERR: O certificado foi revogado.
+
+CSGN: A assinatura do certificado era inválida.
+
+CSGU: O signatário do certificado era desconhecido.
+
+UCRM: As credenciais do usuário estavam faltando.
+
+UCRI: As credenciais do usuário eram inválidas.
+
+UCRU: Credenciais de usuário não foram permitidas.
+
+TOUT: Tempo limite de autenticação esgotado.
+
+|===
+Quando uma conexão é estabelecida com um serviço seguro que usa TLS, as credenciais da entidade remota são verificadas usando o perfil TLS e lógica adicional incorporada ao serviço.  Se essa autenticação falhar devido a certificados ou credenciais inválidos, inesperados ou não permitidos, uma mensagem de auditoria será registrada.  Isso permite consultas sobre tentativas de acesso não autorizado e outros problemas de conexão relacionados à segurança.
+
+A mensagem pode resultar de uma entidade remota com configuração incorreta ou de tentativas de apresentar credenciais inválidas ou não permitidas ao sistema.  Esta mensagem de auditoria deve ser monitorada para detectar tentativas de obter acesso não autorizado ao sistema.

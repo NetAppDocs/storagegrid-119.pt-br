@@ -1,0 +1,218 @@
+---
+permalink: admin/configure-high-availability-group.html 
+sidebar: sidebar 
+keywords: how to configure high availability group, node priority order, failover 
+summary: 'Você pode configurar grupos de alta disponibilidade (HA) para fornecer acesso de alta disponibilidade aos serviços em nós de administração ou nós de gateway.' 
+---
+= Configurar grupos de alta disponibilidade
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Você pode configurar grupos de alta disponibilidade (HA) para fornecer acesso de alta disponibilidade aos serviços em nós de administração ou nós de gateway.
+
+.Antes de começar
+* Você está conectado ao Grid Manager usando umlink:../admin/web-browser-requirements.html["navegador da web compatível"] .
+* Você tem olink:admin-group-permissions.html["Permissão de acesso root"] .
+* Se você planeja usar uma interface VLAN em um grupo HA, você criou a interface VLAN. Ver link:../admin/configure-vlan-interfaces.html["Configurar interfaces VLAN"] .
+* Se você planeja usar uma interface de acesso para um nó em um grupo de HA, você criou a interface:
++
+** *Red Hat Enterprise Linux (antes de instalar o nó)*:link:../rhel/creating-node-configuration-files.html["Criar arquivos de configuração de nó"]
+** *Ubuntu ou Debian (antes de instalar o nó)*:link:../ubuntu/creating-node-configuration-files.html["Criar arquivos de configuração de nó"]
+** *Linux (após instalar o nó)*:link:../maintain/linux-adding-trunk-or-access-interfaces-to-node.html["Linux: Adicionar interfaces de tronco ou acesso a um nó"]
+** *VMware (após instalar o nó)*:link:../maintain/vmware-adding-trunk-or-access-interfaces-to-node.html["VMware: Adicionar interfaces de tronco ou acesso a um nó"]
+
+
+
+
+
+
+== Criar um grupo de alta disponibilidade
+
+Ao criar um grupo de alta disponibilidade, você seleciona uma ou mais interfaces e as organiza em ordem de prioridade.  Em seguida, você atribui um ou mais endereços VIP ao grupo.
+
+Uma interface deve ser para um nó de gateway ou um nó de administração para ser incluído em um grupo de HA.  Um grupo HA só pode usar uma interface para cada nó; no entanto, outras interfaces para o mesmo nó podem ser usadas em outros grupos HA.
+
+
+
+=== Acesse o assistente
+
+.Passos
+. Selecione *CONFIGURAÇÃO* > *Rede* > *Grupos de alta disponibilidade*.
+. Selecione *Criar*.
+
+
+
+
+=== Insira detalhes para o grupo HA
+
+.Passos
+. Forneça um nome exclusivo para o grupo HA.
+. Opcionalmente, insira uma descrição para o grupo HA.
+. Selecione *Continuar*.
+
+
+
+
+=== Adicionar interfaces ao grupo HA
+
+.Passos
+. Selecione uma ou mais interfaces para adicionar a este grupo HA.
++
+Use os cabeçalhos das colunas para classificar as linhas ou insira um termo de pesquisa para localizar interfaces mais rapidamente.
+
++
+image::../media/ha_group_add_interfaces.png[Grupos HA adicionam interfaces]
+
++
+
+NOTE: Após criar uma interface VLAN, aguarde até 5 minutos para que a nova interface apareça na tabela.
+
++
+.Diretrizes para seleção de interfaces
+** Você deve selecionar pelo menos uma interface.
+** Você pode selecionar apenas uma interface para um nó.
+** Se o grupo HA for para proteção HA dos serviços do nó administrativo, que incluem o Grid Manager e o Tenant Manager, selecione interfaces somente nos nós administrativos.
+** Se o grupo HA for para proteção HA do tráfego do cliente S3, selecione interfaces em nós de administração, nós de gateway ou ambos.
+** Se você selecionar interfaces em diferentes tipos de nós, uma nota informativa será exibida.  Lembre-se de que, se ocorrer um failover, os serviços fornecidos pelo nó ativo anteriormente podem não estar disponíveis no nó recém-ativo.  Por exemplo, um nó de gateway de backup não pode fornecer proteção de alta disponibilidade dos serviços do nó de administração.  Da mesma forma, um nó administrativo de backup não pode executar todos os procedimentos de manutenção que o nó administrativo principal pode fornecer.
+** Se você não puder selecionar uma interface, sua caixa de seleção estará desabilitada.  A dica de ferramenta fornece mais informações.
++
+image::../media/vlan_parent_interface_tooltip.png[Dica de ferramenta de interface VLAN]
+
+** Não é possível selecionar uma interface se o valor da sub-rede ou do gateway estiver em conflito com outra interface selecionada.
+** Você não pode selecionar uma interface configurada se ela não tiver um endereço IP estático.
+
+
+. Selecione *Continuar*.
+
+
+
+
+=== Determinar a ordem de prioridade
+
+Se o grupo HA incluir mais de uma interface, você poderá determinar qual é a interface primária e quais são as interfaces de backup (failover).  Se a interface primária falhar, os endereços VIP serão movidos para a interface de maior prioridade disponível.  Se essa interface falhar, os endereços VIP serão movidos para a próxima interface de maior prioridade disponível, e assim por diante.
+
+.Passos
+. Arraste as linhas na coluna *Ordem de prioridade* para determinar a interface primária e quaisquer interfaces de backup.
++
+A primeira interface na lista é a interface primária.  A interface primária é a interface ativa, a menos que ocorra uma falha.
+
++
+image::../media/ha_group_determine_failover.png[Grupos HA determinam ordem de prioridade]
+
++
+
+TIP: Se o grupo HA fornecer acesso ao Grid Manager, você deverá selecionar uma interface no nó de administração principal para ser a interface primária.  Alguns procedimentos de manutenção só podem ser executados no nó de administração principal.
+
+. Selecione *Continuar*.
+
+
+
+
+=== Insira endereços IP
+
+.Passos
+. No campo *Subnet CIDR*, especifique a sub-rede VIP na notação CIDR — um endereço IPv4 seguido por uma barra e o comprimento da sub-rede (0-32).
++
+O endereço de rede não deve ter nenhum bit de host definido. Por exemplo,  `192.16.0.0/22` .
+
++
+
+NOTE: Se você usar um prefixo de 32 bits, o endereço de rede VIP também servirá como endereço de gateway e endereço VIP.
+
++
+image::../media/ha_group_select_virtual_ips.png[Grupos HA inscrevem VIPs]
+
+. Opcionalmente, se algum cliente administrativo ou locatário do S3 acessar esses endereços VIP de uma sub-rede diferente, insira o *Endereço IP do gateway*.  O endereço do gateway deve estar dentro da sub-rede VIP.
++
+Usuários clientes e administradores usarão esse gateway para acessar os endereços IP virtuais.
+
+. Insira pelo menos um e no máximo dez endereços VIP para a interface ativa no grupo HA.  Todos os endereços VIP devem estar dentro da sub-rede VIP e todos estarão ativos ao mesmo tempo na interface ativa.
++
+Você deve fornecer pelo menos um endereço IPv4.  Opcionalmente, você pode especificar endereços IPv4 e IPv6 adicionais.
+
+. Selecione *Criar grupo HA* e selecione *Concluir*.
++
+O Grupo HA foi criado e agora você pode usar os endereços IP virtuais configurados.
+
+
+
+
+
+=== Próximos passos
+
+Se você for usar esse grupo de HA para balanceamento de carga, crie um ponto de extremidade do balanceador de carga para determinar a porta e o protocolo de rede e anexar quaisquer certificados necessários. Ver link:configuring-load-balancer-endpoints.html["Configurar pontos de extremidade do balanceador de carga"] .
+
+
+
+== Editar um grupo de alta disponibilidade
+
+Você pode editar um grupo de alta disponibilidade (HA) para alterar seu nome e descrição, adicionar ou remover interfaces, alterar a ordem de prioridade ou adicionar ou atualizar endereços IP virtuais.
+
+Por exemplo, talvez seja necessário editar um grupo de HA se você quiser remover o nó associado a uma interface selecionada em um procedimento de desativação de site ou nó.
+
+.Passos
+. Selecione *CONFIGURAÇÃO* > *Rede* > *Grupos de alta disponibilidade*.
++
+A página Grupos de alta disponibilidade mostra todos os grupos de alta disponibilidade existentes.
+
+. Marque a caixa de seleção do grupo HA que você deseja editar.
+. Faça um dos seguintes procedimentos, com base no que você deseja atualizar:
++
+** Selecione *Ações* > *Editar endereço IP virtual* para adicionar ou remover endereços VIP.
+** Selecione *Ações* > *Editar grupo HA* para atualizar o nome ou a descrição do grupo, adicionar ou remover interfaces, alterar a ordem de prioridade ou adicionar ou remover endereços VIP.
+
+
+. Se você selecionou *Editar endereço IP virtual*:
++
+.. Atualize os endereços IP virtuais para o grupo HA.
+.. Selecione *Salvar*.
+.. Selecione *Concluir*.
+
+
+. Se você selecionou *Editar grupo HA*:
++
+.. Opcionalmente, atualize o nome ou a descrição do grupo.
+.. Opcionalmente, marque ou desmarque as caixas de seleção para adicionar ou remover interfaces.
++
+
+NOTE: Se o grupo HA fornecer acesso ao Grid Manager, você deverá selecionar uma interface no nó de administração principal para ser a interface primária.  Alguns procedimentos de manutenção só podem ser executados a partir do nó de administração principal
+
+.. Opcionalmente, arraste as linhas para alterar a ordem de prioridade da interface primária e de quaisquer interfaces de backup para este grupo de HA.
+.. Opcionalmente, atualize os endereços IP virtuais.
+.. Selecione *Salvar* e depois *Concluir*.
+
+
+
+
+
+
+== Remover um grupo de alta disponibilidade
+
+Você pode remover um ou mais grupos de alta disponibilidade (HA) por vez.
+
+
+TIP: Não é possível remover um grupo de HA se ele estiver vinculado a um ponto de extremidade do balanceador de carga.  Para excluir um grupo de HA, você deve removê-lo de todos os pontos de extremidade do balanceador de carga que o utilizam.
+
+Para evitar interrupções no cliente, atualize todos os aplicativos cliente S3 afetados antes de remover um grupo de HA.  Atualize cada cliente para se conectar usando outro endereço IP, por exemplo, o endereço IP virtual de um grupo HA diferente ou o endereço IP que foi configurado para uma interface durante a instalação.
+
+.Passos
+. Selecione *CONFIGURAÇÃO* > *Rede* > *Grupos de alta disponibilidade*.
+. Revise a coluna *Pontos de extremidade do balanceador de carga* para cada grupo de HA que você deseja remover.  Se algum ponto de extremidade do balanceador de carga estiver listado:
++
+.. Vá para *CONFIGURAÇÃO* > *Rede* > *Pontos de extremidade do balanceador de carga*.
+.. Marque a caixa de seleção do ponto de extremidade.
+.. Selecione *Ações* > *Editar modo de vinculação de ponto de extremidade*.
+.. Atualize o modo de vinculação para remover o grupo HA.
+.. Selecione *Salvar alterações*.
+
+
+. Se nenhum ponto de extremidade do balanceador de carga estiver listado, marque a caixa de seleção de cada grupo de HA que você deseja remover.
+. Selecione *Ações* > *Remover grupo HA*.
+. Revise a mensagem e selecione *Excluir grupo HA* para confirmar sua seleção.
++
+Todos os grupos de HA selecionados serão removidos.  Um banner de sucesso verde aparece na página Grupos de alta disponibilidade.
+
+

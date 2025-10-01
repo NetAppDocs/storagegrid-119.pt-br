@@ -1,0 +1,53 @@
+---
+permalink: s3/upload-part-copy.html 
+sidebar: sidebar 
+keywords: UploadPart, UploadPartCopy, multipart uploads, uploads, 
+summary: A operação UploadPartCopy carrega uma parte de um objeto copiando dados de um objeto existente como fonte de dados. 
+---
+= UploadPartCopy
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+A operação UploadPartCopy carrega uma parte de um objeto copiando dados de um objeto existente como fonte de dados.
+
+A operação UploadPartCopy é implementada com todo o comportamento da API REST do Amazon S3.  Sujeito a alterações sem aviso.
+
+Esta solicitação lê e grava os dados do objeto especificados em `x-amz-copy-source-range` dentro do sistema StorageGRID .
+
+Os seguintes cabeçalhos de solicitação são suportados:
+
+* `x-amz-copy-source-if-match`
+* `x-amz-copy-source-if-none-match`
+* `x-amz-copy-source-if-unmodified-since`
+* `x-amz-copy-source-if-modified-since`
+
+
+
+
+== Cabeçalhos de solicitação para criptografia do lado do servidor
+
+Se você especificou a criptografia SSE-C para a solicitação CreateMultipartUpload, também deverá incluir os seguintes cabeçalhos de solicitação em cada solicitação UploadPartCopy:
+
+* `x-amz-server-side-encryption-customer-algorithm`: Especifique `AES256` .
+* `x-amz-server-side-encryption-customer-key`: Especifique a mesma chave de criptografia que você forneceu na solicitação CreateMultipartUpload.
+* `x-amz-server-side-encryption-customer-key-MD5`: Especifique o mesmo resumo MD5 que você forneceu na solicitação CreateMultipartUpload.
+
+
+Se o objeto de origem for criptografado usando uma chave fornecida pelo cliente (SSE-C), você deverá incluir os três cabeçalhos a seguir na solicitação UploadPartCopy para que o objeto possa ser descriptografado e copiado:
+
+* `x-amz-copy-source​-server-side​-encryption​-customer-algorithm`: Especifique `AES256` .
+* `x-amz-copy-source​-server-side-encryption-customer-key`: Especifique a chave de criptografia que você forneceu quando criou o objeto de origem.
+* `x-amz-copy-source​-server-side-encryption-customer-key-MD5`: Especifique o resumo MD5 que você forneceu quando criou o objeto de origem.
+
+
+
+CAUTION: As chaves de criptografia fornecidas nunca são armazenadas.  Se você perder uma chave de criptografia, perderá o objeto correspondente.  Antes de usar chaves fornecidas pelo cliente para proteger dados de objetos, revise as considerações emlink:using-server-side-encryption.html["Use criptografia do lado do servidor"] .
+
+
+
+== Controle de versão
+
+O upload multipartes consiste em operações separadas para iniciar o upload, listar uploads, carregar partes, montar as partes carregadas e concluir o upload.  Os objetos são criados (e versionados, se aplicável) quando a operação CompleteMultipartUpload é executada.

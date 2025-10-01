@@ -1,0 +1,66 @@
+---
+permalink: admin/configuration-options-for-ha-groups.html 
+sidebar: sidebar 
+keywords: ha groups, best practices, high availability group options 
+summary: O diagrama a seguir fornece exemplos de diferentes maneiras de configurar grupos de HA.  Cada opção tem vantagens e desvantagens. 
+---
+= Opções de configuração para grupos HA
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Os diagramas a seguir fornecem exemplos de diferentes maneiras de configurar grupos de HA.  Cada opção tem vantagens e desvantagens.
+
+Nos diagramas, o azul indica a interface primária no grupo HA e o amarelo indica a interface de backup no grupo HA.
+
+image::../media/high_availability_examples.png[Exemplos de HA]
+
+A tabela resume os benefícios de cada configuração de HA mostrada no diagrama.
+
+[cols="1a,2a,2a"]
+|===
+| Configuração | Vantagens | Desvantagens 
+
+
+ a| 
+HA de backup ativo
+ a| 
+* Gerenciado pelo StorageGRID sem dependências externas.
+* Failover rápido.
+
+ a| 
+* Somente um nó em um grupo HA está ativo.  Pelo menos um nó por grupo HA ficará ocioso.
+
+
+
+
+ a| 
+DNS Round Robin
+ a| 
+* Aumento do rendimento agregado.
+* Nenhum host ocioso.
+
+ a| 
+* Failover lento, que pode depender do comportamento do cliente.
+* Requer configuração de hardware fora do StorageGRID.
+* Precisa de uma verificação de integridade implementada pelo cliente.
+
+
+
+
+ a| 
+HA ativo-ativo
+ a| 
+* O tráfego é distribuído entre vários grupos de HA.
+* Alto rendimento agregado que pode ser dimensionado com o número de grupos HA.
+* Failover rápido.
+
+ a| 
+* Mais complexo de configurar.
+* Requer configuração de hardware fora do StorageGRID.
+* Precisa de uma verificação de integridade implementada pelo cliente.
+
+
+|===

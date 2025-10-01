@@ -1,0 +1,62 @@
+---
+permalink: ilm/advantages-disadvantages-and-requirements-for-ec.html 
+sidebar: sidebar 
+keywords: erasure coding advantages, disadvantages, EC requirements 
+summary: Antes de decidir se deve usar replicação ou codificação de eliminação para proteger dados de objetos contra perda, você deve entender as vantagens, desvantagens e os requisitos da codificação de eliminação. 
+---
+= Vantagens, desvantagens e requisitos para codificação de apagamento
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Antes de decidir se deve usar replicação ou codificação de eliminação para proteger dados de objetos contra perda, você deve entender as vantagens, desvantagens e os requisitos da codificação de eliminação.
+
+
+
+== Vantagens da codificação de apagamento
+
+Quando comparado à replicação, a codificação de eliminação oferece maior confiabilidade, disponibilidade e eficiência de armazenamento.
+
+* *Confiabilidade*: A confiabilidade é medida em termos de tolerância a falhas, ou seja, o número de falhas simultâneas que podem ser sustentadas sem perda de dados.  Com a replicação, várias cópias idênticas são armazenadas em diferentes nós e entre sites.  Com a codificação de eliminação, um objeto é codificado em dados e fragmentos de paridade e distribuído entre muitos nós e sites. Essa dispersão fornece proteção contra falhas no local e no nó.  Quando comparado à replicação, a codificação de eliminação proporciona maior confiabilidade com custos de armazenamento comparáveis.
+* *Disponibilidade*: Disponibilidade pode ser definida como a capacidade de recuperar objetos se os Nós de Armazenamento falharem ou se tornarem inacessíveis. Quando comparado à replicação, a codificação de eliminação proporciona maior disponibilidade a custos de armazenamento comparáveis.
+* *Eficiência de armazenamento*: Para níveis semelhantes de disponibilidade e confiabilidade, objetos protegidos por codificação de eliminação consomem menos espaço em disco do que os mesmos objetos se protegidos por replicação. Por exemplo, um objeto de 10 MB replicado em dois sites consome 20 MB de espaço em disco (duas cópias), enquanto um objeto codificado por eliminação em três sites com um esquema de codificação por eliminação 6+3 consome apenas 15 MB de espaço em disco.
++
+
+NOTE: O espaço em disco para objetos codificados para eliminação é calculado como o tamanho do objeto mais a sobrecarga de armazenamento.  A porcentagem de sobrecarga de armazenamento é o número de fragmentos de paridade dividido pelo número de fragmentos de dados.
+
+
+
+
+
+== Desvantagens da codificação de apagamento
+
+Quando comparado à replicação, a codificação de eliminação tem as seguintes desvantagens:
+
+* Recomenda-se um número maior de nós de armazenamento e sites, dependendo do esquema de codificação de eliminação.  Por outro lado, se você replicar dados de objeto, precisará apenas de um nó de armazenamento para cada cópia. Verlink:what-erasure-coding-schemes-are.html#erasure-coding-schemes-for-storage-pools-containing-three-or-more-sites["Esquemas de codificação de apagamento para pools de armazenamento contendo três ou mais sites"] elink:what-erasure-coding-schemes-are.html#erasure-coding-schemes-for-one-site-storage-pools["Esquemas de codificação de eliminação para pools de armazenamento de um site"] .
+* Aumento de custo e complexidade das expansões de armazenamento.  Para expandir uma implantação que usa replicação, adicione capacidade de armazenamento em cada local onde as cópias de objetos são feitas.  Para expandir uma implantação que usa codificação de eliminação, você deve considerar o esquema de codificação de eliminação em uso e o quão cheios os nós de armazenamento existentes estão.  Por exemplo, se você esperar até que os nós existentes estejam 100% cheios, você deve adicionar pelo menos `k+m` Nós de armazenamento, mas se você expandir quando os nós existentes estiverem 70% cheios, você pode adicionar dois nós por site e ainda maximizar a capacidade de armazenamento utilizável. Para obter mais informações, consulte link:../expand/adding-storage-capacity-for-erasure-coded-objects.html["Adicionar capacidade de armazenamento para objetos codificados por eliminação"] .
+* Há latências de recuperação maiores quando você usa codificação de eliminação em sites distribuídos geograficamente.  Os fragmentos de objeto de um objeto codificado por eliminação e distribuído em sites remotos demoram mais para serem recuperados por meio de conexões WAN do que um objeto replicado e disponível localmente (o mesmo site ao qual o cliente se conecta).
+* Ao usar codificação de eliminação em sites distribuídos geograficamente, há maior uso de tráfego de rede WAN para recuperações e reparos, especialmente para objetos recuperados com frequência ou para reparos de objetos em conexões de rede WAN.
+* Quando você usa codificação de eliminação em vários sites, a taxa de transferência máxima de objetos diminui drasticamente à medida que a latência da rede entre os sites aumenta. Essa diminuição se deve à diminuição correspondente na taxa de transferência da rede TCP, que afeta a rapidez com que o sistema StorageGRID pode armazenar e recuperar fragmentos de objetos.
+* Maior uso de recursos de computação.
+
+
+
+
+== Quando usar codificação de apagamento
+
+A codificação de apagamento é mais adequada para os seguintes requisitos:
+
+* Objetos com tamanho maior que 1 MB.
++
+
+NOTE: A codificação de eliminação é mais adequada para objetos maiores que 1 MB.  Não use codificação de eliminação para objetos menores que 200 KB para evitar a sobrecarga de gerenciamento de fragmentos muito pequenos codificados por eliminação.
+
+* Armazenamento a longo prazo ou a frio para conteúdo recuperado com pouca frequência.
+* Alta disponibilidade e confiabilidade de dados.
+* Proteção contra falhas completas de sites e nós.
+* Eficiência de armazenamento.
+* Implantações de site único que exigem proteção de dados eficiente com apenas uma única cópia codificada para eliminação, em vez de várias cópias replicadas.
+* Implantações em vários sites onde a latência entre sites é inferior a 100 ms.
+

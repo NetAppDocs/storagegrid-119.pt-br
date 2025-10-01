@@ -1,0 +1,31 @@
+---
+permalink: audit/syst-node-stopping.html 
+sidebar: sidebar 
+keywords: storagegrid, audit, message, SYST, Node Stopping 
+summary: 'Quando um serviço é interrompido normalmente, esta mensagem é gerada para indicar que o desligamento foi solicitado e que o serviço iniciou sua sequência de desligamento.  SYST pode ser usado para determinar se o desligamento foi solicitado antes do serviço ser reiniciado (ao contrário de SYSD, que normalmente é enviado após a reinicialização do serviço).' 
+---
+= SYST: Parada do nó
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Quando um serviço é interrompido normalmente, esta mensagem é gerada para indicar que o desligamento foi solicitado e que o serviço iniciou sua sequência de desligamento.  SYST pode ser usado para determinar se o desligamento foi solicitado antes do serviço ser reiniciado (ao contrário de SYSD, que normalmente é enviado após a reinicialização do serviço).
+
+[cols="1a,1a,4a"]
+|===
+| Código | Campo | Descrição 
+
+
+ a| 
+RSLT
+ a| 
+Desligamento limpo
+ a| 
+A natureza do desligamento:
+
+SUCS: O sistema foi desligado corretamente.
+
+|===
+A mensagem não indica se o servidor host está sendo interrompido, apenas o serviço de relatórios.  O código RSLT de uma mensagem SYST não pode indicar um desligamento "sujo", porque a mensagem é gerada apenas por desligamentos "limpos".

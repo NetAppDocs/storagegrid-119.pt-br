@@ -1,0 +1,349 @@
+---
+permalink: ilm/what-erasure-coding-schemes-are.html 
+sidebar: sidebar 
+keywords: erasure-coding scheme 
+summary: Os esquemas de codificação de eliminação controlam quantos fragmentos de dados e quantos fragmentos de paridade são criados para cada objeto. 
+---
+= O que são esquemas de codificação de apagamento?
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Os esquemas de codificação de eliminação controlam quantos fragmentos de dados e quantos fragmentos de paridade são criados para cada objeto.
+
+Ao criar ou editar uma regra ILM, você seleciona um esquema de codificação de eliminação disponível.  O StorageGRID cria automaticamente esquemas de codificação de eliminação com base em quantos nós de armazenamento e sites compõem o pool de armazenamento que você planeja usar.
+
+
+
+== Proteção de dados
+
+O sistema StorageGRID usa o algoritmo de codificação de eliminação Reed-Solomon.  O algoritmo divide um objeto em `k` fragmentos de dados e cálculos `m` fragmentos de paridade.
+
+O `k + m = n` fragmentos estão espalhados por `n` Nós de armazenamento para fornecer proteção de dados da seguinte forma:
+
+* Para recuperar ou reparar um objeto, `k` fragmentos são necessários.
+* Um objeto pode sustentar até `m` fragmentos perdidos ou corrompidos.  Quanto maior o valor de `m` , maior será a tolerância a falhas.
+
+
+A melhor proteção de dados é fornecida pelo esquema de codificação de eliminação com a maior tolerância a falhas de nó ou volume dentro de um pool de armazenamento.
+
+
+
+== Despesas gerais de armazenamento
+
+A sobrecarga de armazenamento de um esquema de codificação de eliminação é calculada dividindo o número de fragmentos de paridade(`m` ) pelo número de fragmentos de dados(`k` ).  Você pode usar a sobrecarga de armazenamento para calcular quanto espaço em disco cada objeto codificado por eliminação requer:
+
+`_disk space_ = _object size_ + (_object size_ * _storage overhead_)`
+
+Por exemplo, se você armazenar um objeto de 10 MB usando o esquema 4+2 (que tem 50% de sobrecarga de armazenamento), o objeto consumirá 15 MB de armazenamento em grade.  Se você armazenar o mesmo objeto de 10 MB usando o esquema 6+2 (que tem 33% de sobrecarga de armazenamento), o objeto consumirá aproximadamente 13,3 MB.
+
+Selecione o esquema de codificação de apagamento com o menor valor total de `k+m` que atenda às suas necessidades.  Esquemas de codificação de apagamento com um número menor de fragmentos são mais eficientes computacionalmente porque:
+
+* Menos fragmentos são criados e distribuídos (ou recuperados) por objeto
+* Eles apresentam melhor desempenho porque o tamanho do fragmento é maior
+* Eles podem exigir que menos nós sejam adicionados em umlink:../expand/index.html["expansão quando mais armazenamento é necessário"]
+
+
+
+
+== Diretrizes para pools de armazenamento
+
+Ao selecionar o pool de armazenamento a ser usado para uma regra que criará uma cópia codificada para eliminação, use as seguintes diretrizes para pools de armazenamento:
+
+* O pool de armazenamento deve incluir três ou mais sites, ou exatamente um site.
++
+
+NOTE: Não é possível usar a codificação de eliminação se o pool de armazenamento incluir dois sites.
+
++
+** <<Esquemas de codificação de apagamento para pools de armazenamento contendo três ou mais sites,Esquemas de codificação de apagamento para pools de armazenamento contendo três ou mais sites>>
+** <<Esquemas de codificação de eliminação para pools de armazenamento de um site,Esquemas de codificação de eliminação para pools de armazenamento de um site>>
+
+
+* Não use um pool de armazenamento que inclua o site Todos os Sites.
+* O pool de armazenamento deve incluir pelo menos `_k+m_ +1` Nós de armazenamento que podem armazenar dados de objetos.
++
+
+NOTE: Os nós de armazenamento podem ser configurados durante a instalação para conter apenas metadados de objetos e não dados de objetos. Para obter mais informações, consulte link:../primer/what-storage-node-is.html#types-of-storage-nodes["Tipos de nós de armazenamento"] .
+
++
+O número mínimo de nós de armazenamento necessários é `k+m` .  No entanto, ter pelo menos um nó de armazenamento adicional pode ajudar a evitar falhas de ingestão ou pendências de ILM se um nó de armazenamento necessário estiver temporariamente indisponível.
+
+
+
+
+
+== Esquemas de codificação de apagamento para pools de armazenamento contendo três ou mais sites
+
+A tabela a seguir descreve os esquemas de codificação de eliminação atualmente suportados pelo StorageGRID para pools de armazenamento que incluem três ou mais sites.  Todos esses esquemas oferecem proteção contra perda de local.  Um site pode ser perdido, e o objeto ainda estará acessível.
+
+Para esquemas de codificação de eliminação que fornecem proteção contra perda de site, o número recomendado de nós de armazenamento no pool de armazenamento excede `_k+m_ +1` porque cada site requer um mínimo de três nós de armazenamento.
+
+[cols="1a,1a,1a,1a,1a,1a"]
+|===
+| Esquema de codificação de apagamento (_k+m_) | Número mínimo de sites implantados | Número recomendado de nós de armazenamento em cada site | Número total recomendado de nós de armazenamento | Proteção contra perda de site? | Despesas gerais de armazenamento 
+
+
+ a| 
+4+2
+ a| 
+3
+ a| 
+3
+ a| 
+9
+ a| 
+Sim
+ a| 
+50%
+
+
+
+ a| 
+6+2
+ a| 
+4
+ a| 
+3
+ a| 
+12
+ a| 
+Sim
+ a| 
+33%
+
+
+
+ a| 
+8+2
+ a| 
+5
+ a| 
+3
+ a| 
+15
+ a| 
+Sim
+ a| 
+25%
+
+
+
+ a| 
+6+3
+ a| 
+3
+ a| 
+4
+ a| 
+12
+ a| 
+Sim
+ a| 
+50%
+
+
+
+ a| 
+9+3
+ a| 
+4
+ a| 
+4
+ a| 
+16
+ a| 
+Sim
+ a| 
+33%
+
+
+
+ a| 
+2+1
+ a| 
+3
+ a| 
+3
+ a| 
+9
+ a| 
+Sim
+ a| 
+50%
+
+
+
+ a| 
+4+1
+ a| 
+5
+ a| 
+3
+ a| 
+15
+ a| 
+Sim
+ a| 
+25%
+
+
+
+ a| 
+6+1
+ a| 
+7
+ a| 
+3
+ a| 
+21
+ a| 
+Sim
+ a| 
+17%
+
+
+
+ a| 
+7+5
+ a| 
+3
+ a| 
+5
+ a| 
+15
+ a| 
+Sim
+ a| 
+71%
+
+|===
+
+NOTE: O StorageGRID requer no mínimo três nós de armazenamento por site.  Para usar o esquema 7+5, cada site requer um mínimo de quatro nós de armazenamento.  É recomendável usar cinco nós de armazenamento por site.
+
+Ao selecionar um esquema de codificação de eliminação que forneça proteção ao site, equilibre a importância relativa dos seguintes fatores:
+
+* *Número de fragmentos*: O desempenho e a flexibilidade de expansão geralmente são melhores quando o número total de fragmentos é menor.
+* *Tolerância a falhas*: A tolerância a falhas é aumentada ao ter mais segmentos de paridade (ou seja, quando `m` tem um valor mais alto.)
+* *Tráfego de rede*: Ao se recuperar de falhas, usar um esquema com mais fragmentos (ou seja, um total maior para `k+m` ) cria mais tráfego de rede.
+* *Sobrecarga de armazenamento*: Esquemas com sobrecarga maior exigem mais espaço de armazenamento por objeto.
+
+
+Por exemplo, ao decidir entre um esquema 4+2 e um esquema 6+3 (ambos com 50% de sobrecarga de armazenamento), selecione o esquema 6+3 se for necessária tolerância a falhas adicional.  Selecione o esquema 4+2 se os recursos de rede forem limitados.  Se todos os outros fatores forem iguais, selecione 4+2 porque ele tem um número total de fragmentos menor.
+
+
+NOTE: Se não tiver certeza de qual esquema usar, selecione 4+2 ou 6+3 ou entre em contato com o suporte técnico.
+
+
+
+== Esquemas de codificação de eliminação para pools de armazenamento de um site
+
+Um pool de armazenamento de um site suporta todos os esquemas de codificação de eliminação definidos para três ou mais sites, desde que o site tenha nós de armazenamento suficientes.
+
+O número mínimo de nós de armazenamento necessários é `k+m` , mas um pool de armazenamento com `k+m +1` Nós de armazenamento são recomendados.  Por exemplo, o esquema de codificação de eliminação 2+1 requer um pool de armazenamento com no mínimo três nós de armazenamento, mas quatro nós de armazenamento são recomendados.
+
+[cols="1a,1a,1a,1a"]
+|===
+| Esquema de codificação de apagamento (_k+m_) | Número mínimo de nós de armazenamento | Número recomendado de nós de armazenamento | Despesas gerais de armazenamento 
+
+
+ a| 
+4+2
+ a| 
+6
+ a| 
+7
+ a| 
+50%
+
+
+
+ a| 
+6+2
+ a| 
+8
+ a| 
+9
+ a| 
+33%
+
+
+
+ a| 
+8+2
+ a| 
+10
+ a| 
+11
+ a| 
+25%
+
+
+
+ a| 
+6+3
+ a| 
+9
+ a| 
+10
+ a| 
+50%
+
+
+
+ a| 
+9+3
+ a| 
+12
+ a| 
+13
+ a| 
+33%
+
+
+
+ a| 
+2+1
+ a| 
+3
+ a| 
+4
+ a| 
+50%
+
+
+
+ a| 
+4+1
+ a| 
+5
+ a| 
+6
+ a| 
+25%
+
+
+
+ a| 
+6+1
+ a| 
+7
+ a| 
+8
+ a| 
+17%
+
+
+
+ a| 
+7+5
+ a| 
+12
+ a| 
+13
+ a| 
+71%
+
+|===

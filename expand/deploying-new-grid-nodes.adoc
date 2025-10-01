@@ -1,0 +1,198 @@
+---
+permalink: expand/deploying-new-grid-nodes.html 
+sidebar: sidebar 
+keywords: expansion, add nodes 
+summary: As etapas para implantar novos nós de grade em uma expansão são as mesmas usadas quando a grade foi instalada pela primeira vez.  Você deve implantar todos os novos nós de grade antes de poder executar a expansão. 
+---
+= Implantar novos nós de grade
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+As etapas para implantar novos nós de grade em uma expansão são as mesmas usadas quando a grade foi instalada pela primeira vez.  Você deve implantar todos os novos nós de grade antes de poder executar a expansão.
+
+Ao expandir uma grade, os nós adicionados não precisam corresponder aos tipos de nós existentes.  Você pode adicionar nós VMware, nós baseados em contêineres Linux ou nós de dispositivos.
+
+
+
+== VMware: implantar nós de grade
+
+Você deve implantar uma máquina virtual no VMware vSphere para cada nó VMware que deseja adicionar na expansão.
+
+.Passos
+. link:../vmware/deploying-storagegrid-node-as-virtual-machine.html["Implantar o novo nó como máquina virtual"]e conectá-lo a uma ou mais redes StorageGRID .
++
+Ao implantar o nó, você pode, opcionalmente, remapear as portas do nó ou aumentar as configurações de CPU ou memória.
+
+. Depois de implantar todos os novos nós do VMware,link:performing-expansion.html["executar o procedimento de expansão"] .
+
+
+
+
+== Linux: Implantar nós de grade
+
+Você pode implantar nós de grade em novos hosts Linux ou em hosts Linux existentes.  Se você precisar de hosts Linux adicionais para dar suporte aos requisitos de CPU, RAM e armazenamento dos nós do StorageGRID que deseja adicionar à sua grade, prepare-os da mesma forma que preparou os hosts quando os instalou pela primeira vez.  Em seguida, implante os nós de expansão da mesma forma que implantou os nós de grade durante a instalação.
+
+.Antes de começar
+* Você tem as instruções para instalar o StorageGRID para sua versão do Linux e revisou os requisitos de hardware e armazenamento.
++
+** link:../rhel/index.html["Instalar o StorageGRID no Red Hat Enterprise Linux"]
+** link:../ubuntu/index.html["Instalar o StorageGRID no Ubuntu ou Debian"]
+
+
+* Se você planeja implantar novos nós de grade em hosts existentes, você confirmou que os hosts existentes têm CPU, RAM e capacidade de armazenamento suficientes para os nós adicionais.
+* Você tem um plano para minimizar os domínios de falha.  Por exemplo, você não deve implantar todos os nós de gateway em um único host físico.
++
+
+CAUTION: Em uma implantação de produção, não execute mais de um nó de armazenamento em um único host físico ou virtual.  Usar um host dedicado para cada nó de armazenamento fornece um domínio de falha isolado.
+
+* Se o nó StorageGRID usar armazenamento atribuído de um sistema NetApp ONTAP , confirme se o volume não tem uma política de camadas FabricPool habilitada.  Desabilitar a hierarquização do FabricPool para volumes usados ​​com nós StorageGRID simplifica a solução de problemas e as operações de armazenamento.
+
+
+.Passos
+. Se você estiver adicionando novos hosts, acesse as instruções de instalação para implantar nós do StorageGRID .
+. Para implantar os novos hosts, siga as instruções para prepará-los.
+. Para criar arquivos de configuração de nós e validar a configuração do StorageGRID , siga as instruções para implantar nós de grade.
+. Se você estiver adicionando nós a um novo host Linux, inicie o serviço de host StorageGRID .
+. Se você estiver adicionando nós a um host Linux existente, inicie os novos nós usando a CLI do serviço do host storagegrid:``sudo storagegrid node start [<node name\>]``
+
+
+.Depois que você terminar
+Depois de implantar todos os novos nós da grade, você podelink:performing-expansion.html["realizar a expansão"] .
+
+
+
+== Dispositivos: Implantando nós de armazenamento, gateway ou de administração não primários
+
+Para instalar o software StorageGRID em um nó do dispositivo, use o StorageGRID Appliance Installer, que está incluído no dispositivo.  Em uma expansão, cada dispositivo de armazenamento funciona como um único nó de armazenamento, e cada dispositivo de serviços funciona como um único nó de gateway ou nó de administração não primário.  Qualquer dispositivo pode se conectar à Rede de Grade, à Rede de Administração e à Rede de Cliente.
+
+.Antes de começar
+* O dispositivo foi instalado em um rack ou gabinete, conectado às suas redes e ligado.
+* Você concluiu o https://docs.netapp.com/us-en/storagegrid-appliances/installconfig/configuring-hardware.html["Configurar hardware"^] passos.
++
+A configuração do hardware do dispositivo inclui as etapas necessárias para configurar as conexões do StorageGRID (links de rede e endereços IP), bem como as etapas opcionais para habilitar a criptografia do nó, alterar o modo RAID e remapear as portas de rede.
+
+* Todas as sub-redes da Rede de Grade listadas na página Configuração de IP do Instalador do Dispositivo StorageGRID foram definidas na Lista de Sub-redes da Rede de Grade no Nó de Administração primário.
+* O firmware do instalador do dispositivo StorageGRID no dispositivo de substituição é compatível com a versão do software StorageGRID atualmente em execução na sua rede.  Se as versões não forem compatíveis, você deverá atualizar o firmware do StorageGRID Appliance Installer.
+* Você tem um laptop de serviço com umlink:../admin/web-browser-requirements.html["navegador da web compatível"] .
+* Você conhece um dos endereços IP atribuídos ao controlador de computação do dispositivo.  Você pode usar o endereço IP para qualquer rede StorageGRID conectada.
+
+
+.Sobre esta tarefa
+O processo de instalação do StorageGRID em um nó do dispositivo tem as seguintes fases:
+
+* Especifique ou confirme o endereço IP do nó de administração principal e o nome do nó do dispositivo.
+* Você inicia a instalação e aguarda enquanto os volumes são configurados e o software é instalado.
++
+No meio das tarefas de instalação do dispositivo, a instalação é pausada.  Para retomar a instalação, faça login no Grid Manager, aprove todos os nós da grade e conclua o processo de instalação do StorageGRID .
+
++
+
+NOTE: Se você precisar implantar vários nós de dispositivo ao mesmo tempo, poderá automatizar o processo de instalação usando o `configure-sga.py` Script de instalação do aparelho.
+
+
+
+.Passos
+. Abra um navegador e insira um dos endereços IP do controlador de computação do dispositivo.
++
+`https://_Controller_IP_:8443`
+
++
+A página inicial do instalador do dispositivo StorageGRID é exibida.
+
+. Na seção de conexão *Nó de administração primário*, determine se você precisa especificar o endereço IP para o nó de administração primário.
++
+Se você já instalou outros nós neste data center, o StorageGRID Appliance Installer pode descobrir esse endereço IP automaticamente, supondo que o nó de administração principal, ou pelo menos um outro nó de grade com ADMIN_IP configurado, esteja presente na mesma sub-rede.
+
+. Se este endereço IP não for exibido ou você precisar alterá-lo, especifique o endereço:
++
+[cols="1a,2a"]
+|===
+| Opção | Descrição 
+
+
+ a| 
+Entrada manual de IP
+ a| 
+.. Desmarque a caixa de seleção *Habilitar descoberta do nó de administração*.
+.. Digite o endereço IP manualmente.
+.. Clique em *Salvar*.
+.. Aguarde até que o estado da conexão para o novo endereço IP fique pronto.
+
+
+
+
+ a| 
+Descoberta automática de todos os nós administrativos primários conectados
+ a| 
+.. Marque a caixa de seleção *Habilitar descoberta do nó de administração*.
+.. Aguarde até que a lista de endereços IP descobertos seja exibida.
+.. Selecione o nó de administração principal para a grade onde este nó de armazenamento do dispositivo será implantado.
+.. Clique em *Salvar*.
+.. Aguarde até que o estado da conexão para o novo endereço IP fique pronto.
+
+
+|===
+. No campo *Nome do nó*, insira o nome que deseja usar para este nó do dispositivo e selecione *Salvar*.
++
+O nome do nó é atribuído a este nó do dispositivo no sistema StorageGRID .  Ele é exibido na página Nós (guia Visão geral) no Gerenciador de grade.  Se necessário, você pode alterar o nome ao aprovar o nó.
+
+. Na seção *Instalação*, confirme se o estado atual é "Pronto para iniciar a instalação do _nome do nó_ na grade com o nó de administração primário _admin_ip_" e se o botão *Iniciar instalação* está habilitado.
++
+Se o botão *Iniciar instalação* não estiver habilitado, talvez seja necessário alterar a configuração de rede ou as configurações de porta.  Para obter instruções, consulte as instruções de manutenção do seu aparelho.
+
+. Na página inicial do StorageGRID Appliance Installer, selecione *Iniciar instalação*.
++
+image::../media/appliance_installer_home_start_installation_enabled.gif[Esta imagem é descrita pelo texto ao redor.]
+
++
+O estado atual muda para "A instalação está em andamento" e a página Instalação do monitor é exibida.
+
+. Se sua expansão incluir vários nós de dispositivo, repita as etapas anteriores para cada dispositivo.
++
+
+NOTE: Se você precisar implantar vários nós de armazenamento do dispositivo ao mesmo tempo, poderá automatizar o processo de instalação usando o script de instalação do dispositivo configure-sga.py.
+
+. Se precisar acessar manualmente a página de instalação do monitor, selecione *Instalação do monitor* na barra de menu.
++
+A página Instalação do Monitor mostra o progresso da instalação.
+
++
+image::../media/monitor_installation_configure_storage.gif[Esta imagem é explicada pelo texto ao redor.]
+
++
+A barra de status azul indica qual tarefa está em andamento.  Barras de status verdes indicam tarefas que foram concluídas com sucesso.
+
++
+
+NOTE: O instalador garante que as tarefas concluídas em uma instalação anterior não sejam executadas novamente.  Se você estiver executando uma instalação novamente, todas as tarefas que não precisam ser executadas novamente serão exibidas com uma barra de status verde e o status "Ignorada".
+
+. Revise o progresso dos dois primeiros estágios da instalação.
++
+*1.  Configurar aparelho*
+
++
+Durante esta fase, ocorre um dos seguintes processos:
+
++
+** Para um dispositivo de armazenamento, o instalador se conecta ao controlador de armazenamento, limpa qualquer configuração existente, se comunica com o SANtricity OS para configurar volumes e define as configurações do host.
+** Para um dispositivo de serviços, o instalador limpa qualquer configuração existente das unidades no controlador de computação e define as configurações do host.
++
+*2.  Instalar SO*
+
++
+Durante esta etapa, o instalador copia a imagem base do sistema operacional do StorageGRID para o dispositivo.
+
+
+
+. Continue monitorando o progresso da instalação até que uma mensagem apareça na janela do console, solicitando que você use o Grid Manager para aprovar o nó.
++
+
+NOTE: Aguarde até que todos os nós adicionados nesta expansão estejam prontos para aprovação antes de ir ao Grid Manager para aprovar os nós.
+
++
+image::../media/monitor_installation_install_sgws.gif[Esta imagem é explicada pelo texto ao redor.]
+
+

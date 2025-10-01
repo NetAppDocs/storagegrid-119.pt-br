@@ -1,0 +1,58 @@
+---
+permalink: troubleshoot/resetting-lost-and-missing-object-counts.html 
+sidebar: sidebar 
+keywords: how to reset lost object count, how to reset missing object count 
+summary: Depois de investigar o sistema StorageGRID e verificar se todos os objetos perdidos registrados foram perdidos permanentemente ou se é um alarme falso, você pode redefinir o valor do atributo Objetos Perdidos para zero. 
+---
+= Redefinir contagens de objetos perdidos e desaparecidos
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Depois de investigar o sistema StorageGRID e verificar se todos os objetos perdidos registrados foram perdidos permanentemente ou se é um alarme falso, você pode redefinir o valor do atributo Objetos Perdidos para zero.
+
+.Antes de começar
+* Você deve estar conectado ao Grid Manager usando umlink:../admin/web-browser-requirements.html["navegador da web compatível"] .
+* Você temlink:../admin/admin-group-permissions.html["permissões de acesso específicas"] .
+
+
+.Sobre esta tarefa
+Você pode zerar o contador de Objetos Perdidos em qualquer uma das seguintes páginas:
+
+* *SUPORTE* > *Ferramentas* > *Topologia de grade* > *_Site_* > *_Nó de armazenamento_* > *LDR* > *Armazenamento de dados* > *Visão geral* > *Principal*
+* *SUPORTE* > *Ferramentas* > *Topologia de grade* > *_Site_* > *_Nó de armazenamento_* > *DDS* > *Armazenamento de dados* > *Visão geral* > *Principal*
+
+
+Estas instruções mostram como redefinir o contador na página *LDR* > *Data Store*.
+
+.Passos
+. Selecione *SUPORTE* > *Ferramentas* > *Topologia de grade*.
+. Selecione *_Site_* > *_Nó de Armazenamento_* > *LDR* > *Armazenamento de Dados* > *Configuração* para o Nó de Armazenamento que tem o alerta *Objetos perdidos* ou o alarme PERDIDO.
+. Selecione *Redefinir contagem de objetos perdidos*.
++
+image::../media/reset_ldr_lost_object_count.gif[Captura de tela da contagem de objetos perdidos de redefinição do LDR]
+
+. Clique em *Aplicar alterações*.
++
+O atributo Objetos Perdidos é redefinido para 0 e o alerta *Objetos perdidos* e o alarme PERDIDO são apagados, o que pode levar alguns minutos.
+
+. Opcionalmente, redefina outros valores de atributos relacionados que podem ter sido incrementados no processo de identificação do objeto perdido.
++
+.. Selecione *_Site_* > *_Nó de Armazenamento_* > *LDR* > *Codificação de Apagamento* > *Configuração*.
+.. Selecione *Redefinir contagem de falhas de leitura* e *Redefinir contagem de cópias corrompidas detectadas*.
+.. Clique em *Aplicar alterações*.
+.. Selecione *_Site_* > *_Nó de Armazenamento_* > *LDR* > *Verificação* > *Configuração*.
+.. Selecione *Redefinir contagem de objetos ausentes* e *Redefinir contagem de objetos corrompidos*.
+.. Se tiver certeza de que os objetos em quarentena não são necessários, você pode selecionar *Excluir objetos em quarentena*.
++
+Objetos em quarentena são criados quando a verificação em segundo plano identifica uma cópia corrompida do objeto replicado.  Na maioria dos casos, o StorageGRID substitui automaticamente o objeto corrompido e é seguro excluir os objetos em quarentena.  Entretanto, se o alerta *Objetos perdidos* ou o alarme PERDIDO for acionado, o suporte técnico pode querer acessar os objetos em quarentena.
+
+.. Clique em *Aplicar alterações*.
+
+
++
+Pode levar alguns instantes para que os atributos sejam redefinidos após você clicar em *Aplicar alterações*.
+
+

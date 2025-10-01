@@ -1,0 +1,55 @@
+---
+permalink: audit/ecoc-corrupt-erasure-coded-data-fragment.html 
+sidebar: sidebar 
+keywords: storagegrid, audit, message, ECOC, Corrupt Erasure-Coded Data Fragment 
+summary: Esta mensagem de auditoria indica que o sistema detectou um fragmento de dados corrompido com código de eliminação. 
+---
+= ECOC: Fragmento de dados codificados por apagamento corrompidos
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Esta mensagem de auditoria indica que o sistema detectou um fragmento de dados corrompido com código de eliminação.
+
+[cols="1a,1a,4a"]
+|===
+| Código | Campo | Descrição 
+
+
+ a| 
+VCCO
+ a| 
+ID do VCS
+ a| 
+O nome do VCS que contém o pedaço corrompido.
+
+
+
+ a| 
+VLID
+ a| 
+ID do volume
+ a| 
+O volume RangeDB que contém o fragmento corrompido com código de eliminação.
+
+
+
+ a| 
+CCID
+ a| 
+ID do pedaço
+ a| 
+O identificador do fragmento corrompido codificado por apagamento.
+
+
+
+ a| 
+RSLT
+ a| 
+Resultado
+ a| 
+Este campo tem o valor 'NENHUM'.  RSLT é um campo de mensagem obrigatório, mas não é relevante para esta mensagem específica.  'NONE' é usado em vez de 'SUCS' para que esta mensagem não seja filtrada.
+
+|===

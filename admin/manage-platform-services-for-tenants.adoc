@@ -1,0 +1,71 @@
+---
+permalink: admin/manage-platform-services-for-tenants.html 
+sidebar: sidebar 
+keywords: platform service, cloudmirror replication, event notification, search integration service 
+summary: Os serviços de plataforma incluem replicação do CloudMirror, notificações de eventos e o serviço de integração de pesquisa. 
+---
+= O que são serviços de plataforma?
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Os serviços de plataforma incluem replicação do CloudMirror, notificações de eventos e o serviço de integração de pesquisa.
+
+Se você habilitar serviços de plataforma para contas de locatários do S3, deverá configurar sua grade para que os locatários possam acessar os recursos externos necessários para usar esses serviços.
+
+
+
+== Replicação do CloudMirror
+
+O serviço de replicação StorageGRID CloudMirror é usado para espelhar objetos específicos de um bucket do StorageGRID para um destino externo especificado.
+
+Por exemplo, você pode usar a replicação do CloudMirror para espelhar registros específicos de clientes no Amazon S3 e, em seguida, aproveitar os serviços da AWS para realizar análises em seus dados.
+
+
+NOTE: A replicação do CloudMirror tem algumas semelhanças e diferenças importantes com o recurso de replicação entre grades.  Para saber mais, consultelink:../admin/grid-federation-compare-cgr-to-cloudmirror.html["Comparar a replicação entre grades e a replicação do CloudMirror"] .
+
+
+NOTE: A replicação do CloudMirror não será suportada se o bucket de origem tiver o S3 Object Lock habilitado.
+
+
+
+== Notificações
+
+Notificações de eventos por bucket são usadas para enviar notificações sobre ações específicas executadas em objetos para um cluster Kafka externo especificado ou Amazon Simple Notification Service.
+
+Por exemplo, você pode configurar alertas a serem enviados aos administradores sobre cada objeto adicionado a um bucket, onde os objetos representam arquivos de log associados a um evento crítico do sistema.
+
+
+NOTE: Embora a notificação de eventos possa ser configurada em um bucket com o S3 Object Lock habilitado, os metadados do S3 Object Lock (incluindo Retain Until Date e status de retenção legal) dos objetos não serão incluídos nas mensagens de notificação.
+
+
+
+== Serviço de integração de pesquisa
+
+O serviço de integração de pesquisa é usado para enviar metadados de objetos S3 para um índice Elasticsearch especificado, onde os metadados podem ser pesquisados ou analisados usando o serviço externo.
+
+Por exemplo, você pode configurar seus buckets para enviar metadados de objetos S3 para um serviço remoto do Elasticsearch.  Você pode então usar o Elasticsearch para realizar pesquisas em buckets e realizar análises sofisticadas de padrões presentes nos metadados do seu objeto.
+
+
+NOTE: Embora a integração do Elasticsearch possa ser configurada em um bucket com o S3 Object Lock habilitado, os metadados do S3 Object Lock (incluindo Retain Until Date e status de retenção legal) dos objetos não serão incluídos nas mensagens de notificação.
+
+Os serviços de plataforma oferecem aos locatários a capacidade de usar recursos de armazenamento externo, serviços de notificação e serviços de pesquisa ou análise com seus dados.  Como o local de destino dos serviços da plataforma normalmente é externo à sua implantação do StorageGRID , você deve decidir se deseja permitir que os locatários usem esses serviços.  Se fizer isso, você deverá habilitar o uso dos serviços da plataforma ao criar ou editar contas de locatários.  Você também deve configurar sua rede de modo que as mensagens dos serviços de plataforma geradas pelos locatários possam chegar aos seus destinos.
+
+
+
+== Recomendações para uso de serviços de plataforma
+
+Antes de utilizar os serviços da plataforma, esteja ciente das seguintes recomendações:
+
+* Se um bucket S3 no sistema StorageGRID tiver o controle de versão e a replicação do CloudMirror habilitados, você também deverá habilitar o controle de versão do bucket S3 para o endpoint de destino.  Isso permite que a replicação do CloudMirror gere versões de objetos semelhantes no ponto de extremidade.
+* Você não deve usar mais de 100 locatários ativos com solicitações S3 que exijam replicação, notificações e integração de pesquisa do CloudMirror.  Ter mais de 100 locatários ativos pode resultar em desempenho mais lento do cliente S3.
+* Solicitações para um endpoint que não podem ser concluídas serão enfileiradas para um máximo de 500.000 solicitações.  Esse limite é dividido igualmente entre os inquilinos ativos.  Novos inquilinos podem exceder temporariamente esse limite de 500.000 para que os inquilinos recém-criados não sejam penalizados injustamente.
+
+
+.Informações relacionadas
+* link:../tenant/what-platform-services-are.html["Gerenciar serviços de plataforma"]
+* link:configuring-storage-proxy-settings.html["Configurar as definições de proxy de armazenamento"]
+* link:../monitor/index.html["Monitorar StorageGRID"]
+

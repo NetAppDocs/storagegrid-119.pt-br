@@ -1,0 +1,50 @@
+---
+permalink: expand/adding-storage-volumes-to-storage-nodes.html 
+sidebar: sidebar 
+keywords: storage volumes, expand, expansion, add, storage nodes, adding storage capacity 
+summary: Você pode expandir a capacidade de armazenamento dos Nós de Armazenamento que estão abaixo do número máximo de volumes suportados. Pode ser necessário adicionar volumes de armazenamento a mais de um nó de armazenamento para atender aos requisitos de ILM para cópias replicadas ou codificadas para eliminação. 
+---
+= Adicionar volumes de armazenamento aos nós de armazenamento
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Você pode expandir a capacidade de armazenamento dos Nós de Armazenamento que estão abaixo do número máximo de volumes suportados. Pode ser necessário adicionar volumes de armazenamento a mais de um nó de armazenamento para atender aos requisitos de ILM para cópias replicadas ou codificadas para eliminação.
+
+.Antes de começar
+Antes de adicionar volumes de armazenamento, revise olink:guidelines-for-adding-object-capacity.html["diretrizes para adicionar capacidade de objeto"] para garantir que você saiba onde adicionar volumes para atender aos requisitos da sua política de ILM.
+
+
+NOTE: Estas instruções se aplicam somente a nós de armazenamento baseados em software.  Ver https://docs.netapp.com/us-en/storagegrid-appliances/sg6000/adding-expansion-shelf-to-deployed-sg6060.html["Adicionar prateleira de expansão ao SG6060 implantado"^] ou https://docs.netapp.com/us-en/storagegrid-appliances/sg6100/adding-expansion-shelf-to-deployed-sg6160.html["Adicionar prateleira de expansão ao SG6160 implantado"^] para aprender como adicionar volumes de armazenamento ao SG6060 ou SG6160 instalando prateleiras de expansão.  Outros nós de armazenamento do dispositivo não podem ser expandidos.
+
+.Sobre esta tarefa
+O armazenamento subjacente de um nó de armazenamento é dividido em volumes de armazenamento.  Os volumes de armazenamento são dispositivos de armazenamento baseados em blocos que são formatados pelo sistema StorageGRID e montados para armazenar objetos.  Cada nó de armazenamento pode suportar até 48 volumes de armazenamento, que são chamados de _armazenamentos de objetos_ no Grid Manager.
+
+
+NOTE: Os metadados do objeto são sempre armazenados no repositório de objetos 0.
+
+Cada armazenamento de objetos é montado em um volume que corresponde ao seu ID.  Por exemplo, o armazenamento de objetos com um ID de 0000 corresponde ao `/var/local/rangedb/0` ponto de montagem.
+
+Antes de adicionar novos volumes de armazenamento, use o Grid Manager para visualizar os armazenamentos de objetos atuais para cada nó de armazenamento, bem como os pontos de montagem correspondentes.  Você pode usar essas informações ao adicionar volumes de armazenamento.
+
+.Passos
+. Selecione *NÓS* > *_site_* > *_Nó de Armazenamento_* > *Armazenamento*.
+. Role para baixo para ver as quantidades de armazenamento disponíveis para cada volume e armazenamento de objetos.
++
+Para nós de armazenamento do dispositivo, o nome mundial de cada disco corresponde ao identificador mundial do volume (WWID) que aparece quando você visualiza as propriedades de volume padrão no SANtricity OS (o software de gerenciamento conectado ao controlador de armazenamento do dispositivo).
+
++
+Para ajudar você a interpretar estatísticas de leitura e gravação de disco relacionadas aos pontos de montagem de volume, a primeira parte do nome mostrada na coluna *Nome* da tabela Dispositivos de disco (ou seja, _sdc_, _sdd_, _sde_ e assim por diante) corresponde ao valor mostrado na coluna *Dispositivo* da tabela Volumes.
+
++
+image::../media/nodes_page_storage_tables_vol_expansion.png[Tabelas de armazenamento de páginas de nós]
+
+. Siga as instruções da sua plataforma para adicionar novos volumes de armazenamento ao Nó de Armazenamento.
++
+** link:vmware-adding-storage-volumes-to-storage-node.html["VMware: Adicionar volumes de armazenamento ao nó de armazenamento"]
+** link:linux-adding-direct-attached-or-san-volumes-to-storage-node.html["Linux: Adicionar volumes SAN ou de conexão direta ao nó de armazenamento"]
+
+
+

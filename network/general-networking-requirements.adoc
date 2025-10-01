@@ -1,0 +1,50 @@
+---
+permalink: network/general-networking-requirements.html 
+sidebar: sidebar 
+keywords: networking requirements, storagegrid networks 
+summary: Todas as implantações do StorageGRID devem ser capazes de suportar as seguintes conexões. 
+---
+= Requisitos gerais de rede
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Todas as implantações do StorageGRID devem ser capazes de suportar as seguintes conexões.
+
+Essas conexões podem ocorrer por meio das redes Grid, Admin ou Client, ou das combinações dessas redes, conforme ilustrado nos exemplos de topologia de rede.
+
+* *Conexões de gerenciamento*: Conexões de entrada de um administrador para o nó, geralmente por meio de SSH.  Acesso via navegador da Web ao Grid Manager, ao Tenant Manager e ao StorageGRID Appliance Installer.
+* *Conexões do servidor NTP*: Conexão UDP de saída que recebe uma resposta UDP de entrada.
++
+Pelo menos um servidor NTP deve estar acessível ao nó de administração primário.
+
+* *Conexões do servidor DNS*: Conexão UDP de saída que recebe uma resposta UDP de entrada.
+* *Conexões do servidor LDAP/Active Directory*: Conexão TCP de saída do serviço de identidade nos nós de armazenamento.
+* * AutoSupport*: Conexão TCP de saída dos nós de administração para `support.netapp.com` ou um proxy configurado pelo cliente.
+* *Servidor de gerenciamento de chaves externo*: Conexão TCP de saída de cada nó do dispositivo com criptografia de nó habilitada.
+* Conexões TCP de entrada de clientes S3.
+* Solicitações de saída de serviços da plataforma StorageGRID , como replicação do CloudMirror ou de pools de armazenamento em nuvem.
+
+
+Se o StorageGRID não conseguir entrar em contato com nenhum dos servidores NTP ou DNS provisionados usando as regras de roteamento padrão, ele tentará contato automaticamente em todas as redes (Grid, Admin e Cliente), desde que os endereços IP dos servidores DNS e NTP sejam especificados.  Se os servidores NTP ou DNS puderem ser alcançados em qualquer rede, o StorageGRID criará automaticamente regras de roteamento adicionais para garantir que a rede seja usada para todas as tentativas futuras de conexão a ela.
+
+
+TIP: Embora você possa usar essas rotas de host descobertas automaticamente, em geral você deve configurar manualmente as rotas DNS e NTP para garantir a conectividade caso a descoberta automática falhe.
+
+Se você não estiver pronto para configurar as redes opcionais de administrador e cliente durante a implantação, poderá configurar essas redes ao aprovar os nós de grade durante as etapas de configuração.  Além disso, você pode configurar essas redes após a conclusão da instalação usando a ferramenta Alterar IP (consultelink:../maintain/configuring-ip-addresses.html["Configurar endereços IP"] ).
+
+
+
+== Conexões para nós de administração e nós de gateway
+
+Os nós de administração devem sempre ser protegidos de clientes não confiáveis, como aqueles na Internet aberta.  Você deve garantir que nenhum cliente não confiável possa acessar qualquer nó de administração na rede Grid, na rede de administração ou na rede de clientes.
+
+Os nós de administração e os nós de gateway que você planeja adicionar aos grupos de alta disponibilidade devem ser configurados com um endereço IP estático. Ver link:../admin/managing-high-availability-groups.html["Gerenciar grupos de alta disponibilidade"] .
+
+
+
+== Usando tradução de endereços de rede (NAT)
+
+Não use a tradução de endereços de rede (NAT) na Grid Network entre nós da grade ou entre sites do StorageGRID .  Quando você usa endereços IPv4 privados para a Grid Network, esses endereços devem ser roteáveis ​​diretamente de cada nó da grade em cada site.  No entanto, conforme necessário, você pode usar NAT entre clientes externos e nós de grade, como para fornecer um endereço IP público para um nó de gateway.  O uso de NAT para conectar um segmento de rede pública é suportado somente quando você emprega um aplicativo de tunelamento que seja transparente a todos os nós na grade, o que significa que os nós da grade não exigem conhecimento de endereços IP públicos.

@@ -1,0 +1,126 @@
+---
+permalink: ilm/how-objects-are-deleted.html 
+sidebar: sidebar 
+keywords: ILM deletion, how objects are deleted 
+summary: O StorageGRID pode excluir objetos em resposta direta a uma solicitação do cliente ou automaticamente como resultado da expiração do ciclo de vida de um bucket do S3 ou dos requisitos da política do ILM.  Entender as diferentes maneiras pelas quais objetos podem ser excluídos e como o StorageGRID lida com solicitações de exclusão pode ajudar você a gerenciar objetos de forma mais eficaz. 
+---
+= Como os objetos são excluídos
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+O StorageGRID pode excluir objetos em resposta direta a uma solicitação do cliente ou automaticamente como resultado da expiração do ciclo de vida de um bucket do S3 ou dos requisitos da política do ILM.  Entender as diferentes maneiras pelas quais objetos podem ser excluídos e como o StorageGRID lida com solicitações de exclusão pode ajudar você a gerenciar objetos de forma mais eficaz.
+
+O StorageGRID pode usar um dos dois métodos para excluir objetos:
+
+* Exclusão síncrona: quando o StorageGRID recebe uma solicitação de exclusão do cliente, todas as cópias do objeto são removidas imediatamente.  O cliente é informado de que a exclusão foi bem-sucedida após as cópias serem removidas.
+* Os objetos são enfileirados para exclusão: quando o StorageGRID recebe uma solicitação de exclusão, o objeto é enfileirado para exclusão e o cliente é informado imediatamente que a exclusão foi bem-sucedida.  Cópias de objetos são removidas posteriormente pelo processamento ILM em segundo plano.
+
+
+Ao excluir objetos, o StorageGRID usa o método que otimiza o desempenho da exclusão, minimiza possíveis atrasos de exclusão e libera espaço mais rapidamente.
+
+A tabela resume quando o StorageGRID usa cada método.
+
+[cols="1a,3a"]
+|===
+| Método de execução da exclusão | Quando usado 
+
+
+ a| 
+Os objetos são colocados na fila para exclusão
+ a| 
+Quando *qualquer* das seguintes condições for verdadeira:
+
+* A exclusão automática de objetos foi acionada por um dos seguintes eventos:
++
+** A data de expiração ou o número de dias na configuração do ciclo de vida de um bucket do S3 foi atingido.
+** O último período de tempo especificado em uma regra ILM expirou.
+
+
++
+*Observação:* Objetos em um bucket que tenha o Bloqueio de Objeto S3 habilitado não podem ser excluídos se estiverem sob retenção legal ou se uma data de retenção tiver sido especificada, mas ainda não tiver sido atingida.
+
+* Um cliente S3 solicita exclusão e uma ou mais destas condições são verdadeiras:
++
+** As cópias não podem ser excluídas em 30 segundos porque, por exemplo, a localização de um objeto está temporariamente indisponível.
+** As filas de exclusão em segundo plano estão ociosas.
+
+
+
+
+
+
+ a| 
+Os objetos são removidos imediatamente (exclusão síncrona)
+ a| 
+Quando um cliente S3 faz uma solicitação de exclusão e *todas* as seguintes condições são atendidas:
+
+* Todas as cópias podem ser removidas em 30 segundos.
+* As filas de exclusão em segundo plano contêm objetos a serem processados.
+
+
+|===
+Quando clientes S3 fazem solicitações de exclusão, o StorageGRID começa adicionando objetos à fila de exclusão.  Em seguida, ele alterna para executar a exclusão síncrona.  Garantir que a fila de exclusão em segundo plano tenha objetos para processar permite que o StorageGRID processe exclusões de forma mais eficiente, especialmente para clientes de baixa simultaneidade, ao mesmo tempo que ajuda a evitar atrasos na exclusão de clientes.
+
+
+
+== Tempo necessário para excluir objetos
+
+A maneira como o StorageGRID exclui objetos pode afetar o desempenho do sistema:
+
+* Quando o StorageGRID executa uma exclusão síncrona, pode levar até 30 segundos para o StorageGRID retornar um resultado ao cliente.  Isso significa que a exclusão pode parecer estar acontecendo mais lentamente, mesmo que as cópias estejam sendo removidas mais rapidamente do que quando o StorageGRID enfileira objetos para exclusão.
+* Se você estiver monitorando de perto o desempenho da exclusão durante uma exclusão em massa, poderá notar que a taxa de exclusão parece ficar lenta depois que um certo número de objetos é excluído.  Essa alteração ocorre quando o StorageGRID muda de enfileiramento de objetos para exclusão para execução de exclusão síncrona.  A aparente redução na taxa de exclusão não significa que as cópias de objetos estão sendo removidas mais lentamente.  Pelo contrário, indica que, em média, o espaço está sendo liberado mais rapidamente.
+
+
+Se você estiver excluindo um grande número de objetos e sua prioridade for liberar espaço rapidamente, considere usar uma solicitação do cliente para excluir objetos em vez de excluí-los usando ILM ou outros métodos.  Em geral, o espaço é liberado mais rapidamente quando a exclusão é realizada pelos clientes porque o StorageGRID pode usar a exclusão síncrona.
+
+O tempo necessário para liberar espaço após a exclusão de um objeto depende de vários fatores:
+
+* Se as cópias de objetos são removidas de forma síncrona ou enfileiradas para remoção posterior (para solicitações de exclusão do cliente).
+* Outros fatores, como o número de objetos na grade ou a disponibilidade de recursos da grade quando cópias de objetos são enfileiradas para remoção (para exclusões de clientes e outros métodos).
+
+
+
+
+== Como objetos versionados do S3 são excluídos
+
+Quando o controle de versão está habilitado para um bucket do S3, o StorageGRID segue o comportamento do Amazon S3 ao responder a solicitações de exclusão, independentemente de essas solicitações virem de um cliente S3, da expiração do ciclo de vida de um bucket do S3 ou dos requisitos da política do ILM.
+
+Quando os objetos são versionados, as solicitações de exclusão de objetos não excluem a versão atual do objeto e não liberam espaço.  Em vez disso, uma solicitação de exclusão de objeto cria um marcador de exclusão de zero byte como a versão atual do objeto, o que torna a versão anterior do objeto "não atual".  Um marcador de exclusão de objeto se torna um marcador de exclusão de objeto expirado quando é a versão atual e não há versões não atuais.
+
+Mesmo que o objeto não tenha sido removido, o StorageGRID se comporta como se a versão atual do objeto não estivesse mais disponível.  Solicitações para esse objeto retornam 404 NotFound.  Entretanto, como os dados do objeto não atual não foram removidos, as solicitações que especificam uma versão não atual do objeto podem ser bem-sucedidas.
+
+Para liberar espaço ao excluir objetos versionados ou para remover marcadores de exclusão, use um dos seguintes:
+
+* *Solicitação do cliente S3*: especifique o ID da versão do objeto na solicitação DELETE Object do S3(`DELETE /object?versionId=ID` ).  Tenha em mente que esta solicitação remove apenas cópias de objetos para a versão especificada (as outras versões ainda estão ocupando espaço).
+* *Ciclo de vida do bucket*: Use o `NoncurrentVersionExpiration` ação na configuração do ciclo de vida do bucket.  Quando o número de NoncurrentDays especificado é atingido, o StorageGRID remove permanentemente todas as cópias de versões de objetos não atuais.  Essas versões de objetos não podem ser recuperadas.
++
+O `NewerNoncurrentVersions` ação na configuração do ciclo de vida do bucket especifica o número de versões não atuais retidas em um bucket S3 versionado.  Se houver mais versões não atuais do que `NewerNoncurrentVersions` especifica que o StorageGRID remove as versões mais antigas quando o valor NoncurrentDays tiver decorrido.  O `NewerNoncurrentVersions` O limite substitui as regras do ciclo de vida fornecidas pelo ILM, o que significa que um objeto não atual com uma versão dentro do `NewerNoncurrentVersions` o limite é mantido se o ILM solicitar sua exclusão.
+
++
+Para remover marcadores de exclusão de objetos expirados, use o `Expiration` ação com uma das seguintes tags: `ExpiredObjectDeleteMarker` , `Days` , ou `Date` .
+
+* *ILM*:link:creating-ilm-policy.html["Clonar uma política ativa"] e adicionar duas regras ILM à nova política:
++
+** Primeira regra: use "Horário não atual" como o horário de referência para corresponder às versões não atuais do objeto.  Emlink:create-ilm-rule-enter-details.html["Etapa 1 (Inserir detalhes) do assistente Criar uma regra ILM"] , selecione *Sim* para a pergunta "Aplicar esta regra somente a versões mais antigas de objetos (em buckets do S3 com controle de versão habilitado)?"
+** Segunda regra: use *Tempo de ingestão* para corresponder à versão atual.  A regra "Tempo não atual" deve aparecer na política acima da regra *Tempo de ingestão*.
++
+Para remover marcadores de exclusão de objetos expirados, use uma regra de *Tempo de ingestão* para corresponder aos marcadores de exclusão atuais.  Os marcadores de exclusão são removidos somente quando um *período de tempo* de *dias* tiver passado e o criador de exclusão atual tiver expirado (não há versões não atuais).
+
+
+
+* *Excluir objetos no bucket*: Use o gerenciador de inquilinos paralink:../tenant/deleting-s3-bucket-objects.html["excluir todas as versões do objeto"] , incluindo marcadores de exclusão, de um bucket.
+
+
+Quando um objeto versionado é excluído, o StorageGRID cria um marcador de exclusão de zero byte como a versão atual do objeto.  Todos os objetos e marcadores de exclusão devem ser removidos antes que um bucket versionado possa ser excluído.
+
+* Os marcadores de exclusão criados no StorageGRID 11.7 ou anterior só podem ser removidos por meio de solicitações do cliente S3; eles não são removidos pelo ILM, pelas regras do ciclo de vida do bucket ou por objetos de exclusão em operações de bucket.
+* Os marcadores de exclusão de um bucket criado no StorageGRID 11.8 ou posterior podem ser removidos por ILM, regras de ciclo de vida do bucket, objetos de exclusão em operações de bucket ou uma exclusão explícita do cliente S3.
+
+
+.Informações relacionadas
+* link:../s3/index.html["Usar API REST do S3"]
+* link:example-4-ilm-rules-and-policy-for-s3-versioned-objects.html["Exemplo 4: regras e políticas do ILM para objetos versionados do S3"]
+

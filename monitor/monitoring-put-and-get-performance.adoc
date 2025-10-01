@@ -1,0 +1,30 @@
+---
+permalink: monitor/monitoring-put-and-get-performance.html 
+sidebar: sidebar 
+keywords: put, get, performance 
+summary: Você pode monitorar o desempenho de determinadas operações, como armazenamento e recuperação de objetos, para ajudar a identificar alterações que podem exigir investigação adicional. 
+---
+= Monitore o desempenho de PUT e GET
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Você pode monitorar o desempenho de determinadas operações, como armazenamento e recuperação de objetos, para ajudar a identificar alterações que podem exigir investigação adicional.
+
+.Sobre esta tarefa
+Para monitorar o desempenho de PUT e GET, você pode executar comandos S3 diretamente de uma estação de trabalho ou usando o aplicativo S3tester de código aberto.  O uso desses métodos permite avaliar o desempenho independentemente de fatores externos ao StorageGRID, como problemas com um aplicativo cliente ou problemas com uma rede externa.
+
+Ao executar testes de operações PUT e GET, use as seguintes diretrizes:
+
+* Use tamanhos de objetos comparáveis aos objetos que você normalmente ingere em sua grade.
+* Execute operações em sites locais e remotos.
+
+
+Mensagens nolink:../audit/index.html["registro de auditoria"] indicar o tempo total necessário para executar determinadas operações.  Por exemplo, para determinar o tempo total de processamento de uma solicitação S3 GET, você pode revisar o valor do atributo TIME na mensagem de auditoria SGET.  Você também pode encontrar o atributo TIME nas mensagens de auditoria para as seguintes operações do S3: DELETE, GET, HEAD, Metadata Updated, POST, PUT
+
+Ao analisar os resultados, observe o tempo médio necessário para atender a uma solicitação, bem como o rendimento geral que você pode atingir.  Repita os mesmos testes regularmente e registre os resultados para que você possa identificar tendências que possam exigir investigação.
+
+* Você pode https://github.com/s3tester["baixe o S3tester do github"^] .
+

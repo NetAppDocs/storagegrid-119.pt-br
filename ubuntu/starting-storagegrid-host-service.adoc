@@ -1,0 +1,42 @@
+---
+permalink: ubuntu/starting-storagegrid-host-service.html 
+sidebar: sidebar 
+keywords: how to start host service 
+summary: Para iniciar seus nós StorageGRID e garantir que eles reiniciem após uma reinicialização do host, você deve habilitar e iniciar o serviço do host StorageGRID . 
+---
+= Inicie o serviço do host StorageGRID
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Para iniciar seus nós StorageGRID e garantir que eles reiniciem após uma reinicialização do host, você deve habilitar e iniciar o serviço do host StorageGRID .
+
+.Passos
+. Execute os seguintes comandos em cada host:
++
+[listing]
+----
+sudo systemctl enable storagegrid
+sudo systemctl start storagegrid
+----
+. Execute o seguinte comando para garantir que a implantação esteja em andamento:
++
+[listing]
+----
+sudo storagegrid node status node-name
+----
+. Se algum nó retornar o status "Não em execução" ou "Parado", execute o seguinte comando:
++
+[listing]
+----
+sudo storagegrid node start node-name
+----
+. Se você habilitou e iniciou o serviço de host StorageGRID anteriormente (ou se não tiver certeza se o serviço foi habilitado e iniciado), execute também o seguinte comando:
++
+[listing]
+----
+sudo systemctl reload-or-restart storagegrid
+----
+

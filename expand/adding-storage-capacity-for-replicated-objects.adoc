@@ -1,0 +1,24 @@
+---
+permalink: expand/adding-storage-capacity-for-replicated-objects.html 
+sidebar: sidebar 
+keywords: replication, replicated, copies, capacity, storage nodes, expand, expansion 
+summary: 'Se a política de gerenciamento do ciclo de vida das informações (ILM) para sua implantação incluir uma regra que cria cópias replicadas de objetos, você deverá considerar quanto armazenamento adicionar e onde adicionar os novos volumes de armazenamento ou nós de armazenamento.' 
+---
+= Adicionar capacidade de armazenamento para objetos replicados
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Se a política de gerenciamento do ciclo de vida das informações (ILM) da sua implantação incluir uma regra que cria cópias replicadas de objetos, você deverá considerar quanto armazenamento adicionar e onde adicionar os novos volumes de armazenamento ou nós de armazenamento.
+
+Para obter orientação sobre onde adicionar armazenamento adicional, examine as regras do ILM que criam cópias replicadas.  Se as regras do ILM criarem duas ou mais cópias de objetos, planeje adicionar armazenamento em cada local onde as cópias de objetos são feitas.  Como um exemplo simples, se você tiver uma grade de dois sites e uma regra ILM que cria uma cópia de objeto em cada site, você develink:../expand/adding-storage-volumes-to-storage-nodes.html["adicionar armazenamento"] para cada site para aumentar a capacidade geral de objetos da grade.  Para obter informações sobre replicação de objetos, consultelink:../ilm/what-replication-is.html["O que é replicação"] .
+
+Por motivos de desempenho, você deve tentar manter a capacidade de armazenamento e o poder de computação equilibrados entre os sites.  Portanto, para este exemplo, você deve adicionar o mesmo número de nós de armazenamento a cada site ou volumes de armazenamento adicionais em cada site.
+
+Se você tiver uma política de ILM mais complexa que inclua regras que colocam objetos em locais diferentes com base em critérios como nome do bucket ou regras que alteram os locais dos objetos ao longo do tempo, sua análise de onde o armazenamento é necessário para a expansão será semelhante, mas mais complexa.
+
+Mapear a rapidez com que a capacidade geral de armazenamento está sendo consumida pode ajudar você a entender quanto armazenamento adicionar na expansão e quando o espaço de armazenamento adicional será necessário.  Você pode usar o Grid Manager paralink:../monitor/monitoring-storage-capacity.html["capacidade de armazenamento de monitores e gráficos"] .
+
+Ao planejar o momento de uma expansão, lembre-se de considerar quanto tempo pode levar para adquirir e instalar armazenamento adicional.

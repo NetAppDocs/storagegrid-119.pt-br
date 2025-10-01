@@ -1,0 +1,378 @@
+---
+permalink: s3/error-responses.html 
+sidebar: sidebar 
+keywords: error, error responses 
+summary: O sistema StorageGRID suporta todas as respostas de erro padrão da API REST do S3 aplicáveis.  Além disso, a implementação do StorageGRID adiciona várias respostas personalizadas. 
+---
+= Respostas de erro
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+O sistema StorageGRID suporta todas as respostas de erro padrão da API REST do S3 aplicáveis.  Além disso, a implementação do StorageGRID adiciona várias respostas personalizadas.
+
+
+
+== Códigos de erro da API S3 suportados
+
+[cols="1a,1a"]
+|===
+| Nome | Status HTTP 
+
+
+ a| 
+Acesso negado
+ a| 
+403 Proibido
+
+
+
+ a| 
+BadDigest
+ a| 
+400 Solicitação Inválida
+
+
+
+ a| 
+BucketAlreadyExists
+ a| 
+409 Conflito
+
+
+
+ a| 
+BaldeNãoVazio
+ a| 
+409 Conflito
+
+
+
+ a| 
+Corpo Incompleto
+ a| 
+400 Solicitação Inválida
+
+
+
+ a| 
+Erro interno
+ a| 
+Erro interno do servidor 500
+
+
+
+ a| 
+Id de chave de acesso inválido
+ a| 
+403 Proibido
+
+
+
+ a| 
+Argumento inválido
+ a| 
+400 Solicitação Inválida
+
+
+
+ a| 
+Nome de Bucket inválido
+ a| 
+400 Solicitação Inválida
+
+
+
+ a| 
+Estado de Bucket inválido
+ a| 
+409 Conflito
+
+
+
+ a| 
+InvalidDigest
+ a| 
+400 Solicitação Inválida
+
+
+
+ a| 
+Erro de Algoritmo de Criptografia Inválido
+ a| 
+400 Solicitação Inválida
+
+
+
+ a| 
+Parte inválida
+ a| 
+400 Solicitação Inválida
+
+
+
+ a| 
+Pedido de peça inválido
+ a| 
+400 Solicitação Inválida
+
+
+
+ a| 
+Intervalo inválido
+ a| 
+416 Intervalo solicitado não satisfatório
+
+
+
+ a| 
+Solicitação inválida
+ a| 
+400 Solicitação Inválida
+
+
+
+ a| 
+Classe de armazenamento inválida
+ a| 
+400 Solicitação Inválida
+
+
+
+ a| 
+Tag inválida
+ a| 
+400 Solicitação Inválida
+
+
+
+ a| 
+URI inválido
+ a| 
+400 Solicitação Inválida
+
+
+
+ a| 
+ChaveMuitoLonga
+ a| 
+400 Solicitação Inválida
+
+
+
+ a| 
+XML malformado
+ a| 
+400 Solicitação Inválida
+
+
+
+ a| 
+MetadadosMuitoGrandes
+ a| 
+400 Solicitação Inválida
+
+
+
+ a| 
+MétodoNãoPermitido
+ a| 
+Método 405 não permitido
+
+
+
+ a| 
+Comprimento do conteúdo ausente
+ a| 
+411 Comprimento necessário
+
+
+
+ a| 
+Erro de corpo de solicitação ausente
+ a| 
+400 Solicitação Inválida
+
+
+
+ a| 
+Cabeçalho de segurança ausente
+ a| 
+400 Solicitação Inválida
+
+
+
+ a| 
+NoSuchBucket
+ a| 
+404 Não Encontrado
+
+
+
+ a| 
+Nenhuma Chave
+ a| 
+404 Não Encontrado
+
+
+
+ a| 
+NoSuchUpload
+ a| 
+404 Não Encontrado
+
+
+
+ a| 
+Não implementado
+ a| 
+501 Não Implementado
+
+
+
+ a| 
+Política NoSuchBucket
+ a| 
+404 Não Encontrado
+
+
+
+ a| 
+Erro de configuração de bloqueio de objeto não encontrado
+ a| 
+404 Não Encontrado
+
+
+
+ a| 
+Pré-condição falhou
+ a| 
+412 Pré-condição falhou
+
+
+
+ a| 
+RequestTimeTooSkewed
+ a| 
+403 Proibido
+
+
+
+ a| 
+Serviço não disponível
+ a| 
+503 Serviço indisponível
+
+
+
+ a| 
+AssinaturaNãoCorresponde
+ a| 
+403 Proibido
+
+
+
+ a| 
+Muitos Baldes
+ a| 
+400 Solicitação Inválida
+
+
+
+ a| 
+UserKeyDeveSerEspecificado
+ a| 
+400 Solicitação Inválida
+
+|===
+
+
+== Códigos de erro personalizados do StorageGRID
+
+[cols="2a,2a,1a"]
+|===
+| Nome | Descrição | Status HTTP 
+
+
+ a| 
+XBucketLifecycleNãoPermitido
+ a| 
+A configuração do ciclo de vida do bucket não é permitida em um bucket compatível legado
+ a| 
+400 Solicitação Inválida
+
+
+
+ a| 
+XBucketPolicyParseException
+ a| 
+Falha ao analisar o JSON da política de bucket recebida.
+ a| 
+400 Solicitação Inválida
+
+
+
+ a| 
+XComplianceConflito
+ a| 
+Operação negada devido a configurações de conformidade legadas.
+ a| 
+403 Proibido
+
+
+
+ a| 
+XComplianceRedundância ReduzidaProibido
+ a| 
+Redundância reduzida não é permitida no bucket compatível legado
+ a| 
+400 Solicitação Inválida
+
+
+
+ a| 
+Comprimento da política XMaxBucket excedido
+ a| 
+Sua apólice excede o comprimento máximo permitido da apólice.
+ a| 
+400 Solicitação Inválida
+
+
+
+ a| 
+XMissingInternalRequestHeader
+ a| 
+Falta um cabeçalho de uma solicitação interna.
+ a| 
+400 Solicitação Inválida
+
+
+
+ a| 
+Conformidade com XNoSuchBucket
+ a| 
+O bucket especificado não tem a conformidade legada habilitada.
+ a| 
+404 Não Encontrado
+
+
+
+ a| 
+XNãoAceitável
+ a| 
+A solicitação contém um ou mais cabeçalhos de aceitação que não puderam ser atendidos.
+ a| 
+406 Não aceitável
+
+
+
+ a| 
+XNãoImplementado
+ a| 
+A solicitação que você forneceu implica uma funcionalidade que não está implementada.
+ a| 
+501 Não Implementado
+
+|===

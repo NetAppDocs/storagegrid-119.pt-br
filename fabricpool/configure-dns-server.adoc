@@ -1,0 +1,33 @@
+---
+permalink: fabricpool/configure-dns-server.html 
+sidebar: sidebar 
+keywords: dns, vip, virtual ip, fqdn, server name 
+summary: Depois de configurar grupos de alta disponibilidade, pontos de extremidade do balanceador de carga e nomes de domínio S3, você deve garantir que o DNS inclua as entradas necessárias para StorageGRID. 
+---
+= Configurar o servidor DNS
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Depois de configurar grupos de alta disponibilidade, pontos de extremidade do balanceador de carga e nomes de domínio de ponto de extremidade S3, você deve garantir que o DNS inclua as entradas necessárias para StorageGRID.  Você deve incluir uma entrada DNS para cada nome no certificado de segurança e para cada endereço IP que você usar.
+
+Ver link:../admin/managing-load-balancing.html["Considerações para balanceamento de carga"] .
+
+
+
+== Entradas DNS para o nome do servidor StorageGRID
+
+Adicione entradas de DNS para associar o nome do servidor StorageGRID (nome de domínio totalmente qualificado) a cada endereço IP do StorageGRID que você usará.  Os endereços IP que você insere no DNS dependem se você está usando um grupo HA de nós de balanceamento de carga:
+
+* Se você tiver configurado um grupo HA, o ONTAP se conectará aos endereços IP virtuais desse grupo HA.
+* Se você não estiver usando um grupo HA, o ONTAP poderá se conectar ao serviço StorageGRID Load Balancer usando o endereço IP de qualquer nó de gateway ou nó de administração.
+* Se o nome do servidor for resolvido para mais de um endereço IP, o ONTAP estabelecerá conexões de cliente com todos os endereços IP (até um máximo de 16 endereços IP).  Os endereços IP são coletados em um método round-robin quando as conexões são estabelecidas.
+
+
+
+
+== Entradas de DNS para solicitações de estilo de hospedagem virtual
+
+Se você definiulink:../admin/configuring-s3-api-endpoint-domain-names.html["Nomes de domínio de endpoint S3"] e você usará solicitações de estilo de hospedagem virtual, adicionará entradas DNS para todos os nomes de domínio de ponto de extremidade S3 necessários, incluindo quaisquer nomes curinga.

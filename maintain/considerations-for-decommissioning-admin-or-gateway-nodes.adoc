@@ -1,0 +1,36 @@
+---
+permalink: maintain/considerations-for-decommissioning-admin-or-gateway-nodes.html 
+sidebar: sidebar 
+keywords: storagegrid, decommission admin node, decommission gateway node 
+summary: Revise as considerações para descomissionar um nó de administração ou um nó de gateway. 
+---
+= Considerações para descomissionamento de nós de administração ou gateway
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Revise as considerações para descomissionar um nó de administração ou um nó de gateway.
+
+
+
+== Considerações para o nó de administração
+
+* Não é possível desativar o nó de administração principal.
+* Não é possível desativar um nó de administração se uma de suas interfaces de rede fizer parte de um grupo de alta disponibilidade (HA).  Primeiro, você deve remover as interfaces de rede do grupo HA. Veja as instruções paralink:../admin/managing-high-availability-groups.html["gerenciando grupos HA"] .
+* Conforme necessário, você pode alterar com segurança as políticas do ILM ao desativar um nó de administração.
+* Se você desativar um nó de administração e o logon único (SSO) estiver habilitado para seu sistema StorageGRID , lembre-se de remover a parte confiável do nó dos Serviços de Federação do Active Directory (AD FS).
+* Se você usarlink:../admin/grid-federation-overview.html["federação de grade"] , certifique-se de que o endereço IP do nó que você está descomissionando não foi especificado para uma conexão de federação de rede.
+* Ao desativar um nó de administração desconectado, você perderá os logs de auditoria desse nó; no entanto, esses logs também devem existir no nó de administração principal.
+
+
+
+
+== Considerações para o nó de gateway
+
+* Não é possível desativar um nó de gateway se uma de suas interfaces de rede fizer parte de um grupo de alta disponibilidade (HA).  Primeiro, você deve remover as interfaces de rede do grupo HA. Veja as instruções paralink:../admin/managing-high-availability-groups.html["gerenciando grupos HA"] .
+* Conforme necessário, você pode alterar com segurança as políticas do ILM ao desativar um nó de gateway.
+* Se você usarlink:../admin/grid-federation-overview.html["federação de grade"] , certifique-se de que o endereço IP do nó que você está descomissionando não foi especificado para uma conexão de federação de rede.
+* Você pode desativar com segurança um nó de gateway enquanto ele estiver desconectado.
+

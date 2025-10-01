@@ -1,0 +1,98 @@
+---
+permalink: monitor/viewing-nodes-page.html 
+sidebar: sidebar 
+keywords: nodes page 
+summary: Quando precisar de informações mais detalhadas sobre seu sistema StorageGRID do que o painel fornece, você pode usar a página Nós para visualizar métricas para toda a grade, cada site na grade e cada nó em um site. 
+---
+= Ver a página de nós
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Quando precisar de informações mais detalhadas sobre seu sistema StorageGRID do que o painel fornece, você pode usar a página Nós para visualizar métricas para toda a grade, cada site na grade e cada nó em um site.
+
+A tabela Nós lista informações resumidas para toda a grade, cada site e cada nó.  Se um nó estiver desconectado ou tiver um alerta ativo, um ícone aparecerá ao lado do nome do nó.  Se o nó estiver conectado e não tiver alertas ativos, nenhum ícone será exibido.
+
+
+NOTE: Quando um nó não está conectado à rede, como durante uma atualização ou em um estado desconectado, certas métricas podem estar indisponíveis ou excluídas dos totais do site e da rede.  Depois que um nó se reconectar à rede, aguarde alguns minutos para que os valores se estabilizem.
+
+
+NOTE: Para alterar as unidades dos valores de armazenamento exibidos no Grid Manager, selecione o menu suspenso do usuário no canto superior direito do Grid Manager e selecione *Preferências do usuário*.
+
+
+NOTE: As capturas de tela mostradas são exemplos.  Seus resultados podem variar dependendo da versão do StorageGRID .
+
+image::../media/nodes_table.png[Menu de nós]
+
+
+
+== Ícones de estado de conexão
+
+Se um nó for desconectado da grade, um dos seguintes ícones aparecerá ao lado do nome do nó.
+
+[cols="1a,3a,3a"]
+|===
+| Ícone | Descrição | Ação necessária 
+
+
+ a| 
+image:../media/icon_alarm_blue_unknown.png["ícone de ponto de interrogação azul"]
+ a| 
+*Não conectado - Desconhecido*
+
+Por um motivo desconhecido, um nó é desconectado ou os serviços no nó ficam inesperadamente inativos.  Por exemplo, um serviço no nó pode ser interrompido, ou o nó pode ter perdido sua conexão de rede devido a uma falha de energia ou interrupção inesperada.
+
+O alerta *Não foi possível comunicar com o nó* também pode ser acionado.  Outros alertas também podem estar ativos.
+ a| 
+Requer atenção imediata. link:monitoring-system-health.html#view-current-and-resolved-alerts["Selecione cada alerta"] e siga as ações recomendadas.
+
+Por exemplo, talvez seja necessário reiniciar um serviço que foi interrompido ou reiniciar o host do nó.
+
+*Observação*: Um nó pode aparecer como Desconhecido durante operações de desligamento gerenciado.  Você pode ignorar o estado Desconhecido nesses casos.
+
+
+
+ a| 
+image:../media/icon_alarm_gray_administratively_down.png["ícone de ponto de interrogação cinza"]
+ a| 
+*Não conectado - Inativo administrativamente*
+
+Por um motivo esperado, o nó não está conectado à rede.
+
+Por exemplo, o nó, ou os serviços no nó, foram desligados corretamente, o nó está sendo reinicializado ou o software está sendo atualizado.  Um ou mais alertas também podem estar ativos.
+
+Com base no problema subjacente, esses nós geralmente voltam a ficar online sem intervenção.
+ a| 
+Determine se algum alerta está afetando este nó.
+
+Se um ou mais alertas estiverem ativos,link:monitoring-system-health.html#view-current-and-resolved-alerts["Selecione cada alerta"] e siga as ações recomendadas.
+
+|===
+Se um nó estiver desconectado da rede, poderá haver um alerta subjacente, mas somente o ícone "Não conectado" aparecerá.  Para ver os alertas ativos de um nó, selecione o nó.
+
+
+
+== Ícones de alerta
+
+Se houver um alerta ativo para um nó, um dos seguintes ícones aparecerá ao lado do nome do nó:
+
+image:../media/icon_alert_red_critical.png["Ícone Alerta Vermelho Crítico"]*Crítico*: Existe uma condição anormal que interrompeu as operações normais de um nó ou serviço do StorageGRID .  Você deve resolver o problema subjacente imediatamente.  Pode haver interrupção do serviço e perda de dados se o problema não for resolvido.
+
+image:../media/icon_alert_orange_major.png["Ícone Alerta Laranja Maior"]*Principal*: Existe uma condição anormal que está afetando as operações atuais ou se aproximando do limite para um alerta crítico.  Você deve investigar os principais alertas e resolver quaisquer problemas subjacentes para garantir que a condição anormal não interrompa a operação normal de um nó ou serviço do StorageGRID .
+
+image:../media/icon_alert_yellow_minor.png["Ícone Alerta Amarelo Menor"]*Menor*: O sistema está operando normalmente, mas existe uma condição anormal que pode afetar a capacidade do sistema de operar se continuar.  Você deve monitorar e resolver alertas menores que não desaparecem sozinhos para garantir que eles não resultem em um problema mais sério.
+
+
+
+== Exibir detalhes de um sistema, site ou nó
+
+Para filtrar as informações mostradas na tabela Nós, insira uma sequência de pesquisa no campo *Pesquisar*.  Você pode pesquisar por nome do sistema, nome de exibição ou tipo (por exemplo, digite *gat* para localizar rapidamente todos os nós de gateway).
+
+Para visualizar as informações da grade, site ou nó:
+
+* Selecione o nome da grade para ver um resumo agregado das estatísticas de todo o seu sistema StorageGRID .
+* Selecione um site de data center específico para ver um resumo agregado das estatísticas de todos os nós naquele site.
+* Selecione um nó específico para visualizar informações detalhadas sobre ele.
+

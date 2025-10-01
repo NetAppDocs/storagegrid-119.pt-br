@@ -1,0 +1,28 @@
+---
+permalink: monitor/snmp-alert-notifications.html 
+sidebar: sidebar 
+keywords: how to use snmp notifications for alerts 
+summary: Se quiser que o StorageGRID envie notificações SNMP quando ocorrerem alertas, você deve habilitar o agente SNMP do StorageGRID e configurar um ou mais destinos de interceptação. 
+---
+= Configurar notificações SNMP para alertas
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Se quiser que o StorageGRID envie notificações SNMP quando ocorrerem alertas, você deve habilitar o agente SNMP do StorageGRID e configurar um ou mais destinos de interceptação.
+
+Você pode usar a opção *CONFIGURAÇÃO* > *Monitoramento* > *Agente SNMP* no Grid Manager ou os pontos de extremidade SNMP da Grid Management API para habilitar e configurar o agente SNMP do StorageGRID . O agente SNMP suporta todas as três versões do protocolo SNMP.
+
+Para aprender a configurar o agente SNMP, consultelink:using-snmp-monitoring.html["Usar monitoramento SNMP"] .
+
+Depois de configurar o agente SNMP do StorageGRID , dois tipos de notificações orientadas a eventos podem ser enviadas:
+
+* Armadilhas são notificações enviadas pelo agente SNMP que não exigem confirmação pelo sistema de gerenciamento.  As armadilhas servem para notificar o sistema de gerenciamento de que algo aconteceu no StorageGRID, como um alerta sendo disparado.  As armadilhas são suportadas em todas as três versões do SNMP.
+* As informações são semelhantes às armadilhas, mas exigem reconhecimento pelo sistema de gerenciamento.  Se o agente SNMP não receber uma confirmação dentro de um determinado período de tempo, ele reenviará a informação até que uma confirmação seja recebida ou o valor máximo de novas tentativas seja atingido.  As informações são suportadas em SNMPv2c e SNMPv3.
+
+
+Notificações de captura e informação são enviadas quando um alerta padrão ou personalizado é acionado em qualquer nível de gravidade.  Para suprimir notificações SNMP de um alerta, você deve configurar um silêncio para o alerta. Ver link:silencing-alert-notifications.html["Silenciar notificações de alerta"] .
+
+Se sua implantação do StorageGRID incluir vários nós de administração, o nó de administração principal será o remetente preferencial para notificações de alerta, pacotes de AutoSupport e traps e informações SNMP.  Se o nó administrativo principal ficar indisponível, as notificações serão enviadas temporariamente por outros nós administrativos. Ver link:../primer/what-admin-node-is.html["O que é um nó de administração?"] .

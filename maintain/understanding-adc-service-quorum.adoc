@@ -1,0 +1,29 @@
+---
+permalink: maintain/understanding-adc-service-quorum.html 
+sidebar: sidebar 
+keywords: storagegrid, recover, adc, adc quorum 
+summary: 'Talvez você não consiga desativar determinados nós de armazenamento em um site se poucos serviços do Controlador de Domínio Administrativo (ADC) permanecerem após o descomissionamento.' 
+---
+= Qual é o quórum do ADC?
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Talvez você não consiga desativar determinados nós de armazenamento em um site se poucos serviços de Controlador de Domínio Administrativo (ADC) permanecerem após o descomissionamento.
+
+O serviço ADC, encontrado em alguns nós de armazenamento, mantém informações de topologia de grade e fornece serviços de configuração para a grade.  O sistema StorageGRID exige que um quorum de serviços ADC esteja disponível em cada site e o tempo todo.
+
+Você não pode desativar um nó de armazenamento se a remoção do nó fizer com que o quórum do ADC não seja mais atendido.  Para satisfazer o quórum do ADC durante um descomissionamento, no mínimo três nós de armazenamento em cada local devem ter o serviço ADC.  Se um site tiver mais de três nós de armazenamento com o serviço ADC, a maioria simples desses nós deverá permanecer disponível após o descomissionamento: `((0.5 * _Storage Nodes with ADC_) + 1)`
+
+
+CAUTION: Tenha cuidado ao desativar nós de armazenamento em uma grade contendo nós somente de metadados baseados em software.  Se você desativar todos os nós configurados para armazenar _tanto_ objetos quanto metadados, a capacidade de armazenar objetos será removida da grade.  Verlink:../primer/what-storage-node-is.html#types-of-storage-nodes["Tipos de nós de armazenamento"] para obter mais informações sobre nós de armazenamento somente de metadados.
+
+Por exemplo, suponha que um site atualmente inclui seis nós de armazenamento com serviços ADC e você deseja desativar três nós de armazenamento.  Devido ao requisito de quórum do ADC, você deve concluir dois procedimentos de desativação, conforme a seguir:
+
+* No primeiro procedimento de descomissionamento, você deve garantir que quatro nós de armazenamento com serviços ADC permaneçam disponíveis: `((0.5 * 6) + 1)` .  Isso significa que você só pode desativar dois nós de armazenamento inicialmente.
+* No segundo procedimento de descomissionamento, você pode remover o terceiro nó de armazenamento porque o quorum do ADC agora requer apenas três serviços do ADC para permanecer disponível: `((0.5 * 4) + 1)` .
+
+
+Se você precisar desativar um nó de armazenamento, mas não puder devido ao requisito de quorum do ADC, adicione um novo nó de armazenamento em umlink:../expand/index.html["expansão"] e especifique que ele deve ter um serviço ADC.  Em seguida, descomissione o nó de armazenamento existente.

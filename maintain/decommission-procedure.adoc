@@ -1,0 +1,24 @@
+---
+permalink: maintain/decommission-procedure.html 
+sidebar: sidebar 
+keywords: how to decommission 
+summary: Você pode executar um procedimento de descomissionamento para remover permanentemente nós de grade ou um site inteiro do sistema StorageGRID . 
+---
+= Desativar nó ou local
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Você pode executar um procedimento de descomissionamento para remover permanentemente nós de grade ou um site inteiro do sistema StorageGRID .
+
+Para remover um nó de grade ou um site, execute um dos seguintes procedimentos de desativação:
+
+* Executar umlink:grid-node-decommissioning.html["descomissionamento de nós de rede"] para remover um ou mais nós, que podem estar em um ou mais sites.  Os nós que você remove podem estar online e conectados ao sistema StorageGRID , ou podem estar offline e desconectados.
+* Executar umlink:considerations-for-removing-site.html["descomissionamento do local"] para remover um site.  Você executa um *descomissionamento de site conectado* se todos os nós estiverem conectados ao StorageGRID.  Você executa um *descomissionamento de site desconectado* se todos os nós estiverem desconectados do StorageGRID.  Se o site contiver uma mistura de nós conectados e desconectados, você deverá colocar todos os nós offline novamente online.
++
+
+CAUTION: Antes de executar o descomissionamento de um site desconectado, entre em contato com seu representante de conta NetApp .  A NetApp analisará seus requisitos antes de habilitar todas as etapas do assistente de descomissionamento do site.  Você não deve tentar desativar um site desconectado se acreditar que é possível recuperar o site ou recuperar dados de objetos do site.
+
+

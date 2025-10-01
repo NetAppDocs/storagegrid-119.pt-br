@@ -1,0 +1,23 @@
+---
+permalink: audit/event-specific-data.html 
+sidebar: sidebar 
+keywords: audit message, event, shea, s3 head 
+summary: Cada mensagem de auditoria no log de auditoria registra dados específicos de um evento do sistema. 
+---
+= Dados específicos do evento
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Cada mensagem de auditoria no log de auditoria registra dados específicos de um evento do sistema.
+
+Após a abertura `[AUDT:` contêiner que identifica a mensagem em si, o próximo conjunto de atributos fornece informações sobre o evento ou ação descrita pela mensagem de auditoria.  Esses atributos são destacados no exemplo a seguir:
+
+[]
+====
+2018-12-05T08:24:45.921845 [AUDT:*\[RSLT\(FC32\):SUCS\]* *\[TIME\(UI64\):11454\]\[SAIP\(IPAD\):"10.224.0.100"\]\[S3AI\(CSTR\):"60025621595611246499"\]* *\[SACC\(CSTR\):"conta"\]\[S3AK\(CSTR\):"SGKH4_Nc8SO1H6w3w0nCOFCGgk__E6dYzKlumRsKJA=="\]* *\[SUSR\(CSTR\):"urn:sgws:identity::60025621595611246499:root"\]* *\[SBAI\(CSTR\):"60025621595611246499"\]\[SBAC\(CSTR\):"conta"\]\[S3BK\(CSTR\):"bucket"\]* *\[S3KY\(CSTR\):"objeto"\]\[CBID\(UI64\):0xCC128B9B9E428347\]* *\[UUID\(CSTR\):"B975D2CE-E4DA-4D14-8A23-1CB4B83F2CD8"\]\[CSIZ\(UI64\):30720\]*[AVER(UI32):10] \[ATIM(UI64):1543998285921845]\[ATYP\(FC32\):SHEA\][ANID(UI32):12281045][AMID(FC32):S3RQ] \[ATID(UI64):15552417629170647261]]
+
+====
+O `ATYP` elemento (sublinhado no exemplo) identifica qual evento gerou a mensagem.  Esta mensagem de exemplo inclui olink:shea-s3-head.html["KARITÉ"] código de mensagem ([ATYP(FC32):SHEA]), indicando que foi gerado por uma solicitação S3 HEAD bem-sucedida.

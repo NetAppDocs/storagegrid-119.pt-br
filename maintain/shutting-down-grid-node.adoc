@@ -1,0 +1,123 @@
+---
+permalink: maintain/shutting-down-grid-node.html 
+sidebar: sidebar 
+keywords: storagegrid, recover, node shutdown, shut down node, node shut down 
+summary: Você pode desligar um nó de grade a partir do shell de comando do nó. 
+---
+= Desligar nó da grade
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Você pode desligar um nó de grade a partir do shell de comando do nó.
+
+.Antes de começar
+* Você tem o `Passwords.txt` arquivo.
+
+
+.Sobre esta tarefa
+Antes de executar este procedimento, revise estas considerações:
+
+* Em geral, você não deve desligar mais de um nó por vez para evitar interrupções.
+* Não desligue um nó durante um procedimento de manutenção, a menos que seja explicitamente instruído a fazê-lo pela documentação ou pelo suporte técnico.
+* O processo de desligamento é baseado em onde o nó está instalado, da seguinte forma:
++
+** Desligar um nó VMware desliga a máquina virtual.
+** Desligar um nó Linux desliga o contêiner.
+** Desligar um nó do dispositivo StorageGRID desliga o controlador de computação.
+
+
+* Se você planeja desligar mais de um nó de armazenamento em um site, interrompa a ingestão de objetos naquele site por aproximadamente uma hora antes de desligar os nós.
++
+Se qualquer regra do ILM usar a opção de ingestão *Dual commit* (ou se uma regra usar a opção *Balanced* e todas as cópias necessárias não puderem ser criadas imediatamente), o StorageGRID imediatamente confirma quaisquer objetos recém-ingeridos em dois nós de armazenamento no mesmo site e avalia o ILM posteriormente.  Se mais de um nó de armazenamento em um site for desligado, talvez você não consiga acessar os objetos recém-ingeridos durante o desligamento.  As operações de gravação também podem falhar se poucos nós de armazenamento permanecerem disponíveis no site. Ver link:../ilm/index.html["Gerenciar objetos com ILM"] .
+
+
+
+.Passos
+. Efetue login no nó da grade:
++
+.. Digite o seguinte comando: `ssh admin@_grid_node_IP_`
+.. Digite a senha listada no `Passwords.txt` arquivo.
+.. Digite o seguinte comando para alternar para root: `su -`
+.. Digite a senha listada no `Passwords.txt` arquivo.
+
+
++
+Quando você está logado como root, o prompt muda de `$` para `#` .
+
+. Pare todos os serviços: `service servermanager stop`
++
+Os serviços podem levar até 15 minutos para serem desligados, e talvez você queira fazer login no sistema remotamente para monitorar o processo de desligamento.
+
+. Se o nó estiver sendo executado em uma máquina virtual VMware ou for um nó de dispositivo, emita o comando shutdown: `shutdown -h now`
++
+Execute esta etapa independentemente do resultado da `service servermanager stop` comando.
+
++
+
+NOTE: Depois de emitir o `shutdown -h now` comando em um nó do dispositivo, você deve desligar e ligar o dispositivo para reiniciá-lo.
+
++
+Para o dispositivo, este comando desliga o controlador, mas o dispositivo continua ligado.  Você deve concluir a próxima etapa.
+
+. Se você estiver desligando um nó do dispositivo, siga as etapas para o seu dispositivo.
++
+[role="tabbed-block"]
+====
+.SG6160
+--
+.. Desligue a energia do controlador de armazenamento SG6100-CN.
+.. Aguarde até que o LED azul de energia no controlador de armazenamento SG6100-CN desligue.
+
+
+--
+.SGF6112
+--
+.. Desligue a energia do aparelho.
+.. Aguarde até que o LED azul de energia desligue.
+
+
+--
+.SG6000
+--
+.. Aguarde até que o LED verde Cache Active na parte traseira dos controladores de armazenamento desligue.
++
+Este LED fica aceso quando dados em cache precisam ser gravados nas unidades.  Você deve esperar que este LED desligue antes de desligar a energia.
+
+.. Desligue o aparelho e aguarde até que o LED azul de energia apague.
+
+
+--
+.SG5800
+--
+.. Aguarde até que o LED verde Cache Active na parte traseira do controlador de armazenamento desligue.
++
+Este LED fica aceso quando dados em cache precisam ser gravados nas unidades.  Você deve esperar que este LED desligue antes de desligar a energia.
+
+.. Na página inicial do SANtricity System Manager, selecione *Exibir operações em andamento*.
+.. Confirme se todas as operações foram concluídas antes de continuar com a próxima etapa.
+.. Desligue os dois interruptores de energia na prateleira do controlador e espere até que todos os LEDs na prateleira do controlador se apaguem.
+
+
+--
+.SG5700
+--
+.. Aguarde até que o LED verde Cache Active na parte traseira do controlador de armazenamento desligue.
++
+Este LED fica aceso quando dados em cache precisam ser gravados nas unidades.  Você deve esperar que este LED desligue antes de desligar a energia.
+
+.. Desligue o aparelho e aguarde até que toda a atividade do LED e do display de sete segmentos pare.
+
+
+--
+.SG100 ou SG1000
+--
+.. Desligue a energia do aparelho.
+.. Aguarde até que o LED azul de energia desligue.
+
+
+--
+====
+

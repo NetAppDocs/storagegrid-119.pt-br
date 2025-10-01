@@ -1,0 +1,118 @@
+= Encontre o nome do host para o nó de armazenamento
+:allow-uri-read: 
+
+
+
+
+== Encontre o nome do host para o nó de armazenamento
+
+. Efetue login no nó de administração principal:
++
+.. Digite o seguinte comando: `ssh admin@_primary_Admin_Node_IP_`
+.. Digite a senha listada no `Passwords.txt` arquivo.
+.. Digite o seguinte comando para alternar para root: `su -`
+.. Digite a senha listada no `Passwords.txt` arquivo.
++
+Quando você está logado como root, o prompt muda de `$` para `#` .
+
+
+
+. Use o `/etc/hosts` arquivo para encontrar o nome do host do nó de armazenamento para os volumes de armazenamento restaurados.  Para ver uma lista de todos os nós na grade, digite o seguinte: `cat /etc/hosts` .
+
+
+
+
+== Reparar dados se todos os volumes falharem
+
+Se todos os volumes de armazenamento falharem, repare o nó inteiro.  Siga as instruções para *dados replicados*, *dados com codificação de eliminação (EC)* ou ambos, dependendo se você usa dados replicados, dados com codificação de eliminação (EC) ou ambos.
+
+Se apenas alguns volumes falharam, vá para<<Reparar dados se apenas alguns volumes falharam>> .
+
+
+NOTE: Você não pode correr `repair-data` operações para mais de um nó ao mesmo tempo.  Para recuperar vários nós, entre em contato com o suporte técnico.
+
+[role="tabbed-block"]
+====
+.Dados replicados
+--
+Se sua grade incluir dados replicados, use o `repair-data start-replicated-node-repair` comando com o `--nodes` opção, onde `--nodes` é o nome do host (nome do sistema) para reparar todo o nó de armazenamento.
+
+Este comando repara os dados replicados em um nó de armazenamento chamado SG-DC-SN3:
+
+`repair-data start-replicated-node-repair --nodes SG-DC-SN3`
+
+
+NOTE: Conforme os dados do objeto são restaurados, o alerta *Objetos Perdidos* é acionado se o sistema StorageGRID não conseguir localizar os dados do objeto replicados. Alertas podem ser disparados em nós de armazenamento em todo o sistema. Você deve determinar a causa da perda e se a recuperação é possível. Ver link:../troubleshoot/investigating-lost-objects.html["Investigar objetos perdidos"] .
+
+--
+.Dados codificados por apagamento (EC)
+--
+Se sua grade contiver dados codificados por eliminação, use o `repair-data start-ec-node-repair` comando com o `--nodes` opção, onde `--nodes` é o nome do host (nome do sistema) para reparar todo o nó de armazenamento.
+
+Este comando repara os dados codificados para eliminação em um nó de armazenamento chamado SG-DC-SN3:
+
+`repair-data start-ec-node-repair --nodes SG-DC-SN3`
+
+A operação retorna um valor único `repair ID` que identifica isso `repair_data` operação.  Use isto `repair ID` para acompanhar o progresso e o resultado do `repair_data` operação.  Nenhum outro feedback é retornado quando o processo de recuperação é concluído.
+
+Os reparos de dados codificados para eliminação podem começar enquanto alguns nós de armazenamento estão offline.  O reparo será concluído depois que todos os nós estiverem disponíveis.
+
+--
+====
+
+
+== Reparar dados se apenas alguns volumes falharam
+
+Se apenas alguns volumes falharam, repare os volumes afetados.  Siga as instruções para *dados replicados*, *dados com codificação de eliminação (EC)* ou ambos, dependendo se você usa dados replicados, dados com codificação de eliminação (EC) ou ambos.
+
+Se todos os volumes falharam, vá para<<Reparar dados se todos os volumes falharem>> .
+
+Insira os IDs de volume em hexadecimal.  Por exemplo, `0000` é o primeiro volume e `000F` é o décimo sexto volume.  Você pode especificar um volume, um intervalo de volumes ou vários volumes que não estejam em uma sequência.
+
+Todos os volumes devem estar no mesmo nó de armazenamento.  Se precisar restaurar volumes para mais de um nó de armazenamento, entre em contato com o suporte técnico.
+
+[role="tabbed-block"]
+====
+.Dados replicados
+--
+Se sua grade contiver dados replicados, use o `start-replicated-volume-repair` comando com o `--nodes` opção para identificar o nó (onde `--nodes` é o nome do host do nó).  Em seguida, adicione o `--volumes` ou `--volume-range` opção, conforme mostrado nos exemplos a seguir.
+
+*Volume único*: Este comando restaura dados replicados para o volume `0002` em um nó de armazenamento chamado SG-DC-SN3:
+
+`repair-data start-replicated-volume-repair --nodes SG-DC-SN3 --volumes 0002`
+
+*Intervalo de volumes*: Este comando restaura dados replicados para todos os volumes no intervalo `0003` para `0009` em um nó de armazenamento chamado SG-DC-SN3:
+
+`repair-data start-replicated-volume-repair --nodes SG-DC-SN3 --volume-range 0003,0009`
+
+*Vários volumes não em sequência*: Este comando restaura dados replicados para volumes `0001` , `0005` , e `0008` em um nó de armazenamento chamado SG-DC-SN3:
+
+`repair-data start-replicated-volume-repair --nodes SG-DC-SN3 --volumes 0001,0005,0008`
+
+
+NOTE: Conforme os dados do objeto são restaurados, o alerta *Objetos Perdidos* é acionado se o sistema StorageGRID não conseguir localizar os dados do objeto replicados. Alertas podem ser disparados em nós de armazenamento em todo o sistema. Observe a descrição do alerta e as ações recomendadas para determinar a causa da perda e se a recuperação é possível.
+
+--
+.Dados codificados por apagamento (EC)
+--
+Se sua grade contiver dados codificados por eliminação, use o `start-ec-volume-repair` comando com o `--nodes` opção para identificar o nó (onde `--nodes` é o nome do host do nó).  Em seguida, adicione o `--volumes` ou `--volume-range` opção, conforme mostrado nos exemplos a seguir.
+
+*Volume único*: Este comando restaura dados codificados para eliminação no volume `0007` em um nó de armazenamento chamado SG-DC-SN3:
+
+`repair-data start-ec-volume-repair --nodes SG-DC-SN3 --volumes 0007`
+
+*Intervalo de volumes*: Este comando restaura dados codificados por eliminação para todos os volumes no intervalo `0004` para `0006` em um nó de armazenamento chamado SG-DC-SN3:
+
+`repair-data start-ec-volume-repair --nodes SG-DC-SN3 --volume-range 0004,0006`
+
+*Vários volumes não em sequência*: Este comando restaura dados codificados por eliminação para volumes `000A` , `000C` , e `000E` em um nó de armazenamento chamado SG-DC-SN3:
+
+`repair-data start-ec-volume-repair --nodes SG-DC-SN3 --volumes 000A,000C,000E`
+
+O `repair-data` operação retorna um único `repair ID` que identifica isso `repair_data` operação.  Use isto `repair ID` para acompanhar o progresso e o resultado do `repair_data` operação.  Nenhum outro feedback é retornado quando o processo de recuperação é concluído.
+
+
+NOTE: Os reparos de dados codificados para eliminação podem começar enquanto alguns nós de armazenamento estão offline.  O reparo será concluído depois que todos os nós estiverem disponíveis.
+
+--
+====

@@ -1,0 +1,483 @@
+---
+permalink: network/internal-grid-node-communications.html 
+sidebar: sidebar 
+keywords: storagegrid, network port, internal communications, ports, TCP, UDP, grid communications, port 
+summary: 'O firewall interno do StorageGRID permite apenas conexões de entrada em portas específicas na Grid Network, com exceção das portas 22, 80, 123 e 443 (consulte as informações sobre comunicações externas).  Conexões também são aceitas em portas definidas pelos pontos de extremidade do balanceador de carga.' 
+---
+= Comunicações internas do nó da rede
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+O firewall interno do StorageGRID permite conexões de entrada em portas específicas na Grid Network.  Conexões também são aceitas em portas definidas pelos pontos de extremidade do balanceador de carga.
+
+
+NOTE: A NetApp recomenda que você habilite o tráfego do Protocolo de Mensagens de Controle da Internet (ICMP) entre os nós da grade.  Permitir tráfego ICMP pode melhorar o desempenho de failover quando um nó de grade não pode ser alcançado.
+
+Além do ICMP e das portas listadas na tabela, o StorageGRID usa o Virtual Router Redundancy Protocol (VRRP).  VRRP é um protocolo de internet que usa o protocolo IP número 112.  O StorageGRID usa VRRP somente no modo unicast.  O VRRP é necessário somente selink:../admin/managing-high-availability-groups.html["grupos de alta disponibilidade"] estão configurados.
+
+
+
+== Diretrizes para nós baseados em Linux
+
+Se as políticas de rede corporativa restringirem o acesso a qualquer uma dessas portas, você poderá remapear as portas no momento da implantação usando um parâmetro de configuração de implantação. Para obter mais informações sobre remapeamento de portas e parâmetros de configuração de implantação, consulte:
+
+* link:../rhel/index.html["Instalar o StorageGRID no Red Hat Enterprise Linux"]
+* link:../ubuntu/index.html["Instalar o StorageGRID no Ubuntu ou Debian"]
+
+
+
+
+== Diretrizes para nós baseados em VMware
+
+Configure as seguintes portas somente se precisar definir restrições de firewall externas à rede VMware.
+
+Se as políticas de rede corporativa restringirem o acesso a qualquer uma dessas portas, você poderá remapear as portas ao implantar nós usando o VMware vSphere Web Client ou usando uma definição de arquivo de configuração ao automatizar a implantação de nós de grade. Para obter mais informações sobre remapeamento de porta e parâmetros de configuração de implantação, consultelink:../vmware/index.html["Instalar o StorageGRID no VMware"] .
+
+
+
+== Diretrizes para nós de dispositivos
+
+Se as políticas de rede corporativa restringirem o acesso a qualquer uma dessas portas, você poderá remapear as portas usando o StorageGRID Appliance Installer. Ver https://docs.netapp.com/us-en/storagegrid-appliances/installconfig/optional-remapping-network-ports-for-appliance.html["Opcional: Remapear portas de rede para o dispositivo"^] .
+
+
+
+== Portas internas do StorageGRID
+
+[cols="1a,1a,1a,1a,4a"]
+|===
+| Porta | TCP ou UDP | De | Para | Detalhes 
+
+
+ a| 
+22
+ a| 
+TCP
+ a| 
+Nó de administração primário
+ a| 
+Todos os nós
+ a| 
+Para procedimentos de manutenção, o nó administrativo primário deve ser capaz de se comunicar com todos os outros nós usando SSH na porta 22.  Permitir tráfego SSH de outros nós é opcional.
+
+
+
+ a| 
+80
+ a| 
+TCP
+ a| 
+Eletrodomésticos
+ a| 
+Nó de administração primário
+ a| 
+Usado por dispositivos StorageGRID para se comunicar com o nó de administração principal para iniciar a instalação.
+
+
+
+ a| 
+123
+ a| 
+UDP
+ a| 
+Todos os nós
+ a| 
+Todos os nós
+ a| 
+Serviço de protocolo de tempo de rede.  Cada nó sincroniza seu tempo com todos os outros nós usando NTP.
+
+
+
+ a| 
+443
+ a| 
+TCP
+ a| 
+Todos os nós
+ a| 
+Nó de administração primário
+ a| 
+Usado para comunicar status ao nó de administração principal durante a instalação e outros procedimentos de manutenção.
+
+
+
+ a| 
+1055
+ a| 
+TCP
+ a| 
+Todos os nós
+ a| 
+Nó de administração primário
+ a| 
+Tráfego interno para instalação, expansão, recuperação e outros procedimentos de manutenção.
+
+
+
+ a| 
+1139
+ a| 
+TCP
+ a| 
+Nós de armazenamento
+ a| 
+Nós de armazenamento
+ a| 
+Tráfego interno entre nós de armazenamento.
+
+
+
+ a| 
+1501
+ a| 
+TCP
+ a| 
+Todos os nós
+ a| 
+Nós de armazenamento com ADC
+ a| 
+Relatórios, auditoria e configuração de tráfego interno.
+
+
+
+ a| 
+1502
+ a| 
+TCP
+ a| 
+Todos os nós
+ a| 
+Nós de armazenamento
+ a| 
+Tráfego interno relacionado ao S3 e Swift.
+
+
+
+ a| 
+1504
+ a| 
+TCP
+ a| 
+Todos os nós
+ a| 
+Nós de administração
+ a| 
+Relatórios de serviço NMS e configuração de tráfego interno.
+
+
+
+ a| 
+1505
+ a| 
+TCP
+ a| 
+Todos os nós
+ a| 
+Nós de administração
+ a| 
+Tráfego interno do serviço AMS.
+
+
+
+ a| 
+1506
+ a| 
+TCP
+ a| 
+Todos os nós
+ a| 
+Todos os nós
+ a| 
+Tráfego interno de status do servidor.
+
+
+
+ a| 
+1507
+ a| 
+TCP
+ a| 
+Todos os nós
+ a| 
+Nós de gateway
+ a| 
+Tráfego interno do balanceador de carga.
+
+
+
+ a| 
+1508
+ a| 
+TCP
+ a| 
+Todos os nós
+ a| 
+Nó de administração primário
+ a| 
+Tráfego interno de gerenciamento de configuração.
+
+
+
+ a| 
+1511
+ a| 
+TCP
+ a| 
+Todos os nós
+ a| 
+Nós de armazenamento
+ a| 
+Tráfego interno de metadados.
+
+
+
+ a| 
+7001
+ a| 
+TCP
+ a| 
+Nós de armazenamento
+ a| 
+Nós de armazenamento
+ a| 
+Comunicação entre clusters de nós Cassandra TLS.
+
+
+
+ a| 
+7443
+ a| 
+TCP
+ a| 
+Todos os nós
+ a| 
+Nó de administração primário
+ a| 
+Tráfego interno para instalação, expansão, recuperação, outros procedimentos de manutenção e relatórios de erros.
+
+
+
+ a| 
+8011
+ a| 
+TCP
+ a| 
+Todos os nós
+ a| 
+Nó de administração primário
+ a| 
+Tráfego interno para instalação, expansão, recuperação e outros procedimentos de manutenção.
+
+
+
+ a| 
+8443
+ a| 
+TCP
+ a| 
+Nó de administração primário
+ a| 
+Nós de dispositivos
+ a| 
+Tráfego interno relacionado ao procedimento do modo de manutenção.
+
+
+
+ a| 
+9042
+ a| 
+TCP
+ a| 
+Nós de armazenamento
+ a| 
+Nós de armazenamento
+ a| 
+Porta do cliente Cassandra.
+
+
+
+ a| 
+9999
+ a| 
+TCP
+ a| 
+Todos os nós
+ a| 
+Todos os nós
+ a| 
+Tráfego interno para múltiplos serviços.  Inclui procedimentos de manutenção, métricas e atualizações de rede.
+
+
+
+ a| 
+10226
+ a| 
+TCP
+ a| 
+Nós de armazenamento
+ a| 
+Nó de administração primário
+ a| 
+Usado por dispositivos StorageGRID para encaminhar pacotes do AutoSupport do E-Series SANtricity System Manager para o nó de administração principal.
+
+
+
+ a| 
+10342
+ a| 
+TCP
+ a| 
+Todos os nós
+ a| 
+Nó de administração primário
+ a| 
+Tráfego interno para instalação, expansão, recuperação e outros procedimentos de manutenção.
+
+
+
+ a| 
+18000
+ a| 
+TCP
+ a| 
+Nós de administração/armazenamento
+ a| 
+Nós de armazenamento com ADC
+ a| 
+Tráfego interno do serviço de conta.
+
+
+
+ a| 
+18001
+ a| 
+TCP
+ a| 
+Nós de administração/armazenamento
+ a| 
+Nós de armazenamento com ADC
+ a| 
+Tráfego interno da Federação de Identidade.
+
+
+
+ a| 
+18002
+ a| 
+TCP
+ a| 
+Nós de administração/armazenamento
+ a| 
+Nós de armazenamento
+ a| 
+Tráfego interno de API relacionado a protocolos de objetos.
+
+
+
+ a| 
+18003
+ a| 
+TCP
+ a| 
+Nós de administração/armazenamento
+ a| 
+Nós de armazenamento com ADC
+ a| 
+Tráfego interno dos serviços de plataforma.
+
+
+
+ a| 
+18017
+ a| 
+TCP
+ a| 
+Nós de administração/armazenamento
+ a| 
+Nós de armazenamento
+ a| 
+Tráfego interno do serviço Data Mover para pools de armazenamento em nuvem.
+
+
+
+ a| 
+18019
+ a| 
+TCP
+ a| 
+Nós de armazenamento
+ a| 
+Nós de armazenamento
+ a| 
+Tráfego interno do serviço de bloco para codificação de eliminação.
+
+
+
+ a| 
+18082
+ a| 
+TCP
+ a| 
+Nós de administração/armazenamento
+ a| 
+Nós de armazenamento
+ a| 
+Tráfego interno relacionado ao S3.
+
+
+
+ a| 
+18083
+ a| 
+TCP
+ a| 
+Todos os nós
+ a| 
+Nós de armazenamento
+ a| 
+Tráfego interno relacionado ao Swift.
+
+
+
+ a| 
+18086
+ a| 
+TCP
+ a| 
+Todos os nós da grade
+ a| 
+Todos os nós de armazenamento
+ a| 
+Tráfego interno relacionado ao serviço LDR.
+
+
+
+ a| 
+18200
+ a| 
+TCP
+ a| 
+Nós de administração/armazenamento
+ a| 
+Nós de armazenamento
+ a| 
+Estatísticas adicionais sobre solicitações de clientes.
+
+
+
+ a| 
+19000
+ a| 
+TCP
+ a| 
+Nós de administração/armazenamento
+ a| 
+Nós de armazenamento com ADC
+ a| 
+Tráfego interno do serviço Keystone .
+
+|===
+.Informações relacionadas
+link:external-communications.html["Comunicações externas"]

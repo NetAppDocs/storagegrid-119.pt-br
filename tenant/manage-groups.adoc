@@ -1,0 +1,154 @@
+---
+permalink: tenant/manage-groups.html 
+sidebar: sidebar 
+keywords: how to view and edit tenant groups, manage groups, duplicate group, remove group, edit group 
+summary: Gerencie seus grupos de inquilinos conforme necessário para visualizar, editar ou duplicar um grupo e muito mais. 
+---
+= Gerenciar grupos
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Gerencie seus grupos de inquilinos conforme necessário para visualizar, editar ou duplicar um grupo e muito mais.
+
+.Antes de começar
+* Você está conectado ao Gerenciador de Inquilinos usando umlink:../admin/web-browser-requirements.html["navegador da web compatível"] .
+* Você pertence a um grupo de usuários que tem olink:tenant-management-permissions.html["Permissão de acesso root"] .
+
+
+
+
+== Ver ou editar grupo
+
+Você pode visualizar e editar as informações básicas e detalhes de cada grupo.
+
+.Passos
+. Selecione *GERENCIAMENTO DE ACESSO* > *Grupos*.
+. Revise as informações fornecidas na página Grupos, que lista informações básicas para todos os grupos locais e federados para esta conta de locatário.
++
+Se a conta do locatário tiver a permissão *Usar conexão de federação de grade* e você estiver visualizando grupos na grade de origem do locatário:
+
++
+** Uma mensagem de banner indica que se você editar ou remover um grupo, suas alterações não serão sincronizadas com a outra grade.
+** Conforme necessário, uma mensagem de banner indica se os grupos não foram clonados para o locatário na grade de destino.  Você pode<<clone-groups,tentar novamente um clone de grupo>> que falhou.
+
+
+. Se você quiser alterar o nome do grupo:
++
+.. Marque a caixa de seleção do grupo.
+.. Selecione *Ações* > *Editar nome do grupo*.
+.. Digite o novo nome.
+.. Selecione *Salvar alterações.*
+
+
+. Se quiser ver mais detalhes ou fazer edições adicionais, faça um dos seguintes:
++
+** Selecione o nome do grupo.
+** Marque a caixa de seleção do grupo e selecione *Ações* > *Exibir detalhes do grupo*.
+
+
+. Revise a seção Visão geral, que mostra as seguintes informações para cada grupo:
++
+** Nome de exibição
+** Nome único
+** Tipo
+** Modo de acesso
+** Permissões
+** Política S3
+** Número de usuários neste grupo
+** Campos adicionais se a conta do locatário tiver a permissão *Usar conexão de federação de grade* e você estiver visualizando o grupo na grade de origem do locatário:
++
+*** Status de clonagem, *Sucesso* ou *Falha*
+*** Um banner azul indicando que se você editar ou excluir este grupo, suas alterações não serão sincronizadas com a outra grade.
+
+
+
+
+. Edite as configurações do grupo conforme necessário. Verlink:creating-groups-for-s3-tenant.html["Criar grupos para um locatário S3"] elink:creating-groups-for-swift-tenant.html["Criar grupos para um locatário Swift"] para obter detalhes sobre o que inserir.
++
+.. Na seção Visão geral, altere o nome de exibição selecionando o nome ou o ícone de ediçãoimage:../media/icon_edit_tm.png["Ícone de edição"] .
+.. Na aba *Permissões do grupo*, atualize as permissões e selecione *Salvar alterações*.
+.. Na aba *Política de grupo*, faça as alterações e selecione *Salvar alterações*.
++
+*** Se você estiver editando um grupo S3, opcionalmente selecione uma política de grupo S3 diferente ou insira a string JSON para uma política personalizada, conforme necessário.
+*** Se você estiver editando um grupo Swift, opcionalmente, selecione ou desmarque a caixa de seleção *Administrador Swift*.
+
+
+
+
+. Para adicionar um ou mais usuários locais existentes ao grupo:
++
+.. Selecione a aba Usuários.
++
+image::../media/manage_users.png[Gerenciar usuários]
+
+.. Selecione *Adicionar usuários*.
+.. Selecione os usuários existentes que você deseja adicionar e selecione *Adicionar usuários*.
++
+Uma mensagem de sucesso aparece no canto superior direito.
+
+
+
+. Para remover usuários locais do grupo:
++
+.. Selecione a aba Usuários.
+.. Selecione *Remover usuários*.
+.. Selecione os usuários que deseja remover e selecione *Remover usuários*.
++
+Uma mensagem de sucesso aparece no canto superior direito.
+
+
+
+. Confirme se você selecionou *Salvar alterações* para cada seção alterada.
+
+
+
+
+== Grupo duplicado
+
+Você pode duplicar um grupo existente para criar novos grupos mais rapidamente.
+
+
+NOTE: Se sua conta de locatário tiver a permissão *Usar conexão de federação de grade* e você duplicar um grupo da grade de origem do locatário, o grupo duplicado será clonado na grade de destino do locatário.
+
+.Passos
+. Selecione *GERENCIAMENTO DE ACESSO* > *Grupos*.
+. Marque a caixa de seleção do grupo que você deseja duplicar.
+. Selecione *Ações* > *Duplicar grupo*.
+. Verlink:creating-groups-for-s3-tenant.html["Criar grupos para um locatário S3"] oulink:creating-groups-for-swift-tenant.html["Criar grupos para um locatário Swift"] para obter detalhes sobre o que inserir.
+. Selecione *Criar grupo*.
+
+
+
+
+== [[clone-groups]]Clone do grupo de repetição
+
+Para tentar novamente um clone que falhou:
+
+. Selecione cada grupo que indica _(Falha na clonagem)_ abaixo do nome do grupo.
+. Selecione *Ações* > *Clonar grupos*.
+. Veja o status da operação de clonagem na página de detalhes de cada grupo que você está clonando.
+
+
+Para obter informações adicionais, consultelink:grid-federation-account-clone.html["Clonar grupos de locatários e usuários"] .
+
+
+
+== Excluir um ou mais grupos
+
+Você pode excluir um ou mais grupos.  Qualquer usuário que pertença apenas a um grupo excluído não poderá mais fazer login no Gerenciador de Locatários nem usar a conta do locatário.
+
+
+NOTE: Se sua conta de locatário tiver a permissão *Usar conexão de federação de grade* e você excluir um grupo, o StorageGRID não excluirá o grupo correspondente na outra grade.  Se você precisar manter essas informações sincronizadas, exclua o mesmo grupo de ambas as grades.
+
+.Passos
+. Selecione *GERENCIAMENTO DE ACESSO* > *Grupos*.
+. Marque a caixa de seleção de cada grupo que você deseja excluir.
+. Selecione *Ações* > *Excluir grupo* ou *Ações* > *Excluir grupos*.
++
+Uma caixa de diálogo de confirmação é exibida.
+
+. Selecione *Excluir grupo* ou *Excluir grupos*.
+
