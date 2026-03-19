@@ -59,6 +59,14 @@ NOTE: O `ETag` o valor retornado não é uma soma MD5 dos dados, mas segue a imp
 
 Os seguintes cabeçalhos de solicitação não são suportados:
 
+* `If-Match`
++
+O  `If-Match header` é aceito, mas não funcional.
+
+* `If-None-Match`
++
+O  `If-None-Match header` é aceito, mas não funcional.
+
 * `x-amz-sdk-checksum-algorithm`
 * `x-amz-trailer`
 

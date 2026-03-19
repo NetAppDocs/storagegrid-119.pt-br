@@ -101,6 +101,14 @@ Os seguintes cabeçalhos de solicitação não são suportados:
 * `Content-Encoding`
 * `Content-Language`
 * `Expires`
+* `If-Match`
++
+O  `If-Match header` é aceito, mas não funcional.
+
+* `If-None-Match`
++
+O  `If-None-Match header` é aceito, mas não funcional.
+
 * `x-amz-checksum-algorithm`
 +
 Quando você copia um objeto, se o objeto de origem tiver uma soma de verificação, o StorageGRID não copia esse valor de soma de verificação para o novo objeto.  Este comportamento se aplica independentemente de você tentar usar ou não `x-amz-checksum-algorithm` na solicitação do objeto.
