@@ -24,7 +24,7 @@ O serviço StorageGRID Load Balancer é instalado em todos os nós de administra
 O serviço Load Balancer em cada nó opera de forma independente ao encaminhar o tráfego do cliente para os nós de armazenamento.  Por meio de um processo de ponderação, o serviço Load Balancer encaminha mais solicitações para nós de armazenamento com maior disponibilidade de CPU.
 
 
-NOTE: Embora o serviço StorageGRID Load Balancer seja o mecanismo de balanceamento de carga recomendado, talvez você queira integrar um balanceador de carga de terceiros.  Para obter informações, entre em contato com seu representante de conta NetApp ou consulte https://fieldportal.netapp.com/content/2666394["TR-4626: balanceadores de carga globais e de terceiros do StorageGRID"^] .
+NOTE: Embora o serviço StorageGRID Load Balancer seja o mecanismo de balanceamento de carga recomendado, você pode optar por integrar um balanceador de carga de terceiro. Para obter informações, entre em contato com seu representante de contas da NetApp ou consulte  https://docs.netapp.com/us-en/storagegrid-enable/technical-reports/load-balancer-index.html["Use balanceadores de carga de terceiros com StorageGRID"^].
 
 
 
