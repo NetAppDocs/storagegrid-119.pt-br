@@ -26,6 +26,7 @@ As políticas de bucket especificam as permissões de acesso para o bucket ao qu
 
 
 
+[[example-allow-everyone-read-only-access-to-a-bucket]]
 == Exemplo: permitir que todos tenham acesso somente leitura a um bucket
 
 Neste exemplo, todos, incluindo anônimos, têm permissão para listar objetos no bucket e executar operações GetObject em todos os objetos no bucket.  Todas as outras operações serão negadas.  Observe que esta política pode não ser particularmente útil porque ninguém, exceto o root da conta, tem permissão para gravar no bucket.
@@ -46,6 +47,7 @@ Neste exemplo, todos, incluindo anônimos, têm permissão para listar objetos n
 ----
 
 
+[[example-allow-everyone-in-one-account-full-access-and-everyone-in-another-account-read-only-access-to-a-bucket]]
 == Exemplo: permitir que todos em uma conta tenham acesso total e todos em outra conta tenham acesso somente leitura a um bucket
 
 Neste exemplo, todos em uma conta especificada têm permissão para acesso total a um bucket, enquanto todos em outra conta especificada têm permissão apenas para listar o bucket e executar operações GetObject em objetos no bucket começando com o `shared/` prefixo de chave de objeto.
@@ -94,6 +96,7 @@ NOTE: No StorageGRID, os objetos criados por uma conta não proprietária (inclu
 ----
 
 
+[[example-allow-everyone-read-only-access-to-a-bucket-and-full-access-by-specified-group]]
 == Exemplo: permitir que todos tenham acesso somente leitura a um bucket e acesso total ao grupo especificado
 
 Neste exemplo, todos, incluindo anônimos, têm permissão para listar o bucket e executar operações GetObject em todos os objetos no bucket, enquanto apenas os usuários pertencentes ao grupo `Marketing` na conta especificada têm acesso total.
@@ -127,6 +130,7 @@ Neste exemplo, todos, incluindo anônimos, têm permissão para listar o bucket 
 ----
 
 
+[[example-allow-everyone-read-and-write-access-to-a-bucket-if-client-in-ip-range]]
 == Exemplo: permitir que todos tenham acesso de leitura e gravação a um bucket se o cliente estiver no intervalo de IP
 
 Neste exemplo, todos, incluindo anônimos, têm permissão para listar o bucket e executar quaisquer operações de objeto em todos os objetos no bucket, desde que as solicitações venham de um intervalo de IP especificado (54.240.143.0 a 54.240.143.255, exceto 54.240.143.188).  Todas as outras operações serão negadas, e todas as solicitações fora do intervalo de IP serão negadas.
@@ -151,6 +155,7 @@ Neste exemplo, todos, incluindo anônimos, têm permissão para listar o bucket 
 ----
 
 
+[[example-allow-full-access-to-a-bucket-exclusively-by-a-specified-federated-user]]
 == Exemplo: permitir acesso total a um bucket exclusivamente por um usuário federado especificado
 
 Neste exemplo, o usuário federado Alex tem acesso total ao `examplebucket` balde e seus objetos.  Todos os outros usuários, incluindo ``root`', têm todas as operações explicitamente negadas.  Observe, no entanto, que ``root`' nunca tem permissões negadas para Put/Get/DeleteBucketPolicy.
@@ -190,6 +195,7 @@ Neste exemplo, o usuário federado Alex tem acesso total ao `examplebucket` bald
 ----
 
 
+[[example-putoverwriteobject-permission]]
 == Exemplo: permissão PutOverwriteObject
 
 Neste exemplo, o `Deny` O efeito para PutOverwriteObject e DeleteObject garante que ninguém possa substituir ou excluir os dados do objeto, os metadados definidos pelo usuário e a marcação de objetos do S3.

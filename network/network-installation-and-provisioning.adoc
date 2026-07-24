@@ -15,6 +15,7 @@ Você deve entender como a Rede de Grade e as Redes de Administrador e Cliente o
 
 
 
+[[initial-deployment-of-a-node]]
 == Implantação inicial de um nó
 
 Ao implantar um nó pela primeira vez, você deve anexá-lo à Rede de Grade e garantir que ele tenha acesso ao Nó de Administração principal.  Se a Rede de Grade estiver isolada, você poderá configurar a Rede de Administração no Nó de Administração principal para acesso de configuração e instalação de fora da Rede de Grade.
@@ -25,12 +26,14 @@ Se necessário, sub-redes contendo servidores NTP ou que exijam acesso ao Grid M
 
 
 
+[[automatic-node-registration-with-primary-admin-node]]
 == Registro automático de nó com nó de administração primário
 
 Depois que os nós são implantados, eles se registram no nó de administração principal usando a rede Grid.  Você pode então usar o Grid Manager, o `configure-storagegrid.py` Script Python ou a API de instalação para configurar a grade e aprovar os nós registrados.  Durante a configuração da grade, você pode configurar várias sub-redes da grade.  Rotas estáticas para essas sub-redes por meio do gateway da Grid Network serão criadas em cada nó quando você concluir a configuração da grade.
 
 
 
+[[disabling-the-admin-network-or-client-network]]
 == Desabilitando a rede de administração ou a rede do cliente
 
 Se você quiser desabilitar a Rede de Administração ou a Rede de Cliente, você pode remover a configuração delas durante o processo de aprovação do nó, ou você pode usar a ferramenta Alterar IP após a conclusão da instalação (vejalink:../maintain/configuring-ip-addresses.html["Configurar endereços IP"] ).

@@ -15,12 +15,14 @@ Você pode usar a federação de grade para clonar locatários e replicar seus o
 
 
 
+[[what-is-a-grid-federation-connection]]
 == O que é uma conexão de federação de rede?
 
 Uma conexão de federação de grade é uma conexão bidirecional, confiável e segura entre nós de administração e gateway em dois sistemas StorageGRID .
 
 
 
+[[workflow-for-grid-federation]]
 == Fluxo de trabalho para federação de grade
 
 O diagrama de fluxo de trabalho resume as etapas para configurar uma conexão de federação de grade entre duas grades.
@@ -29,6 +31,7 @@ image::../media/grid-federation-workflow.png[Fluxo de trabalho de conexão da fe
 
 
 
+[[considerations-and-requirements-for-grid-federation-connections]]
 == Considerações e requisitos para conexões de federação de rede
 
 * As grades usadas para federação de grade devem executar versões do StorageGRID que sejam idênticas ou não tenham mais de uma diferença de versão principal entre elas.
@@ -42,6 +45,7 @@ Para obter detalhes sobre os requisitos de versão, consulte olink:../release-no
 
 
 
+[[networking-and-ip-address-requirements]]
 === Requisitos de rede e endereço IP
 
 * As conexões de federação de grade podem ocorrer na Rede de grade, na Rede de administração ou na Rede de cliente.
@@ -53,6 +57,7 @@ Para obter detalhes sobre os requisitos de versão, consulte olink:../release-no
 
 
 
+[[use-fqdns-to-load-balance-the-connection]]
 === Use FQDNs para balancear a carga da conexão
 
 Para um ambiente de produção, use nomes de domínio totalmente qualificados (FQDNs) para identificar cada grade na conexão.  Em seguida, crie as entradas DNS apropriadas, da seguinte forma:
@@ -69,6 +74,7 @@ Quando você usa várias entradas de DNS, as solicitações para usar a conexão
 
 
 
+[[port-requirements]]
 === Requisitos portuários
 
 Ao criar uma conexão de federação de grade, você pode especificar qualquer número de porta não utilizado de 23000 a 23999.  Ambas as grades nesta conexão usarão a mesma porta.
@@ -77,6 +83,7 @@ Você deve garantir que nenhum nó em nenhuma das grades use esta porta para out
 
 
 
+[[certificate-requirements]]
 === Requisitos do certificado
 
 Ao configurar uma conexão de federação de grade, o StorageGRID gera automaticamente quatro certificados SSL:

@@ -20,6 +20,7 @@ Você pode usar o assistente de configuração do S3 para configurar o StorageGR
 
 
 
+[[access-the-wizard]]
 == Acesse o assistente
 
 .Passos
@@ -33,6 +34,7 @@ image::../media/help_menu.png[menu de ajuda]
 
 
 
+[[step-1-of-6-configure-ha-group]]
 == Etapa 1 de 6: Configurar grupo HA
 
 Um grupo HA é uma coleção de nós que contêm o serviço StorageGRID Load Balancer.  Um grupo HA pode conter nós de gateway, nós de administração ou ambos.
@@ -135,6 +137,7 @@ Pelo menos um endereço deve ser IPv4.  Opcionalmente, você pode especificar en
 
 
 
+[[step-2-of-6-configure-load-balancer-endpoint]]
 == Etapa 2 de 6: Configurar o ponto de extremidade do balanceador de carga
 
 O StorageGRID usa um balanceador de carga para gerenciar a carga de trabalho de aplicativos clientes.  O balanceamento de carga maximiza a velocidade e a capacidade de conexão entre vários nós de armazenamento.
@@ -334,6 +337,7 @@ Copie o certificado do servidor para o balanceador de carga externo e cole-o nes
 ====
 
 
+[[step-3-of-6-create-tenant-and-bucket]]
 == Etapa 3 de 6: criar locatário e bucket
 
 Um locatário é uma entidade que pode usar aplicativos S3 para armazenar e recuperar objetos no StorageGRID.  Cada locatário tem seus próprios usuários, chaves de acesso, buckets, objetos e um conjunto específico de recursos.
@@ -401,6 +405,7 @@ Use a região padrão(`us-east-1` ) a menos que você pretenda usar o ILM no fut
 
 
 
+[[download-datastep-4-of-6-download-data]]
 == [[download-data]]Etapa 4 de 6: Baixar dados
 
 Na etapa de download de dados, você pode baixar um ou dois arquivos para salvar os detalhes do que acabou de configurar.
@@ -424,6 +429,7 @@ CAUTION: Não feche esta página até ter copiado ambas as chaves de acesso.  As
 
 
 
+[[step-5-of-6-review-ilm-rule-and-ilm-policy-for-s3]]
 == Etapa 5 de 6: Revise a regra e a política do ILM para o S3
 
 As regras de gerenciamento do ciclo de vida das informações (ILM) controlam o posicionamento, a duração e o comportamento de ingestão de todos os objetos no seu sistema StorageGRID .  A política ILM incluída no StorageGRID faz duas cópias replicadas de todos os objetos.  Esta política estará em vigor até que você ative pelo menos uma nova política.
@@ -438,6 +444,7 @@ As regras de gerenciamento do ciclo de vida das informações (ILM) controlam o 
 
 
 
+[[step-6-of-6-review-summary]]
 == Etapa 6 de 6: Resumo da revisão
 
 .Passos

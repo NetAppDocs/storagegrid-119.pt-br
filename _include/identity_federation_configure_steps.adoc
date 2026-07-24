@@ -99,6 +99,7 @@ Se você selecionar esta configuração, copie e cole o certificado de seguranç
 
 
 
+[[test-the-connection-and-save-the-configuration]]
 === Teste a conexão e salve a configuração
 
 Depois de inserir todos os valores, você deve testar a conexão antes de salvar a configuração.  O StorageGRID verifica as configurações de conexão do servidor LDAP e o formato do nome de usuário de vinculação, se você forneceu um.

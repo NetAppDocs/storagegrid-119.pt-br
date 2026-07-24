@@ -17,6 +17,7 @@ O exemplo simples nesta seção ilustra como uma configuração de ciclo de vida
 
 
 
+[[what-lifecycle-configuration-is]]
 == O que é configuração de ciclo de vida
 
 Uma configuração de ciclo de vida é um conjunto de regras aplicadas aos objetos em buckets específicos do S3.  Cada regra especifica quais objetos são afetados e quando esses objetos expirarão (em uma data específica ou após um determinado número de dias).
@@ -46,6 +47,7 @@ O StorageGRID oferece suporte ao uso das seguintes operações de bucket para ge
 
 
 
+[[create-lifecycle-configuration]]
 == Criar configuração de ciclo de vida
 
 Como primeira etapa na criação de uma configuração de ciclo de vida, você cria um arquivo JSON que inclui uma ou mais regras.  Por exemplo, este arquivo JSON inclui três regras, como segue:
@@ -106,6 +108,7 @@ CAUTION: Regras que especificam um número de dias são relativas a quando o obj
 ----
 
 
+[[apply-lifecycle-configuration-to-bucket]]
 == Aplicar configuração de ciclo de vida ao bucket
 
 Depois de criar o arquivo de configuração do ciclo de vida, aplique-o a um bucket emitindo uma solicitação PutBucketLifecycleConfiguration.
@@ -128,6 +131,7 @@ Uma resposta bem-sucedida lista a configuração do ciclo de vida que você acab
 
 
 
+[[validate-that-bucket-lifecycle-expiration-applies-to-object]]
 == Validar se a expiração do ciclo de vida do bucket se aplica ao objeto
 
 Você pode determinar se uma regra de expiração na configuração do ciclo de vida se aplica a um objeto específico ao emitir uma solicitação PutObject, HeadObject ou GetObject.  Se uma regra se aplicar, a resposta inclui uma `Expiration` parâmetro que indica quando o objeto expira e qual regra de expiração foi correspondida.

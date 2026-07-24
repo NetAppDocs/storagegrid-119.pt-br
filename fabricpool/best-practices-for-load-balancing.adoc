@@ -17,12 +17,14 @@ Para obter informações gerais sobre o balanceador de carga StorageGRID e o cer
 
 
 
+[[best-practices-for-tenant-access-to-the-load-balancer-endpoint-used-for-fabricpool]]
 == Melhores práticas para acesso de locatário ao ponto de extremidade do balanceador de carga usado para FabricPool
 
 Você pode controlar quais locatários podem usar um ponto de extremidade específico do balanceador de carga para acessar seus buckets.  Você pode permitir todos os inquilinos, permitir alguns inquilinos ou bloquear alguns inquilinos.  Ao criar um ponto de extremidade de balanceamento de carga para uso do FabricPool , selecione *Permitir todos os locatários*.  O ONTAP criptografa os dados colocados nos buckets do StorageGRID , portanto, pouca segurança adicional seria fornecida por essa camada de segurança extra.
 
 
 
+[[best-practices-for-the-security-certificate]]
 == Melhores práticas para o certificado de segurança
 
 Ao criar um ponto de extremidade do balanceador de carga StorageGRID para uso do FabricPool , você fornece o certificado de segurança que permitirá que o ONTAP se autentique com o StorageGRID.
@@ -38,12 +40,14 @@ Para saber mais sobre o certificado do servidor para um ponto de extremidade de 
 
 
 
+[[add-certificate-to-ontap]]
 === Adicionar certificado ao ONTAP
 
 Ao adicionar o StorageGRID como uma camada de nuvem do FabricPool , você deve instalar o mesmo certificado no cluster ONTAP , incluindo os certificados raiz e quaisquer certificados de autoridade de certificação (CA) subordinada.
 
 
 
+[[manage-certificate-expiration]]
 === Gerenciar expiração de certificado
 
 

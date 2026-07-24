@@ -24,6 +24,7 @@ NOTE: O suporte para nós de arquivo foi removido.  A movimentação de objetos 
 
 
 
+[[storagegrid-benefits]]
 == Benefícios do StorageGRID
 
 As vantagens do sistema StorageGRID incluem o seguinte:

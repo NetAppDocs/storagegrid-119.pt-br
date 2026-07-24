@@ -79,6 +79,7 @@ Para versões suportadas, consulte o https://imt.netapp.com/matrix/#welcome["Fer
 |===
 
 
+[[download-and-extract-the-storagegrid-installation-files]]
 == Baixe e extraia os arquivos de instalação do StorageGRID
 
 .[[baixar-e-extrair-arquivos-de-instalação]]
@@ -413,6 +414,7 @@ NOTE: Para instalação do dispositivo, esses arquivos só são necessários se 
 
 
 
+[[verify-hardware-and-networking]]
 == Verificar hardware e rede
 
 Antes de iniciar a expansão do seu sistema StorageGRID , certifique-se do seguinte:

@@ -20,6 +20,7 @@ Gerenciar um servidor de gerenciamento de chaves (KMS) envolve visualizar ou edi
 
 
 
+[[view-kms-details]]
 == Ver detalhes do KMS
 
 Você pode visualizar informações sobre cada servidor de gerenciamento de chaves (KMS) no seu sistema StorageGRID , incluindo detalhes da chave e o status atual dos certificados do servidor e do cliente.
@@ -139,6 +140,7 @@ Nunca tente rotacionar uma chave alterando o nome da chave (alias) para o KMS.  
 
 
 
+[[manage-certificates]]
 == Gerenciar certificados
 
 Resolva imediatamente quaisquer problemas de certificado de servidor ou cliente.  Se possível, substitua os certificados antes que eles expirem.
@@ -168,6 +170,7 @@ NOTE: Se você receber o status *Status do certificado do servidor desconhecido*
 
 
 
+[[view-encrypted-nodes]]
 == Exibir nós criptografados
 
 Você pode visualizar informações sobre os nós do dispositivo no seu sistema StorageGRID que têm a configuração *Criptografia de nó* ativada.
@@ -263,6 +266,7 @@ CAUTION: Você deve resolver quaisquer problemas imediatamente para garantir que
 
 
 
+[[edit-a-kms]]
 == Editar um KMS
 
 Pode ser necessário editar a configuração de um servidor de gerenciamento de chaves, por exemplo, se um certificado estiver prestes a expirar.
@@ -364,6 +368,7 @@ A configuração do KMS é salva, mas a conexão com o KMS não é testada.
 
 
 
+[[remove-a-key-management-server-kms]]
 == Remover um servidor de gerenciamento de chaves (KMS)
 
 Em alguns casos, pode ser necessário remover um servidor de gerenciamento de chaves.  Por exemplo, você pode querer remover um KMS específico do site se tiver desativado o site.

@@ -15,6 +15,7 @@ Pode ser necessário solucionar alertas e erros relacionados a conexões de fede
 
 
 
+[[grid-federation-errorsgrid-federation-connection-alerts-and-errors]]
 == [[grid-federation-errors]]Alertas e erros de conexão de federação de rede
 
 Você pode receber alertas ou enfrentar erros com suas conexões de federação de rede.
@@ -23,6 +24,7 @@ Depois de fazer qualquer alteração para resolver um problema de conexão, test
 
 
 
+[[grid-federation-connection-failure-alert]]
 === Alerta de falha de conexão da federação de rede
 
 .Emitir
@@ -40,6 +42,7 @@ Este alerta indica que a conexão da federação de rede entre as redes não est
 
 
 
+[[expiration-of-grid-federation-certificate-alert]]
 === Alerta de expiração do certificado de federação de rede
 
 .Emitir
@@ -53,6 +56,7 @@ Veja as instruções para rotação de certificados de conexão emlink:grid-fede
 
 
 
+[[error-editing-a-grid-federation-connection]]
 === Erro ao editar uma conexão de federação de grade
 
 .Emitir
@@ -69,10 +73,12 @@ Quando você edita uma conexão de federação de grade, o StorageGRID tenta sal
 
 
 
+[[account-clone-errors]]
 == Erros de clonagem de conta
 
 
 
+[[cant-sign-in-to-a-cloned-tenant-account]]
 === Não é possível fazer login em uma conta de locatário clonada
 
 .Emitir
@@ -88,6 +94,7 @@ Antes que um usuário local clonado possa fazer login na grade de destino do loc
 
 
 
+[[tenant-created-without-a-clone]]
 === Inquilino criado sem um clone
 
 .Emitir
@@ -113,10 +120,12 @@ Se o erro tiver sido resolvido, a conta do locatário será clonada para a outra
 
 
 
+[[cross-grid-replication-alerts-and-errors]]
 == Alertas e erros de replicação entre grades
 
 
 
+[[last-error-shown-for-connection-or-tenant]]
 === Último erro mostrado para conexão ou locatário
 
 .Emitir
@@ -157,6 +166,7 @@ TIP: Depois de limpar o erro, um novo *Último erro* pode aparecer se os objetos
 
 
 
+[[cross-grid-replication-permanent-failure-alert]]
 === Alerta de falha permanente de replicação entre redes
 
 .Emitir
@@ -206,6 +216,7 @@ NOTE: Pode levar até um dia para que o alerta desapareça após ser resolvido.
 
 
 
+[[cross-grid-replication-resource-unavailable-alert]]
 === Alerta de recurso de replicação entre grades indisponível
 
 .Emitir

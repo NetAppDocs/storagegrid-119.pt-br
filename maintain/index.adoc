@@ -18,6 +18,7 @@ NOTE: Nestas instruções, "Linux" refere-se a uma implantação do Red Hat® En
 
 
 
+[[before-you-begin]]
 == Antes de começar
 
 * Você tem um amplo conhecimento do sistema StorageGRID .
@@ -28,6 +29,7 @@ NOTE: Nestas instruções, "Linux" refere-se a uma implantação do Red Hat® En
 
 
 
+[[maintenance-procedures-for-appliances]]
 == Procedimentos de manutenção para aparelhos
 
 Para procedimentos de hardware, consulte o https://docs.netapp.com/us-en/storagegrid-appliances/commonhardware/index.html["instruções de manutenção para seu dispositivo StorageGRID"^] .

@@ -20,6 +20,7 @@ Depois de obter as informações necessárias do StorageGRID , você pode acessa
 
 
 
+[[access-ontap-system-manager]]
 == Gerenciador de Sistema Access ONTAP
 
 Estas instruções descrevem como usar o ONTAP System Manager para adicionar o StorageGRID como uma camada de nuvem.  Você pode concluir a mesma configuração usando o ONTAP CLI.  Para obter instruções, acesse https://docs.netapp.com/us-en/ontap/fabricpool/index.html["Documentação ONTAP para FabricPool"^] .
@@ -33,6 +34,7 @@ Estas instruções descrevem como usar o ONTAP System Manager para adicionar o S
 
 
 
+[[enter-storagegrid-values]]
 == Insira os valores do StorageGRID
 
 Ver https://docs.netapp.com/us-en/ontap/fabricpool/index.html["Documentação ONTAP para FabricPool"^] para maiores informações.

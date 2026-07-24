@@ -15,6 +15,7 @@ Se a configuração global do S3 Object Lock estiver habilitada para seu sistema
 
 
 
+[[how-to-enable-s3-object-lock-for-a-bucket]]
 == Como habilitar o bloqueio de objeto S3 para um bucket
 
 Se a configuração global S3 Object Lock estiver habilitada para seu sistema StorageGRID , você poderá habilitar o S3 Object Lock ao criar cada bucket.
@@ -31,12 +32,14 @@ O S3 Object Lock requer controle de versão do bucket, que é ativado automatica
 
 
 
+[[default-retention-settings-for-a-bucket]]
 == Configurações de retenção padrão para um bucket
 
 Quando o Bloqueio de Objeto S3 estiver habilitado para um bucket, você poderá, opcionalmente, habilitar a retenção padrão para o bucket e especificar um modo de retenção padrão e um período de retenção padrão.
 
 
 
+[[default-retention-mode]]
 === Modo de retenção padrão
 
 * No modo CONFORMIDADE:
@@ -57,12 +60,14 @@ Quando o Bloqueio de Objeto S3 estiver habilitado para um bucket, você poderá,
 
 
 
+[[default-retention-period]]
 === Período de retenção padrão
 
 Cada bucket pode ter um período de retenção padrão especificado em anos ou dias.
 
 
 
+[[how-to-set-default-retention-for-a-bucket]]
 == Como definir a retenção padrão para um bucket
 
 Para definir a retenção padrão para um bucket, use um destes métodos:
@@ -73,6 +78,7 @@ Para definir a retenção padrão para um bucket, use um destes métodos:
 
 
 
+[[putobjectlockconfiguration]]
 === PutObjectLockConfiguration
 
 A solicitação PutObjectLockConfiguration permite que você defina e modifique o modo de retenção padrão e o período de retenção padrão para um bucket que tenha o S3 Object Lock habilitado.  Você também pode remover as configurações de retenção padrão configuradas anteriormente.
@@ -115,6 +121,7 @@ Authorization: _authorization-string_
 ----
 
 
+[[how-to-determine-the-default-retention-for-a-bucket]]
 == Como determinar a retenção padrão para um bucket
 
 Para determinar se o S3 Object Lock está habilitado para um bucket e para ver o modo de retenção padrão e o período de retenção, use um destes métodos:
@@ -125,6 +132,7 @@ Para determinar se o S3 Object Lock está habilitado para um bucket e para ver o
 
 
 
+[[getobjectlockconfiguration]]
 === ObterConfiguraçãoObjectLock
 
 A solicitação GetObjectLockConfiguration permite que você determine se o S3 Object Lock está habilitado para um bucket e, se estiver, veja se há um modo de retenção padrão e um período de retenção configurados para o bucket.
@@ -173,6 +181,7 @@ Server: AmazonS3
 ----
 
 
+[[how-to-specify-retention-settings-for-an-object]]
 == Como especificar configurações de retenção para um objeto
 
 Um bucket com o S3 Object Lock ativado pode conter uma combinação de objetos com e sem configurações de retenção do S3 Object Lock.
@@ -227,6 +236,7 @@ Você pode usar o `s3:object-lock-remaining-retention-days` chave de condição 
 
 
 
+[[how-to-update-retention-settings-for-an-object]]
 == Como atualizar as configurações de retenção de um objeto
 
 Se precisar atualizar as configurações de retenção ou retenção legal para uma versão de objeto existente, você pode executar as seguintes operações de sub-recursos do objeto:
@@ -246,6 +256,7 @@ Se o novo valor de retenção legal for LIGADO, o objeto será colocado sob rete
 
 
 
+[[how-to-use-governance-mode]]
 == Como usar o modo GOVERNANÇA
 
 Usuários que possuem o `s3:BypassGovernanceRetention` a permissão pode ignorar as configurações de retenção ativas de um objeto que usa o modo GOVERNANCE.  Qualquer operação DELETE ou PutObjectRetention deve incluir o `x-amz-bypass-governance-retention:true` cabeçalho da solicitação.  Esses usuários podem executar estas operações adicionais:

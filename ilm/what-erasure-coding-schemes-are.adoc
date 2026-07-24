@@ -17,6 +17,7 @@ Ao criar ou editar uma regra ILM, você seleciona um esquema de codificação de
 
 
 
+[[data-protection]]
 == Proteção de dados
 
 O sistema StorageGRID usa o algoritmo de codificação de eliminação Reed-Solomon.  O algoritmo divide um objeto em `k` fragmentos de dados e cálculos `m` fragmentos de paridade.
@@ -31,6 +32,7 @@ A melhor proteção de dados é fornecida pelo esquema de codificação de elimi
 
 
 
+[[storage-overhead]]
 == Despesas gerais de armazenamento
 
 A sobrecarga de armazenamento de um esquema de codificação de eliminação é calculada dividindo o número de fragmentos de paridade(`m` ) pelo número de fragmentos de dados(`k` ).  Você pode usar a sobrecarga de armazenamento para calcular quanto espaço em disco cada objeto codificado por eliminação requer:
@@ -48,6 +50,7 @@ Selecione o esquema de codificação de apagamento com o menor valor total de `k
 
 
 
+[[guidelines-for-storage-pools]]
 == Diretrizes para pools de armazenamento
 
 Ao selecionar o pool de armazenamento a ser usado para uma regra que criará uma cópia codificada para eliminação, use as seguintes diretrizes para pools de armazenamento:
@@ -75,6 +78,7 @@ O número mínimo de nós de armazenamento necessários é `k+m` .  No entanto, 
 
 
 
+[[erasure-coding-schemes-for-storage-pools-containing-three-or-more-sites]]
 == Esquemas de codificação de apagamento para pools de armazenamento contendo três ou mais sites
 
 A tabela a seguir descreve os esquemas de codificação de eliminação atualmente suportados pelo StorageGRID para pools de armazenamento que incluem três ou mais sites.  Todos esses esquemas oferecem proteção contra perda de local.  Um site pode ser perdido, e o objeto ainda estará acessível.
@@ -238,6 +242,7 @@ NOTE: Se não tiver certeza de qual esquema usar, selecione 4+2 ou 6+3 ou entre 
 
 
 
+[[erasure-coding-schemes-for-one-site-storage-pools]]
 == Esquemas de codificação de eliminação para pools de armazenamento de um site
 
 Um pool de armazenamento de um site suporta todos os esquemas de codificação de eliminação definidos para três ou mais sites, desde que o site tenha nós de armazenamento suficientes.

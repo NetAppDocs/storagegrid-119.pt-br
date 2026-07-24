@@ -15,6 +15,7 @@ Os relatórios de texto exibem uma representação textual dos valores de dados 
 
 
 
+[[raw-text-reports]]
 == Relatórios de texto bruto
 
 Um relatório de texto bruto exibe detalhes sobre o atributo selecionado:
@@ -28,6 +29,7 @@ image::../media/raw_text_report.gif[captura de tela mostrando relatório de text
 
 
 
+[[aggregate-text-reports]]
 == Relatórios de texto agregado
 
 Um relatório de texto agregado exibe dados durante um período de tempo mais longo (geralmente uma semana) do que um relatório de texto bruto.  Cada entrada é o resultado do resumo de vários valores de atributos (um agregado de valores de atributos) pelo serviço NMS ao longo do tempo em uma única entrada com valores médios, máximos e mínimos derivados da agregação.
@@ -44,6 +46,7 @@ image::../media/aggregate_text_report.gif[captura de tela mostrando relatório d
 
 
 
+[[generate-text-reports]]
 == Gerar relatórios de texto
 
 Os relatórios de texto exibem uma representação textual dos valores de dados de atributos que foram processados pelo serviço NMS.  Você pode gerar relatórios sobre um site de data center, nó de grade, componente ou serviço.
@@ -85,6 +88,7 @@ Um relatório de texto é gerado após alguns instantes.  Reserve vários minuto
 
 
 
+[[export-text-reports]]
 == Exportar relatórios de texto
 
 Os relatórios de texto exportados abrem uma nova guia do navegador, que permite selecionar e copiar os dados.

@@ -15,6 +15,7 @@ Você pode usar o procedimento de descomissionamento de nós para remover um ou 
 
 
 
+[[when-to-decommission-a-node]]
 == Quando desativar um nó
 
 Use o procedimento de descomissionamento do nó quando qualquer uma das seguintes condições for verdadeira:
@@ -33,6 +34,7 @@ TIP: Se você deseja substituir um aparelho antigo por um mais novo, considere h
 
 
 
+[[how-to-decommission-a-node]]
 == Como descomissionar um nó
 
 Você pode desativar nós de rede conectados ou desconectados.
@@ -53,6 +55,7 @@ Para obter instruções, consultelink:decommissioning-disconnected-grid-nodes.ht
 
 
 
+[[what-to-consider-before-decommissioning-a-node]]
 == O que considerar antes de desativar um nó
 
 Antes de executar qualquer procedimento, revise as considerações para cada tipo de nó:

@@ -21,6 +21,7 @@ Para expandir ou recolher a árvore de topologia de grade, clique emimage:../med
 
 
 
+[[storagegrid-attributes]]
 == Atributos StorageGRID
 
 Os atributos relatam valores e status para muitas das funções do sistema StorageGRID .  Os valores de atributo estão disponíveis para cada nó da grade, cada site e toda a grade.
@@ -34,6 +35,7 @@ Os atributos StorageGRID são usados ​​em vários lugares no Grid Manager:
 
 
 
+[[attribute-values]]
 === Valores de atributos
 
 Os atributos são relatados com base no melhor esforço e estão aproximadamente corretos.  As atualizações de atributos podem ser perdidas em algumas circunstâncias, como a falha de um serviço ou a falha e reconstrução de um nó de grade.

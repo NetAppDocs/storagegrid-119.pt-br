@@ -15,6 +15,7 @@ Você deve entender os requisitos de armazenamento e desempenho para nós Storag
 
 
 
+[[performance-requirements]]
 == Requisitos de desempenho
 
 O desempenho do volume do sistema operacional e do primeiro volume de armazenamento impacta significativamente o desempenho geral do sistema.  Certifique-se de que eles forneçam desempenho de disco adequado em termos de latência, operações de entrada/saída por segundo (IOPS) e taxa de transferência.
@@ -23,6 +24,7 @@ Todos os nós do StorageGRID exigem que a unidade do sistema operacional e todos
 
 
 
+[[requirements-for-virtual-machines-that-use-netapp-ontap-storage]]
 == Requisitos para máquinas virtuais que usam armazenamento NetApp ONTAP
 
 Se você estiver implantando um nó StorageGRID como uma máquina virtual com armazenamento atribuído de um sistema NetApp ONTAP , terá confirmado que o volume não tem uma política de camadas FabricPool habilitada.  Por exemplo, se um nó StorageGRID estiver sendo executado como uma máquina virtual em um host VMware, certifique-se de que o volume que faz o backup do armazenamento de dados para o nó não tenha uma política de camadas FabricPool habilitada.  Desabilitar a hierarquização do FabricPool para volumes usados ​​com nós StorageGRID simplifica a solução de problemas e as operações de armazenamento.
@@ -32,12 +34,14 @@ NOTE: Nunca use o FabricPool para hierarquizar quaisquer dados relacionados ao S
 
 
 
+[[number-of-virtual-machines-required]]
 == Número de máquinas virtuais necessárias
 
 Cada site StorageGRID requer no mínimo três nós de armazenamento.
 
 
 
+[[storage-requirements-by-node-type]]
 == Requisitos de armazenamento por tipo de nó
 
 Em um ambiente de produção, as máquinas virtuais para nós StorageGRID devem atender a requisitos diferentes, dependendo dos tipos de nós.
@@ -102,6 +106,7 @@ NOTE: Dependendo do nível de auditoria configurado, do tamanho das entradas do 
 
 
 
+[[storage-requirements-for-storage-nodes]]
 == Requisitos de armazenamento para nós de armazenamento
 
 Um nó de armazenamento baseado em software pode ter de 1 a 16 volumes de armazenamento; 3 ou mais volumes de armazenamento são recomendados. Cada volume de armazenamento deve ter 4 TB ou mais.

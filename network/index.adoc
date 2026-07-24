@@ -15,6 +15,7 @@ Use estas diretrizes para aprender sobre a arquitetura e as topologias de rede d
 
 
 
+[[about-these-instructions]]
 == Sobre estas instruções
 
 Estas diretrizes fornecem informações que você pode usar para criar a infraestrutura de rede do StorageGRID antes de implantar e configurar os nós do StorageGRID .  Use estas diretrizes para ajudar a garantir que a comunicação possa ocorrer entre todos os nós na grade e entre a grade e clientes e serviços externos.
@@ -38,6 +39,7 @@ A rede StorageGRID deve ser configurada adequadamente para lidar com o tráfego 
 
 
 
+[[before-you-begin]]
 == Antes de começar
 
 Configurar a rede para um sistema StorageGRID requer um alto nível de experiência com comutação Ethernet, rede TCP/IP, sub-redes, roteamento de rede e firewalls.

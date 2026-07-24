@@ -15,6 +15,7 @@ Talvez seja necessário usar a API REST do StorageGRID S3 para gerenciar buckets
 
 
 
+[[compliance-feature-deprecated]]
 == Recurso de conformidade obsoleto
 
 O recurso de conformidade do StorageGRID que estava disponível em versões anteriores do StorageGRID foi descontinuado e substituído pelo S3 Object Lock.

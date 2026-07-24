@@ -23,6 +23,7 @@ Ao atualizar para o StorageGRID 11.6 ou superior, marcas d'água otimizadas some
 
 
 
+[[understand-the-alert]]
 == Entenda o alerta
 
 Se você usar valores personalizados para marcas d'água de volume de armazenamento, o alerta *Substituição de marca d'água somente leitura baixa* poderá ser acionado para um ou mais nós de armazenamento.
@@ -66,6 +67,7 @@ O alerta *Substituição de marca d'água somente leitura baixa* é acionado par
 
 
 
+[[resolve-the-alert]]
 == Resolva o alerta
 
 Siga estas etapas se um ou mais alertas de *Substituição de marca d'água somente leitura baixa* tiverem sido acionados.  Você também pode usar estas instruções se atualmente usa configurações de marca d'água personalizadas e deseja começar a usar configurações otimizadas mesmo que nenhum alerta tenha sido acionado.
@@ -81,6 +83,7 @@ Você pode resolver o alerta *Substituição de marca d'água somente leitura ba
 
 
 
+[[assess-object-data-usage-for-entire-grid]]
 === Avalie o uso de dados do objeto para toda a grade
 
 .Passos
@@ -100,6 +103,7 @@ image::../media/nodes_page_object_data_used_with_alert.png[Página de nós mostr
 
 
 
+[[view-optimized-watermarksview-optimized-storage-watermarks]]
 === [[view-optimized-watermarks]]Ver marcas d'água de armazenamento otimizadas
 
 O StorageGRID usa duas métricas do Prometheus para mostrar os valores otimizados que ele calculou para a marca d'água somente leitura do volume de armazenamento.  Você pode visualizar os valores mínimos e máximos otimizados para cada nó de armazenamento na sua grade.
@@ -126,6 +130,7 @@ A última coluna mostra o valor máximo otimizado da marca d'água somente leitu
 
 
 
+[[determine-optimized-watermarksdetermine-if-you-can-use-optimized-watermarks]]
 === [[determine-optimized-watermarks]]Determine se você pode usar marcas d'água otimizadas
 
 .Passos
@@ -150,6 +155,7 @@ NOTE: Os mesmos valores de marca d'água personalizados são aplicados a cada vo
 
 
 
+[[use-optimized-watermarksuse-optimized-watermarks]]
 === [[use-optimized-watermarks]]Use marcas d'água otimizadas
 
 .Passos

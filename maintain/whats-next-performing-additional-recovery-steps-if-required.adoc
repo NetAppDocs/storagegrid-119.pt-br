@@ -17,6 +17,7 @@ A recuperação do nó estará concluída se você não precisar tomar nenhuma a
 
 
 
+[[corrective-actions-and-next-steps]]
 == Ações corretivas e próximos passos
 
 Durante a substituição do nó, pode ser necessário tomar uma destas ações corretivas:

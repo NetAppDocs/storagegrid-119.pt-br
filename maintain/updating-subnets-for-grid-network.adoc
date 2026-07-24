@@ -45,6 +45,7 @@ Por exemplo, não use os seguintes intervalos de sub-rede para a Rede de Grade, 
 ====
 
 
+[[add-a-subnet]]
 == Adicionar uma sub-rede
 
 .Passos
@@ -70,6 +71,7 @@ As sub-redes que você especificou são configuradas automaticamente para seu si
 
 
 
+[[edit-a-subnet]]
 == Editar uma sub-rede
 
 .Passos
@@ -87,6 +89,7 @@ As sub-redes que você especificou são configuradas automaticamente para seu si
 
 
 
+[[delete-a-subnet]]
 == Excluir uma sub-rede
 
 .Passos

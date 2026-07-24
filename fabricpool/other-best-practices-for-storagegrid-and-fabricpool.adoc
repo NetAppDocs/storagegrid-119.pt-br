@@ -15,6 +15,7 @@ Ao configurar um sistema StorageGRID para uso com FabricPool, talvez seja necess
 
 
 
+[[audit-message-and-log-destinations]]
 == Destinos de mensagens e logs de auditoria
 
 As cargas de trabalho do FabricPool geralmente têm uma alta taxa de operações de leitura, o que pode gerar um alto volume de mensagens de auditoria.
@@ -25,24 +26,28 @@ As cargas de trabalho do FabricPool geralmente têm uma alta taxa de operações
 
 
 
+[[object-encryption]]
 == Criptografia de objetos
 
 Ao configurar o StorageGRID, você pode opcionalmente habilitar olink:../admin/changing-network-options-object-encryption.html["opção global para criptografia de objetos armazenados"] se a criptografia de dados for necessária para outros clientes StorageGRID .  Os dados que são hierarquizados do FabricPool para o StorageGRID já estão criptografados, portanto, não é necessário habilitar a configuração StorageGRID .  As chaves de criptografia do lado do cliente são de propriedade do ONTAP.
 
 
 
+[[object-compression]]
 == Compressão de objetos
 
 Ao configurar o StorageGRID, não habilite olink:../admin/configuring-stored-object-compression.html["opção global para compactar objetos armazenados"] .  Os dados que são hierarquizados do FabricPool para o StorageGRID já estão compactados.  Usar a opção StorageGRID não reduzirá ainda mais o tamanho de um objeto.
 
 
 
+[[bucket-consistency]]
 == Consistência do balde
 
 Para buckets do FabricPool , a consistência de bucket recomendada é *Leitura-após-nova-gravação*, que é a consistência padrão para um novo bucket.  Não edite os buckets do FabricPool para usar *Available* ou *Strong-site*.
 
 
 
+[[fabricpool-tiering]]
 == Hierarquização do FabricPool
 
 Se um nó StorageGRID usar armazenamento atribuído de um sistema NetApp ONTAP , confirme se o volume não tem uma política de camadas FabricPool habilitada.  Por exemplo, se um nó StorageGRID estiver em execução em um host VMware, certifique-se de que o volume que faz o backup do armazenamento de dados para o nó StorageGRID não tenha uma política de camadas FabricPool habilitada.  Desabilitar a hierarquização do FabricPool para volumes usados ​​com nós StorageGRID simplifica a solução de problemas e as operações de armazenamento.

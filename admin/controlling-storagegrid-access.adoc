@@ -15,6 +15,7 @@ Você controla quem pode acessar o StorageGRID e quais tarefas os usuários pode
 
 
 
+[[control-access-to-the-grid-manager]]
 == Controle o acesso ao Grid Manager
 
 Você determina quem pode acessar o Grid Manager e a Grid Management API importando grupos e usuários de um serviço de federação de identidade ou configurando grupos e usuários locais.
@@ -30,18 +31,21 @@ Opcionalmente, você pode configurar um grupo para ser somente leitura.  Usuári
 
 
 
+[[enable-single-sign-on]]
 == Habilitar logon único
 
 O sistema StorageGRID oferece suporte ao logon único (SSO) usando o padrão Security Assertion Markup Language 2.0 (SAML 2.0). Depois de vocêlink:configuring-sso.html["configurar e habilitar o SSO"] , todos os usuários devem ser autenticados por um provedor de identidade externo antes de poderem acessar o Grid Manager, o Tenant Manager, a Grid Management API ou a Tenant Management API. Usuários locais não podem fazer login no StorageGRID.
 
 
 
+[[change-provisioning-passphrase]]
 == Alterar senha de provisionamento
 
 A senha de provisionamento é necessária para muitos procedimentos de instalação e manutenção, e para baixar o Pacote de Recuperação do StorageGRID . A senha também é necessária para baixar backups das informações de topologia de grade e chaves de criptografia para o sistema StorageGRID . Você podelink:changing-provisioning-passphrase.html["alterar a senha"] conforme necessário.
 
 
 
+[[change-node-console-passwords]]
 == Alterar senhas do console do nó
 
 Cada nó na sua grade tem uma senha exclusiva do console do nó, que você precisa para efetuar login no nó como "admin" usando SSH, ou como usuário root em uma conexão de console físico/VM. Conforme necessário, você podelink:change-node-console-password.html["alterar a senha do console do nó"] para cada nó.

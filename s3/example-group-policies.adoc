@@ -17,6 +17,7 @@ As políticas de grupo especificam as permissões de acesso para o grupo ao qual
 
 
 
+[[example-set-group-policy-using-tenant-manager]]
 == Exemplo: definir política de grupo usando o Gerenciador de Tenants
 
 Ao adicionar ou editar um grupo no Gerenciador de Tenants, você pode selecionar uma política de grupo para determinar quais permissões de acesso ao S3 os membros desse grupo terão. Ver link:../tenant/creating-groups-for-s3-tenant.html["Criar grupos para um locatário S3"] .
@@ -33,6 +34,7 @@ Usuários do Tenant Manager que têm a permissão Gerenciar todos os buckets pod
 
 
 
+[[example-allow-group-full-access-to-all-buckets]]
 == Exemplo: permitir acesso total do grupo a todos os buckets
 
 Neste exemplo, todos os membros do grupo têm permissão de acesso total a todos os buckets de propriedade da conta do locatário, a menos que seja explicitamente negado pela política de bucket.
@@ -51,6 +53,7 @@ Neste exemplo, todos os membros do grupo têm permissão de acesso total a todos
 ----
 
 
+[[example-allow-group-read-only-access-to-all-buckets]]
 == Exemplo: permitir acesso somente leitura do grupo a todos os buckets
 
 Neste exemplo, todos os membros do grupo têm acesso somente leitura aos recursos do S3, a menos que explicitamente negado pela política de bucket.  Por exemplo, os usuários neste grupo podem listar objetos e ler dados de objetos, metadados e tags.
@@ -78,6 +81,7 @@ Neste exemplo, todos os membros do grupo têm acesso somente leitura aos recurso
 ----
 
 
+[[example-allow-group-members-full-access-to-only-their-folder-in-a-bucket]]
 == Exemplo: permitir que os membros do grupo tenham acesso total apenas à sua "pasta" em um bucket
 
 Neste exemplo, os membros do grupo só têm permissão para listar e acessar sua pasta específica (prefixo de chave) no bucket especificado.  Observe que as permissões de acesso de outras políticas de grupo e da política de bucket devem ser consideradas ao determinar a privacidade dessas pastas.

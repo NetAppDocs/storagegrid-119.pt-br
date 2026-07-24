@@ -15,6 +15,7 @@ Siga os requisitos para cada tipo de rede StorageGRID .
 
 
 
+[[network-gateways-and-routers]]
 == Gateways e roteadores de rede
 
 * Se definido, o gateway para uma determinada rede deve estar dentro da sub-rede da rede específica.
@@ -24,6 +25,7 @@ Siga os requisitos para cada tipo de rede StorageGRID .
 
 
 
+[[subnets]]
 == Sub-redes
 
 
@@ -60,6 +62,7 @@ Por exemplo, não use os seguintes intervalos de sub-rede para a Rede de Grade, 
 
 
 
+[[grid-network]]
 == Rede de grade
 
 * No momento da implantação, cada nó da grade deve ser conectado à Rede da Grade e deve ser capaz de se comunicar com o Nó de Administração principal usando a configuração de rede especificada ao implantar o nó.
@@ -74,6 +77,7 @@ NOTE: A rede Grid deve ser roteável diretamente entre cada nó.  A tradução d
 
 
 
+[[admin-network]]
 == Rede de administração
 
 A rede de administração é opcional.  Se você planeja configurar uma rede de administração, siga estes requisitos e diretrizes.
@@ -88,6 +92,7 @@ NOTE: Você deve definir pelo menos uma sub-rede na rede de administração para
 
 
 
+[[client-network]]
 == Rede de clientes
 
 A Rede de Clientes é opcional.  Se você planeja configurar uma Rede de Cliente, observe as seguintes considerações.

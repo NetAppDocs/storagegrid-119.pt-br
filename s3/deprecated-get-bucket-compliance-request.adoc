@@ -26,6 +26,7 @@ Você deve ter a permissão s3:GetBucketCompliance ou ser root da conta para con
 
 
 
+[[request-example]]
 == Exemplo de solicitação
 
 Este exemplo de solicitação permite que você determine as configurações de conformidade para o bucket denominado `mybucket` .
@@ -39,6 +40,7 @@ Host: _host_
 ----
 
 
+[[response-example]]
 == Exemplo de resposta
 
 No XML de resposta, `<SGCompliance>` lista as configurações de conformidade em vigor para o bucket.  Este exemplo de resposta mostra as configurações de conformidade para um bucket no qual cada objeto será retido por um ano (525.600 minutos), a partir do momento em que o objeto for ingerido na grade.  Atualmente não há retenção legal para este balde.  Cada objeto será excluído automaticamente após um ano.
@@ -90,6 +92,7 @@ Exclusão automática
 |===
 
 
+[[error-responses]]
 == Respostas de erro
 
 Se o bucket não foi criado para ser compatível, o código de status HTTP para a resposta é `404 Not Found` , com um código de erro S3 de `XNoSuchBucketCompliance` .

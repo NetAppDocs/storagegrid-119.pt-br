@@ -17,6 +17,7 @@ Ao expandir uma grade, os nós adicionados não precisam corresponder aos tipos 
 
 
 
+[[vmware-deploy-grid-nodes]]
 == VMware: implantar nós de grade
 
 Você deve implantar uma máquina virtual no VMware vSphere para cada nó VMware que deseja adicionar na expansão.
@@ -31,6 +32,7 @@ Ao implantar o nó, você pode, opcionalmente, remapear as portas do nó ou aume
 
 
 
+[[linux-deploy-grid-nodes]]
 == Linux: Implantar nós de grade
 
 Você pode implantar nós de grade em novos hosts Linux ou em hosts Linux existentes.  Se você precisar de hosts Linux adicionais para dar suporte aos requisitos de CPU, RAM e armazenamento dos nós do StorageGRID que deseja adicionar à sua grade, prepare-os da mesma forma que preparou os hosts quando os instalou pela primeira vez.  Em seguida, implante os nós de expansão da mesma forma que implantou os nós de grade durante a instalação.
@@ -64,6 +66,7 @@ Depois de implantar todos os novos nós da grade, você podelink:performing-expa
 
 
 
+[[appliances-deploying-storage-gateway-or-non-primary-admin-nodes]]
 == Dispositivos: Implantando nós de armazenamento, gateway ou de administração não primários
 
 Para instalar o software StorageGRID em um nó do dispositivo, use o StorageGRID Appliance Installer, que está incluído no dispositivo.  Em uma expansão, cada dispositivo de armazenamento funciona como um único nó de armazenamento, e cada dispositivo de serviços funciona como um único nó de gateway ou nó de administração não primário.  Qualquer dispositivo pode se conectar à Rede de Grade, à Rede de Administração e à Rede de Cliente.

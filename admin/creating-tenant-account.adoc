@@ -39,6 +39,7 @@ TIP: Se esse grupo de administradores não existir em ambas as grades antes de v
 
 
 
+[[access-the-wizard]]
 == Acesse o assistente
 
 .Passos
@@ -48,6 +49,7 @@ TIP: Se esse grupo de administradores não existir em ambas as grades antes de v
 
 
 
+[[enter-details]]
 == Insira os detalhes
 
 .Passos
@@ -94,6 +96,7 @@ Se você quiser que este locatário tenha uma cota de armazenamento, um valor nu
 
 
 
+[[admin-tenant-select-permissionsselect-permissions]]
 == [[admin-tenant-select-permissions]]Selecionar permissões
 
 .Passos
@@ -165,6 +168,7 @@ Permitir que o locatário use recursos específicos do S3 Object Lock:
 
 
 
+[[define-root-access-and-create-tenant]]
 == Definir acesso root e criar locatário
 
 .Passos
@@ -223,12 +227,14 @@ TIP: Um usuário root local não pode fazer login no Tenant Manager na grade de 
 
 
 
+[[sign-in-to-tenant-optional]]
 == Sign in como inquilino (opcional)
 
 Conforme necessário, você pode entrar no novo locatário agora para concluir a configuração ou pode entrar no locatário mais tarde.  As etapas de login dependem se você está conectado ao Grid Manager usando a porta padrão (443) ou uma porta restrita. Ver link:controlling-access-through-firewalls.html["Controle de acesso em firewall externo"] .
 
 
 
+[[sign-in-now]]
 === Sign in agora
 
 [cols="1a,3a"]
@@ -280,6 +286,7 @@ A URL do Gerenciador de Inquilinos tem este formato:
 |===
 
 
+[[sign-in-later]]
 === Sign in mais tarde
 
 [cols="1a,3a"]
@@ -323,6 +330,7 @@ Uma porta restrita
 |===
 
 
+[[configure-the-tenant]]
 == Configurar o locatário
 
 Siga as instruções emlink:../tenant/index.html["Use uma conta de inquilino"] para gerenciar grupos de locatários e usuários, chaves de acesso S3, buckets, serviços de plataforma, clone de conta e replicação entre redes.

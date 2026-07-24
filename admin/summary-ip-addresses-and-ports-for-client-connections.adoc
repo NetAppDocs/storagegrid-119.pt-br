@@ -71,6 +71,7 @@ Portas S3 padrão:
 |===
 
 
+[[example-urls]]
 == URLs de exemplo
 
 Para conectar um aplicativo cliente ao ponto de extremidade do balanceador de carga de um grupo HA de nós de gateway, use uma URL estruturada conforme mostrado abaixo:
@@ -83,6 +84,7 @@ Por exemplo, se o endereço IP virtual do grupo HA for 192.0.2.5 e o número da 
 
 
 
+[[where-to-find-ip-addresses]]
 == Onde encontrar endereços IP
 
 . Sign in no Grid Manager usando umlink:../admin/web-browser-requirements.html["navegador da web compatível"] .

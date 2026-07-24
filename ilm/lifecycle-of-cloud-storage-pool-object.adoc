@@ -15,6 +15,7 @@ Antes de implementar os Cloud Storage Pools, revise o ciclo de vida dos objetos 
 
 
 
+[[s3-lifecycle-of-a-cloud-storage-pool-object]]
 == S3: Ciclo de vida de um objeto de pool de armazenamento em nuvem
 
 As etapas descrevem os estágios do ciclo de vida de um objeto armazenado em um pool de armazenamento em nuvem do S3.
@@ -61,6 +62,7 @@ Depois que um objeto é restaurado, o aplicativo cliente pode emitir uma solicit
 
 
 
+[[azure-lifecycle-of-a-cloud-storage-pool-object]]
 == Azure: Ciclo de vida de um objeto de pool de armazenamento em nuvem
 
 As etapas descrevem os estágios do ciclo de vida de um objeto armazenado em um Pool de Armazenamento em Nuvem do Azure.

@@ -17,6 +17,7 @@ Verlink:configuring-client-connections.html["Configurar conexões do cliente S3"
 
 
 
+[[default-storagegrid-networks]]
 == Redes StorageGRID padrão
 
 Por padrão, o StorageGRID oferece suporte a três interfaces de rede por nó de grade, permitindo que você configure a rede para cada nó de grade individual para atender aos seus requisitos de segurança e acesso.
@@ -25,24 +26,28 @@ Para obter mais informações sobre topologia de rede, consultelink:../network/i
 
 
 
+[[grid-network]]
 === Rede de grade
 
 Obrigatório.  A Grid Network é usada para todo o tráfego interno do StorageGRID .  Ele fornece conectividade entre todos os nós na grade, em todos os sites e sub-redes.
 
 
 
+[[admin-network]]
 === Rede de administração
 
 Opcional.  A rede de administração é normalmente usada para administração e manutenção do sistema.  Ele também pode ser usado para acesso ao protocolo do cliente.  A rede de administração normalmente é uma rede privada e não precisa ser roteável entre sites.
 
 
 
+[[client-network]]
 === Rede de clientes
 
 Opcional.  A Rede do Cliente é uma rede aberta normalmente usada para fornecer acesso a aplicativos cliente S3, para que a Rede Grid possa ser isolada e protegida.  A Rede do Cliente pode se comunicar com qualquer sub-rede acessível através do gateway local.
 
 
 
+[[guidelines]]
 == Diretrizes
 
 * Cada nó StorageGRID requer uma interface de rede dedicada, endereço IP, máscara de sub-rede e gateway para cada rede à qual é atribuído.
@@ -83,6 +88,7 @@ eth2
 
 
 
+[[optional-interfaces]]
 == Interfaces opcionais
 
 Opcionalmente, você pode adicionar interfaces extras a um nó.  Por exemplo, você pode querer adicionar uma interface de tronco a um nó de administração ou gateway, para que possa usarlink:../admin/configure-vlan-interfaces.html["Interfaces VLAN"] para segregar o tráfego pertencente a diferentes aplicativos ou locatários.  Ou você pode querer adicionar uma interface de acesso para usar em umlink:../admin/configure-high-availability-group.html["grupo de alta disponibilidade (HA)"] .

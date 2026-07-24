@@ -25,6 +25,7 @@ Todos os nós na grade usam a mesma configuração SNMP.
 
 
 
+[[specify-basic-configuration]]
 == Especificar configuração básica
 
 Como primeiro passo, habilite o agente StorageGRID SMNP e forneça informações básicas.
@@ -79,6 +80,7 @@ Se selecionado, o agente SNMP do StorageGRID enviará interceptações de autent
 
 
 
+[[enter-community-strings]]
 == Insira as sequências da comunidade
 
 Se você usar SNMPv1 ou SNMPv2c, preencha a seção Strings da comunidade.
@@ -102,6 +104,7 @@ São permitidas até cinco strings.
 
 
 
+[[selecttrapdestinationcreate-trap-destinations]]
 == [[select_trap_destination]]Criar destinos de armadilha
 
 Use a guia Destinos de interceptação na seção Outras configurações para definir um ou mais destinos para interceptação do StorageGRID ou informar notificações.  Quando você habilita o agente SNMP e seleciona *Salvar*, o StorageGRID envia notificações para cada destino definido quando os alertas são acionados.  Notificações padrão também são enviadas para as entidades MIB-II suportadas (por exemplo, ifDown e coldStart).
@@ -277,6 +280,7 @@ O destino da armadilha é criado e adicionado à tabela.
 
 
 
+[[create-agent-addresses]]
 == Criar endereços de agentes
 
 Opcionalmente, use a guia Endereços do agente na seção Outras configurações para especificar um ou mais "endereços de escuta".  Esses são os endereços StorageGRID nos quais o agente SNMP pode receber consultas.
@@ -344,6 +348,7 @@ O endereço do agente é criado e adicionado à tabela.
 
 
 
+[[create-usm-userscreate-usm-users]]
 == [[create-usm-users]]Criar usuários USM
 
 Se você estiver usando SNMPv3, use a guia Usuários do USM na seção Outras configurações para definir os usuários do USM que estão autorizados a consultar o MIB ou a receber traps e informações.

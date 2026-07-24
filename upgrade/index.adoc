@@ -17,6 +17,7 @@ Quando você executa a atualização, todos os nós no seu sistema StorageGRID s
 
 
 
+[[before-you-begin]]
 == Antes de começar
 
 Revise estes tópicos para saber mais sobre os novos recursos e aprimoramentos do StorageGRID 11.9, determinar se algum recurso foi descontinuado ou removido e descobrir mais sobre as alterações nas APIs do StorageGRID .

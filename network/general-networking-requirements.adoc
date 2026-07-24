@@ -37,6 +37,7 @@ Se você não estiver pronto para configurar as redes opcionais de administrador
 
 
 
+[[connections-for-admin-nodes-and-gateway-nodes]]
 == Conexões para nós de administração e nós de gateway
 
 Os nós de administração devem sempre ser protegidos de clientes não confiáveis, como aqueles na Internet aberta.  Você deve garantir que nenhum cliente não confiável possa acessar qualquer nó de administração na rede Grid, na rede de administração ou na rede de clientes.
@@ -45,6 +46,7 @@ Os nós de administração e os nós de gateway que você planeja adicionar aos 
 
 
 
+[[using-network-address-translation-nat]]
 == Usando tradução de endereços de rede (NAT)
 
 Não use a tradução de endereços de rede (NAT) na Grid Network entre nós da grade ou entre sites do StorageGRID .  Quando você usa endereços IPv4 privados para a Grid Network, esses endereços devem ser roteáveis ​​diretamente de cada nó da grade em cada site.  No entanto, conforme necessário, você pode usar NAT entre clientes externos e nós de grade, como para fornecer um endereço IP público para um nó de gateway.  O uso de NAT para conectar um segmento de rede pública é suportado somente quando você emprega um aplicativo de tunelamento que seja transparente a todos os nós na grade, o que significa que os nós da grade não exigem conhecimento de endereços IP públicos.

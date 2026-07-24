@@ -15,6 +15,7 @@ Você deve substituir os certificados padrão criados durante a instalação e s
 
 
 
+[[hardening-guidelines-for-certificates]]
 == Diretrizes de reforço para certificados
 
 Você deve substituir os certificados padrão criados durante a instalação pelos seus próprios certificados personalizados.
@@ -44,6 +45,7 @@ Além disso, os clientes devem usar verificação rigorosa de nome de host ao se
 
 
 
+[[hardening-guidelines-for-tls-and-ssh-policy]]
 == Diretrizes de reforço para política TLS e SSH
 
 Você pode selecionar uma política de segurança para determinar quais protocolos e cifras são usados ​​para estabelecer conexões TLS seguras com aplicativos cliente e conexões SSH seguras com serviços internos do StorageGRID .

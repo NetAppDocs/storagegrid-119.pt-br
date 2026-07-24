@@ -15,6 +15,7 @@ Uma conta de locatário permite que você use a API REST do Simple Storage Servi
 
 
 
+[[what-is-a-tenant-account]]
 == O que é uma conta de inquilino?
 
 Cada conta de locatário tem seus próprios grupos federados ou locais, usuários, buckets S3 ou contêineres Swift e objetos.
@@ -31,6 +32,7 @@ NOTE: Se você usar o protocolo de cliente S3, também poderá usar buckets e po
 
 
 
+[[how-to-create-a-tenant-account]]
 == Como criar uma conta de inquilino
 
 As contas de inquilino são criadas por umlink:../admin/managing-tenants.html["Administrador de grade StorageGRID usando o Grid Manager"] .  Ao criar uma conta de locatário, o administrador da grade especifica o seguinte:
@@ -44,6 +46,7 @@ Além disso, os administradores de grade podem habilitar a configuração de Blo
 
 
 
+[[configure-s3-tenants]]
 === Configurar locatários do S3
 
 Depois de umlink:../admin/creating-tenant-account.html["A conta do locatário S3 foi criada"] , você pode acessar o Gerenciador de Inquilinos para executar tarefas como as seguintes:

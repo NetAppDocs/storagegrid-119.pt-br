@@ -27,6 +27,7 @@ Por padrão, qualquer usuário que pertença a um grupo que tenha pelo menos uma
 
 
 
+[[interaction-between-permissions-and-access-mode]]
 == Interação entre permissões e modo de acesso
 
 Para todas as permissões, a configuração *Modo de acesso* do grupo determina se os usuários podem alterar as configurações e executar operações ou se eles podem apenas visualizar as configurações e os recursos relacionados.  Se um usuário pertencer a vários grupos e qualquer grupo estiver definido como *Somente leitura*, o usuário terá acesso somente leitura a todas as configurações e recursos selecionados.
@@ -35,12 +36,14 @@ As seções a seguir descrevem as permissões que você pode atribuir ao criar o
 
 
 
+[[root-access]]
 == Acesso root
 
 Esta permissão fornece acesso a todos os recursos de administração da grade.
 
 
 
+[[change-tenant-root-password]]
 == Alterar senha raiz do locatário
 
 Esta permissão fornece acesso à opção *Alterar senha root* na página Locatários, permitindo que você controle quem pode alterar a senha do usuário root local do locatário.  Essa permissão também é usada para migrar chaves S3 quando o recurso de importação de chaves S3 está habilitado.  Usuários que não têm essa permissão não podem ver a opção *Alterar senha root*.
@@ -50,6 +53,7 @@ NOTE: Para conceder acesso à página de locatários, que contém a opção *Alt
 
 
 
+[[grid-topology-page-configuration]]
 == Configuração da página de topologia de grade
 
 Esta permissão fornece acesso às guias Configuração na página *SUPORTE* > *Ferramentas* > *Topologia de grade*.
@@ -59,6 +63,7 @@ NOTE: A página de topologia de grade foi descontinuada e será removida em uma 
 
 
 
+[[ilm]]
 == ILM
 
 Esta permissão fornece acesso às seguintes opções de menu *ILM*:
@@ -77,6 +82,7 @@ NOTE: Os usuários devem ter as permissões *Outra configuração de grade* e *C
 
 
 
+[[maintenance]]
 == Manutenção
 
 Os usuários devem ter permissão de Manutenção para usar estas opções:
@@ -145,12 +151,14 @@ Usuários que não têm permissão de Manutenção podem visualizar, mas não ed
 
 
 
+[[manage-alerts]]
 == Gerenciar alertas
 
 Esta permissão fornece acesso a opções para gerenciar alertas.  Os usuários devem ter essa permissão para gerenciar silêncios, notificações de alerta e regras de alerta.
 
 
 
+[[metrics-query]]
 == Consulta de métricas
 
 Esta permissão fornece acesso a:
@@ -162,12 +170,14 @@ Esta permissão fornece acesso a:
 
 
 
+[[object-metadata-lookup]]
 == Pesquisa de metadados de objetos
 
 Esta permissão fornece acesso à página *ILM* > *Consulta de metadados do objeto*.
 
 
 
+[[other-grid-configuration]]
 == Outra configuração de grade
 
 Esta permissão fornece acesso a opções adicionais de configuração de grade.
@@ -190,6 +200,7 @@ TIP: Para ver essas opções adicionais, os usuários também devem ter a permis
 
 
 
+[[storage-appliance-administrator]]
 == Administrador do dispositivo de armazenamento
 
 Esta permissão fornece:
@@ -200,6 +211,7 @@ Esta permissão fornece:
 
 
 
+[[tenant-accounts]]
 == Contas de inquilinos
 
 Esta permissão fornece a capacidade de:

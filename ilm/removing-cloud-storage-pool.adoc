@@ -20,6 +20,7 @@ Você pode remover um pool de armazenamento em nuvem se ele não for usado em um
 
 
 
+[[if-needed-use-ilm-to-move-object-data]]
 == Se necessário, use o ILM para mover dados do objeto
 
 Se o pool de armazenamento em nuvem que você deseja remover contiver dados de objeto, você deverá usar o ILM para mover os dados para um local diferente.  Por exemplo, você pode mover os dados para nós de armazenamento na sua grade ou para um pool de armazenamento em nuvem diferente.
@@ -47,6 +48,7 @@ Para a Etapa 2 do assistente Criar regra ILM, selecione o novo local no campo *c
 
 
 
+[[delete-cloud-storage-pool]]
 == Excluir pool de armazenamento em nuvem
 
 Quando o Cloud Storage Pool estiver vazio e não for usado em nenhuma regra do ILM, você poderá excluí-lo.

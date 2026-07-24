@@ -18,6 +18,7 @@ NOTE: É mais eficiente executar uma única instalação de todos os nós, em ve
 
 
 
+[[vmware-information]]
 == Informações sobre VMware
 
 Você deve acessar o ambiente de implantação e coletar informações sobre o ambiente VMware; as redes que foram criadas para as redes Grid, Admin e Client; e os tipos de volume de armazenamento que você planeja usar para os nós de armazenamento.
@@ -33,6 +34,7 @@ NOTE: O VMware live vMotion faz com que o tempo do relógio da máquina virtual 
 
 
 
+[[grid-network-information]]
 == Informações da rede de grade
 
 Você deve coletar informações sobre a rede VMware criada para a StorageGRID Grid Network (obrigatório), incluindo:
@@ -48,6 +50,7 @@ Você deve coletar informações sobre a rede VMware criada para a StorageGRID G
 
 
 
+[[admin-network-information]]
 == Informações da rede de administração
 
 Para nós que serão conectados à Rede de Administração StorageGRID opcional, você deve coletar informações sobre a rede VMware criada para esta rede, incluindo:
@@ -64,6 +67,7 @@ Para nós que serão conectados à Rede de Administração StorageGRID opcional,
 
 
 
+[[client-network-information]]
 == Informações da rede do cliente
 
 Para nós que serão conectados à Rede de Cliente StorageGRID opcional, você deve coletar informações sobre a rede VMware criada para esta rede, incluindo:
@@ -75,6 +79,7 @@ Para nós que serão conectados à Rede de Cliente StorageGRID opcional, você d
 
 
 
+[[information-about-additional-interfaces]]
 == Informações sobre interfaces adicionais
 
 Opcionalmente, você pode adicionar interfaces de tronco ou de acesso à VM no vCenter depois de instalar o nó.  Por exemplo, você pode querer adicionar uma interface de tronco a um nó de administração ou gateway, para poder usar interfaces de VLAN para segregar o tráfego pertencente a diferentes aplicativos ou locatários.  Ou você pode querer adicionar uma interface de acesso para usar em um grupo de alta disponibilidade (HA).
@@ -87,6 +92,7 @@ As interfaces adicionadas são exibidas na página de interfaces de VLAN e na p�
 
 
 
+[[storage-volumes-for-virtual-storage-nodes]]
 == Volumes de armazenamento para nós de armazenamento virtuais
 
 Você deve coletar as seguintes informações para nós de armazenamento baseados em máquina virtual:
@@ -96,6 +102,7 @@ Você deve coletar as seguintes informações para nós de armazenamento baseado
 
 
 
+[[grid-configuration-information]]
 == Informações de configuração da grade
 
 Você deve coletar informações para configurar sua grade:

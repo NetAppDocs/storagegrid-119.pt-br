@@ -15,6 +15,7 @@ Se sua conta de locatário recebeu a permissão *Usar conexão de federação de
 
 
 
+[[workflow-for-cross-grid-replication]]
 == Fluxo de trabalho para replicação entre grades
 
 O diagrama de fluxo de trabalho resume as etapas que você executará para configurar a replicação entre grades entre buckets em duas grades.  Essas etapas são descritas com mais detalhes abaixo.
@@ -23,6 +24,7 @@ image::../media/grid-federation-cgr-workflow.png[Fluxo de trabalho de replicaç�
 
 
 
+[[configure-cross-grid-replication]]
 == Configurar replicação entre grades
 
 Antes de poder usar a replicação entre grades, você deve fazer login nas contas de locatário correspondentes em cada grade e criar buckets idênticos. Em seguida, você pode habilitar a replicação entre grades em um ou ambos os buckets.
@@ -37,6 +39,7 @@ Antes de poder usar a replicação entre grades, você deve fazer login nas cont
 
 
 
+[[create-two-identical-buckets]]
 === Crie dois buckets idênticos
 
 Como primeiro passo, faça login nas contas de locatários correspondentes em cada grade e crie buckets idênticos.
@@ -65,6 +68,7 @@ TIP: Conforme necessário, cada bucket pode usar uma região diferente.
 
 
 
+[[enable-cross-grid-replication]]
 === Habilitar replicação entre redes
 
 Você deve executar estas etapas antes de adicionar qualquer objeto a qualquer um dos buckets.
@@ -112,6 +116,7 @@ Após alguns instantes, uma mensagem de sucesso é exibida. Os objetos adicionad
 
 
 
+[[test-replication-between-grids]]
 == Replicação de teste entre grades
 
 Se a replicação entre grades estiver habilitada para um bucket, talvez seja necessário verificar se a conexão e a replicação entre grades estão funcionando corretamente e se os buckets de origem e destino ainda atendem a todos os requisitos (por exemplo, o controle de versão ainda está habilitado).
@@ -135,6 +140,7 @@ Se a conexão estiver saudável, um banner de sucesso será exibido. Caso contr�
 
 
 
+[[disable-cross-grid-replication]]
 == Desabilitar replicação entre grades
 
 Você pode interromper permanentemente a replicação entre grades se não quiser mais copiar objetos para a outra grade.

@@ -22,6 +22,7 @@ CAUTION: As seguintes regras e políticas do ILM são apenas exemplos.  Há muit
 
 
 
+[[how-changing-an-ilm-policy-affects-performance]]
 == Como a alteração de uma política de ILM afeta o desempenho
 
 Ao ativar uma nova política de ILM, o desempenho do seu sistema StorageGRID pode ser temporariamente afetado, especialmente se as instruções de posicionamento na nova política exigirem que muitos objetos existentes sejam movidos para novos locais.
@@ -43,6 +44,7 @@ NOTE: O StorageGRID considera cada perfil de codificação de eliminação como 
 
 
 
+[[active-ilm-policy-for-example-6-data-protection-at-two-sites]]
 == Política de ILM ativa, por exemplo 6: Proteção de dados em dois sites
 
 Neste exemplo, a política ILM ativa foi projetada inicialmente para um sistema StorageGRID de dois sites e usa duas regras ILM.
@@ -53,6 +55,7 @@ Nesta política de ILM, os objetos pertencentes ao Locatário A são protegidos 
 
 
 
+[[rule-1-one-site-erasure-coding-for-tenant-a]]
 === Regra 1: Codificação de eliminação de um site para o Locatário A
 
 [cols="1a,2a"]
@@ -89,6 +92,7 @@ Codificação de eliminação 2+1 no Site 1 do dia 0 até sempre
 |===
 
 
+[[rule-2-two-site-replication-for-other-tenants]]
 === Regra 2: Replicação de dois sites para outros locatários
 
 [cols="1a,2a"]
@@ -125,6 +129,7 @@ Duas cópias replicadas do dia 0 até sempre: uma cópia no Site 1 e uma cópia 
 |===
 
 
+[[ilm-policy-for-example-6-data-protection-at-three-sites]]
 == Política de ILM, exemplo 6: Proteção de dados em três locais
 
 Neste exemplo, a política ILM está sendo substituída por uma nova política para um sistema StorageGRID de três sites.
@@ -135,6 +140,7 @@ Quando essa nova política de ILM for ativada, os objetos pertencentes ao Locat�
 
 
 
+[[rule-1-three-site-erasure-coding-for-tenant-a]]
 === Regra 1: Codificação de eliminação de três sites para o Locatário A
 
 [cols="1a,2a"]
@@ -171,6 +177,7 @@ Codificação de eliminação 2+1 em todos os 3 sites do dia 0 até sempre
 |===
 
 
+[[rule-2-three-site-replication-for-other-tenants]]
 === Regra 2: Replicação de três sites para outros inquilinos
 
 [cols="1a,2a"]
@@ -207,6 +214,7 @@ Três cópias replicadas do dia 0 até sempre: uma cópia no Local 1, uma cópia
 |===
 
 
+[[activating-the-ilm-policy-for-example-6]]
 == Ativando a política ILM, por exemplo 6
 
 Quando você ativa uma nova política de ILM, objetos existentes podem ser movidos para novos locais ou novas cópias de objetos podem ser criadas para objetos existentes, com base nas instruções de posicionamento em quaisquer regras novas ou atualizadas.
@@ -219,6 +227,7 @@ CAUTION: Quando você ativa uma nova política de ILM, o StorageGRID a usa para 
 
 
 
+[[what-happens-when-erasure-coding-instructions-change]]
 === O que acontece quando as instruções de codificação de apagamento mudam
 
 Na política ILM atualmente ativa para este exemplo, os objetos pertencentes ao Locatário A são protegidos usando codificação de eliminação 2+1 no Site 1.  Na nova política de ILM, os objetos pertencentes ao Locatário A serão protegidos usando codificação de eliminação 2+1 nos Sites 1, 2 e 3.
@@ -235,6 +244,7 @@ NOTE: Os fragmentos 2+1 existentes no Sítio 1 não são reutilizados.  O Storag
 
 
 
+[[what-happens-when-replication-instructions-change]]
 === O que acontece quando as instruções de replicação mudam
 
 Na política de ILM atualmente ativa para este exemplo, objetos pertencentes a outros locatários são protegidos usando duas cópias replicadas em pools de armazenamento nos Sites 1 e 2.  Na nova política de ILM, objetos pertencentes a outros locatários serão protegidos usando três cópias replicadas em pools de armazenamento nos Sites 1, 2 e 3.
@@ -247,6 +257,7 @@ Quando a nova política de ILM é ativada, ocorrem as seguintes operações de I
 
 
 
+[[performance-impact-of-activating-this-policy]]
 === Impacto no desempenho da ativação desta política
 
 Quando a política ILM neste exemplo for ativada, o desempenho geral deste sistema StorageGRID será temporariamente afetado.  Serão necessários níveis de recursos de grade maiores que o normal para criar novos fragmentos codificados por eliminação para os objetos existentes do Locatário A e novas cópias replicadas no Site 3 para os objetos existentes de outros locatários.

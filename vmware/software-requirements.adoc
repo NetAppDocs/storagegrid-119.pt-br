@@ -15,6 +15,7 @@ Você pode usar uma máquina virtual para hospedar qualquer tipo de nó StorageG
 
 
 
+[[vmware-vsphere-hypervisor]]
 == Hipervisor VMware vSphere
 
 Você deve instalar o VMware vSphere Hypervisor em um servidor físico preparado.  O hardware deve ser configurado corretamente (incluindo versões de firmware e configurações de BIOS) antes de instalar o software VMware.
@@ -29,6 +30,7 @@ link:../network/index.html["Diretrizes de rede"]
 
 
 
+[[esx-host-configuration-requirements]]
 == Requisitos de configuração do host ESX
 
 
@@ -36,6 +38,7 @@ CAUTION: Você deve configurar corretamente o protocolo de tempo de rede (NTP) e
 
 
 
+[[vmware-configuration-requirements]]
 == Requisitos de configuração do VMware
 
 Você deve instalar e configurar o VMware vSphere e o vCenter antes de implantar os nós do StorageGRID .

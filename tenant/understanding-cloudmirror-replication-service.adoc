@@ -20,18 +20,21 @@ NOTE: A replicação do CloudMirror não será suportada se o bucket de origem t
 
 
 
+[[cloudmirror-and-ilm]]
 == CloudMirror e ILM
 
 A replicação do CloudMirror opera independentemente das políticas de ILM ativas da grade.  O serviço CloudMirror replica objetos conforme eles são armazenados no bucket de origem e os entrega ao bucket de destino o mais rápido possível.  A entrega de objetos replicados é acionada quando a ingestão do objeto é bem-sucedida.
 
 
 
+[[cloudmirror-and-cross-grid-replication]]
 == CloudMirror e replicação entre grades
 
 A replicação do CloudMirror tem semelhanças e diferenças importantes com o recurso de replicação entre grades. Consulte link:../admin/grid-federation-compare-cgr-to-cloudmirror.html["Comparar a replicação entre grades e a replicação do CloudMirror"] .
 
 
 
+[[cloudmirror-and-s3-buckets]]
 == CloudMirror e buckets S3
 
 A replicação do CloudMirror normalmente é configurada para usar um bucket S3 externo como destino.  No entanto, você também pode configurar a replicação para usar outra implantação do StorageGRID ou qualquer serviço compatível com S3.
@@ -49,6 +52,7 @@ Buckets versionados ou não versionados:: Você pode configurar a replicação d
 
 
 
+[[deletion-replication-loops-and-events]]
 == Exclusão, loops de replicação e eventos
 
 Comportamento de exclusão:: É o mesmo que o comportamento de exclusão do serviço Amazon S3, Cross-Region Replication (CRR).  Excluir um objeto em um bucket de origem nunca exclui um objeto replicado no destino.  Se os buckets de origem e destino forem versionados, o marcador de exclusão será replicado.  Se o bucket de destino não tiver versão, a exclusão de um objeto no bucket de origem não replicará o marcador de exclusão para o bucket de destino nem excluirá o objeto de destino.

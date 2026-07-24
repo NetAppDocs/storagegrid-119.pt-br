@@ -28,12 +28,14 @@ Estas instruções resumem como configurar o PingFederate Server versão 10.3 co
 
 
 
+[[complete-prerequisites-in-pingfederate]]
 == Pré-requisitos completos no PingFederate
 
 Antes de criar as conexões SP que você usará para o StorageGRID, você deve concluir as tarefas de pré-requisito no PingFederate.  Você usará informações desses pré-requisitos ao configurar as conexões SP .
 
 
 
+[[create-data-storedata-store]]
 === Criar armazenamento de dados[[data-store]]
 
 Se ainda não o fez, crie um armazenamento de dados para conectar o PingFederate ao servidor LDAP do AD FS.  Use os valores que você usou quandolink:../admin/using-identity-federation.html["configurando federação de identidade"] em StorageGRID.
@@ -45,6 +47,7 @@ Se ainda não o fez, crie um armazenamento de dados para conectar o PingFederate
 
 
 
+[[create-password-credential-validatorpassword-validator]]
 === Criar validador de credenciais de senha[[password-validator]]
 
 Caso ainda não tenha feito isso, crie um validador de credenciais de senha.
@@ -58,6 +61,7 @@ Caso ainda não tenha feito isso, crie um validador de credenciais de senha.
 
 
 
+[[create-idp-adapter-instanceadapter-instance]]
 === Criar instância do adaptador IdP[[adapter-instance]]
 
 Se ainda não o fez, crie uma instância do adaptador IdP.
@@ -74,6 +78,7 @@ Se ainda não o fez, crie uma instância do adaptador IdP.
 
 
 
+[[create-or-import-signing-certificatesigning-certificate]]
 === Criar ou importar certificado de assinatura[[signing-certificate]]
 
 Caso ainda não tenha feito isso, crie ou importe o certificado de assinatura.
@@ -85,6 +90,7 @@ Caso ainda não tenha feito isso, crie ou importe o certificado de assinatura.
 
 
 
+[[create-an-sp-connection-in-pingfederate]]
 == Crie uma conexão SP no PingFederate
 
 Ao criar uma conexão SP no PingFederate, você importa os metadados SAML baixados do StorageGRID para o nó de administração.  O arquivo de metadados contém muitos dos valores específicos que você precisa.
@@ -94,6 +100,7 @@ TIP: Você deve criar uma conexão SP para cada nó de administração no seu si
 
 
 
+[[choose-sp-connection-type]]
 === Escolha o tipo de conexão SP
 
 .Passos
@@ -105,6 +112,7 @@ TIP: Você deve criar uma conexão SP para cada nó de administração no seu si
 
 
 
+[[import-sp-metadata]]
 === Importar metadados SP
 
 .Passos
@@ -119,6 +127,7 @@ O ID da entidade do parceiro e o nome da conexão são definidos como o ID da co
 
 
 
+[[configure-idp-browser-sso]]
 === Configurar SSO do navegador IdP
 
 .Passos
@@ -137,6 +146,7 @@ O ID da entidade do parceiro e o nome da conexão são definidos como o ID da co
 
 
 
+[[map-adapter-instance]]
 === Instância do adaptador de mapa
 
 .Passos
@@ -163,6 +173,7 @@ O ID da entidade do parceiro e o nome da conexão são definidos como o ID da co
 
 
 
+[[configure-protocol-settings]]
 === Configurar as definições do protocolo
 
 .Passos
@@ -178,6 +189,7 @@ O ID da entidade do parceiro e o nome da conexão são definidos como o ID da co
 
 
 
+[[configure-credentials]]
 === Configurar credenciais
 
 .Passos
@@ -195,6 +207,7 @@ O ID da entidade do parceiro e o nome da conexão são definidos como o ID da co
 
 
 
+[[create-additional-sp-connections]]
 === Criar conexões SP adicionais
 
 Você pode copiar a primeira conexão SP para criar as conexões SP necessárias para cada nó de administração na sua grade.  Você carrega novos metadados para cada cópia.

@@ -4,6 +4,7 @@
 
 
 
+[[find-hostname-for-storage-node]]
 == Encontre o nome do host para o nó de armazenamento
 
 . Efetue login no nó de administração principal:
@@ -22,6 +23,7 @@ Quando você está logado como root, o prompt muda de `$` para `#` .
 
 
 
+[[repair-data-if-all-volumes-have-failed]]
 == Reparar dados se todos os volumes falharem
 
 Se todos os volumes de armazenamento falharem, repare o nó inteiro.  Siga as instruções para *dados replicados*, *dados com codificação de eliminação (EC)* ou ambos, dependendo se você usa dados replicados, dados com codificação de eliminação (EC) ou ambos.
@@ -61,6 +63,7 @@ Os reparos de dados codificados para eliminação podem começar enquanto alguns
 ====
 
 
+[[repair-data-if-only-some-volumes-have-failed]]
 == Reparar dados se apenas alguns volumes falharam
 
 Se apenas alguns volumes falharam, repare os volumes afetados.  Siga as instruções para *dados replicados*, *dados com codificação de eliminação (EC)* ou ambos, dependendo se você usa dados replicados, dados com codificação de eliminação (EC) ou ambos.

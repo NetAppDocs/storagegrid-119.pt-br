@@ -15,6 +15,7 @@ Use estas instruções para configurar e administrar um sistema StorageGRID .
 
 
 
+[[about-these-instructions]]
 == Sobre estas instruções
 
 As principais tarefas para configurar e administrar o StorageGRID permitem que você:
@@ -28,6 +29,7 @@ As principais tarefas para configurar e administrar o StorageGRID permitem que v
 
 
 
+[[before-you-begin]]
 == Antes de começar
 
 * Você tem uma compreensão geral do sistema StorageGRID .

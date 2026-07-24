@@ -21,12 +21,14 @@ image::../media/object_conceptual_drawing.png[Objeto]
 
 
 
+[[what-is-object-data]]
 == O que são dados de objeto?
 
 Dados de objetos podem ser qualquer coisa; por exemplo, uma fotografia, um filme ou um registro médico.
 
 
 
+[[what-is-object-metadata]]
 == O que são metadados de objeto?
 
 Metadados de objeto são quaisquer informações que descrevem um objeto.  O StorageGRID usa metadados de objetos para rastrear os locais de todos os objetos na grade e gerenciar o ciclo de vida de cada objeto ao longo do tempo.
@@ -44,12 +46,14 @@ Para obter informações detalhadas sobre como e onde o StorageGRID armazena met
 
 
 
+[[how-is-object-data-protected]]
 == Como os dados do objeto são protegidos?
 
 O sistema StorageGRID fornece dois mecanismos para proteger dados de objetos contra perda: replicação e codificação de eliminação.
 
 
 
+[[replication]]
 === Replicação
 
 Quando o StorageGRID corresponde objetos a uma regra de gerenciamento do ciclo de vida das informações (ILM) configurada para criar cópias replicadas, o sistema cria cópias exatas dos dados do objeto e as armazena em nós de armazenamento ou pools de armazenamento em nuvem.  As regras do ILM determinam o número de cópias feitas, onde essas cópias são armazenadas e por quanto tempo elas são retidas pelo sistema.  Se uma cópia for perdida, por exemplo, como resultado da perda de um nó de armazenamento, o objeto ainda estará disponível se houver uma cópia dele em outro lugar no sistema StorageGRID .
@@ -60,6 +64,7 @@ image::../media/ilm_replication_make_2_copies.png[Regra de fazer 2 cópias]
 
 
 
+[[erasure-coding]]
 === Codificação de apagamento
 
 Quando o StorageGRID corresponde objetos a uma regra ILM configurada para criar cópias codificadas para eliminação, ele divide os dados do objeto em fragmentos de dados, calcula fragmentos de paridade adicionais e armazena cada fragmento em um nó de armazenamento diferente.  Quando um objeto é acessado, ele é remontado usando os fragmentos armazenados.  Se um dado ou um fragmento de paridade for corrompido ou perdido, o algoritmo de codificação de eliminação pode recriar esse fragmento usando um subconjunto dos dados e fragmentos de paridade restantes.  As regras do ILM e os perfis de codificação de eliminação determinam o esquema de codificação de eliminação usado.

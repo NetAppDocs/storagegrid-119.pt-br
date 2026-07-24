@@ -22,6 +22,7 @@ A maneira mais eficiente de impedir que todos os serviços sejam reiniciados é 
 
 
 
+[[add-donotstart-file-for-service]]
 == Adicionar arquivo DoNotStart para serviço
 
 Você pode impedir que um serviço individual seja iniciado adicionando um arquivo DoNotStart ao diretório desse serviço em um nó de grade.
@@ -61,6 +62,7 @@ Quando o Gerenciador do Servidor ou o nó da grade é reiniciado, o Gerenciador 
 
 
 
+[[remove-donotstart-file-for-service]]
 == Remover arquivo DoNotStart para serviço
 
 Ao remover um arquivo DoNotStart que está impedindo a inicialização de um serviço, você deve iniciar esse serviço.

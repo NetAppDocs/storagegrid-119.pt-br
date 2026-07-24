@@ -15,6 +15,7 @@ Os clientes precisam se comunicar com os nós da grade para ingerir e recuperar 
 
 
 
+[[restricted-access-to-ports]]
 == Acesso restrito aos portos
 
 Se as políticas de rede corporativa restringirem o acesso a qualquer uma das portas, você poderá fazer o seguinte:
@@ -32,6 +33,7 @@ Se as políticas de rede corporativa restringirem o acesso a qualquer uma das po
 
 
 
+[[ports-used-for-external-communications]]
 == Portas usadas para comunicações externas
 
 A tabela a seguir mostra as portas usadas para tráfego nos nós.

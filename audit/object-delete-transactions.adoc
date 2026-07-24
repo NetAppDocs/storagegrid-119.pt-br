@@ -17,6 +17,7 @@ Nem todas as mensagens de auditoria geradas durante uma transação de exclusão
 
 
 
+[[s3-delete-audit-messages]]
 == Mensagens de auditoria de exclusão do S3
 
 [cols="1a,1a,2a,1a,2a"]
@@ -38,6 +39,7 @@ link:sdel-s3-delete.html["SDEL: S3 EXCLUIR"]
 |===
 
 
+[[swift-delete-audit-messages]]
 == Mensagens de auditoria de exclusão rápida
 
 [cols="1a,1a,2a,1a,2a"]
@@ -59,6 +61,7 @@ link:wdel-swift-delete.html["WDEL: Swift EXCLUIR"]
 |===
 
 
+[[example-s3-object-deletion]]
 == Exemplo: exclusão de objeto S3
 
 Quando um cliente S3 exclui um objeto de um nó de armazenamento (serviço LDR), uma mensagem de auditoria é gerada e salva no log de auditoria.
@@ -68,6 +71,7 @@ NOTE: Nem todas as mensagens de auditoria geradas durante uma transação de exc
 
 
 
+[[sdel-s3-delete]]
 === SDEL: S3 Excluir
 
 A exclusão de objetos começa quando o cliente envia uma solicitação DeleteObject para um serviço LDR.  A mensagem contém o bucket do qual o objeto deve ser excluído e a chave S3 do objeto, que é usada para identificá-lo.

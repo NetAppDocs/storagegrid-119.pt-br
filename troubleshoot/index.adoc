@@ -17,6 +17,7 @@ Muitas vezes, você pode resolver problemas sozinho; no entanto, pode ser necess
 
 
 
+[[defineproblemdefine-the-problem]]
 == [[define_problem]]Defina o problema
 
 O primeiro passo para resolver um problema é defini-lo claramente.
@@ -78,6 +79,7 @@ Esta é a primeira vez que vejo esse problema.
 |===
 
 
+[[assess-the-risk-and-impact-on-the-system]]
 == Avaliar o risco e o impacto no sistema
 
 Depois de definir o problema, avalie seu risco e impacto no sistema StorageGRID .  Por exemplo, a presença de alertas críticos não significa necessariamente que o sistema não esteja prestando serviços essenciais.
@@ -118,6 +120,7 @@ Sim, porque os aplicativos clientes não podem armazenar objetos no sistema Stor
 |===
 
 
+[[collect-data]]
 == Coletar dados
 
 Depois de definir o problema e avaliar seu risco e impacto, colete dados para análise.  O tipo de dado mais útil para coletar depende da natureza do problema.
@@ -227,6 +230,7 @@ O suporte técnico pode solicitar que você colete dados ou revise informações
 |===
 
 
+[[createtimelinecreate-a-timeline-of-recent-changes]]
 === [[create_timeline]]Criar uma linha do tempo das mudanças recentes
 
 Quando ocorre um problema, você deve considerar o que mudou recentemente e quando essas mudanças ocorreram.
@@ -295,6 +299,7 @@ Aqui estão alguns exemplos de mudanças potencialmente significativas:
 
 
 
+[[establish-baselines]]
 === Estabelecer linhas de base
 
 Você pode estabelecer linhas de base para seu sistema registrando os níveis normais de vários valores operacionais.  No futuro, você poderá comparar os valores atuais com essas linhas de base para ajudar a detectar e resolver valores anormais.
@@ -397,6 +402,7 @@ Selecione *NÓS* > *_Nó de Armazenamento_* > *Objetos*. Na tabela Consultas, vi
 |===
 
 
+[[analyze-data]]
 == Analisar dados
 
 Use as informações coletadas para determinar a causa do problema e possíveis soluções.
@@ -410,6 +416,7 @@ A análise depende do problema, mas em geral:
 
 
 
+[[escalation-information-checklist]]
 == Lista de verificação de informações de escalonamento
 
 Se você não conseguir resolver o problema sozinho, entre em contato com o suporte técnico.  Antes de entrar em contato com o suporte técnico, reúna as informações listadas na tabela a seguir para facilitar a resolução do problema.

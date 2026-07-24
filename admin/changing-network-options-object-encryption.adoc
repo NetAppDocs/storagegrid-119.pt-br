@@ -15,6 +15,7 @@ Você pode configurar a segurança de rede e de objetos para criptografar objeto
 
 
 
+[[stored-object-encryption]]
 == Criptografia de objetos armazenados
 
 A criptografia de objetos armazenados permite a criptografia de todos os dados de objetos à medida que são ingeridos pelo S3.  Por padrão, os objetos armazenados não são criptografados, mas você pode optar por criptografar objetos usando o algoritmo de criptografia AES-128 ou AES-256.  Quando você ativa a configuração, todos os objetos recém-ingeridos são criptografados, mas nenhuma alteração é feita nos objetos armazenados existentes.  Se você desabilitar a criptografia, os objetos criptografados atualmente permanecerão criptografados, mas os objetos recém-ingeridos não serão criptografados.
@@ -25,12 +26,14 @@ Para obter mais detalhes sobre os métodos de criptografia StorageGRID , consult
 
 
 
+[[prevent-client-modification]]
 == Impedir modificação do cliente
 
 Impedir modificação do cliente é uma configuração de todo o sistema.  Quando a opção *Impedir modificação do cliente* é selecionada, as seguintes solicitações são negadas.
 
 
 
+[[s3-rest-api]]
 === API REST S3
 
 * Solicitações DeleteBucket
@@ -39,6 +42,7 @@ Impedir modificação do cliente é uma configuração de todo o sistema.  Quand
 
 
 
+[[enable-http-for-storage-node-connections]]
 == Habilitar HTTP para conexões de nó de armazenamento
 
 Por padrão, os aplicativos cliente usam o protocolo de rede HTTPS para qualquer conexão direta com os nós de armazenamento.  Opcionalmente, você pode habilitar HTTP para essas conexões, por exemplo, ao testar uma grade que não seja de produção.
@@ -49,6 +53,7 @@ Verlink:summary-ip-addresses-and-ports-for-client-connections.html["Resumo: Ende
 
 
 
+[[select-options]]
 == Selecionar opções
 
 .Antes de começar

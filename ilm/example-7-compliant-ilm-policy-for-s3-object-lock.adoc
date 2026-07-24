@@ -26,6 +26,7 @@ CAUTION: As seguintes regras e políticas do ILM são apenas exemplos.  Há muit
 
 
 
+[[bucket-and-objects-for-s3-object-lock-example]]
 == Exemplo de bucket e objetos para bloqueio de objeto S3
 
 Neste exemplo, uma conta de locatário do S3 chamada Bank of ABC usou o Tenant Manager para criar um bucket com o S3 Object Lock habilitado para armazenar registros bancários críticos.
@@ -81,6 +82,7 @@ Uma retenção legal pode ser colocada ou suspensa em qualquer versão do objeto
 |===
 
 
+[[ilm-rule-1-for-s3-object-lock-example-erasure-coding-profile-with-bucket-matching]]
 == Exemplo de regra 1 do ILM para bloqueio de objeto S3: perfil de codificação de eliminação com correspondência de bucket
 
 Este exemplo de regra do ILM se aplica somente à conta de locatário do S3 chamada Bank of ABC.  Ele corresponde a qualquer objeto no `bank-records` bucket e, em seguida, usa codificação de eliminação para armazenar o objeto em nós de armazenamento em três locais de data center usando um perfil de codificação de eliminação 6+3.  Esta regra atende aos requisitos de buckets com o S3 Object Lock habilitado: uma cópia é mantida nos nós de armazenamento do dia 0 até sempre, usando o tempo de ingestão como tempo de referência.
@@ -148,6 +150,7 @@ Perfil de codificação de apagamento
 |===
 
 
+[[ilm-rule-2-for-s3-object-lock-example-non-compliant-rule]]
 == Exemplo de regra 2 do ILM para bloqueio de objeto S3: regra não compatível
 
 Este exemplo de regra ILM armazena inicialmente duas cópias de objetos replicadas em nós de armazenamento.  Após um ano, ele armazena uma cópia em um pool de armazenamento em nuvem para sempre.  Como essa regra usa um pool de armazenamento em nuvem, ela não é compatível e não se aplicará aos objetos em buckets com o bloqueio de objeto do S3 habilitado.
@@ -206,6 +209,7 @@ Posicionamentos
 |===
 
 
+[[ilm-rule-3-for-s3-object-lock-example-default-rule]]
 == Exemplo de regra 3 do ILM para bloqueio de objeto S3: regra padrão
 
 Este exemplo de regra ILM copia dados de objeto para pools de armazenamento em dois data centers.  Esta regra compatível foi criada para ser a regra padrão na política do ILM.  Ele não inclui nenhum filtro, não usa o tempo de referência Não Atual e atende aos requisitos de buckets com Bloqueio de Objeto S3 habilitado: duas cópias de objeto são mantidas em Nós de Armazenamento do dia 0 até sempre, usando Ingestão como o tempo de referência.
@@ -262,12 +266,14 @@ Do Dia 0 até sempre, mantenha duas cópias replicadas: uma nos Nós de Armazena
 |===
 
 
+[[compliant-ilm-policy-for-s3-object-lock-example]]
 == Exemplo de política de ILM compatível para bloqueio de objeto S3
 
 Para criar uma política de ILM que proteja efetivamente todos os objetos no seu sistema, incluindo aqueles em buckets com o S3 Object Lock habilitado, você deve selecionar regras de ILM que atendam aos requisitos de armazenamento para todos os objetos.  Então, você deve simular e ativar a política.
 
 
 
+[[add-rules-to-the-policy]]
 === Adicionar regras à política
 
 Neste exemplo, a política de ILM inclui três regras de ILM, na seguinte ordem:
@@ -279,6 +285,7 @@ Neste exemplo, a política de ILM inclui três regras de ILM, na seguinte ordem:
 
 
 
+[[simulate-the-policy]]
 === Simule a política
 
 Depois de adicionar regras à sua política, escolher uma regra padrão compatível e organizar as outras regras, você deve simular a política testando objetos do bucket com o Bloqueio de Objeto S3 habilitado e de outros buckets.  Por exemplo, ao simular a política de exemplo, você esperaria que os objetos de teste fossem avaliados da seguinte maneira:
@@ -295,6 +302,7 @@ Depois de adicionar regras à sua política, escolher uma regra padrão compatí
 
 
 
+[[activate-the-policy]]
 === Ativar a política
 
 Quando estiver completamente satisfeito de que a nova política protege os dados do objeto conforme o esperado, você poderá ativá-la.

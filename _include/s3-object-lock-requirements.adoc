@@ -4,6 +4,7 @@
 
 
 
+[[requirements-for-buckets-with-s3-object-lock-enabled]]
 == Requisitos para buckets com bloqueio de objeto S3 habilitado
 
 * Se a configuração global do S3 Object Lock estiver habilitada para o sistema StorageGRID , você poderá usar o Tenant Manager, a Tenant Management API ou a S3 REST API para criar buckets com o S3 Object Lock habilitado.
@@ -16,6 +17,7 @@
 
 
 
+[[requirements-for-objects-in-buckets-with-s3-object-lock-enabled]]
 == Requisitos para objetos em buckets com bloqueio de objeto S3 habilitado
 
 * Para proteger uma versão do objeto, você pode especificar configurações de retenção padrão para o bucket ou especificar configurações de retenção para cada versão do objeto.  As configurações de retenção no nível do objeto podem ser especificadas usando o aplicativo cliente S3 ou a API REST do S3.
@@ -24,6 +26,7 @@
 
 
 
+[[lifecycle-of-objects-in-buckets-with-s3-object-lock-enabled]]
 == Ciclo de vida de objetos em buckets com bloqueio de objeto S3 habilitado
 
 Cada objeto salvo em um bucket com o S3 Object Lock habilitado passa por estas etapas:

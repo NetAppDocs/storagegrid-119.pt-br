@@ -38,6 +38,7 @@ Quando todos os nós tiverem sido implantados, use o Grid Manager paralink:navig
 
 
 
+[[automate-the-installation]]
 == Automatize a instalação
 
 Para economizar tempo e fornecer consistência, você pode automatizar a implantação e a configuração dos nós da grade e a configuração do sistema StorageGRID .

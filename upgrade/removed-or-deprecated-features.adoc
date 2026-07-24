@@ -15,6 +15,7 @@ Alguns recursos e funcionalidades foram removidos ou descontinuados nesta versã
 
 
 
+[[definitions]]
 == Definições
 
 Obsoleto:: O recurso *não deve* ser usado em novos ambientes de produção.  Ambientes de produção existentes podem continuar usando o recurso.
@@ -24,6 +25,7 @@ Removido:: Primeira versão que *não* suporta o recurso.
 
 
 
+[[storagegrid-end-of-feature-support]]
 == Suporte ao fim do recurso StorageGRID
 
 Recursos obsoletos serão removidos nas versões principais N+2.  Por exemplo, se um recurso for obsoleto na versão N (por exemplo, 6.3), a última versão em que o recurso existirá será N+1 (por exemplo, 6.4).  A versão N+2 (por exemplo, 6.5) é o primeiro lançamento quando o recurso não existe no produto.

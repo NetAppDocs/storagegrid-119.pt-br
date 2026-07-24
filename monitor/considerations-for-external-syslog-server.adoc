@@ -22,6 +22,7 @@ Os tipos de informações de auditoria que você pode enviar ao servidor syslog 
 
 
 
+[[when-to-use-an-external-syslog-server]]
 == Quando usar um servidor syslog externo
 
 Um servidor syslog externo é especialmente útil se você tiver uma grade grande, usar vários tipos de aplicativos S3 ou quiser reter todos os dados de auditoria. O envio de informações de auditoria para um servidor syslog externo permite que você:
@@ -40,6 +41,7 @@ NOTE: Para maximizar as opções de recuperação completa de dados em caso de f
 
 
 
+[[how-to-configure-an-external-syslog-server]]
 == Como configurar um servidor syslog externo
 
 Para aprender como configurar um servidor syslog externo, consultelink:../monitor/configure-audit-messages.html["Configurar mensagens de auditoria e servidor syslog externo"] .
@@ -57,6 +59,7 @@ NOTE: Se você usar um certificado de cliente, também deverá usar uma chave pr
 
 
 
+[[how-to-estimate-the-size-of-the-external-syslog-server]]
 == Como estimar o tamanho do servidor syslog externo
 
 Normalmente, sua grade é dimensionada para atingir uma taxa de transferência necessária, definida em termos de operações S3 por segundo ou bytes por segundo.  Por exemplo, você pode ter um requisito para que sua grade manipule 1.000 operações S3 por segundo, ou 2.000 MB por segundo, de ingestões e recuperações de objetos.  Você deve dimensionar seu servidor syslog externo de acordo com os requisitos de dados da sua grade.
@@ -65,6 +68,7 @@ Esta seção fornece algumas fórmulas heurísticas que ajudam você a estimar a
 
 
 
+[[use-s3-operations-per-second-in-estimation-formulas]]
 === Use operações S3 por segundo em fórmulas de estimativa
 
 Se sua grade foi dimensionada para uma taxa de transferência expressa em bytes por segundo, você deve converter esse dimensionamento em operações S3 por segundo para usar as fórmulas de estimativa.  Para converter a taxa de transferência da grade, você deve primeiro determinar o tamanho médio do objeto, o que pode ser feito usando as informações em logs de auditoria e métricas existentes (se houver) ou usando seu conhecimento dos aplicativos que usarão o StorageGRID.  Por exemplo, se sua grade foi dimensionada para atingir uma taxa de transferência de 2.000 MB/segundo, e seu tamanho médio de objeto é de 2 MB, então sua grade foi dimensionada para poder lidar com 1.000 operações S3 por segundo (2.000 MB / 2 MB).
@@ -74,6 +78,7 @@ NOTE: As fórmulas para dimensionamento do servidor syslog externo nas seções 
 
 
 
+[[estimation-formulas-for-audit-logs]]
 === Fórmulas de estimativa para registros de auditoria
 
 Se você não tiver nenhuma informação sobre sua carga de trabalho do S3 além do número de operações do S3 por segundo que sua grade deve suportar, você pode estimar o volume de logs de auditoria que seu servidor syslog externo precisará manipular usando as seguintes fórmulas, supondo que você deixe os Níveis de Auditoria definidos com os valores padrão (todas as categorias definidas como Normal, exceto Armazenamento, que é definido como Erro):
@@ -142,6 +147,7 @@ Por exemplo, se sua grade for dimensionada para 1.000 operações S3 por segundo
 
 
 
+[[estimation-formulas-for-non-default-audit-levels]]
 === Fórmulas de estimativa para níveis de auditoria não padrão
 
 As fórmulas fornecidas para logs de auditoria pressupõem o uso de configurações de nível de auditoria padrão (todas as categorias definidas como Normal, exceto Armazenamento, que é definido como Erro).  Fórmulas detalhadas para estimar a taxa e o tamanho médio de mensagens de auditoria para configurações de nível de auditoria não padrão não estão disponíveis.  No entanto, a tabela a seguir pode ser usada para fazer uma estimativa aproximada da taxa; você pode usar a fórmula de tamanho médio fornecida para logs de auditoria, mas esteja ciente de que isso provavelmente resultará em uma superestimativa porque as mensagens de auditoria "extras" são, em média, menores que as mensagens de auditoria padrão.
@@ -166,12 +172,14 @@ Use a mesma fórmula das configurações padrão
 |===
 
 
+[[estimation-formulas-for-security-events]]
 === Fórmulas de estimativa para eventos de segurança
 
 Eventos de segurança não estão correlacionados com operações do S3 e normalmente produzem um volume insignificante de logs e dados.  Por essas razões, nenhuma fórmula de estimativa é fornecida.
 
 
 
+[[estimation-formulas-for-application-logs]]
 === Fórmulas de estimativa para logs de aplicação
 
 Se você não tiver nenhuma informação sobre sua carga de trabalho do S3 além do número de operações do S3 por segundo que sua grade deve suportar, você pode estimar o volume de logs de aplicativos que seu servidor syslog externo precisará manipular usando as seguintes fórmulas:
@@ -227,6 +235,7 @@ O nome da chave S3, sem incluir o nome do bucket.  Operações em buckets não i
 |===
 
 
+[[example-sizing-estimations]]
 == Exemplos de estimativas de dimensionamento
 
 Esta seção explica casos de exemplo de como usar as fórmulas de estimativa para grades com os seguintes métodos de proteção de dados:
@@ -237,6 +246,7 @@ Esta seção explica casos de exemplo de como usar as fórmulas de estimativa pa
 
 
 
+[[if-you-use-replication-for-data-protection]]
 === Se você usar replicação para proteção de dados
 
 Deixe P representar a porcentagem de operações S3 que são PUTs, onde 0 ≤ P ≤ 1 (portanto, para uma carga de trabalho de 100% PUT, P = 1, e para uma carga de trabalho de 100% GET, P = 0).
@@ -254,6 +264,7 @@ Assim, por exemplo, se sua grade for dimensionada para 1.000 operações S3 por 
 
 
 
+[[if-you-use-erasure-coding-for-data-protection]]
 === Se você usar codificação de eliminação para proteção de dados
 
 Deixe P representar a porcentagem de operações S3 que são PUTs, onde 0 ≤ P ≤ 1 (portanto, para uma carga de trabalho de 100% PUT, P = 1, e para uma carga de trabalho de 100% GET, P = 0).

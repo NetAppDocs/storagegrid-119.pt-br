@@ -34,6 +34,7 @@ Para obter mais informações, consulte link:../tenant/index.html["Use uma conta
 
 
 
+[[how-do-i-create-a-tenant-account]]
 == Como crio uma conta de inquilino?
 
 Use o Grid Manager para criar uma conta de locatário.  Ao criar uma conta de locatário, você especifica as seguintes informações:
@@ -47,6 +48,7 @@ Além disso, você pode habilitar a configuração de Bloqueio de Objeto S3 para
 
 
 
+[[what-is-tenant-manager-used-for]]
 == Para que serve o Tenant Manager?
 
 Depois de criar a conta do locatário, os usuários locatários podem fazer login no Gerenciador de Locatários para executar tarefas como as seguintes:

@@ -17,6 +17,7 @@ Ao desligar todos os nós em um site ou grade, você não poderá acessar os obj
 
 
 
+[[stop-services-and-shut-down-grid-nodes]]
 == Interrompa os serviços e desligue os nós da rede
 
 Antes de desligar um sistema StorageGRID , você deve interromper todos os serviços em execução em cada nó da grade e, em seguida, desligar todas as máquinas virtuais VMware, mecanismos de contêiner e dispositivos StorageGRID .
@@ -145,6 +146,7 @@ A grade StorageGRID foi desligada.
 
 
 
+[[start-up-grid-nodes]]
 == Iniciar nós de grade
 
 

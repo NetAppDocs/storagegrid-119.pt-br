@@ -20,6 +20,7 @@ NOTE: As marcas d'água do volume de armazenamento se aplicam somente ao espaço
 
 
 
+[[what-is-the-soft-read-only-watermark]]
 == O que é a marca d'água suave somente leitura?
 
 A *marca d'água de somente leitura do volume de armazenamento* é a primeira marca d'água a indicar que o espaço utilizável de um Nó de Armazenamento para dados de objeto está ficando cheio.
@@ -30,6 +31,7 @@ Por exemplo, suponha que cada volume em um nó de armazenamento tenha uma marca 
 
 
 
+[[what-is-the-hard-read-only-watermark]]
 == O que é a marca d'água somente leitura?
 
 A *marca d'água de somente leitura do volume de armazenamento* é a próxima marca d'água para indicar que o espaço utilizável de um nó para dados de objeto está ficando cheio.
@@ -42,6 +44,7 @@ A marca d'água somente leitura rígida é sempre menor que a marca d'água some
 
 
 
+[[what-is-the-read-write-watermark]]
 == O que é a marca d'água de leitura e gravação?
 
 A *marca d'água de leitura/gravação do volume de armazenamento* se aplica somente aos nós de armazenamento que fizeram a transição para o modo somente leitura.  Ele determina quando o nó pode se tornar leitura-gravação novamente.  Quando o espaço livre em qualquer volume de armazenamento em um nó de armazenamento for maior que a marca d'água de leitura e gravação desse volume, o nó retornará automaticamente ao estado de leitura e gravação.
@@ -52,6 +55,7 @@ A marca d'água de leitura e gravação é sempre maior que a marca d'água some
 
 
 
+[[view-storage-volume-watermarks]]
 == Exibir marcas d'água do volume de armazenamento
 
 Você pode visualizar as configurações atuais da marca d'água e os valores otimizados do sistema.  Se marcas d'água otimizadas não estiverem sendo usadas, você pode determinar se pode ou deve ajustar as configurações.
@@ -64,6 +68,7 @@ Você pode visualizar as configurações atuais da marca d'água e os valores ot
 
 
 
+[[view-current-watermark-settings]]
 === Ver configurações atuais de marca d'água
 
 Você pode visualizar as configurações atuais da marca d'água de armazenamento no Grid Manager.
@@ -86,6 +91,7 @@ Ao especificar configurações de marca d'água personalizadas, você deve inser
 
 
 
+[[view-optimized-storage-watermarksview-optimized-storage-watermarks]]
 === [[view-optimized-storage-watermarks]]Ver marcas d'água de armazenamento otimizadas
 
 O StorageGRID usa duas métricas do Prometheus para mostrar os valores otimizados que ele calculou para a marca d'água somente leitura do volume de armazenamento.  Você pode visualizar os valores mínimos e máximos otimizados para cada nó de armazenamento na sua grade.

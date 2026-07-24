@@ -15,6 +15,7 @@ Quando o logon único (SSO) estiver habilitado, os usuários só poderão acessa
 
 
 
+[[how-single-sign-on-works]]
 == Como funciona o logon único
 
 O sistema StorageGRID oferece suporte ao logon único (SSO) usando o padrão Security Assertion Markup Language 2.0 (SAML 2.0).
@@ -23,6 +24,7 @@ Antes de habilitar o logon único (SSO), revise como os processos de login e log
 
 
 
+[[sign-in-when-sso-is-enabled]]
 === Sign in quando o SSO estiver habilitado
 
 Quando o SSO estiver habilitado e você fizer login no StorageGRID, você será redirecionado para a página SSO da sua organização para validar suas credenciais.
@@ -82,6 +84,7 @@ Você não precisa inserir novamente suas credenciais de SSO.
 
 
 
+[[sign-out-when-sso-is-enabled]]
 === Sair quando o SSO estiver habilitado
 
 Quando o SSO está habilitado para o StorageGRID, o que acontece quando você sai depende do que você está conectado e de onde você está saindo.

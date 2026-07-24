@@ -20,6 +20,7 @@ Quando usuários locatários efetuam login no Gerenciador de Locatários, eles e
 
 
 
+[[tenant-manager-dashboard]]
 == Painel do gerente de inquilinos
 
 Depois que um administrador de grade cria uma conta de locatário usando o Grid Manager ou a Grid Management API, os usuários locatários podem fazer login no Tenant Manager.
@@ -32,12 +33,14 @@ image::../media/tenant_dashboard_with_buckets.png[Painel do gerente de inquilino
 
 
 
+[[storage-menu-s3]]
 == Menu de armazenamento (S3)
 
 O menu Armazenamento é fornecido somente para contas de locatários do S3.  Este menu permite que os usuários do S3 gerenciem chaves de acesso; criem, gerenciem e excluam buckets; gerenciem pontos de extremidade de serviços de plataforma; e visualizem quaisquer conexões de federação de grade que eles têm permissão para usar.
 
 
 
+[[my-access-keys]]
 === Minhas chaves de acesso
 
 Os usuários do tenant do S3 podem gerenciar chaves de acesso da seguinte maneira:
@@ -52,6 +55,7 @@ NOTE: O gerenciamento das chaves de acesso para outros usuários ocorre no menu 
 
 
 
+[[buckets]]
 === Baldes
 
 Usuários locatários do S3 com as permissões apropriadas podem executar as seguintes tarefas para seus buckets:
@@ -77,18 +81,21 @@ Se um administrador de grade tiver habilitado o uso de serviços de plataforma p
 
 
 
+[[platform-services-endpoints]]
 === Pontos de extremidade de serviços de plataforma
 
 Se um administrador de grade tiver habilitado o uso de serviços de plataforma para a conta do locatário, um usuário locatário do S3 com a permissão Gerenciar endpoints poderá configurar um endpoint de destino para cada serviço de plataforma.
 
 
 
+[[grid-federation-connections]]
 === Conexões de federação de rede
 
 Se um administrador de grade tiver habilitado o uso de uma conexão de federação de grade para a conta do locatário, um usuário locatário do S3 que tenha permissão de acesso Root poderá visualizar o nome da conexão, acessar a página de detalhes do bucket para cada bucket que tenha replicação entre grades habilitada e visualizar o erro mais recente que ocorreu quando os dados do bucket estavam sendo replicados para a outra grade na conexão. Ver link:../tenant/grid-federation-view-connections-tenant.html["Ver conexões de federação de grade"] .
 
 
 
+[[access-management-menu]]
 == Menu de gerenciamento de acesso
 
 O menu Gerenciamento de acesso permite que os locatários do StorageGRID importem grupos de usuários de uma fonte de identidade federada e atribuam permissões de gerenciamento.  Os locatários também podem gerenciar grupos de locatários e usuários locais, a menos que o logon único (SSO) esteja em vigor para todo o sistema StorageGRID .

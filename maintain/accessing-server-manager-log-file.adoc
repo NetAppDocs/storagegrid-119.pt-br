@@ -19,6 +19,7 @@ Verifique este arquivo para mensagens de erro relacionadas a falhas.  Encaminhe 
 
 
 
+[[service-with-an-error-state]]
 == Serviço com estado de erro
 
 Se você detectar que um serviço entrou em estado de erro, tente reiniciá-lo.

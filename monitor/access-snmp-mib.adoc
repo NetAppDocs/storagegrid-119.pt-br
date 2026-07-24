@@ -17,6 +17,7 @@ Verlink:using-snmp-monitoring.html["Usar monitoramento SNMP"] para mais informa�
 
 
 
+[[access-mib-files]]
 == Acessar arquivos MIB
 
 Siga estas etapas para acessar os arquivos MIB.
@@ -59,6 +60,7 @@ TIP: O `snmptranslate` O comando tem muitas opções úteis para explorar o MIB.
 
 
 
+[[mib-file-contents]]
 == Conteúdo do arquivo MIB
 
 Todos os objetos estão sob o OID StorageGRID .
@@ -74,6 +76,7 @@ O módulo MIB para entidades NetApp StorageGRID .
 |===
 
 
+[[mib-objects]]
 == Objetos MIB
 
 [cols="1a,1a,2a"]
@@ -117,6 +120,7 @@ Data e hora em que o alerta foi disparado.
 |===
 
 
+[[notification-types-traps]]
 == Tipos de notificação (armadilhas)
 
 Todas as notificações incluem as seguintes variáveis como varbinds:

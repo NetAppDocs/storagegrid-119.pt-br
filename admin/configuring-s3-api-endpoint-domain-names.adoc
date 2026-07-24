@@ -52,6 +52,7 @@ NOTE: Se você não adicionar nomes de domínio de ponto de extremidade S3 e a l
 
 
 
+[[add-an-s3-endpoint-domain-name]]
 == Adicionar um nome de domínio de ponto de extremidade S3
 
 .Passos
@@ -72,6 +73,7 @@ Agora, quando os clientes usam o ponto de extremidade `_bucket.s3.company.com_` 
 
 
 
+[[rename-an-s3-endpoint-domain-name]]
 == Renomear um nome de domínio de ponto de extremidade S3
 
 Se você alterar um nome usado pelos aplicativos S3, as solicitações no estilo de hospedagem virtual falharão.
@@ -85,6 +87,7 @@ Se você alterar um nome usado pelos aplicativos S3, as solicitações no estilo
 
 
 
+[[delete-an-s3-endpoint-domain-name]]
 == Excluir um nome de domínio de ponto de extremidade S3
 
 Se você remover um nome usado por aplicativos S3, as solicitações no estilo de hospedagem virtual falharão.

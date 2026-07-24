@@ -39,12 +39,15 @@ NOTE: Alterações em um certificado de ponto de extremidade podem levar até 15
 
 
 
+[[create-a-load-balancer-endpoint]]
+[[create-lb-endpoint]]
 == Criar um ponto de extremidade do balanceador de carga
 
 Cada ponto de extremidade do balanceador de carga do cliente S3 especifica uma porta, um tipo de cliente (S3) e um protocolo de rede (HTTP ou HTTPS). Os pontos de extremidade do balanceador de carga da interface de gerenciamento especificam uma porta, um tipo de interface e uma rede de cliente não confiável.
 
 
 
+[[access-the-wizard]]
 === Acesse o assistente
 
 .Passos
@@ -56,6 +59,7 @@ Cada ponto de extremidade do balanceador de carga do cliente S3 especifica uma p
 
 
 
+[[enter-endpoint-details]]
 === Insira os detalhes do ponto de extremidade
 
 .Passos
@@ -157,6 +161,7 @@ Quando você seleciona *Sim*, a porta é aberta em todas as redes de clientes n�
 
 
 
+[[select-a-binding-mode]]
 === Selecione um modo de encadernação
 
 .Passos
@@ -224,6 +229,7 @@ Se você estiver criando endpoints de interface de gerenciamento, selecione VIPs
 
 
 
+[[control-tenant-access]]
 === Controlar o acesso do inquilino
 
 
@@ -264,6 +270,7 @@ As contas de locatários selecionadas não podem usar este ponto de extremidade 
 
 
 
+[[attach-certificate]]
 === Anexar certificado
 
 .Passos
@@ -390,6 +397,7 @@ O ponto de extremidade do balanceador de carga é criado.  O certificado persona
 
 
 
+[[after-you-finish]]
 === Depois que você terminar
 
 .Passos
@@ -416,6 +424,7 @@ Você também deve garantir que o registro DNS faça referência a todos os nome
 
 
 
+[[view-and-edit-load-balancer-endpoints]]
 == Visualizar e editar pontos de extremidade do balanceador de carga
 
 Você pode visualizar detalhes dos pontos de extremidade do balanceador de carga existentes, incluindo os metadados do certificado para um ponto de extremidade protegido.  Você pode alterar determinadas configurações de um ponto de extremidade.
@@ -526,6 +535,7 @@ Editar acesso do locatário
 
 
 
+[[remove-load-balancer-endpoints]]
 == Remover pontos de extremidade do balanceador de carga
 
 Você pode remover um ou mais endpoints usando o menu *Ações* ou pode remover um único endpoint da página de detalhes.

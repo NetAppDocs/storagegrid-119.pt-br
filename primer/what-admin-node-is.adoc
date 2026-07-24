@@ -15,6 +15,7 @@ Os nós de administração fornecem serviços de gerenciamento, como configuraç
 
 
 
+[[differences-between-primary-and-non-primary-admin-nodes]]
 == Diferenças entre nós administrativos primários e não primários
 
 Ao fazer login no Grid Manager ou no Tenant Manager, você está se conectando a um nó de administração. Você pode se conectar a qualquer nó administrativo, e cada nó administrativo exibe uma visão semelhante do sistema StorageGRID . No entanto, o nó administrativo primário fornece mais funcionalidades do que os nós administrativos não primários. Por exemplo, a maioria dos procedimentos de manutenção deve ser executada nos nós de administração primários.
@@ -135,6 +136,7 @@ Sim. Atua como um remetente de espera.
 |===
 
 
+[[preferred-senderpreferred-sender-admin-node]]
 == [[preferred-sender]]Nó de administração do remetente preferencial
 
 Se sua implantação do StorageGRID incluir vários nós de administração, o nó de administração principal será o remetente preferencial para notificações de alerta, pacotes de AutoSupport e traps e informações SNMP.
@@ -153,6 +155,7 @@ NOTE: Quando você testa pacotes do AutoSupport , todos os nós administrativos 
 
 
 
+[[primary-services-for-admin-nodes]]
 == Serviços primários para nós de administração
 
 A tabela a seguir mostra os principais serviços para nós de administração; no entanto, esta tabela não lista todos os serviços dos nós.

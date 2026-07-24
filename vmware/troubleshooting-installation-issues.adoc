@@ -26,6 +26,7 @@ Se precisar de ajuda adicional, entre em contato https://mysupport.netapp.com/si
 
 
 
+[[virtual-machine-resource-reservation-requires-adjustment]]
 == A reserva de recursos da máquina virtual requer ajuste
 
 Os arquivos OVF incluem uma reserva de recursos projetada para garantir que cada nó da grade tenha RAM e CPU suficientes para operar com eficiência.  Se você criar máquinas virtuais implantando esses arquivos OVF no VMware e o número predefinido de recursos não estiver disponível, as máquinas virtuais não serão iniciadas.
@@ -49,6 +50,7 @@ Se você tiver certeza de que o host da VM tem recursos suficientes para cada n�
 
 
 
+[[temporary-installation-password-was-disabled]]
 == A senha de instalação temporária foi desabilitada
 
 Ao implantar um nó VMware, você pode, opcionalmente, especificar uma senha de instalação temporária.  Você precisa ter essa senha para acessar o console da VM ou usar SSH antes que o novo nó entre na grade.

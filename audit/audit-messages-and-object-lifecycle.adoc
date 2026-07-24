@@ -42,6 +42,7 @@ CBDID (identificador interno do objeto)
 |===
 
 
+[[timing-of-audit-messages]]
 == Cronometragem das mensagens de auditoria
 
 Devido a fatores como diferenças de tempo entre nós da grade, tamanho do objeto e atrasos na rede, a ordem das mensagens de auditoria geradas pelos diferentes serviços pode variar daquela mostrada nos exemplos desta seção.

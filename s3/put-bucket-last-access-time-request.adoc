@@ -28,6 +28,7 @@ Se as atualizações do último horário de acesso estiverem desabilitadas para 
 
 
 
+[[request-examples]]
 == Exemplos de solicitação
 
 Este exemplo habilita o último horário de acesso para um bucket.

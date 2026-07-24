@@ -28,6 +28,7 @@ Observe que os metadados do objeto não são gerenciados pelas regras do ILM.  E
 
 
 
+[[example-ilm-rule]]
 == Exemplo de regra ILM
 
 Por exemplo, uma regra ILM poderia especificar o seguinte:
@@ -43,6 +44,7 @@ Por exemplo, se o Site 2 estiver inacessível quando o Locatário A salvar um ob
 
 
 
+[[how-an-ilm-policy-evaluates-objects]]
 == Como uma política de ILM avalia objetos
 
 As políticas de ILM ativas para seu sistema StorageGRID controlam o posicionamento, a duração e o comportamento de ingestão de todos os objetos.
@@ -56,6 +58,7 @@ Quando os clientes salvam objetos no StorageGRID, os objetos são avaliados em r
 
 
 
+[[example-ilm-policy]]
 == Exemplo de política de ILM
 
 Por exemplo, uma política de ILM pode conter três regras de ILM que especificam o seguinte:

@@ -19,6 +19,7 @@ O número de nós que você precisa adicionar também depende de quão cheios os
 
 
 
+[[general-recommendation-for-adding-storage-capacity-for-erasure-coded-objects]]
 == Recomendação geral para adicionar capacidade de armazenamento para objetos codificados por eliminação
 
 Se quiser evitar cálculos detalhados, você pode adicionar dois nós de armazenamento por site quando os nós de armazenamento existentes atingirem 70% da capacidade.

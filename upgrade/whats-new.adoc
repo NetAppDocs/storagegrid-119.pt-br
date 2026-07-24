@@ -15,20 +15,24 @@ Esta versão do StorageGRID apresenta os seguintes recursos e alterações funci
 
 
 
+[[scalability]]
 == Escalabilidade
 
 
 
+[[data-only-storage-nodes]]
 === Nós de armazenamento somente de dados
 
 Para permitir um dimensionamento mais granular, agora você pode instalarlink:../primer/what-storage-node-is.html#types-of-storage-nodes["nós de armazenamento somente de dados"] .  Quando o processamento de metadados não é crítico, você pode otimizar sua infraestrutura de forma econômica.  Essa flexibilidade ajuda a acomodar diferentes cargas de trabalho e padrões de crescimento.
 
 
 
+[[cloud-storage-pool-enhancements]]
 == Melhorias no Cloud Storage Pool
 
 
 
+[[iam-roles-anywhere]]
 === Funções IAM em qualquer lugar
 
 O StorageGRID agora oferece suporte a credenciais de curto prazo usandolink:../ilm/creating-cloud-storage-pool.html["Funções do IAM em qualquer lugar no Amazon S3 para pools de armazenamento em nuvem"] .
@@ -37,22 +41,26 @@ Usar credenciais de longo prazo para acessar buckets do S3 representa riscos de 
 
 
 
+[[s3-object-lock-buckets]]
 === Buckets de bloqueio de objeto S3
 
 Agora você podelink:../ilm/creating-cloud-storage-pool.html["configurar um pool de armazenamento em nuvem usando um endpoint do Amazon S3"] .  O S3 Object Lock ajuda a evitar a exclusão acidental ou maliciosa de objetos.  Se você hierarquizar dados do StorageGRID para o Amazon S3, ter o bloqueio de objeto habilitado em ambos os sistemas aumentará a proteção de dados durante todo o ciclo de vida dos dados.
 
 
 
+[[multi-tenancy]]
 == Multilocação
 
 
 
+[[bucket-limits]]
 === Limites de balde
 
 Porlink:../tenant/creating-s3-bucket.html["definindo limites em buckets S3"] , você pode evitar que os inquilinos monopolizem a capacidade.  Além disso, o crescimento descontrolado pode resultar em custos inesperados.  Ao definir limites, você pode estimar melhor as despesas de armazenamento dos inquilinos.
 
 
 
+[[5000-buckets-per-tenant]]
 === 5.000 baldes por inquilino
 
 Para aumentar a escalabilidade, o StorageGRID agora oferece suporte a atélink:../s3/operations-on-buckets.html["5.000 buckets S3 por locatário"] .  Cada grade pode ter no máximo 100.000 buckets.
@@ -61,6 +69,7 @@ Para dar suporte a 5.000 buckets, cada nó de armazenamento na grade deve ter no
 
 
 
+[[s3-object-lock-improvements]]
 == Melhorias no bloqueio de objetos do S3
 
 Os recursos de configuração por locatário fornecem o equilíbrio adequado entre flexibilidade e segurança de dados.  Agora você pode configurar as definições de retenção por locatário para:
@@ -78,10 +87,12 @@ Consulte:
 
 
 
+[[s3-compatibility]]
 == Compatibilidade S3
 
 
 
+[[x-amz-checksum-sha256-checksum]]
 === soma de verificação x-amz-checksum-sha256
 
 * A API REST do S3 agora oferece suporte para link:../s3/operations-on-objects.html[`x-amz-checksum-sha256` soma de verificação].
@@ -90,6 +101,7 @@ Consulte:
 
 
 
+[[changes-to-s3-protocol-support]]
 === Alterações no suporte ao protocolo S3
 
 * Adicionado suporte para Mountpoint para Amazon S3, que permite que aplicativos se conectem diretamente aos buckets do S3 como se fossem sistemas de arquivos locais.  Agora você pode usar o StorageGRID com mais aplicativos e mais casos de uso.
@@ -98,22 +110,26 @@ Consulte:
 
 
 
+[[maintenance-and-supportability]]
 == Manutenção e suporte
 
 
 
+[[autosupport]]
 === AutoSupport
 
 link:../admin/what-is-autosupport.html["AutoSupport"]agora cria automaticamente casos de falha de hardware para dispositivos legados.
 
 
 
+[[expanded-node-clone-operations]]
 === Operações de clone de nó expandidas
 
 A usabilidade do clone de nó foi expandida para oferecer suporte a nós de armazenamento maiores.
 
 
 
+[[improved-ilm-handling-of-expired-delete-markers]]
 === Tratamento aprimorado do ILM de marcadores de exclusão expirados
 
 As regras de tempo de ingestão do ILM com um período de dias agora também removem marcadores de exclusão de objetos expirados.  Os marcadores de exclusão só são removidos quando um período de dias tiver passado e o criador de exclusão atual tiver expirado (não há versões não atuais).
@@ -122,18 +138,21 @@ Consultelink:../ilm/how-objects-are-deleted.html#delete-s3-versioned-objects["Co
 
 
 
+[[improved-node-decommissioning]]
 === Descomissionamento de nó aprimorado
 
 Para proporcionar uma transição suave e eficiente para o hardware de próxima geração do StorageGRID ,link:../maintain/grid-node-decommissioning.html["descomissionamento de nós"] foi melhorado.
 
 
 
+[[syslog-for-load-balancer-endpoints]]
 === Syslog para endpoints do balanceador de carga
 
 Os logs de acesso ao ponto de extremidade do balanceador de carga contêm informações de solução de problemas, como códigos de status HTTP.  StorageGRID agora suportalink:../monitor/configure-audit-messages.html["exportando esses logs para um servidor syslog externo"] .  Esse aprimoramento permite um gerenciamento de logs mais eficiente e integração com sistemas de monitoramento e alerta existentes.
 
 
 
+[[additional-enhancements-for-maintenance-and-supportability]]
 === Melhorias adicionais para manutenção e suporte
 
 * Atualização da interface do usuário de métricas
@@ -143,32 +162,38 @@ Os logs de acesso ao ponto de extremidade do balanceador de carga contêm inform
 
 
 
+[[security]]
 == Segurança
 
 
 
+[[ssh-access-keys-rotation]]
 === Rotação de chaves de acesso SSH
 
 Os administradores da rede agora podemlink:../admin/change-ssh-access-passwords.html["atualizar e girar chaves SSH"] .  A capacidade de rotacionar chaves SSH é uma prática recomendada de segurança e um mecanismo de defesa proativo.
 
 
 
+[[alerts-for-root-logins]]
 === Alertas para logins root
 
 Quando uma entidade desconhecida faz login no Grid Manager como root,link:../monitor/alerts-reference.html["um alerta é disparado"] .  Monitorar logins SSH root é uma medida proativa para proteger sua infraestrutura.
 
 
 
+[[grid-manager-enhancements]]
 == Melhorias no Grid Manager
 
 
 
+[[erasure-coding-profiles-page-moved]]
 === Página de perfis de codificação de apagamento movida
 
 A página de perfis de codificação de eliminação agora está localizada em *CONFIGURAÇÃO* > *Sistema* > *Codificação de eliminação*.  Costumava estar no menu do ILM.
 
 
 
+[[search-enhancements]]
 === Melhorias na pesquisa
 
 Olink:../primer/exploring-grid-manager.html#search-field["campo de pesquisa no Grid Manager"] agora inclui melhor lógica de correspondência, permitindo que você encontre páginas pesquisando por abreviações comuns e pelos nomes de determinadas configurações dentro de uma página.  Você também pode pesquisar mais tipos de itens, como nós, usuários e contas de locatários.

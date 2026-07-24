@@ -30,6 +30,7 @@ NOTE: Cada grade pode ter no máximo 100.000 buckets.
 
 
 
+[[access-the-wizard]]
 == Acesse o assistente
 
 .Passos
@@ -39,6 +40,7 @@ NOTE: Cada grade pode ter no máximo 100.000 buckets.
 
 
 
+[[enter-details]]
 == Insira os detalhes
 
 .Passos
@@ -82,6 +84,7 @@ O administrador do StorageGRID gerencia as regiões disponíveis. A região de u
 
 
 
+[[manage-settings]]
 == Gerenciar configurações
 
 .Passos

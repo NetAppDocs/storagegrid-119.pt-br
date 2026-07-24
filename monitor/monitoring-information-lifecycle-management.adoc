@@ -20,6 +20,7 @@ A ingestão de objetos e outras atividades relacionadas a objetos podem exceder 
 
 
 
+[[use-grid-manager-dashboard-tab]]
 == Use a guia do painel do Grid Manager
 
 .Passos
@@ -34,6 +35,7 @@ Picos temporários no cartão da fila ILM (Objetos) no painel são esperados.  M
 
 
 
+[[use-the-nodes-page]]
 == Use a página NODES
 
 .Passos

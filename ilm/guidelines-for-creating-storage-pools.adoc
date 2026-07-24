@@ -17,6 +17,7 @@ Ver link:using-multiple-storage-pools-for-cross-site-replication.html["Exemplos 
 
 
 
+[[guidelines-for-all-storage-pools]]
 == Diretrizes para todos os pools de armazenamento
 
 * Mantenha as configurações do pool de armazenamento o mais simples possível.  Não crie mais pools de armazenamento do que o necessário.
@@ -27,6 +28,7 @@ Ver link:using-multiple-storage-pools-for-cross-site-replication.html["Exemplos 
 
 
 
+[[guidelines-for-storage-pools-used-for-replicated-copies]]
 == Diretrizes para pools de armazenamento usados para cópias replicadas
 
 * Para proteção contra perda de site usandolink:what-replication-is.html["replicação"] , especifique um ou mais pools de armazenamento específicos do site nolink:create-ilm-rule-define-placements.html["instruções de posicionamento para cada regra ILM"] .
@@ -43,6 +45,7 @@ Usar um pool de armazenamento para cada site garante que cópias de objetos repl
 
 
 
+[[guidelines-for-storage-pools-used-for-erasure-coded-copies]]
 == Diretrizes para pools de armazenamento usados para cópias codificadas por eliminação
 
 * Para proteção contra perda de site usandolink:what-erasure-coding-is.html["codificação de apagamento"] , crie pools de armazenamento que consistam em pelo menos três sites.  Se um pool de armazenamento incluir apenas dois sites, você não poderá usá-lo para codificação de eliminação.  Não há esquemas de codificação de eliminação disponíveis para um pool de armazenamento com dois sites.

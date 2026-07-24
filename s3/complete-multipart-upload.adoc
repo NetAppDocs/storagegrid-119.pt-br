@@ -18,12 +18,14 @@ NOTE: O StorageGRID suporta valores não consecutivos em ordem crescente para `p
 
 
 
+[[resolve-conflicts]]
 == Resolver conflitos
 
 Solicitações de clientes conflitantes, como dois clientes gravando na mesma chave, são resolvidas com base no princípio de "últimos ganhos".  O tempo para a avaliação de "últimas vitórias" é baseado em quando o sistema StorageGRID conclui uma determinada solicitação, e não em quando os clientes S3 iniciam uma operação.
 
 
 
+[[supported-request-headers]]
 == Cabeçalhos de solicitação suportados
 
 Os seguintes cabeçalhos de solicitação são suportados:
@@ -55,6 +57,7 @@ NOTE: O `ETag` o valor retornado não é uma soma MD5 dos dados, mas segue a imp
 
 
 
+[[unsupported-request-headers]]
 == Cabeçalhos de solicitação não suportados
 
 Os seguintes cabeçalhos de solicitação não são suportados:
@@ -73,6 +76,7 @@ O  `If-None-Match header` é aceito, mas não funcional.
 
 
 
+[[versioning]]
 == Controle de versão
 
 Esta operação conclui um upload multiparte.  Se o controle de versão estiver habilitado para um bucket, a versão do objeto será criada após a conclusão do upload multiparte.
@@ -86,6 +90,7 @@ NOTE: Quando o controle de versão está habilitado para um bucket, a conclusão
 
 
 
+[[failed-replication-notification-or-metadata-notification]]
 == Falha na replicação, notificação ou notificação de metadados
 
 Se o bucket onde o upload multiparte ocorre estiver configurado para um serviço de plataforma, o upload multiparte será bem-sucedido mesmo se a ação de replicação ou notificação associada falhar.

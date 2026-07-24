@@ -15,12 +15,14 @@ Você pode configurar várias configurações de rede no Grid Manager para ajust
 
 
 
+[[configure-vlan-interfaces]]
 == Configurar interfaces VLAN
 
 Você podelink:configure-vlan-interfaces.html["criar interfaces de LAN virtual (VLAN)"] para isolar e particionar o tráfego para segurança, flexibilidade e desempenho.  Cada interface VLAN está associada a uma ou mais interfaces pai em nós de administração e nós de gateway.  Você pode usar interfaces VLAN em grupos de HA e em pontos de extremidade do balanceador de carga para segregar o tráfego de cliente ou administrador por aplicativo ou locatário.
 
 
 
+[[traffic-classification-policies]]
 == Políticas de classificação de tráfego
 
 Você pode usarlink:managing-traffic-classification-policies.html["políticas de classificação de tráfego"] para identificar e manipular diferentes tipos de tráfego de rede, incluindo tráfego relacionado a buckets específicos, locatários, sub-redes de clientes ou pontos de extremidade do balanceador de carga. Essas políticas podem ajudar a limitar e monitorar o tráfego.

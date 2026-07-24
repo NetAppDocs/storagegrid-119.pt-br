@@ -23,6 +23,7 @@ Você pode permitir que contas de locatários do S3 usem uma conexão de federa�
 
 
 
+[[create-a-permitted-tenant]]
 == Criar um inquilino permitido
 
 Se você deseja permitir que uma conta de locatário nova ou existente use uma conexão de federação de grade para clonagem de conta e replicação entre grades, siga as instruções gerais paralink:creating-tenant-account.html["criar um novo locatário S3"] oulink:editing-tenant-account.html["editar uma conta de inquilino"] e observe o seguinte:
@@ -47,6 +48,7 @@ TIP: Antes que um usuário root local possa efetuar login no locatário replicad
 
 
 
+[[view-a-permitted-tenant]]
 == Ver um inquilino permitido
 
 Você pode ver detalhes de um locatário que tem permissão para usar uma conexão de federação de rede.
@@ -65,6 +67,7 @@ image::../media/grid-federation-tenant-detail.png[Guia de federação de grade d
 
 
 
+[[edit-a-permitted-tenant]]
 == Editar um inquilino permitido
 
 Se você precisar editar um locatário que tenha a permissão *Usar conexão de federação de grade*, siga as instruções gerais paralink:editing-tenant-account.html["editando uma conta de locatário"] e observe o seguinte:
@@ -76,6 +79,7 @@ Se você precisar editar um locatário que tenha a permissão *Usar conexão de 
 
 
 
+[[delete-a-permitted-tenant]]
 == Excluir um inquilino permitido
 
 Se você precisar remover um locatário que tenha a permissão *Usar conexão de federação de grade*, siga as instruções gerais paralink:deleting-tenant-account.html["excluindo uma conta de inquilino"] e observe o seguinte:
@@ -92,6 +96,7 @@ Para evitar esses erros, remova a permissão do locatário para usar a conexão 
 
 
 
+[[remove-grid-federation-connection-permissionremove-use-grid-federation-connection-permission]]
 == [[remove-grid-federation-connection-permission]]Remover permissão de conexão de federação de grade
 
 Para impedir que um locatário use uma conexão de federação de grade, você deve remover a permissão *Usar conexão de federação de grade*.
@@ -115,6 +120,7 @@ NOTE: Reativar a permissão *Usar conexão de federação de grade* torna a grad
 
 
 
+[[disable-replication-for-tenant-buckets]]
 === Desabilitar replicação para buckets de locatários
 
 Como primeira etapa, desabilite a replicação entre grades para todos os buckets de locatários.
@@ -133,6 +139,7 @@ TIP: Não é possível remover a permissão *Usar conexão de federação de gra
 
 
 
+[[remove-permission-for-tenant]]
 === Remover permissão para inquilino
 
 Depois que a replicação entre grades for desabilitada para buckets de locatários, você poderá remover a permissão do locatário para usar a conexão de federação de grade.
@@ -184,6 +191,7 @@ Você pode fazer qualquer um dos seguintes:
 
 
 
+[[forceremovepermissionremove-the-permission-by-force]]
 == [[force_remove_permission]]Remover a permissão à força
 
 Se necessário, você pode forçar a remoção da permissão de um locatário para usar uma conexão de federação de grade, mesmo que os buckets de locatário tenham a replicação entre grades habilitada.

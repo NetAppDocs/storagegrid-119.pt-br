@@ -38,6 +38,7 @@ Para obter mais informações sobre firewalls externos e segurança de rede, con
 
 
 
+[[privileged-address-list-and-manage-external-access-tabs]]
 == Lista de endereços privilegiados e guias Gerenciar acesso externo
 
 A guia Lista de endereços privilegiados permite que você registre um ou mais endereços IP que têm acesso às portas de rede que estão fechadas.  A guia Gerenciar acesso externo permite que você feche o acesso externo a portas externas selecionadas ou a todas as portas externas abertas (portas externas são portas que são acessíveis por nós não pertencentes à grade por padrão).  Essas duas guias geralmente podem ser usadas juntas para personalizar o acesso exato à rede que você precisa permitir para sua grade.
@@ -47,6 +48,7 @@ NOTE: Endereços IP privilegiados não têm acesso à porta de rede interna por 
 
 
 
+[[example-1-use-a-jump-host-for-maintenance-tasks]]
 === Exemplo 1: Use um host de salto para tarefas de manutenção
 
 Suponha que você queira usar um host de salto (um host com segurança reforçada) para administração de rede.  Você pode usar estas etapas gerais:
@@ -62,6 +64,7 @@ Depois de salvar sua configuração, todas as portas externas no nó de administ
 
 
 
+[[example-2-lock-down-sensitive-ports]]
 === Exemplo 2: Bloquear portas sensíveis
 
 Suponha que você queira bloquear portas sensíveis e o serviço nessa porta (por exemplo, SSH na porta 22). Você pode usar as seguintes etapas gerais:
@@ -77,12 +80,14 @@ Depois de salvar sua configuração, a porta 22 e o serviço SSH estarão dispon
 
 
 
+[[example-3-disable-access-to-unused-services]]
 === Exemplo 3: Desabilitar acesso a serviços não utilizados
 
 No nível da rede, você pode desabilitar alguns serviços que não pretende usar.  Por exemplo, para bloquear o tráfego do cliente HTTP S3, você usaria a alternância na guia Gerenciar acesso externo para bloquear a porta 18084.
 
 
 
+[[untrusted-client-networks-tab]]
 == Guia Redes de clientes não confiáveis
 
 Se estiver usando uma rede de cliente, você pode ajudar a proteger o StorageGRID de ataques hostis aceitando tráfego de cliente de entrada somente em endpoints configurados explicitamente.
@@ -93,6 +98,7 @@ Você pode reduzir a ameaça de ataques hostis ao seu sistema StorageGRID especi
 
 
 
+[[example-1-gateway-node-only-accepts-https-s3-requests]]
 === Exemplo 1: O nó de gateway aceita apenas solicitações HTTPS S3
 
 Suponha que você queira que um nó de gateway recuse todo o tráfego de entrada na rede do cliente, exceto solicitações HTTPS S3.  Você executaria estas etapas gerais:
@@ -105,6 +111,7 @@ Depois de salvar sua configuração, todo o tráfego de entrada na rede do clien
 
 
 
+[[example-2-storage-node-sends-s3-platform-services-requests]]
 === Exemplo 2: O nó de armazenamento envia solicitações de serviços da plataforma S3
 
 Suponha que você queira habilitar o tráfego de serviços de plataforma S3 de saída de um nó de armazenamento, mas deseja impedir qualquer conexão de entrada para esse nó de armazenamento na rede do cliente.  Você executaria esta etapa geral:
@@ -116,6 +123,7 @@ Depois de salvar sua configuração, o Nó de Armazenamento não aceita mais nen
 
 
 
+[[example-3-limiting-access-to-grid-manager-to-a-subnet]]
 === Exemplo 3: Limitando o acesso ao Grid Manager a uma sub-rede
 
 Suponha que você queira permitir acesso do Grid Manager somente em uma sub-rede específica.  Você executaria os seguintes passos:

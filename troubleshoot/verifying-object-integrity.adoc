@@ -17,6 +17,7 @@ Existem dois processos de verificação: verificação em segundo plano e verifi
 
 
 
+[[what-is-background-verification]]
 == O que é verificação de antecedentes?
 
 O processo de verificação em segundo plano verifica automática e continuamente os nós de armazenamento em busca de cópias corrompidas de dados de objetos e tenta reparar automaticamente quaisquer problemas encontrados.
@@ -39,6 +40,7 @@ A verificação de antecedentes é executada em uma taxa contínua e projetada p
 
 
 
+[[alerts-related-to-background-verification]]
 === Alertas relacionados à verificação de antecedentes
 
 Se o sistema detectar um objeto corrompido que não pode ser corrigido automaticamente (porque a corrupção impede que o objeto seja identificado), o alerta *Objeto corrompido não identificado detectado* será acionado.
@@ -47,6 +49,7 @@ Se a verificação de antecedentes não puder substituir um objeto corrompido po
 
 
 
+[[change-the-background-verification-rate]]
 === Alterar a taxa de verificação de antecedentes
 
 Você pode alterar a taxa na qual a verificação em segundo plano verifica os dados de objetos replicados em um nó de armazenamento se tiver preocupações sobre a integridade dos dados.
@@ -124,6 +127,7 @@ NOTE: Se o alerta *Objetos perdidos* for acionado, o suporte técnico pode quere
 
 
 
+[[what-is-object-existence-check]]
 == O que é verificação de existência de objetos?
 
 A verificação de existência de objetos verifica se todas as cópias replicadas esperadas de objetos e fragmentos codificados para eliminação existem em um nó de armazenamento.  A verificação de existência do objeto não verifica os dados do objeto em si (a verificação em segundo plano faz isso); em vez disso, ela fornece uma maneira de verificar a integridade dos dispositivos de armazenamento, especialmente se um problema recente de hardware pode ter afetado a integridade dos dados.
@@ -138,6 +142,7 @@ A verificação de existência de objetos lê os metadados de cada objeto armaze
 
 
 
+[[run-object-existence-check]]
 === Executar verificação de existência de objeto
 
 Você cria e executa uma tarefa de verificação de existência de objeto por vez.  Ao criar um trabalho, você seleciona os nós de armazenamento e os volumes que deseja verificar.  Você também seleciona a consistência do trabalho.

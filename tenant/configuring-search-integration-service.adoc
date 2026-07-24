@@ -184,6 +184,7 @@ Conforme necessário, você pode desabilitar a integração de pesquisa para um 
 
 
 
+[[example-notification-configexample-metadata-notification-configuration-that-applies-to-all-objects]]
 == [[example-notification-config]]Exemplo: configuração de notificação de metadados que se aplica a todos os objetos
 
 Neste exemplo, os metadados de todos os objetos são enviados para o mesmo destino.
@@ -203,6 +204,7 @@ Neste exemplo, os metadados de todos os objetos são enviados para o mesmo desti
 ----
 
 
+[[example-metadata-notification-configuration-with-two-rules]]
 == Exemplo: configuração de notificação de metadados com duas regras
 
 Neste exemplo, metadados de objetos para objetos que correspondem ao prefixo `/images` é enviado para um destino, enquanto metadados de objeto para objetos que correspondem ao prefixo `/videos` é enviado para um segundo destino.
@@ -231,6 +233,7 @@ Neste exemplo, metadados de objetos para objetos que correspondem ao prefixo `/i
 ----
 
 
+[[metadata-notification-format]]
 == Formato de notificação de metadados
 
 Quando você habilita o serviço de integração de pesquisa para um bucket, um documento JSON é gerado e enviado ao ponto de extremidade de destino sempre que metadados ou tags de objeto são adicionados, atualizados ou excluídos.
@@ -257,6 +260,7 @@ Este exemplo mostra um exemplo do JSON que pode ser gerado quando um objeto com 
 ----
 
 
+[[fields-included-in-the-json-document]]
 === Campos incluídos no documento JSON
 
 O nome do documento inclui o nome do bucket, o nome do objeto e o ID da versão, se presente.
@@ -301,6 +305,7 @@ Etiquetas::
 
 
 
+[[how-to-view-results-in-elasticsearch]]
 === Como visualizar resultados no Elasticsearch
 
 Para tags e metadados do usuário, o StorageGRID passa datas e números para o Elasticsearch como strings ou como notificações de eventos do S3.  Para configurar o Elasticsearch para interpretar essas strings como datas ou números, siga as instruções do Elasticsearch para mapeamento de campos dinâmicos e para mapeamento de formatos de data.  Habilite os mapeamentos de campos dinâmicos no índice antes de configurar o serviço de integração de pesquisa.  Depois que um documento é indexado, você não pode editar os tipos de campo do documento no índice.

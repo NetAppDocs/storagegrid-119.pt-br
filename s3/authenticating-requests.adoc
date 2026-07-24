@@ -21,12 +21,14 @@ O sistema StorageGRID suporta dois métodos de autenticação: HTTP `Authorizati
 
 
 
+[[use-the-http-authorization-header]]
 == Use o cabeçalho de autorização HTTP
 
 O HTTP `Authorization` O cabeçalho é usado por todas as operações da API do S3, exceto solicitações anônimas, quando permitido pela política de bucket.  O `Authorization` O cabeçalho contém todas as informações de assinatura necessárias para autenticar uma solicitação.
 
 
 
+[[use-query-parameters]]
 == Usar parâmetros de consulta
 
 Você pode usar parâmetros de consulta para adicionar informações de autenticação a uma URL.  Isso é conhecido como pré-assinatura de URL, que pode ser usado para conceder acesso temporário a recursos específicos.  Usuários com a URL pré-assinada não precisam saber a chave de acesso secreta para acessar o recurso, o que permite que você forneça acesso restrito de terceiros a um recurso.

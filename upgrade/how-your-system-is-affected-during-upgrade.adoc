@@ -15,6 +15,7 @@ Saiba como seu sistema StorageGRID será afetado durante a atualização.
 
 
 
+[[storagegrid-upgrades-are-non-disruptive]]
 == As atualizações do StorageGRID não causam interrupções
 
 O sistema StorageGRID pode ingerir e recuperar dados de aplicativos clientes durante todo o processo de atualização.  Se você aprovar a atualização de todos os nós do mesmo tipo (por exemplo, nós de armazenamento), os nós serão desativados um de cada vez, de modo que não haverá momento em que todos os nós da grade ou todos os nós da grade de um determinado tipo estarão indisponíveis.
@@ -29,6 +30,7 @@ Para permitir disponibilidade contínua, certifique-se de que sua política de I
 
 
 
+[[client-applications-might-experience-short-term-disruptions]]
 == Os aplicativos do cliente podem sofrer interrupções de curto prazo
 
 O sistema StorageGRID pode ingerir e recuperar dados de aplicativos clientes durante todo o processo de atualização; no entanto, as conexões do cliente com nós de gateway ou nós de armazenamento individuais podem ser interrompidas temporariamente se a atualização precisar reiniciar serviços nesses nós.  A conectividade será restaurada após a conclusão do processo de atualização e os serviços serem retomados nos nós individuais.
@@ -40,6 +42,7 @@ NOTE: Você pode usar vários gateways e grupos de alta disponibilidade (HA) par
 
 
 
+[[appliance-firmware-is-upgraded]]
 == O firmware do aparelho foi atualizado
 
 Durante a atualização do StorageGRID 11.9:
@@ -52,6 +55,7 @@ Durante a atualização do StorageGRID 11.9:
 
 
 
+[[ilm-policies-are-handled-differently-according-to-their-status]]
 == As políticas de ILM são tratadas de forma diferente de acordo com seu status
 
 * A política ativa permanecerá a mesma após a atualização.
@@ -61,6 +65,7 @@ Durante a atualização do StorageGRID 11.9:
 
 
 
+[[alerts-might-be-triggered]]
 == Alertas podem ser acionados
 
 Os alertas podem ser disparados quando os serviços iniciam e param e quando o sistema StorageGRID está operando como um ambiente de versão mista (alguns nós de grade executando uma versão anterior, enquanto outros foram atualizados para uma versão posterior).  Outros alertas podem ser acionados após a conclusão da atualização.
@@ -73,12 +78,14 @@ Após a conclusão da atualização, você pode revisar quaisquer alertas relaci
 
 
 
+[[many-snmp-notifications-are-generated]]
 == Muitas notificações SNMP são geradas
 
 Esteja ciente de que um grande número de notificações SNMP pode ser gerado quando os nós da grade são interrompidos e reiniciados durante a atualização.  Para evitar notificações excessivas, desmarque a caixa de seleção *Habilitar notificações do agente SNMP* (*CONFIGURAÇÃO* > *Monitoramento* > *Agente SNMP*) para desabilitar as notificações SNMP antes de iniciar a atualização.  Em seguida, reative as notificações após a conclusão da atualização.
 
 
 
+[[configuration-changes-are-restricted]]
 == As alterações de configuração são restritas
 
 
@@ -106,6 +113,7 @@ Até que a tarefa *Etapas Finais de Atualização* seja concluída:
 
 
 
+[[you-cant-view-bucket-details-or-manage-buckets-from-the-tenant-manager]]
 == Não é possível visualizar detalhes do bucket ou gerenciar buckets no Gerenciador de locatários
 
 Durante a atualização para o StorageGRID 11.9 (ou seja, enquanto o sistema estiver operando como um ambiente de versão mista), não será possível visualizar detalhes do bucket ou gerenciar buckets usando o Gerenciador de Tenants.  Um dos seguintes erros aparece na página Buckets no Gerenciador de Tenants:

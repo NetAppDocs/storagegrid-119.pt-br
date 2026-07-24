@@ -15,6 +15,7 @@ Conforme necessário, você pode alterar os nomes de exibição mostrados no Gri
 
 
 
+[[what-is-the-rename-procedure]]
 == Qual é o procedimento de renomeação?
 
 Ao instalar o StorageGRID inicialmente, você especifica um nome para a grade, cada site e cada nó.  Esses nomes iniciais são conhecidos como _nomes de sistema_ e são os nomes mostrados inicialmente em StorageGRID.
@@ -25,6 +26,7 @@ Use o procedimento de renomeação para corrigir erros de digitação, implement
 
 
 
+[[where-do-system-and-display-names-appear]]
 == Onde os nomes do sistema e de exibição aparecem?
 
 A tabela a seguir resume onde os nomes do sistema e os nomes de exibição são mostrados na interface do usuário do StorageGRID e nos arquivos do StorageGRID .
@@ -130,12 +132,14 @@ Vazio, a menos que os itens tenham sido renomeados; caso contrário, mapeia os I
 |===
 
 
+[[display-name-requirements]]
 == Requisitos de nome de exibição
 
 Antes de usar este procedimento, revise os requisitos para nomes de exibição.
 
 
 
+[[display-names-for-nodes]]
 === Nomes de exibição para nós
 
 Os nomes de exibição dos nós devem seguir estas regras:
@@ -153,6 +157,7 @@ Você pode renomear um nó com um nome de exibição que foi usado anteriormente
 
 
 
+[[display-names-for-grid-and-sites]]
 === Nomes de exibição para grade e sites
 
 Os nomes de exibição da grade e dos sites seguem as mesmas regras, com estas exceções:
@@ -165,6 +170,7 @@ Os nomes de exibição da grade e dos sites seguem as mesmas regras, com estas e
 
 
 
+[[display-name-best-practices]]
 == Melhores práticas para exibir nomes
 
 Se você planeja renomear vários itens, documente seu esquema geral de nomenclatura antes de usar este procedimento.  Crie um sistema que garanta que os nomes sejam únicos, consistentes e fáceis de entender rapidamente.
@@ -180,6 +186,7 @@ Pense duas vezes antes de adicionar detalhes específicos aos nomes que provavel
 
 
 
+[[example-display-names]]
 === Exemplos de nomes de exibição
 
 Suponha que seu sistema StorageGRID tenha três data centers e nós de tipos diferentes em cada data center.  Seus nomes de exibição podem ser tão simples quanto estes:

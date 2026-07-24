@@ -18,6 +18,7 @@ CAUTION: O FabricPool não tem conhecimento das regras ou políticas do StorageG
 
 
 
+[[guidelines-for-using-ilm-with-fabricpool]]
 == Diretrizes para usar ILM com FabricPool
 
 Quando você usa o assistente de configuração do FabricPool , o assistente cria automaticamente uma nova regra do ILM para cada bucket do S3 criado e adiciona essa regra a uma política inativa.  Você será solicitado a ativar a política.  A regra criada automaticamente segue as melhores práticas recomendadas: ela usa codificação de eliminação 2+1 em um único site.

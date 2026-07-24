@@ -121,6 +121,7 @@ Como regra geral, os nós de dispositivos demoram mais para serem atualizados do
 
 
 
+[[example-estimated-time-to-upgrade-to-storagegrid-11-9]]
 == Exemplo: Tempo estimado para atualização para o StorageGRID 11.9
 
 Suponha que seu sistema tenha 14 nós de grade, dos quais 8 são nós Linux.

@@ -17,6 +17,7 @@ Após revisar essas considerações, execute a expansão e vá paralink:rebalanc
 
 
 
+[[what-is-ec-rebalancing]]
 == O que é rebalanceamento de CE?
 
 O rebalanceamento do EC é um procedimento do StorageGRID que pode ser necessário após uma expansão do nó de armazenamento.  O procedimento é executado como um script de linha de comando do nó de administração principal.  Quando você executa o procedimento de rebalanceamento do EC, o StorageGRID redistribui fragmentos codificados para eliminação entre os nós de armazenamento existentes e os recém-adicionados em um site.
@@ -52,6 +53,7 @@ image::../media/used_space_with_larger_node.png[Espaço usado antes da expansão
 
 
 
+[[when-to-rebalance-erasure-coded-data]]
 == Quando rebalancear dados codificados por eliminação
 
 Considere o seguinte cenário:
@@ -66,6 +68,7 @@ image::../media/used_space_before_expansion.png[Espaço usado antes da expansão
 
 
 
+[[rebalance-is-not-required-if-you-add-enough-nodes]]
 === O rebalanceamento não é necessário se você adicionar nós suficientes
 
 Para entender quando o rebalanceamento do EC não é necessário, suponha que você adicionou três (ou mais) novos nós de armazenamento.  Neste caso, você não precisa realizar o rebalanceamento do EC.  Os nós de armazenamento originais permanecerão cheios, mas novos objetos agora usarão os três novos nós para codificação de eliminação 2+1; os dois fragmentos de dados e o fragmento de paridade podem ser armazenados em um nó diferente.
@@ -77,6 +80,7 @@ CAUTION: Embora você possa executar o procedimento de rebalanceamento do EC nes
 
 
 
+[[rebalance-is-required-if-you-cant-add-enough-nodes]]
 === O rebalanceamento é necessário se você não puder adicionar nós suficientes
 
 Para entender quando o rebalanceamento do EC é necessário, suponha que você só pode adicionar dois nós de armazenamento, em vez de três.  Como o esquema 2+1 exige que pelo menos três nós de armazenamento tenham espaço disponível, os nós vazios não podem ser usados para novos dados codificados para eliminação.
@@ -89,6 +93,7 @@ image::../media/used_space_after_ec_rebalance.png[Espaço usado após o reequil�
 
 
 
+[[recommendations-for-ec-rebalancing]]
 == Recomendações para o reequilíbrio da CE
 
 A NetApp exigirá o rebalanceamento do EC se _todas_ as seguintes afirmações forem verdadeiras:
@@ -103,6 +108,7 @@ Opcionalmente, você pode executar o procedimento de rebalanceamento do EC se pr
 
 
 
+[[how-ec-rebalance-procedure-interacts-with-other-maintenance-tasks]]
 == Como o procedimento de rebalanceamento da CE interage com outras tarefas de manutenção
 
 Não é possível executar determinados procedimentos de manutenção ao mesmo tempo em que se executa o procedimento de rebalanceamento do EC.
@@ -180,6 +186,7 @@ Você deve encerrar o procedimento de rebalanceamento do EC antes de executar ou
 |===
 
 
+[[how-ec-rebalance-procedure-interacts-with-ilm]]
 == Como o procedimento de rebalanceamento da CE interage com o ILM
 
 Enquanto o procedimento de rebalanceamento do EC estiver em execução, evite fazer alterações no ILM que possam alterar a localização de objetos codificados para eliminação existentes.  Por exemplo, não comece a usar uma regra ILM que tenha um perfil de codificação de eliminação diferente.  Se precisar fazer tais alterações no ILM, você deverá encerrar o procedimento de rebalanceamento do EC.

@@ -24,6 +24,7 @@ Você deve usar dispositivos de bloco com suporte RAID para todas as categorias 
 
 
 
+[[performance-requirements]]
 == Requisitos de desempenho
 
 O desempenho dos volumes usados para o pool de contêineres, dados do sistema e metadados de objetos impacta significativamente o desempenho geral do sistema.  Você deve usar armazenamento de nível de desempenho (SAS ou SSD de 10K) para esses volumes para garantir desempenho de disco adequado em termos de latência, operações de entrada/saída por segundo (IOPS) e taxa de transferência.  Você pode usar armazenamento em camadas de capacidade (NL-SAS/SATA) para armazenamento persistente de dados de objetos.
@@ -32,6 +33,7 @@ Os volumes usados para o pool de contêineres, dados do sistema e dados do objet
 
 
 
+[[requirements-for-hosts-that-use-netapp-ontap-storage]]
 == Requisitos para hosts que usam armazenamento NetApp ONTAP
 
 Se o nó StorageGRID usar armazenamento atribuído de um sistema NetApp ONTAP , confirme se o volume não tem uma política de camadas FabricPool habilitada.  Desabilitar a hierarquização do FabricPool para volumes usados ​​com nós StorageGRID simplifica a solução de problemas e as operações de armazenamento.
@@ -41,6 +43,7 @@ NOTE: Nunca use o FabricPool para hierarquizar quaisquer dados relacionados ao S
 
 
 
+[[number-of-hosts-required]]
 == Número de hosts necessários
 
 Cada site StorageGRID requer no mínimo três nós de armazenamento.
@@ -52,6 +55,7 @@ Outros tipos de nós, como nós de administração ou nós de gateway, podem ser
 
 
 
+[[number-of-storage-volumes-for-each-host]]
 == Número de volumes de armazenamento para cada host
 
 A tabela a seguir mostra o número de volumes de armazenamento (LUNs) necessários para cada host e o tamanho mínimo necessário para cada LUN, com base em quais nós serão implantados naquele host.
@@ -140,6 +144,7 @@ NOTE: Dependendo do nível de auditoria configurado, do tamanho das entradas do 
 
 
 
+[[minimum-storage-space-for-a-host]]
 == Espaço mínimo de armazenamento para um host
 
 A tabela a seguir mostra o espaço mínimo de armazenamento necessário para cada tipo de nó.  Você pode usar esta tabela para determinar a quantidade mínima de armazenamento que deve fornecer ao host em cada categoria de armazenamento, com base em quais nós serão implantados naquele host.
@@ -186,6 +191,7 @@ _não aplicável_
 |===
 
 
+[[example-calculating-the-storage-requirements-for-a-host]]
 == Exemplo: Calculando os requisitos de armazenamento para um host
 
 Suponha que você planeja implantar três nós no mesmo host: um nó de armazenamento, um nó de administração e um nó de gateway. Você deve fornecer no mínimo nove volumes de armazenamento ao host. Você precisará de no mínimo 300 GB de armazenamento de nível de desempenho para os contêineres de nós, 670 GB de armazenamento de nível de desempenho para dados do sistema e logs de transações e 12 TB de armazenamento de nível de capacidade para dados de objetos.
@@ -287,6 +293,8 @@ Nó de gateway
 |===
 
 
+[[storage-requirements-for-storage-nodes]]
+[[storage_req_SN]]
 == Requisitos de armazenamento para nós de armazenamento
 
 Um nó de armazenamento baseado em software pode ter de 1 a 48 volumes de armazenamento; 3 ou mais volumes de armazenamento são recomendados. Cada volume de armazenamento deve ter 4 TB ou mais.

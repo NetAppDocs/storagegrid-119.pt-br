@@ -15,6 +15,7 @@ Você deve verificar se a infraestrutura e a configuração de rede atuais podem
 
 
 
+[[general-networking-requirements]]
 == Requisitos gerais de rede
 
 Todas as implantações do StorageGRID devem ser capazes de suportar as seguintes conexões.
@@ -45,6 +46,7 @@ Somente conexões de cliente S3 e conexões administrativas SSH, Grid Manager e 
 
 
 
+[[wide-area-networks-wans-for-multiple-sites]]
 == Redes de longa distância (WANs) para vários sites
 
 Ao configurar um sistema StorageGRID com vários sites, a conexão WAN entre os sites deve ter uma largura de banda mínima de 25 Mbit/segundo em cada direção antes de contabilizar o tráfego do cliente.  A replicação de dados ou codificação de eliminação entre sites, expansão de nó ou site, recuperação de nó e outras operações ou configurações exigirão largura de banda adicional.
@@ -53,6 +55,7 @@ Os requisitos mínimos reais de largura de banda da WAN dependem da atividade do
 
 
 
+[[connections-for-admin-nodes-and-gateway-nodes]]
 == Conexões para nós de administração e nós de gateway
 
 Os nós de administração devem sempre ser protegidos de clientes não confiáveis, como aqueles na Internet aberta.  Você deve garantir que nenhum cliente não confiável possa acessar qualquer nó de administração na rede Grid, na rede de administração ou na rede de clientes.
@@ -61,6 +64,7 @@ Os nós de administração e os nós de gateway que você planeja adicionar aos 
 
 
 
+[[using-network-address-translation-nat]]
 == Usando tradução de endereços de rede (NAT)
 
 Não use a tradução de endereços de rede (NAT) na Grid Network entre nós da grade ou entre sites do StorageGRID .  Quando você usa endereços IPv4 privados para a Grid Network, esses endereços devem ser roteáveis ​​diretamente de cada nó da grade em cada site.  No entanto, conforme necessário, você pode usar NAT entre clientes externos e nós de grade, como para fornecer um endereço IP público para um nó de gateway.  O uso de NAT para conectar um segmento de rede pública é suportado somente quando você emprega um aplicativo de tunelamento que seja transparente a todos os nós na grade, o que significa que os nós da grade não exigem conhecimento de endereços IP públicos.

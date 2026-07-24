@@ -17,6 +17,7 @@ Cada site no seu sistema StorageGRID deve ter pelo menos três nós de armazenam
 
 
 
+[[types-of-storage-nodes]]
 == Tipos de nós de armazenamento
 
 Durante a instalação, você pode selecionar o tipo de nó de armazenamento que deseja instalar.  Esses tipos estão disponíveis para nós de armazenamento baseados em software e para nós de armazenamento baseados em dispositivos que oferecem suporte ao recurso:
@@ -78,6 +79,7 @@ Ao instalar nós somente de dados, a grade deve conter o seguinte:
 
 
 
+[[primary-services-for-storage-nodes]]
 == Serviços primários para nós de armazenamento
 
 A tabela a seguir mostra os principais serviços para nós de armazenamento; no entanto, esta tabela não lista todos os serviços de nós.

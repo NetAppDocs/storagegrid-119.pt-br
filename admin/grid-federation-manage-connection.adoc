@@ -20,6 +20,7 @@ O gerenciamento de conexões de federação de grade entre sistemas StorageGRID 
 
 
 
+[[editgridfedconnectionedit-a-grid-federation-connection]]
 == [[edit_grid_fed_connection]]Editar uma conexão de federação de grade
 
 Você pode editar uma conexão de federação de grade entrando no nó de administração principal em qualquer grade na conexão.  Depois de fazer alterações na primeira grade, você deve baixar um novo arquivo de verificação e enviá-lo para a outra grade.
@@ -29,6 +30,7 @@ NOTE: Enquanto a conexão estiver sendo editada, as solicitações de clonagem d
 
 
 
+[[start-editing-the-connection]]
 === Comece a editar a conexão
 
 .Passos
@@ -85,6 +87,7 @@ NOTE: Se o status da conexão for diferente de *Conectado* quando você começar
 
 
 
+[[finish-editing-the-connection]]
 === Finalizar edição da conexão
 
 Conclua a edição da conexão carregando o arquivo de verificação na outra grade.
@@ -107,6 +110,7 @@ Se a conexão puder ser estabelecida usando os valores editados, uma mensagem de
 
 
 
+[[testgridfedconnectiontest-a-grid-federation-connection]]
 == [[test_grid_fed_connection]]Testar uma conexão de federação de grade
 
 .Passos
@@ -177,6 +181,7 @@ A conexão está em um estado desconhecido, possivelmente devido a um problema d
 
 
 
+[[rotategridfedcertificatesrotate-connection-certificates]]
 == [[rotate_grid_fed_certificates]]Rotular certificados de conexão
 
 Cada conexão de federação de grade usa quatro certificados SSL gerados automaticamente para proteger a conexão.  Quando os dois certificados de cada grade estiverem próximos da data de expiração, o alerta *Expiração do certificado de federação da grade* lembrará você de rotacionar os certificados.
@@ -201,6 +206,7 @@ Em geral, use o mesmo número de dias para os certificados em ambos os lados da 
 
 
 
+[[removegridfedconnectionremove-a-grid-federation-connection]]
 == [[remove_grid_fed_connection]]Remover uma conexão de federação de grade
 
 Você pode remover uma conexão de federação de grade de qualquer grade na conexão.  Conforme mostrado na figura, você deve executar etapas de pré-requisito em ambas as grades para confirmar que a conexão não está sendo usada por nenhum locatário em nenhuma delas.
@@ -215,6 +221,7 @@ Antes de remover uma conexão, observe o seguinte:
 
 
 
+[[disable-replication-for-all-tenant-buckets]]
 === Desabilitar replicação para todos os buckets de locatários
 
 .Passos
@@ -231,6 +238,7 @@ TIP: Não é possível remover a permissão *Usar conexão de federação de gra
 
 
 
+[[remove-permission-for-each-tenant]]
 === Remover permissão para cada inquilino
 
 Depois que a replicação entre grades for desabilitada para todos os buckets de locatários, remova a *Permissão de federação de uso de grade* de todos os locatários em ambas as grades.
@@ -244,6 +252,7 @@ Depois que a replicação entre grades for desabilitada para todos os buckets de
 
 
 
+[[remove-connection]]
 === Remover conexão
 
 .Passos
@@ -263,6 +272,7 @@ Depois que a replicação entre grades for desabilitada para todos os buckets de
 
 
 
+[[force-removegridfedconnectionremove-a-grid-federation-connection-by-force]]
 == [[force-remove_grid_fed_connection]]Remover uma conexão de federação de grade à força
 
 Se necessário, você pode forçar a remoção de uma conexão que não tenha o status *Conectado*.

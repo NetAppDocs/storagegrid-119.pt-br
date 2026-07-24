@@ -36,6 +36,7 @@ Quando a solicitação for concluída, o recurso Alterar senha raiz do locatári
 
 
 
+[[reactivate-deactivated-features]]
 == Reativar recursos desativados
 
 Por padrão, você pode usar a API de gerenciamento de grade para reativar um recurso que foi desativado.  Entretanto, se você quiser impedir que recursos desativados sejam reativados, você pode desativar o próprio recurso *activateFeatures*.

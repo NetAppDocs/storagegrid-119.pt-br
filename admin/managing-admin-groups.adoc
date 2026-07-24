@@ -21,12 +21,14 @@ Você pode criar grupos de administradores para gerenciar as permissões de segu
 
 
 
+[[create-an-admin-group]]
 == Criar um grupo de administradores
 
 Os grupos de administradores permitem que você determine quais usuários podem acessar quais recursos e operações no Grid Manager e na Grid Management API.
 
 
 
+[[access-the-wizard]]
 === Acesse o assistente
 
 .Passos
@@ -36,6 +38,7 @@ Os grupos de administradores permitem que você determine quais usuários podem 
 
 
 
+[[choose-a-group-type]]
 === Escolha um tipo de grupo
 
 Você pode criar um grupo local ou importar um grupo federado.
@@ -74,6 +77,7 @@ Você pode criar um grupo local ou importar um grupo federado.
 ====
 
 
+[[manage-group-permissions]]
 === Gerenciar permissões de grupo
 
 .Passos
@@ -96,6 +100,7 @@ Você deve atribuir pelo menos uma permissão a cada grupo; caso contrário, os 
 
 
 
+[[add-users-local-groups-only]]
 === Adicionar usuários (somente grupos locais)
 
 .Passos
@@ -108,6 +113,7 @@ Se você ainda não criou usuários locais, você pode salvar o grupo sem adicio
 
 
 
+[[view-and-edit-admin-groups]]
 == Ver e editar grupos de administradores
 
 Você pode visualizar detalhes de grupos existentes, modificar um grupo ou duplicar um grupo.
@@ -169,6 +175,7 @@ Editar modo de acesso ou permissões
 
 
 
+[[duplicate-a-group]]
 == Duplicar um grupo
 
 .Passos
@@ -179,6 +186,7 @@ Editar modo de acesso ou permissões
 
 
 
+[[delete-a-group]]
 == Excluir um grupo
 
 Você pode excluir um grupo de administradores quando quiser removê-lo do sistema e remover todas as permissões associadas ao grupo.  Excluir um grupo de administradores remove todos os usuários do grupo, mas não exclui os usuários.

@@ -15,6 +15,7 @@ Os nós do StorageGRID podem ser implantados em máquinas virtuais VMware, dentr
 
 
 
+[[control-remote-ipmi-access-to-bmc]]
 == Controle o acesso remoto do IPMI ao BMC
 
 Você pode habilitar ou desabilitar o acesso remoto IPMI para todos os dispositivos que contêm um BMC. A interface IPMI remota permite acesso de hardware de baixo nível aos seus dispositivos StorageGRID por qualquer pessoa com uma conta e senha BMC . Se você não precisar de acesso IPMI remoto ao BMC, desative esta opção.
@@ -29,6 +30,7 @@ Você pode habilitar ou desabilitar o acesso remoto IPMI para todos os dispositi
 
 
 
+[[firewall-configuration]]
 == Configuração de firewall
 
 Como parte do processo de proteção do sistema, você deve revisar as configurações do firewall externo e modificá-las para que o tráfego seja aceito apenas dos endereços IP e nas portas dos quais ele é estritamente necessário.
@@ -48,24 +50,28 @@ Para obter uma lista de todas as portas internas e externas usadas pelo StorageG
 
 
 
+[[disable-unused-services]]
 == Desabilitar serviços não utilizados
 
 Para todos os nós do StorageGRID , você deve desabilitar ou bloquear o acesso a serviços não utilizados. Por exemplo, se você não planeja usar DHCP, use o Grid Manager para fechar a porta 68. Selecione *CONFIGURAÇÃO* > *Controle de firewall* > *Gerenciar acesso externo*. Em seguida, altere a alternância de status da porta 68 de *Aberta* para *Fechada*.
 
 
 
+[[virtualization-containers-and-shared-hardware]]
 == Virtualização, contêineres e hardware compartilhado
 
 Para todos os nós do StorageGRID , evite executar o StorageGRID no mesmo hardware físico que software não confiável.  Não presuma que as proteções do hipervisor impedirão que malware acesse dados protegidos StorageGRID se o StorageGRID e o malware existirem no mesmo hardware físico.  Por exemplo, os ataques Meltdown e Spectre exploram vulnerabilidades críticas em processadores modernos e permitem que programas roubem dados na memória do mesmo computador.
 
 
 
+[[protect-nodes-during-installation]]
 == Proteja os nós durante a instalação
 
 Não permita que usuários não confiáveis ​​acessem nós do StorageGRID pela rede quando os nós estiverem sendo instalados.  Os nós não estão totalmente seguros até que se juntem à grade.
 
 
 
+[[guidelines-for-admin-nodes]]
 == Diretrizes para nós de administração
 
 Os nós de administração fornecem serviços de gerenciamento, como configuração do sistema, monitoramento e registro. Ao fazer login no Grid Manager ou no Tenant Manager, você está se conectando a um nó de administração.
@@ -85,6 +91,7 @@ Para mais informações, consulte as instruções paralink:../admin/index.html["
 
 
 
+[[guidelines-for-storage-nodes]]
 == Diretrizes para nós de armazenamento
 
 Os nós de armazenamento gerenciam e armazenam dados de objetos e metadados.  Siga estas diretrizes para proteger os nós de armazenamento no seu sistema StorageGRID .
@@ -98,6 +105,7 @@ Os nós de armazenamento gerenciam e armazenam dados de objetos e metadados.  Si
 
 
 
+[[guidelines-for-gateway-nodes]]
 == Diretrizes para nós de gateway
 
 Os nós de gateway fornecem uma interface de balanceamento de carga opcional que os aplicativos clientes podem usar para se conectar ao StorageGRID.  Siga estas diretrizes para proteger quaisquer nós de gateway no seu sistema StorageGRID :
@@ -109,6 +117,7 @@ Os nós de gateway fornecem uma interface de balanceamento de carga opcional que
 
 
 
+[[guidelines-for-hardware-appliance-nodes]]
 == Diretrizes para nós de dispositivos de hardware
 
 Os dispositivos de hardware StorageGRID são especialmente projetados para uso em um sistema StorageGRID .  Alguns aparelhos podem ser usados ​​como nós de armazenamento.  Outros dispositivos podem ser usados ​​como nós de administração ou nós de gateway.  Você pode combinar nós de dispositivos com nós baseados em software ou implantar grades totalmente projetadas para todos os dispositivos.

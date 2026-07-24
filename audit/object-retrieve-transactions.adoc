@@ -17,6 +17,7 @@ Nem todas as mensagens de auditoria geradas durante uma transação de recupera�
 
 
 
+[[s3-retrieval-audit-messages]]
 == Mensagens de auditoria de recuperação S3
 
 [cols="1a,1a,2a,1a,1a"]
@@ -38,6 +39,7 @@ link:sget-s3-get.html["SGET: S3 OBTER"]
 |===
 
 
+[[swift-retrieval-audit-messages]]
 == Mensagens de auditoria de recuperação rápida
 
 [cols="1a,1a,2a,1a,1a"]
@@ -59,6 +61,7 @@ link:wget-swift-get.html["WGET: GET rápido"]
 |===
 
 
+[[example-s3-object-retrieval]]
 == Exemplo: recuperação de objeto S3
 
 Quando um cliente S3 recupera um objeto de um nó de armazenamento (serviço LDR), uma mensagem de auditoria é gerada e salva no log de auditoria.
@@ -67,6 +70,7 @@ Observe que nem todas as mensagens de auditoria geradas durante uma transação 
 
 
 
+[[sget-s3-get]]
 === SGET: S3 OBTER
 
 A recuperação de objetos começa quando o cliente envia uma solicitação GetObject para um serviço LDR.  A mensagem contém o bucket do qual recuperar o objeto e a chave S3 do objeto, que é usada para identificá-lo.
@@ -85,6 +89,7 @@ Na mensagem de exemplo a seguir, o cliente envia uma solicitação GetObject par
 ----
 
 
+[[example-s3-select-on-an-object]]
 == Exemplo: S3 Select em um objeto
 
 Quando um cliente S3 emite uma consulta S3 Select em um objeto, mensagens de auditoria são geradas e salvas no log de auditoria.

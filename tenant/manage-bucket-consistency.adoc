@@ -20,12 +20,14 @@ Os valores de consistência podem ser usados para especificar a disponibilidade 
 
 
 
+[[bucket-consistency-guidelines]]
 == Diretrizes de consistência de bucket
 
 A consistência do bucket é usada para determinar a consistência dos aplicativos cliente que afetam objetos dentro desse bucket do S3.  Em geral, você deve usar a consistência *Read-after-new-write* para seus buckets.
 
 
 
+[[change-bucket-consistencychange-bucket-consistency]]
 == [[change-bucket-consistency]]Alterar consistência do bucket
 
 Se a consistência *Leitura após nova gravação* não atender aos requisitos do aplicativo cliente, você poderá alterar a consistência definindo a consistência do bucket ou usando o `Consistency-Control` cabeçalho.  O `Consistency-Control` O cabeçalho substitui a consistência do bucket.
@@ -54,6 +56,7 @@ A página de detalhes do bucket é exibida.
 
 
 
+[[what-happens-when-you-change-bucket-settings]]
 == O que acontece quando você altera as configurações do bucket
 
 Os buckets têm várias configurações que afetam o comportamento dos buckets e dos objetos dentro deles.

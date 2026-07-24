@@ -30,6 +30,7 @@ Se o nó for um nó de dispositivo, esta guia também incluirá uma seção com 
 
 
 
+[[view-information-about-appliance-storage-nodes]]
 == Exibir informações sobre nós de armazenamento do dispositivo
 
 A página Nós lista informações sobre a integridade do serviço e todos os recursos computacionais, de dispositivo de disco e de rede para cada nó de armazenamento do dispositivo.  Você também pode ver memória, hardware de armazenamento, versão de firmware do controlador, recursos de rede, interfaces de rede, endereços de rede e receber e transmitir dados.
@@ -496,6 +497,7 @@ image::../media/nodes_page_storage_tables.png[Tabelas de armazenamento de págin
 
 
 
+[[view-information-about-appliance-admin-nodes-and-gateway-nodes]]
 == Exibir informações sobre nós de administração e nós de gateway do dispositivo
 
 A página Nós lista informações sobre a integridade do serviço e todos os recursos computacionais, de dispositivo de disco e de rede para cada dispositivo de serviço usado como um Nó de administração ou um Nó de gateway.  Você também pode ver memória, hardware de armazenamento, recursos de rede, interfaces de rede, endereços de rede e receber e transmitir dados.

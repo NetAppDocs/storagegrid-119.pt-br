@@ -17,6 +17,7 @@ O acesso aos serviços da plataforma é habilitado por locatário por um adminis
 
 
 
+[[what-is-a-platform-services-endpoint]]
 == O que é um ponto de extremidade de serviços de plataforma?
 
 Um ponto de extremidade de serviços de plataforma especifica as informações que o StorageGRID precisa para acessar o destino externo.
@@ -29,12 +30,14 @@ Você pode usar o mesmo ponto de extremidade como destino para mais de um bucket
 
 
 
+[[endpoints-for-cloudmirror-replication]]
 == Pontos de extremidade para replicação do CloudMirror
 
 O StorageGRID oferece suporte a endpoints de replicação que representam buckets do S3.  Esses buckets podem ser hospedados no Amazon Web Services, na mesma implantação ou em uma implantação remota do StorageGRID ou em outro serviço.
 
 
 
+[[endpoints-for-notifications]]
 == Pontos finais para notificações
 
 O StorageGRID oferece suporte aos endpoints do Amazon SNS e do Kafka. Os endpoints do Simple Queue Service (SQS) ou do AWS Lambda não são suportados.
@@ -43,6 +46,7 @@ Para endpoints do Kafka, o TLS mútuo não é suportado. Como resultado, se voc�
 
 
 
+[[endpoints-for-the-search-integration-service]]
 == Pontos de extremidade para o serviço de integração de pesquisa
 
 O StorageGRID oferece suporte a endpoints de integração de pesquisa que representam clusters do Elasticsearch.  Esses clusters do Elasticsearch podem estar em um data center local ou hospedados em uma nuvem AWS ou em outro lugar.

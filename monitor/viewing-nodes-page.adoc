@@ -28,6 +28,8 @@ image::../media/nodes_table.png[Menu de nós]
 
 
 
+[[connection-state-icons]]
+[[connection-state]]
 == Ícones de estado de conexão
 
 Se um nó for desconectado da grade, um dos seguintes ícones aparecerá ao lado do nome do nó.
@@ -74,6 +76,7 @@ Se um nó estiver desconectado da rede, poderá haver um alerta subjacente, mas 
 
 
 
+[[alert-icons]]
 == Ícones de alerta
 
 Se houver um alerta ativo para um nó, um dos seguintes ícones aparecerá ao lado do nome do nó:
@@ -86,6 +89,7 @@ image:../media/icon_alert_yellow_minor.png["Ícone Alerta Amarelo Menor"]*Menor*
 
 
 
+[[view-details-for-a-system-site-or-node]]
 == Exibir detalhes de um sistema, site ou nó
 
 Para filtrar as informações mostradas na tabela Nós, insira uma sequência de pesquisa no campo *Pesquisar*.  Você pode pesquisar por nome do sistema, nome de exibição ou tipo (por exemplo, digite *gat* para localizar rapidamente todos os nós de gateway).

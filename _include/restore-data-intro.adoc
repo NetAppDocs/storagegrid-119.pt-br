@@ -4,6 +4,7 @@
 
 
 
+[[which-procedure-should-i-use]]
 == Qual procedimento devo usar?
 
 Sempre que possível, restaure os dados do objeto usando a página *Restauração de volume* no Grid Manager.
@@ -20,6 +21,7 @@ NOTE: O script repair-data está obsoleto e será removido em uma versão futura
 
 
 
+[[use-the-repair-data-script-to-restore-object-data]]
 == Use o `repair-data` script para restaurar dados de objetos
 
 .Antes de começar
@@ -37,6 +39,7 @@ Observe o seguinte:
 
 
 
+[[about-the-repair-data-script]]
 == Sobre o `repair-data` roteiro
 
 Para restaurar dados do objeto, execute o `repair-data` roteiro.  Este script inicia o processo de restauração de dados do objeto e trabalha com a varredura do ILM para garantir que as regras do ILM sejam atendidas.

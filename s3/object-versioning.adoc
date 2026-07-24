@@ -24,6 +24,7 @@ NOTE: O controle de versão pode ser habilitado somente em buckets criados com o
 
 
 
+[[ilm-and-versioning]]
 == ILM e controle de versão
 
 As políticas de ILM são aplicadas a cada versão de um objeto.  Um processo de verificação de ILM verifica continuamente todos os objetos e os reavalia em relação à política de ILM atual.  Quaisquer alterações feitas nas políticas do ILM serão aplicadas a todos os objetos ingeridos anteriormente.  Isso inclui versões ingeridas anteriormente se o controle de versão estiver habilitado.  A verificação de ILM aplica novas alterações de ILM a objetos ingeridos anteriormente.

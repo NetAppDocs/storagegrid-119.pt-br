@@ -18,6 +18,7 @@ NOTE: O Grid Manager é atualizado a cada versão e pode não corresponder às c
 
 
 
+[[types-of-charts]]
 == Tipos de gráficos
 
 Gráficos e tabelas resumem os valores de métricas e atributos específicos do StorageGRID .
@@ -73,6 +74,7 @@ image::../media/state_graph.gif[Gráfico de Estado]
 
 
 
+[[chart-legend]]
 == Legenda do gráfico
 
 As linhas e cores usadas para desenhar gráficos têm um significado específico.
@@ -125,6 +127,7 @@ Uma mistura de sombreamento cinza e azul indica que alguns dos valores de atribu
 |===
 
 
+[[display-charts-and-graphs]]
 == Exibir tabelas e gráficos
 
 A página Nós contém os gráficos e tabelas que você deve acessar regularmente para monitorar atributos como capacidade de armazenamento e taxa de transferência.  Em alguns casos, especialmente ao trabalhar com suporte técnico, você pode usar a página *SUPORTE* > *Ferramentas* > *Topologia de grade* para acessar gráficos adicionais.
@@ -181,6 +184,7 @@ A exibição muda automaticamente para a página *Relatórios* > *Gráficos*.  O
 
 
 
+[[generate-charts]]
 == Gerar gráficos
 
 Os gráficos exibem uma representação gráfica dos valores de dados de atributos.  Você pode gerar relatórios sobre um site de data center, nó de grade, componente ou serviço.

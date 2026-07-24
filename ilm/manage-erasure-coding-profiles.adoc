@@ -20,6 +20,7 @@ Você pode visualizar os detalhes de um perfil de codificação de eliminação 
 
 
 
+[[view-erasure-coding-profile-details]]
 == Ver detalhes do perfil de codificação de eliminação
 
 Você pode visualizar os detalhes de um perfil de codificação de eliminação para determinar seu status, o esquema de codificação de eliminação usado e outras informações.
@@ -33,6 +34,7 @@ Você pode visualizar os detalhes de um perfil de codificação de eliminação 
 
 
 
+[[rename-an-erasure-coding-profile]]
 == Renomear um perfil de codificação de eliminação
 
 Talvez você queira renomear um perfil de codificação de eliminação para deixar mais óbvio o que o perfil faz.
@@ -54,6 +56,7 @@ NOTE: Os nomes de perfis de codificação de eliminação devem ser exclusivos. 
 
 
 
+[[deactivate-an-erasure-coding-profile]]
 == Desativar um perfil de codificação de eliminação
 
 Você pode desativar um perfil de codificação de eliminação se não planeja mais usá-lo e se o perfil não estiver sendo usado atualmente em nenhuma regra do ILM.

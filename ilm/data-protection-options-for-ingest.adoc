@@ -17,6 +17,7 @@ Dependendo da sua escolha, o StorageGRID faz cópias provisórias e enfileira os
 
 
 
+[[flowchart-of-ingest-options]]
 == Fluxograma de opções de ingestão
 
 O fluxograma mostra o que acontece quando os objetos são correspondidos por uma regra ILM que usa cada uma das três opções de ingestão.
@@ -25,6 +26,7 @@ image::../media/ingest_object_lifecycle.png[Diagrama mostrando como a ingestão 
 
 
 
+[[dual-commit]]
 == Comprometimento duplo
 
 Quando você seleciona a opção Dual commit, o StorageGRID imediatamente faz cópias provisórias do objeto em dois nós de armazenamento diferentes e retorna uma mensagem de "ingestão bem-sucedida" ao cliente.  O objeto é enfileirado para avaliação do ILM, e cópias que atendem às instruções de posicionamento da regra são feitas posteriormente.  Se a política ILM não puder ser processada imediatamente após a confirmação dupla, a proteção contra perda de site poderá levar algum tempo para ser alcançada.
@@ -42,6 +44,7 @@ Use a opção Dual commit em qualquer um destes casos:
 
 
 
+[[balanced-default]]
 == Equilibrado (padrão)
 
 Quando você seleciona a opção Balanceado, o StorageGRID também usa o posicionamento síncrono na ingestão e faz imediatamente todas as cópias especificadas nas instruções de posicionamento da regra.  Em contraste com a opção Strict, se o StorageGRID não puder fazer todas as cópias imediatamente, ele usará o Dual commit.  Se a política de ILM usar posicionamentos em vários sites e a proteção imediata contra perda de site não puder ser alcançada, o alerta *posicionamento de ILM inalcançável* será acionado.
@@ -50,6 +53,7 @@ Use a opção Balanceado para obter a melhor combinação de proteção de dados
 
 
 
+[[strict]]
 == Estrito
 
 Quando você seleciona a opção Estrito, o StorageGRID usa o posicionamento síncrono na ingestão e faz imediatamente todas as cópias de objetos especificadas nas instruções de posicionamento da regra.  A ingestão falha se o StorageGRID não puder criar todas as cópias, por exemplo, porque um local de armazenamento necessário está temporariamente indisponível.  O cliente deve tentar a operação novamente.

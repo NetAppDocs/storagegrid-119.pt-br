@@ -22,6 +22,7 @@ image::../media/tenant_dashboard_with_buckets.png[Painel - Lista de desejos]
 
 
 
+[[tenant-account-information]]
 == Informações da conta do inquilino
 
 A parte superior do painel exibe o número de buckets ou contêineres, grupos e usuários configurados.  Ele também exibe o número de pontos de extremidade de serviços de plataforma, se algum tiver sido configurado.  Selecione os links para ver os detalhes.
@@ -30,6 +31,7 @@ Dependendo dolink:tenant-management-permissions.html["permissões de gerenciamen
 
 
 
+[[storage-and-quota-usage]]
 == Armazenamento e uso de cota
 
 O painel de uso de armazenamento contém as seguintes informações:
@@ -64,6 +66,7 @@ NOTE: Para alterar as unidades dos valores de armazenamento exibidos no Gerencia
 
 
 
+[[quota-usage-alerts]]
 == Alertas de uso de cota
 
 Se os alertas de uso de cota tiverem sido habilitados no Grid Manager, esses alertas aparecerão no Tenant Manager quando a cota estiver baixa ou for excedida, da seguinte forma:
@@ -77,6 +80,7 @@ Considere pedir ao administrador da sua rede para aumentar a cota.
 
 
 
+[[bucket-capacity-usagecapacity-limit-usage]]
 == [[bucket-capacity-usage]]Uso do limite de capacidade
 
 Se você definiu um limite de capacidade para seus buckets, o painel do Gerenciador de Tenants exibirá uma lista dos principais buckets por uso de limite de capacidade.
@@ -85,6 +89,7 @@ Se nenhum limite for definido para um bucket, sua capacidade será ilimitada.  N
 
 
 
+[[endpoint-errors]]
 == Erros de endpoint
 
 Se você usou o Grid Manager para configurar um ou mais endpoints para uso com serviços de plataforma, o painel do Tenant Manager exibirá um alerta se algum erro de endpoint tiver ocorrido nos últimos sete dias.

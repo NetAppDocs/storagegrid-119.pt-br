@@ -15,6 +15,7 @@ Dependendo da configuração do seu ciclo de vida, os objetos seguem as configur
 
 
 
+[[example-of-bucket-lifecycle-taking-priority-over-ilm-policy]]
 == Exemplo de ciclo de vida de bucket tendo prioridade sobre política de ILM
 
 Política de ILM::
@@ -50,6 +51,7 @@ Resultado::
 
 
 
+[[example-of-bucket-lifecycle-implicitly-keeping-forever]]
 == Exemplo de ciclo de vida de bucket mantendo implicitamente para sempre
 
 Política de ILM::
@@ -85,6 +87,7 @@ Os marcadores de exclusão que começam com "docs/" são removidos quando expira
 
 
 
+[[example-of-using-bucket-lifecycle-to-duplicate-ilm-and-clean-up-expired-delete-markers]]
 == Exemplo de uso do ciclo de vida do bucket para duplicar o ILM e limpar marcadores de exclusão expirados
 
 Política de ILM::

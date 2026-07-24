@@ -9,12 +9,14 @@ CAUTION: Para fontes de identidade que não sejam ActiveDirectory ou Azure, o St
 
 
 
+[[memberof-and-refint-overlays]]
 === Sobreposições de membro e reintegração
 
 As sobreposições memberof e refint devem ser habilitadas.  Para obter mais informações, consulte as instruções para manutenção de associação de grupo reverso nohttp://www.openldap.org/doc/admin24/index.html["Documentação do OpenLDAP: Guia do Administrador da Versão 2.4"^] .
 
 
 
+[[indexing]]
 === Indexação
 
 Você deve configurar os seguintes atributos OpenLDAP com as palavras-chave de índice especificadas:

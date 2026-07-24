@@ -15,6 +15,7 @@ Revise as considerações para descomissionar um nó de administração ou um n�
 
 
 
+[[considerations-for-admin-node]]
 == Considerações para o nó de administração
 
 * Não é possível desativar o nó de administração principal.
@@ -27,6 +28,7 @@ Revise as considerações para descomissionar um nó de administração ou um n�
 
 
 
+[[considerations-for-gateway-node]]
 == Considerações para o nó de gateway
 
 * Não é possível desativar um nó de gateway se uma de suas interfaces de rede fizer parte de um grupo de alta disponibilidade (HA).  Primeiro, você deve remover as interfaces de rede do grupo HA. Veja as instruções paralink:../admin/managing-high-availability-groups.html["gerenciando grupos HA"] .

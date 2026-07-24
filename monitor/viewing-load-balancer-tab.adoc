@@ -21,6 +21,7 @@ image::../media/nodes_page_load_balancer_tab.png[Guia do balanceador de carga da
 
 
 
+[[request-traffic]]
 == Solicitar tráfego
 
 Este gráfico fornece uma média móvel de 3 minutos da taxa de transferência de dados transmitidos entre os pontos de extremidade do balanceador de carga e os clientes que fazem as solicitações, em bits por segundo.
@@ -30,18 +31,21 @@ NOTE: Este valor é atualizado na conclusão de cada solicitação.  Como result
 
 
 
+[[incoming-request-rate]]
 == Taxa de solicitação de entrada
 
 Este gráfico fornece uma média móvel de 3 minutos do número de novas solicitações por segundo, divididas por tipo de solicitação (GET, PUT, HEAD e DELETE).  Este valor é atualizado quando os cabeçalhos de uma nova solicitação são validados.
 
 
 
+[[average-request-duration-non-error]]
 == Duração média da solicitação (sem erro)
 
 Este gráfico fornece uma média móvel de 3 minutos de durações de solicitações, divididas por tipo de solicitação (GET, PUT, HEAD e DELETE).  Cada duração de solicitação começa quando um cabeçalho de solicitação é analisado pelo serviço Load Balancer e termina quando o corpo de resposta completo é retornado ao cliente.
 
 
 
+[[error-response-rate]]
 == Taxa de resposta de erro
 
 Este gráfico fornece uma média móvel de 3 minutos do número de respostas de erro retornadas aos clientes por segundo, divididas pelo código de resposta de erro.

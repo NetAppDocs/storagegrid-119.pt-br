@@ -15,18 +15,21 @@ summary: 'À medida que os nós de armazenamento atingem a capacidade, você dev
 
 
 
+[[add-storage-volumes]]
 == Adicionar volumes de armazenamento
 
 Cada nó de armazenamento suporta um número máximo de volumes de armazenamento.  O máximo definido varia de acordo com a plataforma.  Se um nó de armazenamento contiver menos do que o número máximo de volumes de armazenamento, você poderá adicionar volumes para aumentar sua capacidade. Veja as instruções paralink:../expand/index.html["expandindo um sistema StorageGRID"] .
 
 
 
+[[add-storage-expansion-shelves]]
 == Adicionar prateleiras de expansão de armazenamento
 
 Alguns nós de armazenamento do dispositivo StorageGRID , como o SG6060 ou o SG6160, podem suportar prateleiras de armazenamento adicionais.  Se você tiver dispositivos StorageGRID com recursos de expansão que ainda não foram expandidos para a capacidade máxima, você pode adicionar prateleiras de armazenamento para aumentar a capacidade. Veja as instruções paralink:../expand/index.html["expandindo um sistema StorageGRID"] .
 
 
 
+[[add-storage-nodes]]
 == Adicionar nós de armazenamento
 
 Você pode aumentar a capacidade de armazenamento adicionando nós de armazenamento.  É preciso considerar cuidadosamente as regras de ILM atualmente ativas e os requisitos de capacidade ao adicionar armazenamento. Veja as instruções paralink:../expand/index.html["expandindo um sistema StorageGRID"] .

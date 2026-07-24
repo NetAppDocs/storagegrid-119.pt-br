@@ -4,6 +4,7 @@
 
 
 
+[[location-for-node-configuration-files]]
 == Localização dos arquivos de configuração do nó
 
 Coloque o arquivo de configuração para cada nó StorageGRID no `/etc/storagegrid/nodes` diretório no host onde o nó será executado.  Por exemplo, se você planeja executar um nó de administração, um nó de gateway e um nó de armazenamento no HostA, você deve colocar três arquivos de configuração de nó em `/etc/storagegrid/nodes` no HostA.
@@ -12,6 +13,7 @@ Você pode criar os arquivos de configuração diretamente em cada host usando u
 
 
 
+[[naming-of-node-configuration-files]]
 == Nomenclatura de arquivos de configuração de nó
 
 Os nomes dos arquivos de configuração são significativos.  O formato é `node-name.conf` , onde `node-name` é um nome que você atribui ao nó.  Este nome aparece no instalador do StorageGRID e é usado para operações de manutenção de nós, como migração de nós.
@@ -36,6 +38,7 @@ Por exemplo, você pode usar `dc1-adm1.conf` para o primeiro nó de administraç
 
 
 
+[[contents-of-a-node-configuration-file]]
 == Conteúdo de um arquivo de configuração de nó
 
 Um arquivo de configuração contém pares chave/valor, com uma chave e um valor por linha.  Para cada par chave/valor, siga estas regras:
@@ -55,6 +58,7 @@ A tabela a seguir define os valores para todas as chaves suportadas.  Cada tecla
 
 
 
+[[admin-network-keys]]
 === Chaves de rede de administração
 
 
@@ -307,6 +311,7 @@ Caso contrário, é opcional.
 |===
 
 
+[[block-device-keys]]
 === Bloquear chaves do dispositivo
 
 
@@ -443,6 +448,7 @@ Obrigatório
 |===
 
 
+[[client-network-keys]]
 === Chaves de rede do cliente
 
 
@@ -650,6 +656,7 @@ Melhores práticas
 |===
 
 
+[[grid-network-keys]]
 === Chaves de rede de grade
 
 
@@ -845,6 +852,7 @@ Melhores práticas
 |===
 
 
+[[installation-password-key-temporary]]
 === Chave de senha de instalação (temporária)
 
 
@@ -874,6 +882,7 @@ Melhores práticas
 |===
 
 
+[[interfaces-key]]
 === Chave de interfaces
 
 
@@ -901,6 +910,7 @@ Opcional
 |===
 
 
+[[maximum-ram-key]]
 === Chave de RAM máxima
 
 
@@ -932,6 +942,7 @@ Opcional
 |===
 
 
+[[node-type-keys]]
 === Chaves de tipo de nó
 
 
@@ -979,6 +990,7 @@ Opcional
 |===
 
 
+[[port-remap-keys]]
 === Chaves de remapeamento de portas
 
 

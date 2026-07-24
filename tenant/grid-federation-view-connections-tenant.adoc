@@ -55,6 +55,7 @@ Para cada conexão de federação de grade, o erro mais recente ocorrido, se hou
 
 
 
+[[clear-last-errorclear-the-last-error]]
 == [[clear-last-error]]Limpar o último erro
 
 Um erro pode aparecer na coluna *Último erro* por um destes motivos:

@@ -35,6 +35,8 @@ Para obter mais informações sobre firewalls externos e segurança de rede, con
 
 
 
+[[access-firewall-controls]]
+[[Access-firewall-controls]]
 == Controles de firewall de acesso
 
 .Passos
@@ -50,6 +52,7 @@ Você pode usar essas guias em qualquer ordem.  As configurações definidas em 
 
 
 
+[[privileged-address-list]]
 == Lista de endereços privilegiados
 
 Use a guia Lista de endereços privilegiados para conceder aos hosts acesso a portas que estão fechadas por padrão ou fechadas por configurações na guia Gerenciar acesso externo.
@@ -76,6 +79,7 @@ TIP: Esta opção remove algumas proteções para serviços internos.  Deixe-o d
 
 
 
+[[manage-external-access]]
 == Gerenciar acesso externo
 
 Quando uma porta é fechada na guia Gerenciar acesso externo, a porta não pode ser acessada por nenhum endereço IP que não seja da rede, a menos que você adicione o endereço IP à lista de endereços privilegiados.  Você só pode fechar portas que estejam abertas por padrão e só pode abrir portas que você tenha fechado.
@@ -105,6 +109,7 @@ NOTE: Use a barra de rolagem no lado direito da tabela para ter certeza de que v
 
 
 
+[[untrusted-client-network]]
 == Rede de clientes não confiáveis
 
 Se a rede do cliente de um nó não for confiável, o nó aceitará somente tráfego de entrada em portas configuradas como pontos de extremidade do balanceador de carga e, opcionalmente, portas adicionais selecionadas nesta guia.  Você também pode usar esta guia para especificar a configuração padrão para novos nós adicionados em uma expansão.
