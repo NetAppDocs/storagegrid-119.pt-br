@@ -149,9 +149,6 @@ A grade StorageGRID foi desligada.
 [[start-up-grid-nodes]]
 == Iniciar nós de grade
 
-
-CAUTION: Se toda a rede estiver desligada por mais de 15 dias, você deverá entrar em contato com o suporte técnico antes de iniciar qualquer nó da rede.  Não tente os procedimentos de recuperação que reconstroem os dados do Cassandra.  Isso pode resultar em perda de dados.
-
 Se possível, ligue os nós da rede nesta ordem:
 
 * Aplique energia primeiro aos nós de administração.

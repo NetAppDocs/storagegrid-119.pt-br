@@ -19,7 +19,11 @@ Cada nó StorageGRID requer os seguintes recursos mínimos:
 * RAM: Depende da RAM total disponível e da quantidade de software não StorageGRID em execução no sistema
 +
 ** Geralmente, pelo menos 24 GB por nó e 2 a 16 GB a menos que a RAM total do sistema
-** Um mínimo de 64 GB para cada locatário que terá aproximadamente 5.000 buckets
+** Se vários locatários tiverem até 5.000 buckets cada, pelo menos 64 GB por nó
++
+
+NOTE: O sistema StorageGRID suporta no máximo 5.000 buckets para cada conta de locatário do S3.
+
 
 
 

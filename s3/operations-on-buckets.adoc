@@ -15,7 +15,7 @@ O sistema StorageGRID suporta no máximo 5.000 buckets para cada conta de locat�
 
 Cada grade pode ter no máximo 100.000 buckets.
 
-Para dar suporte a 5.000 buckets, cada nó de armazenamento na grade deve ter no mínimo 64 GB de RAM.
+Se vários clientes tiverem até 5.000 buckets cada, cada Storage Node na grade deverá ter no mínimo 64 GB de RAM.
 
 As restrições de nome de bucket seguem as restrições de região padrão dos EUA da AWS, mas você deve restringi-las ainda mais às convenções de nomenclatura de DNS para oferecer suporte a solicitações de estilo de hospedagem virtual do S3.
 
@@ -27,7 +27,7 @@ Veja o seguinte para mais informações:
 
 As operações ListObjects (GET Bucket) e ListObjectVersions (versões do objeto GET Bucket) oferecem suporte ao StorageGRIDlink:consistency-controls.html["valores de consistência"] .
 
-Você pode verificar se as atualizações do último horário de acesso estão habilitadas ou desabilitadas para buckets individuais. Ver link:get-bucket-last-access-time-request.html["Último horário de acesso do Bucket GET"] .
+Você pode verificar se as atualizações do último tempo de acesso estão habilitadas ou desabilitadas para buckets individuais. Consulte link:get-bucket-last-access-time-request.html["Último horário de acesso do Bucket GET"].
 
 A tabela a seguir descreve como o StorageGRID implementa as operações de bucket da API REST do S3.  Para executar qualquer uma dessas operações, é necessário fornecer as credenciais de acesso necessárias para a conta.
 
@@ -55,7 +55,7 @@ Cria um novo bucket.  Ao criar o bucket, você se torna o proprietário do bucke
 +
 *Observação*: Ocorrerá um erro se sua solicitação CreateBucket usar uma região que não foi definida em StorageGRID.
 
-* Você pode incluir o `x-amz-bucket-object-lock-enabled` cabeçalho de solicitação para criar um bucket com o S3 Object Lock habilitado. Ver link:../s3/use-s3-api-for-s3-object-lock.html["Use a API REST do S3 para configurar o bloqueio de objeto do S3"] .
+* Você pode incluir o  `x-amz-bucket-object-lock-enabled` cabeçalho da solicitação para criar um bucket com o S3 Object Lock ativado. Consulte link:../s3/use-s3-api-for-s3-object-lock.html["Use a API REST do S3 para configurar o bloqueio de objeto do S3"].
 +
 Você deve habilitar o S3 Object Lock ao criar o bucket.  Não é possível adicionar ou desabilitar o S3 Object Lock após a criação de um bucket.  O S3 Object Lock requer controle de versão do bucket, que é ativado automaticamente quando você cria o bucket.
 
@@ -87,7 +87,7 @@ Exclui a criptografia padrão do bucket.  Os objetos criptografados existentes p
  a| 
 Ciclo de vida do DeleteBucket
  a| 
-Exclui a configuração do ciclo de vida do bucket. Ver link:create-s3-lifecycle-configuration.html["Criar configuração do ciclo de vida do S3"] .
+Exclui a configuração de ciclo de vida do bucket. Consulte link:create-s3-lifecycle-configuration.html["Criar configuração do ciclo de vida do S3"].
 
 
 
@@ -110,7 +110,7 @@ ExcluirBucketTagging
  a| 
 Usa o `tagging` sub-recurso para remover todas as tags de um bucket.
 
-*Cuidado*: Se uma tag de política ILM não padrão for definida para este bucket, haverá um `NTAP-SG-ILM-BUCKET-TAG` tag de bucket com um valor atribuído a ela.  Não emita uma solicitação DeleteBucketTagging se houver um `NTAP-SG-ILM-BUCKET-TAG` etiqueta de balde.  Em vez disso, emita uma solicitação PutBucketTagging apenas com o `NTAP-SG-ILM-BUCKET-TAG` tag e seu valor atribuído para remover todas as outras tags do bucket.  Não modifique ou remova o `NTAP-SG-ILM-BUCKET-TAG` etiqueta de balde.
+*Atenção*: Se uma tag de política ILM não padrão for definida para este bucket, haverá uma  `NTAP-SG-ILM-BUCKET-TAG` tag de bucket com um valor atribuído a ela. Não envie uma solicitação DeleteBucketTagging se houver uma  `NTAP-SG-ILM-BUCKET-TAG` tag de bucket. Em vez disso, envie uma solicitação PutBucketTagging contendo apenas a  `NTAP-SG-ILM-BUCKET-TAG` tag e seu valor atribuído para remover todas as outras tags do bucket. Não modifique nem remova a  `NTAP-SG-ILM-BUCKET-TAG` tag do bucket.
 
 
 
@@ -140,7 +140,7 @@ Obter configuração do ciclo de vida do Bucket
 
 (anteriormente chamado de ciclo de vida do GET Bucket)
  a| 
-Retorna a configuração do ciclo de vida do bucket. Ver link:create-s3-lifecycle-configuration.html["Criar configuração do ciclo de vida do S3"] .
+Retorna a configuração do ciclo de vida do bucket. Consulte link:create-s3-lifecycle-configuration.html["Criar configuração do ciclo de vida do S3"].
 
 
 
@@ -179,7 +179,7 @@ Obter marcação de balde
  a| 
 Usa o `tagging` sub-recurso para retornar todas as tags de um bucket.
 
-*Cuidado*: Se uma tag de política ILM não padrão for definida para este bucket, haverá um `NTAP-SG-ILM-BUCKET-TAG` tag de bucket com um valor atribuído a ela.  Não modifique ou remova esta tag.
+*Atenção*: Se uma tag de política ILM não padrão for definida para este bucket, haverá uma  `NTAP-SG-ILM-BUCKET-TAG` tag de bucket com um valor atribuído a ela. Não modifique nem remova esta tag.
 
 
 
@@ -200,7 +200,7 @@ ObterConfiguraçãoObjectLock
  a| 
 Retorna o modo de retenção padrão do bucket e o período de retenção padrão, se configurado.
 
-Ver link:../s3/use-s3-api-for-s3-object-lock.html["Use a API REST do S3 para configurar o bloqueio de objeto do S3"] .
+Consulte link:../s3/use-s3-api-for-s3-object-lock.html["Use a API REST do S3 para configurar o bloqueio de objeto do S3"].
 
 
 
@@ -277,9 +277,9 @@ O StorageGRID não oferece suporte a estas ações:
 * Transição
 
 
-Ver link:create-s3-lifecycle-configuration.html["Criar configuração do ciclo de vida do S3"] . Para entender como a ação Expiração em um ciclo de vida de bucket interage com as instruções de posicionamento do ILM, consultelink:../ilm/how-ilm-operates-throughout-objects-life.html["Como o ILM opera ao longo da vida de um objeto"] .
+Consulte link:create-s3-lifecycle-configuration.html["Criar configuração do ciclo de vida do S3"]. Para entender como a ação de expiração no ciclo de vida do bucket interage com as instruções de posicionamento do ILM, consulte link:../ilm/how-ilm-operates-throughout-objects-life.html["Como o ILM opera ao longo da vida de um objeto"].
 
-*Observação*: a configuração do ciclo de vida do bucket pode ser usada com buckets que tenham o S3 Object Lock habilitado, mas a configuração do ciclo de vida do bucket não é suportada para buckets compatíveis legados.
+*Nota*: a configuração do ciclo de vida do bucket pode ser usada com buckets que têm o S3 Object Lock ativado, mas a configuração do ciclo de vida do bucket não é compatível com buckets Compliant legados.
 
 
 
@@ -328,7 +328,7 @@ não incluído
  a| 
 PutBucketPolicy
  a| 
-Define a política anexada ao bucket. Ver link:bucket-and-group-access-policies.html["Use políticas de acesso a buckets e grupos"] .
+Define a política associada ao bucket. Consulte link:bucket-and-group-access-policies.html["Use políticas de acesso a buckets e grupos"].
 
 
 
@@ -337,18 +337,18 @@ PutBucketReplicação
  a| 
 Configuralink:../tenant/understanding-cloudmirror-replication-service.html["Replicação do StorageGRID CloudMirror"] para o bucket usando o XML de configuração de replicação fornecido no corpo da solicitação.  Para replicação do CloudMirror, você deve estar ciente dos seguintes detalhes de implementação:
 
-* O StorageGRID suporta apenas a V1 da configuração de replicação.  Isso significa que o StorageGRID não suporta o uso do `Filter` elemento para regras e segue as convenções V1 para exclusão de versões de objetos.  Para mais detalhes, veja https://docs.aws.amazon.com/AmazonS3/latest/userguide/replication-add-config.html["Guia do usuário do Amazon Simple Storage Service: configuração de replicação"^] .
+* StorageGRID suporta apenas a V1 da configuração de replicação. Isso significa que StorageGRID não suporta o uso do  `Filter` elemento para regras e segue as convenções da V1 para exclusão de versões de objetos. Para obter detalhes, consulte  https://docs.aws.amazon.com/AmazonS3/latest/userguide/replication-add-config.html["Guia do usuário do Amazon Simple Storage Service: configuração de replicação"^].
 * A replicação de buckets pode ser configurada em buckets versionados ou não versionados.
 * Você pode especificar um bucket de destino diferente em cada regra do XML de configuração de replicação.  Um bucket de origem pode ser replicado para mais de um bucket de destino.
-* Os buckets de destino devem ser especificados como o URN dos endpoints do StorageGRID , conforme especificado no Tenant Manager ou na Tenant Management API. Ver link:../tenant/configuring-cloudmirror-replication.html["Configurar a replicação do CloudMirror"] .
+* Os buckets de destino devem ser especificados como o URN dos endpoints do StorageGRID, conforme especificado no Tenant Manager ou na API de Gerenciamento de Tenant. Consulte link:../tenant/configuring-cloudmirror-replication.html["Configurar a replicação do CloudMirror"].
 +
 O ponto de extremidade deve existir para que a configuração da replicação seja bem-sucedida.  Se o ponto final não existir, a solicitação falhará como um `400 Bad Request` . A mensagem de erro diz: `Unable to save the replication policy. The specified endpoint URN does not exist: _URN_.`
 
-* Você não precisa especificar um `Role` no XML de configuração.  Este valor não é usado pelo StorageGRID e será ignorado se enviado.
+* Não é necessário especificar um `Role` no XML de configuração. Esse valor não é usado pelo StorageGRID e será ignorado se enviado.
 * Se você omitir a classe de armazenamento do XML de configuração, o StorageGRID usará o `STANDARD` classe de armazenamento por padrão.
 * Se você excluir um objeto do bucket de origem ou excluir o próprio bucket de origem, o comportamento de replicação entre regiões será o seguinte:
 +
-** Se você excluir o objeto ou bucket antes que ele seja replicado, o objeto/bucket não será replicado e você não será notificado.
+** Se você excluir o objeto ou bucket antes que ele seja replicado, o objeto/bucket não será replicado e você não receberá notificação.
 ** Se você excluir o objeto ou bucket após ele ter sido replicado, o StorageGRID seguirá o comportamento de exclusão padrão do Amazon S3 para a V1 da replicação entre regiões.
 
 
@@ -367,7 +367,7 @@ Usa o `tagging` sub-recurso para adicionar ou atualizar um conjunto de tags para
 * Chaves e valores diferenciam maiúsculas de minúsculas.
 
 
-*Cuidado*: Se uma tag de política ILM não padrão for definida para este bucket, haverá um `NTAP-SG-ILM-BUCKET-TAG` tag de bucket com um valor atribuído a ela.  Certifique-se de que o `NTAP-SG-ILM-BUCKET-TAG` A tag bucket é incluída com o valor atribuído em todas as solicitações PutBucketTagging.  Não modifique ou remova esta tag.
+*Atenção*: Se uma tag de política ILM não padrão for definida para este bucket, haverá uma  `NTAP-SG-ILM-BUCKET-TAG` tag de bucket com um valor atribuído a ela. Certifique-se de que a  `NTAP-SG-ILM-BUCKET-TAG` tag de bucket esteja incluída com o valor atribuído em todas as solicitações PutBucketTagging. Não modifique nem remova esta tag.
 
 *Observação*: esta operação substituirá quaisquer tags atuais que o bucket já tenha.  Se alguma tag existente for omitida do conjunto, essas tags serão removidas do bucket.
 
@@ -389,7 +389,7 @@ PutObjectLockConfiguration
  a| 
 Configura ou remove o modo de retenção padrão do bucket e o período de retenção padrão.
 
-Se o período de retenção padrão for modificado, a data de retenção das versões de objetos existentes permanecerá a mesma e não será recalculada usando o novo período de retenção padrão.
+Se o período de retenção padrão for modificado, a data de retenção das versões existentes do objeto permanece a mesma e não é recalculada usando o novo período de retenção padrão.
 
 Verlink:../s3/use-s3-api-for-s3-object-lock.html["Use a API REST do S3 para configurar o bloqueio de objeto do S3"] para informações detalhadas.
 
